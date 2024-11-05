@@ -39,6 +39,7 @@
               }
             ],
             "styles": [
+              "src/theme/m3-theme.scss",
               "src/styles.scss"
             ],
             "scripts": []
@@ -98,6 +99,7 @@
               }
             ],
             "styles": [
+              "src/theme/m3-theme.scss",
               "src/styles.scss"
             ],
             "scripts": []

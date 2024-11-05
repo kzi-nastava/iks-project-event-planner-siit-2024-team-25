@@ -1,1 +1,44 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use './theme/m3-theme.scss';
+
+@include mat.core();
+
+html {
+  @include mat.all-component-themes(m3-theme.$light-theme);
+}
+
+.secondary {
+  @include mat.badge-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.button-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.checkbox-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.chips-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.datepicker-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.fab-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.form-field-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.icon-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.option-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.progress-bar-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.progress-spinner-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.pseudo-checkbox-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.radio-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.select-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.slide-toggle-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.slider-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.stepper-color(m3-theme.$light-theme, $color-variant: secondary);
+  @include mat.tabs-color(m3-theme.$light-theme, $color-variant: secondary);
+}
+
+.heading {
+  font-family: REM;
+}
+
+html, body { 
+  height: 100%;
+}
+
+body { 
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: mat.get-theme-color(m3-theme.$light-theme, primary, 10);
+  background-color: #ffe1bd;
+}
