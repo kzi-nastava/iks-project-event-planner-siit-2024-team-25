@@ -5,6 +5,7 @@
 
 html {
   @include mat.all-component-themes(m3-theme.$light-theme);
+  @include mat.color-variants-backwards-compatibility(m3-theme.$light-theme);
 }
 
 .secondary {
@@ -29,16 +30,16 @@ html {
 }
 
 .heading {
-  font-family: REM;
+  font-family: REM, serif;
 }
 
-html, body { 
+html, body {
   height: 100%;
 }
 
-body { 
+body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: mat.get-theme-color(m3-theme.$light-theme, primary, 10);
-  background-color: #ffe1bd;
+  background-color: m3-theme.$background-color;
 }
