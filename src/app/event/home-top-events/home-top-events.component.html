@@ -1,0 +1,30 @@
+<div class="container">
+  <h3>Top 5 events</h3>
+  <div class="top-events-container">
+    <div class="event-card" *ngFor="let event of topEvents">
+      <div class="header">
+        <h2>{{event.name}}</h2>
+        <mat-icon 
+          class="heart" 
+          [ngClass]="{'liked': event.isLiked}" 
+          (click)="toggleFavouriteEvent(event.id)">
+          {{ event.isLiked ? 'favorite' : 'favorite_border' }}
+        </mat-icon>
+      </div>
+      <div class="organizer">
+        <p>{{event.organizerName}}</p>
+      </div>
+      <div class="description">
+        <p>{{event.description}}</p>
+      </div>
+      <div class="footer">
+        <div class="location">
+          <p>Location: {{event.city}}</p>
+        </div>
+        <div class="date">
+          <p>Date: {{formatDate(event.date)}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
