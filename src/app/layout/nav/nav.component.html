@@ -28,6 +28,12 @@
           </div>
           <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Sign up</span>
         </a>
+        <a routerLink="/servicePage" routerLinkActive="active" class="nav-item">
+          <div class="icon-container">
+            <mat-icon>Service</mat-icon>
+          </div>
+          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Service</span>
+        </a>
       } @else {
         <a routerLink="/user/profile" routerLinkActive="active" class="nav-item">
           <div class="icon-container">

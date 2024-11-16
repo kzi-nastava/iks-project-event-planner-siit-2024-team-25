@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { map, shareReplay } from 'rxjs';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
+import { ServiceService } from '../../infrastructure/Offering/service/services/service.service';
 
 @Component({
   selector: 'app-nav',
@@ -14,6 +15,7 @@ export class NavComponent {
 
   constructor(
     private authService: AuthService,
+    private serviceService: ServiceService,
     private breakpointObserver: BreakpointObserver,
   ) {}
 

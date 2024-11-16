@@ -1,0 +1,16 @@
+import { Component } from '@angular/core';
+import { Service } from '../model/service.model';
+
+@Component({
+  selector: 'app-list-services',
+  templateUrl: './list-services.component.html',
+  styleUrl: './list-services.component.scss'
+})
+export class ListServicesComponent {
+    services = [
+      new Service('Service 1', 'Desc 1', 1),
+      new Service('Service 2', 'Desc 2', 2),
+      new Service('Service 3', 'Desc 3', 3),
+      new Service('Service 4', 'Desc 4', 4)
+    ]
+}
