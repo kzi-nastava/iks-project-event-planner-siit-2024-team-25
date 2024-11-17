@@ -40,21 +40,21 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        
+
       </form>
-      
-      <div [formGroup]="formGroup" class="form-container">
+
+      <div [formGroup]="formGroupDiscount" class="form-container">
         <div>
           Discount: {{ sliderValueDiscount }} %
         </div>
-        <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel [(ngModel)]="sliderValueDiscount">
+        <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel>
           <input matSliderThumb [(ngModel)]="sliderValueDiscount" [ngModelOptions]="{standalone: true}">
         </mat-slider>
-    </div>
+      </div>
 
-    <div style="justify-content: flex-end; display: flex;">
-      <button mat-button matStepperNext>Next</button>
-    </div>
+      <div style="justify-content: flex-end; display: flex;">
+        <button mat-button matStepperNext>Next</button>
+      </div>
 
     </form>
   </mat-step>
@@ -88,6 +88,41 @@
 
       <mat-slide-toggle class="form-container" style="margin: 20px;">Is available to users</mat-slide-toggle>
       <mat-slide-toggle class="form-container">Is visible to organizer</mat-slide-toggle>
+      <div class="form-container" style="margin-top: 30px">
+        <p *ngIf="isDurationShow">Choose service duration</p>
+        <p *ngIf="!isDurationShow">Choose minimum and maximum service arrangement</p>
+        
+      </div>
+      <p class="form-container">You are not able to set both min/max arrangement and service duration</p>
+      <div [formGroup]="formToogle" class="form-container">
+        <mat-slide-toggle [(ngModel)]="isDurationShow" [ngModelOptions]="{standalone: true}"></mat-slide-toggle>
+      </div>
+      <div class="form-container">
+        <div *ngIf="isDurationShow" [formGroup]="formDuration">
+          <div>
+            Service duration: {{ sliderValueDuration }} h
+          </div>
+          <mat-slider [min]="1" [max]="96" [step]="1" thumbLabel>
+            <input matSliderThumb [(ngModel)]="sliderValueDuration" [ngModelOptions]="{standalone: true}">
+          </mat-slider>
+        </div>
+  
+        <div *ngIf="!isDurationShow" [formGroup]="formMinMaxArr">
+          <div>
+            Minimum arrangement: {{ sliderValueMinArrangement }} h
+          </div>
+          <mat-slider [min]="1" [max]="96" [step]="1" thumbLabel>
+            <input matSliderThumb [(ngModel)]="sliderValueMinArrangement" [ngModelOptions]="{standalone: true}">
+          </mat-slider>
+          <div>
+            Maximum arrangement: {{ sliderValueMaxArrangement }} h
+          </div>
+          <mat-slider [min]="1" [max]="96" [step]="1" thumbLabel>
+            <input matSliderThumb [(ngModel)]="sliderValueMaxArrangement" [ngModelOptions]="{standalone: true}">
+          </mat-slider>
+        </div>
+      </div>
+      
 
       <div class="button-container">
         <button mat-button matStepperPrevious>Back</button>
@@ -99,7 +134,16 @@
 
   <mat-step>
     <ng-template matStepLabel showSaveButton()>Step 3</ng-template>
-    You are now done.
+    <div class="image-container">
+      <div *ngFor="let image of images">
+        <img [src]="image" alt="Image" class="added-image"/>
+      </div>
+    </div>
+    
+    <div class="form-container">
+      <button mat-raised-button color="primary" style="margin: 30px;" (click)="addImage()">Add Image</button>
+    </div>
+    
     <div class="button-container">
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button (click)="stepper.reset()">Reset</button>

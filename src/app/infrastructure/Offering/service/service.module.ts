@@ -4,6 +4,7 @@ import { MaterialModule } from '../../material/material.module';
 import { ListServicesComponent } from './list-services/list-services.component';
 import { ServiceFormComponent } from './service-form/service-form.component';
 import { ServiceComponent } from './service.component';
+import { ServiceDialogComponent } from './service-dialog/service-dialog.component';
 
 
 
@@ -11,7 +12,8 @@ import { ServiceComponent } from './service.component';
   declarations: [
     ListServicesComponent,
     ServiceFormComponent,
-    ServiceComponent
+    ServiceComponent,
+    ServiceDialogComponent
   ],
   imports: [
     MaterialModule,

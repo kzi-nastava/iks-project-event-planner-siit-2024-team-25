@@ -8,22 +8,35 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   styleUrl: './service-form.component.scss'
 })
 export class ServiceFormComponent {
+
+
   constructor(private _formBuilder: FormBuilder) {}
 
   //hardcore
   myControl = new FormControl();
   options: string[] = ['One', 'Two', 'Three'];
+  images: string[] = []; 
 
   isDurationShow = true;
   saveButtonShow = false;
   firstFormGroup!: FormGroup;
+  formToogle!: FormGroup;
   secondFormGroup!: FormGroup;
-  formGroup!: FormGroup<any>;// slider
-  sliderValueDiscount: number = 0;
+  formGroupDiscount!: FormGroup<any>;// slider
+  formDuration!: FormGroup<any>;
+  formMinMaxArr!:FormGroup<any>;
+  sliderValueDiscount: number = 1;
   sliderValueDuration: number = 1;
   sliderValueMinArrangement: number = 1;
   sliderValueMaxArrangement: number = 10;
   @Output() toggle = new EventEmitter<void>();
+
+  
+
+  addImage() {
+    const newImage = 'assets/images/R.jpg'; 
+    this.images.push(newImage);
+  }
 
   onSliderChange(event: any): void {
     this.sliderValueDiscount = event.value;
@@ -47,8 +60,18 @@ export class ServiceFormComponent {
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required]
     });
-    this.formGroup = new FormGroup({
-      sliderValueDiscount: new FormControl(0) 
+    this.formMinMaxArr = new FormGroup({
+      sliderValueMinArrangement: new FormControl(0),
+      sliderValueMaxArrangement: new FormControl(0)
+    });
+    this.formDuration = new FormGroup({
+      sliderValueDuration: new FormControl(0) 
+    });
+    this.formGroupDiscount = new FormGroup({
+      sliderValueDiscount: new FormControl(1) 
+    });
+    this.formToogle = this._formBuilder.group({
+      isDurationShow: [false],
     });
   }
 }
