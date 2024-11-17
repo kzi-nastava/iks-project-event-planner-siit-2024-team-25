@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Service } from '../model/service.model';
 
 @Component({
@@ -22,6 +22,13 @@ export class ListServicesComponent {
         service.name.toLowerCase().includes(query.toLowerCase())
       );
     }
+
+    @Output() toggle = new EventEmitter<void>();
+
+    onToggle() {
+      this.toggle.emit();
+    }
+
 }
 
 

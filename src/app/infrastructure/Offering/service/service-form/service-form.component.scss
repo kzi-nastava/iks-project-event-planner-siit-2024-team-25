@@ -1,0 +1,25 @@
+.form-container {
+  display: flex;
+  flex-direction: row;  /* Vertikalni raspored elemenata */
+  align-items: center;  /* Centriranje elemenata horizontalno */
+  justify-content: center;  /* Centriranje elemenata vertikalno */
+  gap: 20px;  /* Razmak između svakog mat-form-field elementa */
+}
+
+  .fab-button {
+    position: fixed;
+    bottom: 20px;  /* Razmak od dna */
+    left: 100px;   /* Razmak od desne ivice */
+    z-index: 1000; /* Osigurava da dugme bude iznad drugih elemenata */
+  }
+  .fab-save-button {
+    position: fixed;
+    bottom: 20px;  /* Razmak od dna */
+    right: 20px;   /* Razmak od desne ivice */
+    z-index: 1000; /* Osigurava da dugme bude iznad drugih elemenata */
+  }
+  .button-container {
+    display: flex;
+    justify-content: space-between;  /* Razdvaja dugmadi s leve i desne strane */
+    width: 100%;  /* Dugmadi zauzimaju celu širinu */
+  }

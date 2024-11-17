@@ -1,0 +1,114 @@
+<h1 style="color: orange; text-align-last: center;">Creating a service</h1>
+<mat-horizontal-stepper #stepper (selectionChange)="onStepChange($event)">
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Step 1</ng-template>
+      <div class="form-container">
+        <mat-form-field style="width: 33%;">
+          <input matInput placeholder="Name">
+        </mat-form-field>
+
+        <mat-form-field style="width: 33%;">
+          <input matInput placeholder="Price" type="number">
+          <span matPrefix>$&nbsp;</span>
+          <span matSuffix>.00</span>
+        </mat-form-field>
+
+        <mat-form-field style="width: 33%;">
+          <mat-select placeholder="Event types">
+            <mat-option value="option 1">Option 1</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-container">
+        <mat-form-field style="width: 50%;">
+          <textarea matInput placeholder="Description"></textarea>
+        </mat-form-field>
+        <mat-form-field style="width: 50%;">
+          <textarea matInput placeholder="Specifics"></textarea>
+        </mat-form-field>
+      </div>
+
+
+      <form class="example-form form-container">
+        <mat-form-field class="example-full-width" style="width: 40%;">
+          <input type="text" placeholder="Type category" matInput [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of options" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        
+      </form>
+      
+      <div [formGroup]="formGroup" class="form-container">
+        <div>
+          Discount: {{ sliderValueDiscount }} %
+        </div>
+        <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel [(ngModel)]="sliderValueDiscount">
+          <input matSliderThumb [(ngModel)]="sliderValueDiscount" [ngModelOptions]="{standalone: true}">
+        </mat-slider>
+    </div>
+
+    <div style="justify-content: flex-end; display: flex;">
+      <button mat-button matStepperNext>Next</button>
+    </div>
+
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Step 2</ng-template>
+      <div class="form-container">
+        <mat-form-field style="width: 50%;">
+          <input matInput [matDatepicker]="cancellationPicker" placeholder="Cancellation date">
+          <mat-datepicker-toggle matSuffix [for]="cancellationPicker"></mat-datepicker-toggle>
+          <mat-datepicker #cancellationPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field style="width: 50%;">
+          <input matInput [matDatepicker]="reservationPicker" placeholder="Reservation date">
+          <mat-datepicker-toggle matSuffix [for]="reservationPicker"></mat-datepicker-toggle>
+          <mat-datepicker #reservationPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+
+      <div class="form-container">
+        <p style="align-items: center;">Reservation type</p>
+      </div>
+
+      <mat-radio-group aria-label="Reservation type" class="form-container">
+        <mat-radio-button value="1">Manual</mat-radio-button>
+        <mat-radio-button value="2">Automatic</mat-radio-button>
+      </mat-radio-group>
+
+      <mat-slide-toggle class="form-container" style="margin: 20px;">Is available to users</mat-slide-toggle>
+      <mat-slide-toggle class="form-container">Is visible to organizer</mat-slide-toggle>
+
+      <div class="button-container">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+
+  <mat-step>
+    <ng-template matStepLabel showSaveButton()>Step 3</ng-template>
+    You are now done.
+    <div class="button-container">
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
+<button mat-fab color="primary" (click)="onToggle()" class="fab-button">
+  <mat-icon>cancel</mat-icon>
+</button>
+<button mat-fab color="primary" *ngIf="saveButtonShow" class="fab-save-button">
+  <mat-icon>Submit</mat-icon>
+</button>
