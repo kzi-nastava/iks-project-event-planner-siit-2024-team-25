@@ -6,8 +6,10 @@ import { Component } from '@angular/core';
   styleUrl: './service.component.scss'
 })
 export class ServiceComponent {
-  showForm = true;
+  showForm = false;
   toForm(){
+    console.log(this.showForm)
     this.showForm = !this.showForm;
+    console.log(this.showForm)
   }
 }

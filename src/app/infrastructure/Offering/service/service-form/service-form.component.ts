@@ -31,8 +31,6 @@ export class ServiceFormComponent {
   sliderValueMaxArrangement: number = 10;
   @Output() toggle = new EventEmitter<void>();
 
-  
-
   addImage() {
     const newImage = 'assets/images/R.jpg'; 
     this.images.push(newImage);

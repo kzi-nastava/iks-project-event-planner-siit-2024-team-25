@@ -13,10 +13,12 @@ export class ListServicesComponent {
       new Service('Service 3', 'Desc 3', 3),
       new Service('Service 4', 'Desc 4', 4)
     ]
+    isFilter:boolean = false;
+    options: string[] = ['One', 'Two', 'Three'];
 
     filteredServices = [...this.services];
     onSearch(event: Event): void {
-      const input = event.target as HTMLInputElement; // Kastuj u HTMLInputElement
+      const input = event.target as HTMLInputElement;
       const query = input.value || ''; 
       this.filteredServices = this.services.filter(service =>
         service.name.toLowerCase().includes(query.toLowerCase())
@@ -27,6 +29,10 @@ export class ListServicesComponent {
 
     onToggle() {
       this.toggle.emit();
+    }
+
+    clickFilter(){
+      this.isFilter = !this.isFilter;
     }
 
 }

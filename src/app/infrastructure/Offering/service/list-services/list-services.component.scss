@@ -1,6 +1,14 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 @use '../../../../../theme/m3-theme.scss' as theme;
+
+.form-container {
+  display: flex;
+  flex-direction: row;  /* Vertikalni raspored elemenata */
+  align-items: center;  /* Centriranje elemenata horizontalno */
+  justify-content: center;  /* Centriranje elemenata vertikalno */
+  gap: 20px;  /* Razmak između svakog mat-form-field elementa */
+}
   
 .example-search-bar {
     display: block;
