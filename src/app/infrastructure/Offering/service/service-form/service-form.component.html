@@ -1,6 +1,7 @@
 <h1 style="color: orange; text-align-last: center;">Creating a service</h1>
 <mat-horizontal-stepper #stepper (selectionChange)="onStepChange($event)">
-  <mat-step [stepControl]="firstFormGroup">
+  
+  <mat-step [stepControl]="firstFormGroup" style="margin: 30px;">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Step 1</ng-template>
       <div class="form-container">
@@ -51,15 +52,19 @@
           <input matSliderThumb [(ngModel)]="sliderValueDiscount" [ngModelOptions]="{standalone: true}">
         </mat-slider>
       </div>
-
-      <div style="justify-content: flex-end; display: flex;">
-        <button mat-button matStepperNext>Next</button>
-      </div>
-
     </form>
+    <div class="button-container">
+      <button mat-fab color="primary" (click)="onToggle()" *ngIf="cancelButtonShow" class="fab-button">
+        <mat-icon>cancel</mat-icon>
+      </button>
+      <button mat-fab matStepperNext color="primary" class="fab-save-button">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+ 
   </mat-step>
 
-  <mat-step [stepControl]="secondFormGroup">
+  <mat-step [stepControl]="secondFormGroup" style="margin: 30px;">
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>Step 2</ng-template>
       <div class="form-container">
@@ -91,7 +96,7 @@
       <div class="form-container" style="margin-top: 30px">
         <p *ngIf="isDurationShow">Choose service duration</p>
         <p *ngIf="!isDurationShow">Choose minimum and maximum service arrangement</p>
-        
+
       </div>
       <p class="form-container">You are not able to set both min/max arrangement and service duration</p>
       <div [formGroup]="formToogle" class="form-container">
@@ -106,7 +111,7 @@
             <input matSliderThumb [(ngModel)]="sliderValueDuration" [ngModelOptions]="{standalone: true}">
           </mat-slider>
         </div>
-  
+
         <div *ngIf="!isDurationShow" [formGroup]="formMinMaxArr">
           <div>
             Minimum arrangement: {{ sliderValueMinArrangement }} h
@@ -122,37 +127,42 @@
           </mat-slider>
         </div>
       </div>
-      
-
       <div class="button-container">
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-fab matStepperPrevious color="primary" class="fab-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button mat-fab matStepperNext color="primary"  class="fab-save-button">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
       </div>
     </form>
   </mat-step>
 
 
-  <mat-step>
+  <mat-step style="margin: 30px;">
     <ng-template matStepLabel showSaveButton()>Step 3</ng-template>
     <div class="image-container">
       <div *ngFor="let image of images">
-        <img [src]="image" alt="Image" class="added-image"/>
+        <img [src]="image" alt="Image" class="added-image" />
       </div>
     </div>
-    
+
     <div class="form-container">
       <button mat-raised-button color="primary" style="margin: 30px;" (click)="addImage()">Add Image</button>
     </div>
-    
+
     <div class="button-container">
-      <button mat-button matStepperPrevious>Back</button>
+      <button mat-fab matStepperPrevious color="primary" class="fab-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
       <button mat-button (click)="stepper.reset()">Reset</button>
+      <button mat-fab color="primary" *ngIf="saveButtonShow" (click)="openSaveDialog()" class="fab-save-button">
+        <mat-icon>save</mat-icon>
+      </button>
     </div>
   </mat-step>
+
 </mat-horizontal-stepper>
-<button mat-fab color="primary" (click)="onToggle()" class="fab-button">
-  <mat-icon>cancel</mat-icon>
-</button>
-<button mat-fab color="primary" *ngIf="saveButtonShow" class="fab-save-button">
-  <mat-icon>Submit</mat-icon>
-</button>
+
+
+

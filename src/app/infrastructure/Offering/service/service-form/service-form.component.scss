@@ -1,27 +1,29 @@
 .form-container {
   display: flex;
-  flex-direction: row;  /* Vertikalni raspored elemenata */
-  align-items: center;  /* Centriranje elemenata horizontalno */
-  justify-content: center;  /* Centriranje elemenata vertikalno */
-  gap: 20px;  /* Razmak između svakog mat-form-field elementa */
+  flex-direction: row;  
+  align-items: center;  
+  justify-content: center;  
+  gap: 20px;  
 }
 
   .fab-button {
     position: fixed;
-    bottom: 20px;  /* Razmak od dna */
-    left: 100px;   /* Razmak od desne ivice */
-    z-index: 1000; /* Osigurava da dugme bude iznad drugih elemenata */
+    bottom: 20px;  
+    left: 100px;  
+    z-index: 1000; 
   }
   .fab-save-button {
     position: fixed;
-    bottom: 20px;  /* Razmak od dna */
-    right: 20px;   /* Razmak od desne ivice */
-    z-index: 1000; /* Osigurava da dugme bude iznad drugih elemenata */
+    bottom: 20px;  
+    right: 20px;   
+    z-index: 1000; 
   }
   .button-container {
     display: flex;
-    justify-content: space-between;  /* Razdvaja dugmadi s leve i desne strane */
-    width: 100%;  /* Dugmadi zauzimaju celu širinu */
+    flex-direction: column; 
+    align-items: center;   
+    justify-content: center; 
+    gap: 20px;
   }
   .image-container {
     display: flex;
