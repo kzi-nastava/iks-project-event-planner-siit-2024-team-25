@@ -1,0 +1,32 @@
+
+  .example-header-image {
+    background-size: cover;
+  }
+  .services-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Maksimalno 3 kolone */
+    gap: 16px; /* Razmak između kartica */
+    padding: 16px; /* Unutrašnji razmak */
+  }
+  
+  @media (max-width: 900px) {
+    .services-container {
+      grid-template-columns: repeat(2, 1fr); /* Dve kolone za manje ekrane */
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .services-container {
+      grid-template-columns: 1fr; /* Jedna kolona za vrlo male ekrane */
+    }
+  }
+  
+  .example-card {
+    height: 100%; /* Omogućava da sve kartice budu iste visine */
+  }
+  .example-search-bar {
+    width: 40%; /* Podesi širinu prema potrebama */
+    margin: 0 auto; /* Centriraj sa razmakom */
+    border: 3px solid green;
+    display: block; 
+  }

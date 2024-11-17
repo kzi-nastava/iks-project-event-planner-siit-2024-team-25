@@ -5,10 +5,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutModule } from './layout/layout.module';
+import { ServiceModule } from './infrastructure/Offering/service/service.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, LayoutModule],
+  imports: [BrowserModule, AppRoutingModule, LayoutModule, ServiceModule],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })

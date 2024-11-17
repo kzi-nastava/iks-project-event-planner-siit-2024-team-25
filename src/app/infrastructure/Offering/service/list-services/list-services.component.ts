@@ -13,4 +13,15 @@ export class ListServicesComponent {
       new Service('Service 3', 'Desc 3', 3),
       new Service('Service 4', 'Desc 4', 4)
     ]
+
+    filteredServices = [...this.services];
+    onSearch(event: Event): void {
+      const input = event.target as HTMLInputElement; // Kastuj u HTMLInputElement
+      const query = input.value || ''; 
+      this.filteredServices = this.services.filter(service =>
+        service.name.toLowerCase().includes(query.toLowerCase())
+      );
+    }
 }
+
+
