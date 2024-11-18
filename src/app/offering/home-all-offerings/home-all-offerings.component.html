@@ -1,4 +1,3 @@
-<div *ngIf="allOfferings$ | async as allOfferings">
   <div class="container">
     <div class="pagination">
       <button
@@ -9,6 +8,7 @@
         (click)="getNextPage()"
       ><mat-icon>navigate_next</mat-icon></button>
     </div>
+    <div *ngIf="allOfferings$ | async as allOfferings">
     <div class="top-offerings-container">
       <div class="offering-card" *ngFor="let offer of allOfferings">
         <div class="header">

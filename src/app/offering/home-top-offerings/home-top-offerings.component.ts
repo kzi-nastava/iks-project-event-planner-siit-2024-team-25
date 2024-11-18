@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HomeOffering } from '../model/homeOfferings';
 import { DecimalPipe } from '@angular/common';
 import { OfferingService } from '../service/offering.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home-top-offerings',
@@ -11,14 +12,16 @@ import { OfferingService } from '../service/offering.service';
 })
 export class HomeTopOfferingsComponent implements OnInit {
 
-  topOfferings: HomeOffering[] = []
+  topOfferings$: Observable<HomeOffering[]> = new Observable<HomeOffering[]>;
 
   constructor(private offeringService: OfferingService, private decimalPipe: DecimalPipe){}
 
   ngOnInit(): void {
-    this.offeringService.getTopOfferings().subscribe((data) => {
-      this.topOfferings = data; 
-    });
+    this.getTopOfferings();
+  }
+
+  getTopOfferings(){
+    this.topOfferings$ = this.offeringService.getTopOfferings();
   }
 
   formatRating(rating: number): string {
