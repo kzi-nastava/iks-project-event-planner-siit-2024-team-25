@@ -1,12 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
+  encapsulation: ViewEncapsulation.None 
 })
 export class HomeComponent {
 
-  homeTitle = "WELCOME"
+  homeTitle = "WELCOME";
+
+  currentContainer: String = "";
+
+  switchDisplay(container: String): void {
+    if (container === 'EVENTS') {
+      this.currentContainer = 'E';
+    } else if (container === 'PRODUCTS & SERVICES') {
+      this.currentContainer = 'O';
+    }
+  }
 
 }

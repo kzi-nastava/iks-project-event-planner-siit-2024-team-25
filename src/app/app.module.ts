@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { MatIconModule } from '@angular/material/icon'; 
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +14,7 @@ import { OfferingModule } from './offering/offering.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
-  imports: [BrowserModule, AppRoutingModule, LayoutModule, EventModule, MatIconModule, OfferingModule],
+  imports: [BrowserModule, AppRoutingModule, LayoutModule, EventModule, MatIconModule, OfferingModule, MatTabsModule],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })

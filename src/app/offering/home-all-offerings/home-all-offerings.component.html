@@ -1,0 +1,45 @@
+<div *ngIf="allOfferings$ | async as allOfferings">
+  <div class="container">
+    <div class="pagination">
+      <button
+        (click)="getPreviousPage()"
+      ><mat-icon>navigate_before</mat-icon></button>
+      <p>{{currentPage}}</p>
+      <button
+        (click)="getNextPage()"
+      ><mat-icon>navigate_next</mat-icon></button>
+    </div>
+    <div class="top-offerings-container">
+      <div class="offering-card" *ngFor="let offer of allOfferings">
+        <div class="header">
+          <h2>{{offer.name}}</h2>
+          <mat-icon 
+            class="heart" 
+            [ngClass]="{'liked': offer.isFavourite}" 
+            (click)="toggleFavouriteOfferings(offer.id)">
+            {{ offer.isFavourite ? 'favorite' : 'favorite_border' }}
+          </mat-icon>
+        </div>
+        <div class="organizer">
+          <p>{{offer.ownerName}}</p>
+        </div>
+        <div class="description">
+          <p>{{offer.description}}</p>
+        </div>
+        <div class="rating">
+          <mat-icon>star</mat-icon>
+          <p>{{formatRating(offer.rating)}}</p>
+        </div>
+        <div class="footer">
+          <div class="location">
+            <mat-icon>location_on</mat-icon> 
+            <p>{{offer.location}}</p>
+          </div>
+          <div class="price">
+            <mat-icon>account_balance_wallet</mat-icon>
+            <p>{{offer.price}}$</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

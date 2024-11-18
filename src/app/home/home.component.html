@@ -1,5 +1,15 @@
-<div>
+<div class="title">
     <h1>{{homeTitle}}</h1>
 </div>
 <app-home-top-events/>
 <app-home-top-offerings/>
+<mat-tab-group class="homeDisplay" (selectedTabChange)="switchDisplay($event.tab.textLabel)">
+    <mat-tab label="EVENTS" ></mat-tab>
+    <mat-tab label="PRODUCTS & SERVICES"></mat-tab>
+</mat-tab-group>
+@if (currentContainer == "E") {
+
+}
+@if (currentContainer == "O") {
+    <app-home-all-offerings/>
+}
