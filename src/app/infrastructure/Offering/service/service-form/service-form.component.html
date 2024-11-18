@@ -1,11 +1,11 @@
-<h1 style="color: orange; text-align-last: center;">Creating a service</h1>
+<h1 style="color: #1a1f4b; text-align-last: center;">Creating a service</h1>
 <mat-horizontal-stepper #stepper (selectionChange)="onStepChange($event)">
   
   <mat-step [stepControl]="firstFormGroup" style="margin: 30px;">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Step 1</ng-template>
       <div class="form-container">
-        <mat-form-field style="width: 33%;">
+        <mat-form-field color="primary" style="width: 33%;">
           <input matInput placeholder="Name">
         </mat-form-field>
 

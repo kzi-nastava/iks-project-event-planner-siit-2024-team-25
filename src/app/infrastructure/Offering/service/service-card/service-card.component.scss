@@ -1,0 +1,43 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use '../../../../../theme/m3-theme.scss' as theme;
+
+.header {
+    background-color: mat.get-theme-color(theme.$light-theme, primary); /* Plavi heder */
+    color: white; /* Bela slova */
+    padding: 1vw;
+    text-align: left;
+    border-radius: 8px;
+    font-family: 'Times New Roman', Times, serif;
+    display: block;
+  }
+    
+  .title {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+  .price {
+    margin-top: 10px;
+    font-size:  1.45vh;
+    color: black; /* Tamno siva boja */
+    padding-left: 1vw;
+  }
+
+  .description {
+    margin-top: 10px;
+    font-size:  1.4vh;
+    color:black; /* Siva boja za tekst opisa */
+    text-align: justify;
+    padding-left: 1vw;
+    padding-right: 1vw;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between; /* Raspored na levu i desnu stranu */
+    margin-top: 15px;
+  }
+
+  
+

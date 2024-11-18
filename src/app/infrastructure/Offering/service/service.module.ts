@@ -6,6 +6,7 @@ import { ServiceFormComponent } from './service-form/service-form.component';
 import { ServiceComponent } from './service.component';
 import { ServiceDialogComponent } from './service-dialog/service-dialog.component';
 import { ServiceDialogInformationComponent } from './service-dialog/service-dialog-information.component';
+import { ServiceCardComponent } from './service-card/service-card.component';
 
 
 
@@ -15,7 +16,8 @@ import { ServiceDialogInformationComponent } from './service-dialog/service-dial
     ServiceFormComponent,
     ServiceComponent,
     ServiceDialogComponent,
-    ServiceDialogInformationComponent
+    ServiceDialogInformationComponent,
+    ServiceCardComponent
   ],
   imports: [
     MaterialModule,

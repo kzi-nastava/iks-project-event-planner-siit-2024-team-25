@@ -13,7 +13,7 @@
 
   <div class="form-container" *ngIf="isFilter">
     <form>
-      <mat-form-field >
+      <mat-form-field>
         <input type="text" placeholder="Category" matInput [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let option of options" [value]="option">
@@ -35,6 +35,7 @@
       </mat-form-field>
 
     </form>
+    
   </div>
   <div class="form-container" *ngIf="isFilter">
     <mat-form-field style="width: 35%;">
@@ -53,25 +54,9 @@
     </button>
   </div>
 <div class="service-container">
+  
   <div class="service-card" *ngFor="let service of filteredServices">
-    <div class="header">
-      <h2>{{service.name}}</h2>
-
-    </div>
-    <div class="price">
-      <p>{{service.price}}</p>
-    </div>
-    <div class="description">
-      <p>{{service.description}}</p>
-    </div>
-    <div class="footer">
-      <button mat-icon-button matSuffix (click)="openDialog()">
-        <mat-icon>Delete</mat-icon>
-      </button>
-      <button mat-icon-button matSuffix>
-        <mat-icon>Edit</mat-icon>
-      </button>
-    </div>
+    <app-service-card [service]="service"></app-service-card>
   </div>
 </div>
 
