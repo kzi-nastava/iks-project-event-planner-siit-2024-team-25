@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class HomeAllOfferingsComponent implements OnInit {
 
-  allOfferings$: Observable<HomeOffering[]> = new Observable<HomeOffering[]>;  
+  allOfferings: HomeOffering[] = []  
   currentPage: number = 1;
 
   constructor(private offeringService: OfferingService, private decimalPipe: DecimalPipe){}
@@ -25,12 +25,16 @@ export class HomeAllOfferingsComponent implements OnInit {
     return this.decimalPipe.transform(rating, '1.1') || ''; 
   }
 
-  toggleFavouriteOfferings(eventId: number): void {
-    this.offeringService.toggleFavouriteOfferings(eventId);
+  toggleFavouriteOfferings(offering: HomeOffering): void {
+    offering.isFavourite = !offering.isFavourite;
   }
 
   getOfferings(page: number){
-    this.allOfferings$ = this.offeringService.getOfferings(page);
+    this.offeringService.getOfferings(page).subscribe({
+      next: (allOfferings: HomeOffering[]) =>{
+        this.allOfferings = allOfferings;
+      }
+    });
   }
 
   getNextPage(){
@@ -43,7 +47,6 @@ export class HomeAllOfferingsComponent implements OnInit {
       this.currentPage--;
       this.getOfferings(this.currentPage);
     } 
-    
   }
   
 }

@@ -12,8 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class HomeTopOfferingsComponent implements OnInit {
 
-  topOfferings$: Observable<HomeOffering[]> = new Observable<HomeOffering[]>;
-
+  topOfferings: HomeOffering[] = []
   constructor(private offeringService: OfferingService, private decimalPipe: DecimalPipe){}
 
   ngOnInit(): void {
@@ -21,16 +20,15 @@ export class HomeTopOfferingsComponent implements OnInit {
   }
 
   getTopOfferings(){
-    this.topOfferings$ = this.offeringService.getTopOfferings();
+    this.offeringService.getTopOfferings().subscribe({
+      next: (topOfferings: HomeOffering[])=>{
+        this.topOfferings = topOfferings;
+      }
+    })
   }
 
-  formatRating(rating: number): string {
-    return this.decimalPipe.transform(rating, '1.1') || ''; 
-  }
-
-  toggleFavouriteOfferings(eventId: number): void {
-    this.offeringService.toggleFavouriteOfferings(eventId);
-  }
-
+  changeFavouriteOffering(offer: HomeOffering): void{
+    offer.isFavourite = !offer.isFavourite;
+    }
 
 }

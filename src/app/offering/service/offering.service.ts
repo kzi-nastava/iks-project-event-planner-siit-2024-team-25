@@ -7,186 +7,188 @@ import { Observable, of } from 'rxjs';
 })
 export class OfferingService {
 
-  private currentTopOfferings: HomeOffering[] = [];
-  private currentOfferings: HomeOffering[] = []
-
   constructor() { }
 
-  getTopOfferings(): Observable<HomeOffering[]> {
-    this.currentTopOfferings = [
-      {
-        id: 1,
-        name: 'Event Photography',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 1500,
-        description: 'Professional photography services for events, capturing memorable moments.',
-        rating: 5.0
-      },
-      {
-        id: 2,
-        name: 'Party Decorations',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 800,
-        description: 'Custom event decorations to match the theme of your celebration.',
-        rating: 5.0
-      },
-      {
-        id: 3,
-        name: 'Live Band Performance',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 3000,
-        description: 'Live band performances for weddings, corporate events, and parties.',
-        rating: 5.0
-      },
-      {
-        id: 4,
-        name: 'Wedding Catering',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 2500,
-        description: 'Complete catering service for weddings, including a variety of dishes and drinks.',
-        rating: 5.0
+  private currentOfferings: HomeOffering[] = [
+    {
+      id: 1,
+      name: 'Event Photography',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 1500,
+      description: 'Professional photography services for events, capturing memorable moments.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    },
+    {
+      id: 2,
+      name: 'Party Decorations',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 800,
+      description: 'Custom event decorations to match the theme of your celebration.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    },
+    {
+      id: 3,
+      name: 'Live Band Performance',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 3000,
+      description: 'Live band performances for weddings, corporate events, and parties.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    },
+    {
+      id: 4,
+      name: 'Wedding Catering',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 2500,
+      description: 'Complete catering service for weddings, including a variety of dishes and drinks.',
+      rating: 5.0,
+      country: "Republika Srbija"
 
-      },
-      {
-        id: 5,
-        name: 'Transportation Services',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 1000,
-        description: 'Transportation services for guests, including shuttle buses and luxury cars.',
-        rating: 5.0
-      }
-    ];
+    },
+    {
+      id: 5,
+      name: 'Transportation Services',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 1000,
+      description: 'Transportation services for guests, including shuttle buses and luxury cars.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    },
+    {
+      id: 6,
+      name: 'Event Photography',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 1500,
+      description: 'Professional photography services for events, capturing memorable moments.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    },
+    {
+      id: 7,
+      name: 'Party Decorations',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 800,
+      description: 'Custom event decorations to match the theme of your celebration.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    },
+    {
+      id: 8,
+      name: 'Live Band Performance',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 3000,
+      description: 'Live band performances for weddings, corporate events, and parties.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    },
+    {
+      id: 9,
+      name: 'Wedding Catering',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 2500,
+      description: 'Complete catering service for weddings, including a variety of dishes and drinks.',
+      rating: 5.0,
+      country: "Republika Srbija"
+
+    },
+    {
+      id: 10,
+      name: 'Transportation Services',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 1000,
+      description: 'Transportation services for guests, including shuttle buses and luxury cars.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    }
+  ];
+
+  private currentTopOfferings: HomeOffering[] = [
+    {
+      id: 11,
+      name: 'Event Photography',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 1500,
+      description: 'Professional photography services for events, capturing memorable moments.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    },
+    {
+      id: 12,
+      name: 'Party Decorations',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 800,
+      description: 'Custom event decorations to match the theme of your celebration.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    },
+    {
+      id: 13,
+      name: 'Live Band Performance',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 3000,
+      description: 'Live band performances for weddings, corporate events, and parties.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    },
+    {
+      id: 14,
+      name: 'Wedding Catering',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 2500,
+      description: 'Complete catering service for weddings, including a variety of dishes and drinks.',
+      rating: 5.0,
+      country: "Republika Srbija"
+
+    },
+    {
+      id: 15,
+      name: 'Transportation Services',
+      city: 'Uzice',
+      ownerName: 'Stefan',
+      isFavourite: false,
+      price: 1000,
+      description: 'Transportation services for guests, including shuttle buses and luxury cars.',
+      rating: 5.0,
+      country: "Republika Srbija"
+    }
+  ];
+
+  getTopOfferings(): Observable<HomeOffering[]> {
     return of(this.currentTopOfferings);
   }
 
-
-
   getOfferings(page: number){
-    this.currentOfferings = [
-      {
-        id: 1,
-        name: 'Event Photography',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 1500,
-        description: 'Professional photography services for events, capturing memorable moments.',
-        rating: 5.0
-      },
-      {
-        id: 2,
-        name: 'Party Decorations',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 800,
-        description: 'Custom event decorations to match the theme of your celebration.',
-        rating: 5.0
-      },
-      {
-        id: 3,
-        name: 'Live Band Performance',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 3000,
-        description: 'Live band performances for weddings, corporate events, and parties.',
-        rating: 5.0
-      },
-      {
-        id: 4,
-        name: 'Wedding Catering',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 2500,
-        description: 'Complete catering service for weddings, including a variety of dishes and drinks.',
-        rating: 5.0
-
-      },
-      {
-        id: 5,
-        name: 'Transportation Services',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 1000,
-        description: 'Transportation services for guests, including shuttle buses and luxury cars.',
-        rating: 5.0
-      },
-      {
-        id: 6,
-        name: 'Event Photography',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 1500,
-        description: 'Professional photography services for events, capturing memorable moments.',
-        rating: 5.0
-      },
-      {
-        id: 7,
-        name: 'Party Decorations',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 800,
-        description: 'Custom event decorations to match the theme of your celebration.',
-        rating: 5.0
-      },
-      {
-        id: 8,
-        name: 'Live Band Performance',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 3000,
-        description: 'Live band performances for weddings, corporate events, and parties.',
-        rating: 5.0
-      },
-      {
-        id: 9,
-        name: 'Wedding Catering',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 2500,
-        description: 'Complete catering service for weddings, including a variety of dishes and drinks.',
-        rating: 5.0
-
-      },
-      {
-        id: 10,
-        name: 'Transportation Services',
-        location: 'Uzice',
-        ownerName: 'Stefan',
-        isFavourite: false,
-        price: 1000,
-        description: 'Transportation services for guests, including shuttle buses and luxury cars.',
-        rating: 5.0
-      }
-    ];
+    
     return of(this.currentOfferings);
-  }
-
-  toggleFavouriteOfferings(offeringId: number): void {
-    let offering = this.currentTopOfferings.find(o => o.id === offeringId);
-    if (offering) {
-      offering.isFavourite = !offering.isFavourite; 
-    }
-    offering = this.currentOfferings.find(o => o.id === offeringId); 
-      if(offering){
-        offering .isFavourite = !offering.isFavourite;
-      }
   }
 }

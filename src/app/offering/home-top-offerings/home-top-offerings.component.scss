@@ -14,9 +14,8 @@
         white-space: nowrap;
     }
 
-    height: 20vw;
+    height: 18vw;
 }
-
 
 .top-offerings-container{
     margin-left: 10vh;
@@ -27,111 +26,10 @@
     border-radius: 5vh;
     flex-wrap: wrap;
     height: 100%;
+
+    div{
+      width: 17%;
+      height: 80%;
+      margin: 2vh;
+    }
 }
-
-
-
-.offering-card {
-    cursor: pointer;
-    background-color: #303C6C29;
-    border-radius: 10px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 17%; 
-    display: flex;
-    flex-direction: column;
-    margin: 2vh;
-    height: 90%;
-  
-    .header {
-      background-color: mat.get-theme-color(theme.$light-theme, primary); 
-      color: white;
-      padding: 0.8vw;
-      text-align: left;
-      border-radius: 8px;
-      font-family: 'Times New Roman', Times, serif;
-      display: block;
-      height: 23%;
-    }
-      
-    .title {
-        font-size: 2rem;
-        font-weight: bold;
-      }
-      
-    .heart {
-        cursor: pointer;
-        color: #ff4d4d;
-        transition: transform 0.2s; 
-      
-        &:hover {
-          transform: scale(1.1); 
-        }
-      }
-      
-      .heart.liked {
-        color: #ff0000; 
-      }
-  
-    .organizer {
-      margin-top: 0.5vw;
-      font-size:  1.45vh;
-      color: #333;
-      padding-left: 1vw;
-    }
-  
-    .description {
-      margin-top: 0.5vw;
-      font-size:  1.4vh;
-      color:#333; 
-      text-align: justify;
-      padding-left: 1vw;
-      padding-right: 1vw;
-      overflow: hidden;
-      height: 20%;
-    }
-
-    .rating{
-      flex-wrap: wrap;
-        display: flex;
-        padding-left: 1.4vh;
-        font-size: 0.9vw;
-        align-items: center;
-        color: #333; 
-
-
-        mat-icon{
-          color: yellow;
-        }
-    }
-  
-    .footer {
-      display: flex;
-      justify-content: space-between; 
-  
-      .location {
-        flex-wrap: wrap;
-        display: flex;
-        padding-left: 1.4vh;
-        font-size: 0.9vw;
-        align-items: center;
-        color: #333; 
-      }
-
-      .price {
-        flex-wrap: wrap;
-        display: flex;
-        align-items: center;
-        font-size: 0.8vw;
-        color: #333; 
-        padding-right: 1vh;
-
-      }
-    }
-
-    transition: transform 0.2s ease-in-out;
-
-    &:hover {
-        transform: translateY(-10px); 
-      }
-  }
-  

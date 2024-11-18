@@ -2,7 +2,7 @@
 @use '@angular/material' as mat;
 @use '../../theme/m3-theme.scss' as theme;
 
-title {
+.title {
   background-color: mat.get-theme-color(theme.$light-theme, primary);
   display: flex;                   
   justify-content: center;         
@@ -19,7 +19,6 @@ title {
 }
 
 .homeDisplay{
-  
   margin-left: 20%;
   margin-right: 20%;
   height: 20vh;

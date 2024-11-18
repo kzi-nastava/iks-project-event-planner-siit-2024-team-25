@@ -1,10 +1,11 @@
 export interface HomeOffering{
     id: number,
-    name: String,
+    name: string,
     price: number,
-    location: String,
-    ownerName: String,
+    city: string,
+    country: string,
+    ownerName: string,
     isFavourite: boolean,
-    description: String,
-    rating: number
+    description: string,
+    rating: number,
 }
