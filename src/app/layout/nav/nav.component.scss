@@ -1,6 +1,6 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
-@use '../../../theme/m3-theme' as theme;
+@use '../../../theme/m3-theme.scss' as theme;
 
 $transition-duration: 0.3s;
 $sidenav-expanded-width: 260px;
@@ -35,24 +35,11 @@ $sidenav-collapsed-width: 70px;
       color: mat.get-theme-color(theme.$light-theme, on-primary);
       margin-bottom: 8px;
 
-      .logo-container {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-
-        .logo {
-          height: 32px;
-          width: 32px;
-          object-fit: contain;
-          filter: brightness(0) invert(1);
-        }
-
-        .app-name {
-          font-size: 1.2rem;
-          font-weight: 500;
-          white-space: nowrap;
-          color: mat.get-theme-color(theme.$light-theme, on-primary);
-        }
+      .logo {
+        height: 48px;
+        width: 48px;
+        object-fit: contain;
+        filter: brightness(0) invert(1);
       }
 
       .expand-toggle {
@@ -248,16 +235,18 @@ $sidenav-collapsed-width: 70px;
       background-color: mat.get-theme-color(theme.$light-theme, primary);
       color: mat.get-theme-color(theme.$light-theme, on-primary);
       height: 64px;
+      position: fixed;
 
       .menu-button {
         margin-right: 16px;
         color: mat.get-theme-color(theme.$light-theme, on-primary);
       }
 
-      .page-title {
+      .app-title {
         font-size: 1.25rem;
         font-weight: 500;
         color: mat.get-theme-color(theme.$light-theme, on-primary);
+        text-decoration: none;
       }
 
       .toolbar-actions {
@@ -300,7 +289,7 @@ $sidenav-collapsed-width: 70px;
     }
 
     .content {
-      padding: 24px;
+      padding: 1px;
       margin: 0 auto;
     }
   }

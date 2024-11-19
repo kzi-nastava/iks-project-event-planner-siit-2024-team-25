@@ -1,0 +1,28 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use '../../theme/m3-theme.scss' as theme;
+
+.title {
+  background-color: mat.get-theme-color(theme.$light-theme, primary);
+  display: flex;                   
+  justify-content: center;         
+  align-items: center;             
+  height: 20vh;                   
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 500;
+    white-space: nowrap;
+    letter-spacing: 3vh;
+    color: mat.get-theme-color(theme.$light-theme, on-primary);       
+  }
+}
+
+.homeDisplay{
+  margin-left: 20%;
+  margin-right: 20%;
+  height: 20vh;
+  margin-top: 15vh;
+  display: flex;                   
+  justify-content: center; 
+}

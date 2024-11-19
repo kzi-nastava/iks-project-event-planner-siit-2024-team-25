@@ -1,0 +1,18 @@
+  @if (allOfferings) {
+  <div class="container">
+    <div class="pagination">
+      <button
+        (click)="getPreviousPage()"
+      ><mat-icon>navigate_before</mat-icon></button>
+      <p>{{currentPage}}</p>
+      <button
+        (click)="getNextPage()"
+      ><mat-icon>navigate_next</mat-icon></button>
+    </div>
+    <div class="all-offerings-container">
+        <div *ngFor="let offer of allOfferings">
+          <app-home-offering-card (clicked)="toggleFavouriteOfferings($event)" [offering]="offer"/>
+        </div>
+    </div>
+  </div>
+}

@@ -19,6 +19,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSlider, MatSliderModule } from '@angular/material/slider';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,7 +38,6 @@ const components = [
   MatCardModule,
   MatFormFieldModule,
   MatInputModule,
-  MatIconModule,
   MatOptionModule,
   MatSelectModule,
   FormsModule,
@@ -54,7 +54,9 @@ const components = [
   BrowserAnimationsModule,
   MatDialogModule,
   DialogModule,
-  MatDialogContent
+  MatDialogContent,
+  MatTabsModule,
+
 ];
 
 @NgModule({
