@@ -10,7 +10,7 @@ export class HomeComponent {
 
   homeTitle = "WELCOME";
 
-  currentContainer: String = "";
+  currentContainer: String = "E";
 
   switchDisplay(container: String): void {
     if (container === 'EVENTS') {

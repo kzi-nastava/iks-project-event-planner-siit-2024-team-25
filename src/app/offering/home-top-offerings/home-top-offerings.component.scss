@@ -5,7 +5,9 @@
 
 .container{
     border-color: mat.get-theme-color(theme.$light-theme, primary);
-    
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+
     h3{
         color: mat.get-theme-color(theme.$light-theme, primary);
         text-align: center;
