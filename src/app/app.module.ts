@@ -10,7 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './infrastructure/material/material.module';
 import { LayoutModule } from './layout/layout.module';
 import { OfferingModule } from './offering/offering.module';
-import { ServiceModule } from './infrastructure/Offering/service/service.module';
+import { ServiceModule } from './offering/service/service.module';
 
 @NgModule({
   declarations:  [AppComponent, HomeComponent],

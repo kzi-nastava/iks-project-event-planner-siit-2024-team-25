@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HomeOffering } from '../model/home-offering.model';
 import { DecimalPipe } from '@angular/common';
-import { OfferingService } from '../service/offering.service';
 import { Observable } from 'rxjs';
+import { OfferingService } from '../services/offering.service';
 
 @Component({
   selector: 'app-home-top-offerings',

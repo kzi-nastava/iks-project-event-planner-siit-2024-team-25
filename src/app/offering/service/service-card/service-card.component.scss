@@ -1,6 +1,6 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
-@use '../../../../../theme/m3-theme.scss' as theme;
+@use '../../../../theme/m3-theme.scss' as theme;
 
 .header {
     background-color: mat.get-theme-color(theme.$light-theme, primary); /* Plavi heder */
