@@ -1,21 +1,27 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-
-import { MatIconModule } from '@angular/material/icon'; 
-import { MatTabsModule } from '@angular/material/tabs';
+import { provideToastr } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LayoutModule } from './layout/layout.module';
-import { HomeComponent } from './home/home.component';
 import { EventModule } from './event/event.module';
+import { HomeComponent } from './home/home.component';
+import { MaterialModule } from './infrastructure/material/material.module';
+import { LayoutModule } from './layout/layout.module';
 import { OfferingModule } from './offering/offering.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
-  imports: [BrowserModule, AppRoutingModule, LayoutModule, EventModule, MatIconModule, OfferingModule, MatTabsModule],
-  providers: [provideAnimationsAsync()],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    LayoutModule,
+    EventModule,
+    OfferingModule,
+    MaterialModule,
+  ],
+  providers: [provideAnimationsAsync(), provideToastr()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

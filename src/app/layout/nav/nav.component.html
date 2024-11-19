@@ -122,6 +122,16 @@
           </div>
           <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Settings</span>
         </a>
+
+        <span
+          class="nav-item"
+          (click)="logOut()"
+        >
+          <div class="icon-container">
+            <mat-icon>logout</mat-icon>
+          </div>
+          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Log out</span>
+        </span>
       }
 
       <span

@@ -39,26 +39,26 @@ $EventPlanner-theme: mat.define-theme((
 
 
 
+// Note: Color palettes are generated from primary: #FB8800, secondary: #6610F2
 $_palettes: (
   primary: (
-  0: #000000,
-  10: #1a1f4b,
-  20: #2d3363,
-  25: #3a467d,
-  30: #47568e,
-  35: #596a99,
-  40: #303C6C,
-  50: #5b79b0,
-  60: #7087c2,
-  70: #8ca3d4,
-  80: #a7b8e6,
-  90: #c3cce6,
-  95: #d6e1f2,
-  98: #e5e8f5,
-  99: #f2f5fb,
-  100: #ffffff,
-)
-,
+    0: #000000,
+    10: #321800,
+    20: #522b00,
+    25: #673700,
+    30: #7b4200,
+    35: #8f4d00,
+    40: #303C6C,
+    50: #ff9d20,
+    60: #ffae40,
+    70: #ffc160,
+    80: #ffd488,
+    90: #ffe7bb,
+    95: #fff2dd,
+    98: #fff8f0,
+    99: #fffbff,
+    100: #ffffff,
+  ),
 secondary: (
 0: #000000,
 10: #1d0054,
