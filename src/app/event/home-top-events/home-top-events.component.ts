@@ -17,7 +17,7 @@ export class HomeTopEventsComponent implements OnInit {
   constructor(private eventService: EventService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
-    this.eventService.getEvents().subscribe((data) => {
+    this.eventService.getTopEvents().subscribe((data) => {
       this.topEvents = data; 
     });
   }
@@ -27,8 +27,8 @@ export class HomeTopEventsComponent implements OnInit {
     return this.datePipe.transform(date, 'dd-MM-yyyy') || ''; 
   }
 
-  toggleFavouriteEvent(eventId: number): void {
-    this.eventService.toggleFavouriteEvents(eventId);
+  toggleFavouriteEvent(event: HomeEvent): void {
+    event.isLiked = !event.isLiked;
   }
 
 }

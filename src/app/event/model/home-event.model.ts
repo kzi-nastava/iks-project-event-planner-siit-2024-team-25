@@ -4,6 +4,7 @@ export interface HomeEvent{
     organizerName: string;
     description: string;
     date: Date;
+    country: string;
     city: string;
     isLiked: boolean;
 }
