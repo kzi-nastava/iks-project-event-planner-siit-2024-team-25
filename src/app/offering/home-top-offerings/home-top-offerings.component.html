@@ -1,0 +1,10 @@
+ @if (topOfferings) {
+ <div class="container">
+      <h3>Top 5 Products & services</h3>
+      <div class="top-offerings-container">
+        <div *ngFor="let offer of topOfferings">
+            <app-home-offering-card (clicked)="changeFavouriteOffering($event)" [offering] = "offer"/>
+        </div>
+       </div>
+  </div>
+ }
