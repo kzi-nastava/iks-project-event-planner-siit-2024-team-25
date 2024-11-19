@@ -1,15 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../infrastructure/material/material.module';
 import { ListServicesComponent } from './list-services/list-services.component';
-import { ServiceFormComponent } from './service-form/service-form.component';
-import { ServiceDialogComponent } from './service-dialog/service-dialog.component';
-import { ServiceDialogInformationComponent } from './service-dialog/service-dialog-information.component';
 import { ServiceCardComponent } from './service-card/service-card.component';
 import { ServiceDetailsComponent } from './service-details/service-details.component';
+import { ServiceDialogInformationComponent } from './service-dialog/service-dialog-information.component';
+import { ServiceDialogComponent } from './service-dialog/service-dialog.component';
+import { ServiceFormComponent } from './service-form/service-form.component';
 import { ServiceRoutingModule } from './service-routing.module';
-
-
 
 @NgModule({
   declarations: [
@@ -18,12 +17,13 @@ import { ServiceRoutingModule } from './service-routing.module';
     ServiceDialogComponent,
     ServiceDialogInformationComponent,
     ServiceCardComponent,
-    ServiceDetailsComponent
+    ServiceDetailsComponent,
   ],
   imports: [
     MaterialModule,
     CommonModule,
-    ServiceRoutingModule
-  ]
+    ServiceRoutingModule,
+    ReactiveFormsModule,
+  ],
 })
-export class ServiceModule { }
+export class ServiceModule {}
