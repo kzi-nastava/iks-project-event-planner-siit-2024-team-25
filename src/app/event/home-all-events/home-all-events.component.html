@@ -1,1 +1,21 @@
-<p>home-all-events works!</p>
+@if (allEvents) {
+    <div class="container">
+        <div class="pagination">
+            <button
+                (click)="getPreviousPage()"
+            ><mat-icon>navigate_before</mat-icon></button>
+            <p>{{currentPage}}</p>
+            <button
+                (click)="getNextPage()"
+            ><mat-icon>navigate_next</mat-icon></button>
+        </div>
+        <div class="top-events-container">
+            <div *ngFor="let event of allEvents">
+            <app-home-event-card (clicked)="toggleFavouriteEvent($event)" [event]="event"/>
+            </div>
+        </div>
+    </div>
+    
+  }
+  
+  

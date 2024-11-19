@@ -19,7 +19,8 @@ import { OfferingModule } from "../offering/offering.module";
     OfferingModule
 ],
   exports: [
-    HomeTopEventsComponent
+    HomeTopEventsComponent,
+    HomeAllEventsComponent
   ]
 })
 export class EventModule { }

@@ -13,7 +13,7 @@ import { EventService } from '../service/event.service';
 export class HomeAllEventsComponent implements OnInit {
 
   allEvents: HomeEvent[] = []
-  private currentPage: number = 1;
+  currentPage: number = 1;
 
   constructor(private datePipe: DatePipe, private eventService: EventService){}
 
@@ -40,7 +40,7 @@ export class HomeAllEventsComponent implements OnInit {
 
   getPreviousPage(){
     if(this.currentPage>1){
-      this.currentPage++;
+      this.currentPage--;
       this.getEvents(this.currentPage);
     }
   }

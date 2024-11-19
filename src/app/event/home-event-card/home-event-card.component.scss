@@ -3,6 +3,7 @@
 @use '../../../theme/m3-theme.scss' as theme;
 
 .event-card {
+    cursor: pointer;
     background-color: #303C6C29;
     border-radius: 10px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -19,7 +20,7 @@
       border-radius: 8px;
       font-family: 'Times New Roman', Times, serif;
       display: block;
-      height: 23%;
+      height: 25%;
     }
       
     .title {
@@ -90,7 +91,7 @@
     transition: transform 0.2s ease-in-out;
 
     &:hover {
-        transform: translateY(-10px);  // Efekat pri hover-u
+        transform: scale(1.1); 
       }
   }
   
