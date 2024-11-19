@@ -10,6 +10,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core'; 
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker'; // Dodajte ovu liniju
+
 
 const components = [
   CommonModule,
@@ -23,6 +29,11 @@ const components = [
   MatFormFieldModule,
   MatInputModule,
   MatTabsModule,
+  MatSelectModule,
+  MatGridListModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  NgxMaterialTimepickerModule
 ];
 
 @NgModule({

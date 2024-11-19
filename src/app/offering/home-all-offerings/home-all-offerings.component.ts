@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HomeOffering } from '../model/home-offering.model';
 import { OfferingService } from '../service/offering.service';
 import { DecimalPipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { OfferingFilterParams } from '../model/home-offering-filter-params-model';
 
 @Component({
   selector: 'app-home-all-offerings',
@@ -15,11 +15,26 @@ export class HomeAllOfferingsComponent implements OnInit {
   allOfferings: HomeOffering[] = []  
   currentPage: number = 1;
 
+  @Input()
+  filterParams?: OfferingFilterParams
+
   constructor(private offeringService: OfferingService, private decimalPipe: DecimalPipe){}
 
   ngOnInit(): void {
     this.getOfferings(1);
   }
+
+  filterOfferings(filterParams: OfferingFilterParams): void{
+    console.log("doslo do servisa");
+    this.offeringService.getFilteredOfferings(filterParams).subscribe({
+      next: (allOfferings: HomeOffering[]) =>{
+        if(allOfferings){
+          this.allOfferings = allOfferings;
+        }
+      }
+    });
+  }
+  
 
   formatRating(rating: number): string {
     return this.decimalPipe.transform(rating, '1.1') || ''; 

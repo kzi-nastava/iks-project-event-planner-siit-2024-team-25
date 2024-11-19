@@ -1,0 +1,10 @@
+.search-bar {
+  display: block;
+  justify-content: center;
+  margin-left: 35%;
+  margin-right: 35%;
+}
+
+::ng-deep ngx-material-timepicker {
+  background-color: black; /* promenite boju pozadine po želji */
+}

@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HomeOffering } from '../model/home-offering.model';
 import { Observable, of } from 'rxjs';
+import { OfferingFilterParams } from '../model/home-offering-filter-params-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OfferingService {
+  
 
   constructor() { }
 
@@ -190,5 +192,16 @@ export class OfferingService {
   getOfferings(page: number){
     
     return of(this.currentOfferings);
+  }
+
+  getFilteredOfferings(filterParams: OfferingFilterParams): Observable<HomeOffering[]> {
+    
+    console.log(JSON.stringify(filterParams))
+    return of(this.currentOfferings.filter(o => {
+      if(filterParams.name){
+        return o.name.includes(filterParams.name);
+      }
+      return true;
+    }));
   }
 }
