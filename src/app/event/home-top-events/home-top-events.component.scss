@@ -5,7 +5,7 @@
 
 .container{
     border-color: mat.get-theme-color(theme.$light-theme, primary);
-    
+    margin-bottom: 15vh;
     h3{
         color: mat.get-theme-color(theme.$light-theme, primary);
         text-align: center;
@@ -13,6 +13,8 @@
         font-weight: 500;
         white-space: nowrap;
     }
+
+    height: 18vw;
 }
 
 
@@ -24,86 +26,12 @@
     border: 2px solid mat.get-theme-color(theme.$light-theme, primary); /* Plavi border oko kartice */
     border-radius: 5vh;
     flex-wrap: wrap;
+
+    div{
+        width: 17%;
+        height: 80%;
+        margin: 2vh;
+    }
+
 }
 
-
-
-.event-card {
-    background-color: #303C6C29;
-    border-radius: 10px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 17%; 
-    display: flex;
-    flex-direction: column;
-    margin: 2vh;
-  
-    .header {
-      background-color: mat.get-theme-color(theme.$light-theme, primary); /* Plavi heder */
-      color: white; /* Bela slova */
-      padding: 1vw;
-      text-align: left;
-      border-radius: 8px;
-      font-family: 'Times New Roman', Times, serif;
-      display: block;
-    }
-      
-    .title {
-        font-size: 24px;
-        font-weight: bold;
-      }
-      
-    .heart {
-        cursor: pointer;
-        color: #ff4d4d; /* Crvena boja za srce */
-        transition: transform 0.2s; /* Glatka animacija prilikom klika */
-      
-        &:hover {
-          transform: scale(1.1); /* Uveća srce kad se pređe mišem */
-        }
-      }
-      
-      .heart.liked {
-        color: #ff0000; /* Crvena boja kad je srce označeno */
-      }
-  
-    .organizer {
-      margin-top: 10px;
-      font-size:  1.45vh;
-      color: black; /* Tamno siva boja */
-      padding-left: 1vw;
-    }
-  
-    .description {
-      margin-top: 10px;
-      font-size:  1.4vh;
-      color:black; /* Siva boja za tekst opisa */
-      text-align: justify;
-      padding-left: 1vw;
-      padding-right: 1vw;
-    }
-  
-    .footer {
-      display: flex;
-      justify-content: space-between; /* Raspored na levu i desnu stranu */
-      margin-top: 15px;
-  
-      .location {
-        padding-left: 1.4vh;
-        font-size: 0.8vw;
-        color: #333; /* Tamno siva boja za lokaciju */
-      }
-
-      .date {
-        font-size: 1.4vh;
-        color: black; /* Tamno siva boja za datum */
-        padding-right: 0.5vh;
-      }
-    }
-
-    transition: transform 0.2s ease-in-out;
-
-    &:hover {
-        transform: translateY(-10px);  // Efekat pri hover-u
-      }
-  }
-  
