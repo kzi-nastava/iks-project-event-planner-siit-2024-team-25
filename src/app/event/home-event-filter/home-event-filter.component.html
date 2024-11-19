@@ -1,0 +1,119 @@
+<mat-form-field class="search-bar" appearance="outline">
+  <mat-label>Search</mat-label>
+  <input matInput [(ngModel)]="filterParams!.name" placeholder="Name" />
+  <button mat-icon-button matSuffix>
+    <mat-icon (click)="searchEvents()">search</mat-icon>
+  </button>
+  <button mat-icon-button matSuffix>
+    <mat-icon (click)="showEventFilter()">filter_list</mat-icon>
+  </button>
+</mat-form-field>
+
+<mat-grid-list *ngIf="isAvtive" cols="6" rowHeight="4:1">
+  <mat-grid-tile>
+    <mat-form-field class="example-full-width">
+      <mat-label>Event type</mat-label>
+      <mat-select [(ngModel)]="filterParams!.eventType"> </mat-select>
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-form-field class="example-full-width">
+      <mat-label>Country</mat-label>
+      <input matInput [(ngModel)]="filterParams!.country" placeholder="" />
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-form-field>
+      <mat-label>Start date</mat-label>
+      <input
+        matInput
+        [(ngModel)]="filterParams!.startDate"
+        [matDatepicker]="datepickerStart"
+        [min]="today"
+      />
+      <mat-datepicker #datepickerStart />
+      <mat-datepicker-toggle [for]="datepickerStart" matSuffix />
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-form-field>
+      <mat-label>Start time</mat-label>
+      <input
+        matInput
+        [(ngModel)]="filterParams!.startTime"
+        [ngxTimepicker]="pickerStart"
+        placeholder="Select time"
+      />
+      <ngx-material-timepicker #pickerStart></ngx-material-timepicker>
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-form-field class="example-full-width">
+      <mat-label>Sort category</mat-label>
+      <mat-select [(ngModel)]="filterParams!.sortCategory"> </mat-select>
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-form-field class="example-full-width">
+      <mat-label>Description</mat-label>
+      <input matInput [(ngModel)]="filterParams!.description" placeholder="" />
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-form-field class="example-full-width">
+      <mat-label>Max participants</mat-label>
+      <input
+        matInput
+        [(ngModel)]="filterParams!.maxParticipants"
+        placeholder=""
+      />
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-form-field class="example-full-width">
+      <mat-label>City</mat-label>
+      <input matInput [(ngModel)]="filterParams!.city" placeholder="" />
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-form-field>
+      <mat-label>End date</mat-label>
+      <input
+        matInput
+        [(ngModel)]="filterParams!.endDate"
+        [matDatepicker]="datepickerEndDate"
+        [min]="today"
+      />
+      <mat-datepicker #datepickerEndDate />
+      <mat-datepicker-toggle [for]="datepickerEndDate" matSuffix />
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-form-field>
+      <mat-label>End time</mat-label>
+      <input
+        matInput
+        [(ngModel)]="filterParams!.endTime"
+        [ngxTimepicker]="pickerEndTime"
+        placeholder="Select time"
+      />
+      <ngx-material-timepicker #pickerEndTime></ngx-material-timepicker>
+    </mat-form-field>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-form-field class="example-full-width">
+      <mat-label>Sort type</mat-label>
+      <mat-select [(ngModel)]="filterParams!.sortType"> </mat-select>
+    </mat-form-field>
+  </mat-grid-tile>
+</mat-grid-list>

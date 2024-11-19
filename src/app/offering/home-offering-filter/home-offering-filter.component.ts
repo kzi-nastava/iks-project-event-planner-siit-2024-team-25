@@ -1,9 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { OfferingFilterParams } from '../model/home-offering-filter-params-model';
-import {
-  MatDatepickerControl,
-  MatDatepickerPanel,
-} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-home-offering-filter',

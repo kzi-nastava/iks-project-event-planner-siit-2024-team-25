@@ -5,7 +5,6 @@ import { MaterialModule } from '../infrastructure/material/material.module';
 import { HomeAllOfferingsComponent } from './home-all-offerings/home-all-offerings.component';
 import { HomeOfferingCardComponent } from './home-offering-card/home-offering-card.component';
 import { HomeOfferingFilterComponent } from './home-offering-filter/home-offering-filter.component';
-import { HomeOfferingSortComponent } from './home-offering-sort/home-offering-sort.component';
 import { FormsModule } from '@angular/forms'; // Uvoz FormsModule
 
 
@@ -16,9 +15,8 @@ import { FormsModule } from '@angular/forms'; // Uvoz FormsModule
     HomeTopOfferingsComponent,
     HomeAllOfferingsComponent,
     HomeOfferingCardComponent,
-    HomeOfferingFilterComponent,
-    HomeOfferingSortComponent
-  ],
+    HomeOfferingFilterComponent, 
+   ],
   imports: [
     CommonModule,
     MaterialModule,

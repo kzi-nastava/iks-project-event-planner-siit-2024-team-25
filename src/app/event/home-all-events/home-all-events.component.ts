@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HomeEvent } from '../model/home-event.model';
 import { DatePipe } from '@angular/common';
 import { EventService } from '../service/event.service';
+import { HomeEventFilterParams } from '../model/home-event-filter-param.model';
 
 
 @Component({
@@ -19,6 +20,14 @@ export class HomeAllEventsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEvents(this.currentPage);
+  }
+
+  filterEvents(filterParams: HomeEventFilterParams): void{
+    this.eventService.getFilteredEvents(filterParams).subscribe({
+      next: (allEvents: HomeEvent[]) =>{
+        this.allEvents = allEvents;
+      }
+    })
   }
 
   private getEvents(currentPage: number){
