@@ -17,7 +17,7 @@
 
         <mat-form-field style="width: 33%;">
           <mat-select placeholder="Event types"  [ngModelOptions]="{standalone: true}" multiple [(ngModel)]="eventTypeServiceString">
-            <mat-option *ngFor="let option of eventTypes" [value]="option">
+            <mat-option *ngFor="let option of eventTypesAll" [value]="option">
               {{option}}
             </mat-option>
           </mat-select>
@@ -36,9 +36,9 @@
 
       <form class="example-form form-container">
         <mat-form-field class="example-full-width" style="width: 40%;">
-          <input type="text" placeholder="Type category" matInput [matAutocomplete]="auto" [ngModelOptions]="{standalone: true}" [(ngModel)]="offeringCategoriesServiceString">
+          <input type="text" placeholder="Type category" matInput [matAutocomplete]="auto" [ngModelOptions]="{standalone: true}" [(ngModel)]="offeringCategoryServiceString">
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of offeringCategories" [value]="option">
+            <mat-option *ngFor="let option of offeringCategoriesAll" [value]="option">
               {{option}}
             </mat-option>
           </mat-autocomplete>

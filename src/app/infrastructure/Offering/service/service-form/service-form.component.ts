@@ -30,15 +30,19 @@ export class ServiceFormComponent {
   nameService: string = '';
   descriptionService: string = '';
   specificsService: string = '';
-  priceService: number = -1;
+  priceService: number = 0;
+
   eventTypesService: EventType[] = [];
   eventTypeServiceString: string[] = [];
-  offeringCategoriesService: OfferingCategory[] = [];
-  offeringCategoriesServiceString: string[] = [];
+
+  offeringCategoryService:OfferingCategory = { name: ''};
   offeringCategoryServiceString:string = '';
+
   reservationTypeService: ReservationType = ReservationType.AUTOMATIC;
   reservationTpeServiceString: string = 'Manual';
+
   offeringTypeService: Offeringtype = Offeringtype.PENDING;
+
   isAvailableService: boolean = false;
   isVisibleService: boolean = false;
   imagesService: string[]= [];
@@ -50,8 +54,8 @@ export class ServiceFormComponent {
   sliderValueReservationDeadline: number = 0;
 
 
-  offeringCategories: string[] = ['One c', 'Two c', 'Three c']; // categories
-  eventTypes: string[] = ['one e', 'two e', 'three e']// event types
+  offeringCategoriesAll: string[] = ['One c', 'Two c', 'Three c']; // categories
+  eventTypesAll: string[] = ['one e', 'two e', 'three e']// event types
 
   isEditMode = false;
   actionDialog: string = 'Created'
@@ -138,8 +142,7 @@ export class ServiceFormComponent {
     this.priceService = -1;
     this.eventTypesService = [];
     this.eventTypeServiceString = [];
-    this.offeringCategoriesService = [];
-    this.offeringCategoriesServiceString = [];
+    this.offeringCategoryService = {name:''}
     this.offeringCategoryServiceString = '';
     this.reservationTypeService = ReservationType.MANUAL;
     this.reservationTpeServiceString = 'Manual';
@@ -166,17 +169,14 @@ export class ServiceFormComponent {
     }
   }
 
-  //call ito send data from form to serviceManager
+  //send data from service-form to serviceManager
   updateFrontServiceData(){
     
-    if (typeof this.offeringCategoriesServiceString === 'string') {
-      this.offeringCategoriesServiceString = [this.offeringCategoriesServiceString]; 
-    }
+   this.offeringCategoryService = {name : this.offeringCategoryServiceString}
     if (typeof this.eventTypeServiceString === 'string') {
       this.eventTypeServiceString = [this.eventTypeServiceString]; 
     }
     this.eventTypesService = this.eventTypeServiceString.map(c => ({ name: c }));
-    this.offeringCategoriesService = this.offeringCategoriesServiceString.map(c => ({ name: c }));
     if(this.reservationTpeServiceString === 'Manual'){
       this.reservationTypeService = ReservationType.MANUAL;
     }else if(this.reservationTpeServiceString === 'Automatic'){
@@ -193,14 +193,14 @@ export class ServiceFormComponent {
       discount: this.sliderValueDiscount,
       isVisible: this.isVisibleService,
       isAvailable: this.isAvailableService,
-      offeringTyoe: Offeringtype.PENDING,
+      offeringType: Offeringtype.PENDING,
       specifics: this.specificsService,
       duration: this.sliderValueDuration,
-      cancellationDate: this.sliderValueCancellationDeadline,
-      reservationDate: this.sliderValueReservationDeadline,
+      cancellationDeadline: this.sliderValueCancellationDeadline,
+      reservationDeadline: this.sliderValueReservationDeadline,
       reservationType: this.reservationTypeService,
       eventTypes: this.eventTypesService,
-      offeringCategories: this.offeringCategoriesService,
+      offeringCategory: this.offeringCategoryService,
       minArrangement: this.sliderValueMinArrangement,
       maxArrangement: this.sliderValueMaxArrangement
     };
@@ -220,13 +220,9 @@ export class ServiceFormComponent {
       }else{
         this.isDurationShow = true;
       }
-      this.offeringCategories =[];
-      this.eventTypes = [];
+      
       for(let s of this.service.eventTypes){
-        this.offeringCategories.push(s.name);
-      }
-      for(let s of this.service.offeringCategories){
-        this.eventTypes.push(s.name);
+        this.eventTypeServiceString.push(s.name)
       }
       this.nameService=this.service.name;
       this.descriptionService = this.service.description;
@@ -235,14 +231,14 @@ export class ServiceFormComponent {
       this.sliderValueDiscount = this.service.discount;
       this.isVisibleService = this.service.isVisible;
       this.isAvailableService = this.service.isAvailable;
-      this.offeringTypeService = this.service.offeringTyoe;
+      this.offeringTypeService = this.service.offeringType;
       this.specificsService = this.service.specifics;
       this.sliderValueDuration = this.service.duration;
-      this.sliderValueCancellationDeadline = this.service.cancellationDate;
-      this.sliderValueReservationDeadline = this.service.reservationDate;
+      this.sliderValueCancellationDeadline = this.service.cancellationDeadline;
+      this.sliderValueReservationDeadline = this.service.reservationDeadline;
       this.reservationTypeService = this.service.reservationType;
       this.eventTypesService = this.service.eventTypes;
-      this.offeringCategoriesService = this.service.offeringCategories;
+      this.offeringCategoryServiceString = this.service.offeringCategory.name
       this.sliderValueMinArrangement = this.service.minArrangement;
       this.sliderValueMaxArrangement = this.service.maxArrangement;
     }
@@ -270,14 +266,14 @@ export class ServiceFormComponent {
         discount: 0,
         isVisible: false,
         isAvailable: false,
-        offeringTyoe: Offeringtype.ACCEPTED,
+        offeringType: Offeringtype.ACCEPTED,
         specifics: '',
         duration: 0,
-        cancellationDate: 0,
-        reservationDate: 0,
+        cancellationDeadline: 0,
+        reservationDeadline: 0,
         reservationType: ReservationType.MANUAL,
         eventTypes: [],
-        offeringCategories: [],
+        offeringCategory: {name:""},
         minArrangement: 0,
         maxArrangement: 0
       }

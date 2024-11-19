@@ -56,7 +56,7 @@
 <div class="service-container">
   
   <div class="service-card" *ngFor="let service of filteredServices">
-    <app-service-card (clickedService)="onServiceClicked($event)" [service]="service"></app-service-card>
+    <app-service-card [service]="service"></app-service-card>
   </div>
 </div>
 

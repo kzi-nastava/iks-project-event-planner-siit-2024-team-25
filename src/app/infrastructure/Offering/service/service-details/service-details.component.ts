@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-service-details',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrl: './service-details.component.scss'
 })
 export class ServiceDetailsComponent {
+  serviceId!: number;
 
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    // Getting 'id' from URL-a
+    this.route.params.subscribe(params => {
+      this.serviceId = +params['id'];
+    });
+  }
 }

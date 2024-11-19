@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ServiceDialogComponent } from '../service-dialog/service-dialog.component';
 import { ServiceDialogInformationComponent } from '../service-dialog/service-dialog-information.component';
 import { OfferingServiceService } from '../offering-service.service';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-service-card',
@@ -17,14 +17,6 @@ export class ServiceCardComponent{
 
   @Input()
   service!: Service;
-
-  @Output()
-  clickedService: EventEmitter<Service> = new EventEmitter<Service>();
-
-
-  onWineClicked(): void {
-    this.clickedService.emit(this.service)
-  }
 
   openEditPage(event:Event, id: number){
     event.stopPropagation();

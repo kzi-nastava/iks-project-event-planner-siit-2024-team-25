@@ -31,9 +31,9 @@ export class ListServicesComponent implements OnInit {
     this.filteredServices = [...this.services];
   }
 
-    onServiceClicked(s: Service) {
+  onServiceClicked(s: Service) {
     this.clickedService = s.name;
-    }
+  }
 
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
