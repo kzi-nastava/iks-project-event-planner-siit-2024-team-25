@@ -1,0 +1,35 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use '../../../theme/m3-theme.scss' as theme;
+
+
+.container{
+    border-color: mat.get-theme-color(theme.$light-theme, primary);
+    
+    h3{
+        color: mat.get-theme-color(theme.$light-theme, primary);
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    height: 18vw;
+}
+
+.top-offerings-container{
+    margin-left: 10vh;
+    margin-right: 10vh;
+    display: flex;
+    justify-content: center;
+    border: 2px solid mat.get-theme-color(theme.$light-theme, primary);
+    border-radius: 5vh;
+    flex-wrap: wrap;
+    height: 100%;
+
+    div{
+      width: 17%;
+      height: 80%;
+      margin: 2vh;
+    }
+}
