@@ -3,7 +3,9 @@
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="!(isHandset$ | async)">
     <div class="sidenav-header">
-      <img src="assets/logo.png" alt="Logo" class="logo">
+      <a routerLink="/" class="logo-container">
+        <img src="/logo_white.png" alt="Logo" class="logo">
+      </a>
     </div>
 
     <nav class="nav-menu">
@@ -145,7 +147,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon>menu</mat-icon>
       </button>
-      <span class="app-title">Event Planner</span>
+      <a routerLink="/" class="app-title">Event Planner</a>
       <span class="spacer"></span>
       <div class="toolbar-actions">
         <button mat-icon-button aria-label="Search">
