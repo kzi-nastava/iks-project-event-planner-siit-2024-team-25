@@ -21,14 +21,12 @@ import { MatSlider, MatSliderModule } from '@angular/material/slider';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
 const components = [
   CommonModule,
-  BrowserModule,
   MatButtonModule,
   MatToolbarModule,
   MatSidenavModule,

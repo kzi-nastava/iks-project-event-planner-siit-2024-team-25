@@ -7,7 +7,8 @@
         <p>{{service.price}}</p>
     </div>
     <div class="description">
-        <p>{{service.description}}</p>
+        <p *ngIf="service.description.length>70">{{service.description.slice(0,70)}}...</p>
+        <p *ngIf="service.description.length<=70">{{service.description}}</p>
     </div>
     <div class="footer">
         <button mat-icon-button matSuffix (click)="openDialog($event, service)">

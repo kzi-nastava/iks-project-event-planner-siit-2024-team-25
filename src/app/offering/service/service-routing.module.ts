@@ -7,13 +7,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: 'servicePage', component: ListServicesComponent },
-  {path : 'service/:id', component:ServiceDetailsComponent},
+  {path : 'serviceDetails/:id', component:ServiceDetailsComponent},
   {path:'serviceEditForm/:id' , component:ServiceFormComponent},
   {path :'serviceCreateForm', component: ServiceFormComponent},
 ]
 
 @NgModule({
-  imports: [ RouterModule.forChild(routes), CommonModule  ],
+  imports: [ RouterModule.forChild(routes)],
   exports:[RouterModule]
 })
 export class ServiceRoutingModule { }

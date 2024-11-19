@@ -5,6 +5,7 @@ import { ServiceFormComponent } from './offering/service/service-form/service-fo
 import { ServiceDetailsComponent } from './offering/service/service-details/service-details.component';
 import { HomeComponent } from './home/home.component';
 import { ListServicesComponent } from './offering/service/list-services/list-services.component';
+import { OfferingModule } from './offering/offering.module';
 
 const routes: Routes = [
   { path: 'servicePage', component: ListServicesComponent },
@@ -19,6 +20,10 @@ const routes: Routes = [
     path: 'user',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
   },
+  /*{
+    path: 'service',
+    loadChildren: () => import('./offering/service/service.module').then((m) => m.ServiceModule),
+  },*/
 
 ];
 

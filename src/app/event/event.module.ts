@@ -4,7 +4,7 @@ import { HomeTopEventsComponent } from './home-top-events/home-top-events.compon
 import { MaterialModule } from '../infrastructure/material/material.module';
 import { HomeAllEventsComponent } from './home-all-events/home-all-events.component';
 import { HomeEventCardComponent } from './home-event-card/home-event-card.component';
-import { OfferingModule } from "../offering/offering.module";
+//import { OfferingModule } from "../offering/offering.module";
 
 
 @NgModule({
@@ -15,8 +15,7 @@ import { OfferingModule } from "../offering/offering.module";
   ],
   imports: [
     CommonModule,
-    MaterialModule,
-    OfferingModule
+    MaterialModule
 ],
   exports: [
     HomeTopEventsComponent,
