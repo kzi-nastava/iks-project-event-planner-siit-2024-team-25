@@ -1,0 +1,36 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use '../../../../theme/m3-theme.scss' as theme;
+
+.form-container {
+  display: flex;
+  flex-direction: row;  
+  align-items: center;  
+  justify-content: center;  
+  gap: 20px;  
+}
+
+  .fab-button {
+    position: fixed;
+    bottom: 20px;  
+    left: 100px;  
+    z-index: 1000; 
+  }
+  .fab-save-button {
+    position: fixed;
+    bottom: 20px;  
+    right: 20px;   
+    z-index: 1000; 
+  }
+  .button-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;   
+    justify-content: center; 
+    gap: 20px;
+  }
+  .image-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }

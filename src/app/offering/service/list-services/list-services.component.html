@@ -1,0 +1,66 @@
+<mat-form-field class="example-search-bar" appearance="outline">
+  <mat-label>Search service</mat-label>
+  <input matInput (input)="onSearch($event)" placeholder="Service name">
+  <button mat-icon-button matSuffix>
+    <mat-icon>search</mat-icon>
+  </button>
+  <button mat-icon-button matSuffix (click)="clickFilter()">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+
+
+</mat-form-field>
+
+  <div class="form-container" *ngIf="isFilter">
+    <form>
+      <mat-form-field>
+        <input type="text" placeholder="Category" matInput [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of options" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+    </form>
+  
+    <form>
+      <mat-form-field>
+        <input type="text" placeholder="Event type" matInput [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of options" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+    </form>
+    
+  </div>
+  <div class="form-container" *ngIf="isFilter">
+    <mat-form-field style="width: 35%;">
+      <input matInput placeholder="Price" type="number">
+      <span matPrefix>$&nbsp;</span>
+      <span matSuffix>.00</span>
+    </mat-form-field>
+  </div>
+  <div class="form-container" *ngIf="isFilter">
+    <mat-slide-toggle style="width: 35%;" class="form-container" style="margin: 20px;">Is available</mat-slide-toggle>
+
+  </div>
+  <div class="form-container" style="margin-bottom: 30px;" *ngIf="isFilter">
+    <button mat-fab color="primary" (click)="clickFilter()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+<div class="service-container">
+  
+  <div class="service-card" *ngFor="let service of filteredServices">
+    <app-service-card [service]="service"></app-service-card>
+  </div>
+</div>
+
+
+<button mat-fab color="primary" (click)="goToCreateService()" class="fab-button">
+  <mat-icon>add</mat-icon>
+</button>

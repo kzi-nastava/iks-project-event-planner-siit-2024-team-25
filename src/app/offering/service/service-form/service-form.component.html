@@ -1,0 +1,176 @@
+<h1 style="color: #1a1f4b; text-align-last: center;">{{titleForm}}</h1>
+<mat-horizontal-stepper #stepper (selectionChange)="onStepChange($event)">
+  
+  <mat-step [stepControl]="firstFormGroup" style="margin: 30px;">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Step 1</ng-template>
+      <div class="form-container">
+        <mat-form-field color="primary" style="width: 33%;">
+          <input matInput placeholder="Name" name="service_name" [ngModelOptions]="{standalone: true}" [(ngModel)]="nameService">
+        </mat-form-field>
+
+        <mat-form-field style="width: 33%;">
+          <input matInput placeholder="Price" type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="priceService">
+          <span matPrefix>$&nbsp;</span>
+          <span matSuffix>.00</span>
+        </mat-form-field>
+
+        <mat-form-field style="width: 33%;">
+          <mat-select placeholder="Event types"  [ngModelOptions]="{standalone: true}" multiple [(ngModel)]="eventTypeServiceString">
+            <mat-option *ngFor="let option of eventTypesAll" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-container">
+        <mat-form-field style="width: 50%;">
+          <textarea matInput placeholder="Description" [ngModelOptions]="{standalone: true}" [(ngModel)]="descriptionService"></textarea>
+        </mat-form-field>
+        <mat-form-field style="width: 50%;">
+          <textarea matInput placeholder="Specifics" [ngModelOptions]="{standalone: true}" [(ngModel)]="specificsService"></textarea>
+        </mat-form-field>
+      </div>
+
+
+      <form class="example-form form-container">
+        <mat-form-field class="example-full-width" style="width: 40%;">
+          <input type="text" placeholder="Type category" matInput [matAutocomplete]="auto" [ngModelOptions]="{standalone: true}" [(ngModel)]="offeringCategoryServiceString">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of offeringCategoriesAll" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+      </form>
+
+      <div [formGroup]="formGroupDiscount" class="form-container">
+        <div>
+          Discount: {{ sliderValueDiscount }} %
+        </div>
+        <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel>
+          <input matSliderThumb [(ngModel)]="sliderValueDiscount" [ngModelOptions]="{standalone: true}">
+        </mat-slider>
+      </div>
+    </form>
+    <div class="button-container">
+      <button mat-fab color="primary" (click)="backToHome()" *ngIf="cancelButtonShow" class="fab-button">
+        <mat-icon>cancel</mat-icon>
+      </button>
+      <button mat-fab matStepperNext color="primary" class="fab-save-button">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+ 
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup" style="margin: 30px;">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Step 2</ng-template>
+      <div class="form-container">
+        <div [formGroup]="formCancellationDeadline" class="form-container">
+          <div>
+            Cancellation deadline: {{ sliderValueCancellationDeadline }} day(s)
+          </div>
+          <mat-slider [min]="1" [max]="10" [step]="1" thumbLabel>
+            <input matSliderThumb [(ngModel)]="sliderValueCancellationDeadline" [ngModelOptions]="{standalone: true}">
+          </mat-slider>
+        </div>
+
+        <div [formGroup]="formReservationDeadline" class="form-container">
+          <div>
+            Reservation deadline: {{ sliderValueReservationDeadline }} day(s)
+          </div>
+          <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel>
+            <input matSliderThumb [(ngModel)]="sliderValueReservationDeadline" [ngModelOptions]="{standalone: true}">
+          </mat-slider>
+        </div>
+      </div>
+
+
+      <div class="form-container">
+        <p style="align-items: center;">Reservation type</p>
+      </div>
+
+      <mat-radio-group aria-label="Reservation type" class="form-container" [(ngModel)]="reservationTpeServiceString" [ngModelOptions]="{standalone: true}">
+        <mat-radio-button value="Manual">Manual</mat-radio-button>
+        <mat-radio-button value="Automatic">Automatic</mat-radio-button>
+      </mat-radio-group>
+
+      <mat-slide-toggle class="form-container" style="margin: 20px;" [(ngModel)]="isAvailableService" [ngModelOptions]="{standalone: true}">Is available to users</mat-slide-toggle>
+      <mat-slide-toggle class="form-container" [(ngModel)]="isVisibleService" [ngModelOptions]="{standalone: true}">Is visible to organizer</mat-slide-toggle>
+      <div class="form-container" style="margin-top: 30px">
+        <p *ngIf="isDurationShow">Choose service duration</p>
+        <p *ngIf="!isDurationShow">Choose minimum and maximum service arrangement</p>
+
+      </div>
+      <p class="form-container">You are not able to set both min/max arrangement and service duration</p>
+      <div [formGroup]="formToogle" class="form-container">
+        <mat-slide-toggle [(ngModel)]="isDurationShow" [ngModelOptions]="{standalone: true}"></mat-slide-toggle>
+      </div>
+      <div class="form-container">
+        <div *ngIf="isDurationShow" [formGroup]="formDuration">
+          <div>
+            Service duration: {{ sliderValueDuration }} h
+          </div>
+          <mat-slider [min]="1" [max]="96" [step]="1" thumbLabel>
+            <input matSliderThumb [(ngModel)]="sliderValueDuration" [ngModelOptions]="{standalone: true}">
+          </mat-slider>
+        </div>
+
+        <div *ngIf="!isDurationShow" [formGroup]="formMinMaxArr">
+          <div>
+            Minimum arrangement: {{ sliderValueMinArrangement }} h
+          </div>
+          <mat-slider [min]="1" [max]="96" [step]="1" thumbLabel>
+            <input matSliderThumb [(ngModel)]="sliderValueMinArrangement" [ngModelOptions]="{standalone: true}">
+          </mat-slider>
+          <div>
+            Maximum arrangement: {{ sliderValueMaxArrangement }} h
+          </div>
+          <mat-slider [min]="1" [max]="96" [step]="1" thumbLabel>
+            <input matSliderThumb [(ngModel)]="sliderValueMaxArrangement" [ngModelOptions]="{standalone: true}">
+          </mat-slider>
+        </div>
+      </div>
+      <div class="button-container">
+        <button mat-fab matStepperPrevious color="primary" class="fab-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button mat-fab matStepperNext color="primary"  class="fab-save-button">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+
+  <mat-step style="margin: 30px;">
+    <ng-template matStepLabel showSaveButton()>Step 3</ng-template>
+    <div class="image-container">
+      <div *ngFor="let image of imagesService">
+        <img [src]="image" alt="Image" class="added-image" />
+      </div>
+    </div>
+
+    <div class="form-container">
+      <button mat-raised-button color="primary" style="margin: 30px;" (click)="addImage()">Add Image</button>
+    </div>
+
+    <div class="button-container">
+      <button mat-fab matStepperPrevious color="primary" class="fab-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+      <button mat-fab color="primary" *ngIf="saveButtonShow" (click)="openSaveDialog(); addNewService()" class="fab-save-button">
+        <mat-icon>save</mat-icon>
+      </button>
+    </div>
+  </mat-step>
+
+</mat-horizontal-stepper>
+
+
+
