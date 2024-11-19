@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HomeOffering } from '../model/homeOfferings';
+import { HomeOffering } from '../model/home-offering.model';
 import { Observable, of } from 'rxjs';
 
 @Injectable({

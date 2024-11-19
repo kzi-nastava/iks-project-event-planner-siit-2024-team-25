@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { HomeOffering } from '../model/homeOfferings';
+import { HomeOffering } from '../model/home-offering.model';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
