@@ -1,4 +1,4 @@
-
+<div [routerLink]="['/service',service.id]">
     <div class="header">
         <h2>{{service.name}}</h2>
 
@@ -10,11 +10,13 @@
         <p>{{service.description}}</p>
     </div>
     <div class="footer">
-        <button mat-icon-button matSuffix>
-            <mat-icon>Delete</mat-icon>
+        <button mat-icon-button matSuffix (click)="openDialog($event, service)">
+            <mat-icon>delete</mat-icon>
         </button>
-        <button mat-icon-button matSuffix>
-            <mat-icon>Edit</mat-icon>
+        <button mat-icon-button matSuffix (click)="openEditPage($event, service.id)">
+            <mat-icon>edit</mat-icon>
         </button>
     </div>
+</div>
+
 

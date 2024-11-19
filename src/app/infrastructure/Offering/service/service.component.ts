@@ -7,9 +7,4 @@ import { Component } from '@angular/core';
 })
 export class ServiceComponent {
   showForm = false;
-  toForm(){
-    console.log(this.showForm)
-    this.showForm = !this.showForm;
-    console.log(this.showForm)
-  }
 }

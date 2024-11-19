@@ -5,7 +5,7 @@
     <mat-icon>search</mat-icon>
   </button>
   <button mat-icon-button matSuffix (click)="clickFilter()">
-    <mat-icon>Filter</mat-icon>
+    <mat-icon>filter_list</mat-icon>
   </button>
 
 
@@ -56,11 +56,11 @@
 <div class="service-container">
   
   <div class="service-card" *ngFor="let service of filteredServices">
-    <app-service-card [service]="service"></app-service-card>
+    <app-service-card (clickedService)="onServiceClicked($event)" [service]="service"></app-service-card>
   </div>
 </div>
 
 
-<button mat-fab color="primary" (click)="onToggle()" class="fab-button">
+<button mat-fab color="primary" (click)="goToCreateService()" class="fab-button">
   <mat-icon>add</mat-icon>
 </button>

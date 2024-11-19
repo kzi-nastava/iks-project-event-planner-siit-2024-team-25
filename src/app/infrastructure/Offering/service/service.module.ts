@@ -7,6 +7,8 @@ import { ServiceComponent } from './service.component';
 import { ServiceDialogComponent } from './service-dialog/service-dialog.component';
 import { ServiceDialogInformationComponent } from './service-dialog/service-dialog-information.component';
 import { ServiceCardComponent } from './service-card/service-card.component';
+import { ServiceDetailsComponent } from './service-details/service-details.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -17,11 +19,13 @@ import { ServiceCardComponent } from './service-card/service-card.component';
     ServiceComponent,
     ServiceDialogComponent,
     ServiceDialogInformationComponent,
-    ServiceCardComponent
+    ServiceCardComponent,
+    ServiceDetailsComponent
   ],
   imports: [
     MaterialModule,
-    CommonModule
+    CommonModule,
+    RouterModule
   ]
 })
 export class ServiceModule { }

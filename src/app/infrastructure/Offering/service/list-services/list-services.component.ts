@@ -1,9 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Service } from '../model/service.model';
+import { Service } from '../model/service';
 import { MatDialog } from '@angular/material/dialog';
 import { ServiceDialogComponent } from '../service-dialog/service-dialog.component';
 import { ServiceDialogInformationComponent } from '../service-dialog/service-dialog-information.component';
 import { OfferingServiceService } from '../offering-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-services',
@@ -11,15 +12,15 @@ import { OfferingServiceService } from '../offering-service.service';
   styleUrl: './list-services.component.scss'
 })
 export class ListServicesComponent implements OnInit {
+
   services: Service[] = [];
   filteredServices: Service[] = [];
-  clickedService: string | undefined;
+  clickedService: String = "";
   isFilter: boolean = false;
   options: string[] = ['One', 'Two', 'Three'];
 
-  @Output() toggle = new EventEmitter<void>();
 
-  constructor(public dialog: MatDialog, private serviceManage: OfferingServiceService) { }
+  constructor(private serviceManage: OfferingServiceService, private router: Router) { }
 
   ngOnInit(): void {
     this.getAll();
@@ -30,28 +31,9 @@ export class ListServicesComponent implements OnInit {
     this.filteredServices = [...this.services];
   }
 
-
-  
-
-  openDialog() {
-    const dialogRef = this.dialog.open(ServiceDialogComponent, {
-      data: {
-        serviceName: this.services[0].name
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result.response === 'yes') {
-        console.log(result)
-        this.dialog.open(ServiceDialogInformationComponent, {
-          data: {
-            serviceName: result.serviceName,
-            action: "deleted"
-          }
-        })
-      }
-    });
-  }
+    onServiceClicked(s: Service) {
+    this.clickedService = s.name;
+    }
 
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -61,12 +43,12 @@ export class ListServicesComponent implements OnInit {
     );
   }
 
-  onToggle() {
-    this.toggle.emit();
-  }
-
   clickFilter() {
     this.isFilter = !this.isFilter;
+  }
+
+  goToCreateService(){
+    this.router.navigate(['/serviceCreateForm'])
   }
 }
 
