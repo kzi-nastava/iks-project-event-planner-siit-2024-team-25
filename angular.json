@@ -40,7 +40,8 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/theme/m3-theme.scss"              
+              "src/theme/m3-theme.scss",
+              "node_modules/ngx-toastr/toastr.css"         
             ],
             "scripts": []
           },
