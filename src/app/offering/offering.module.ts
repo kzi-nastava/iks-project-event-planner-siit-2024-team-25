@@ -4,6 +4,7 @@ import { HomeTopOfferingsComponent } from './home-top-offerings/home-top-offerin
 import { MaterialModule } from '../infrastructure/material/material.module';
 import { HomeAllOfferingsComponent } from './home-all-offerings/home-all-offerings.component';
 import { HomeOfferingCardComponent } from './home-offering-card/home-offering-card.component';
+import { ServiceModule } from './service/service.module';
 
 
 
@@ -15,6 +16,7 @@ import { HomeOfferingCardComponent } from './home-offering-card/home-offering-ca
   ],
   imports: [
     CommonModule,
+    ServiceModule,
     MaterialModule
   ],
   exports:[

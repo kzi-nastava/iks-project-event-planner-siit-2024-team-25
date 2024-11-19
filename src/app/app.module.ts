@@ -12,16 +12,12 @@ import { LayoutModule } from './layout/layout.module';
 import { OfferingModule } from './offering/offering.module';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    LayoutModule,
-    EventModule,
-    OfferingModule,
-    MaterialModule,
-  ],
-  providers: [provideAnimationsAsync(), provideToastr()],
+  declarations:  [AppComponent, HomeComponent],
+  imports: [BrowserModule, AppRoutingModule, LayoutModule, MaterialModule,EventModule,
+    OfferingModule],
+
+  providers: [provideAnimationsAsync(), provideToastr()], 
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}
