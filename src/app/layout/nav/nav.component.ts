@@ -1,5 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { map, shareReplay } from 'rxjs';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
@@ -15,6 +16,7 @@ export class NavComponent {
   constructor(
     private authService: AuthService,
     private breakpointObserver: BreakpointObserver,
+    private router: Router,
   ) {}
 
   loggedIn$ = this.authService.loggedIn$;
@@ -38,5 +40,10 @@ export class NavComponent {
 
   toggleExpanded(): void {
     this.isExpanded = !this.isExpanded;
+  }
+
+  logOut() {
+    this.authService.logOut();
+    this.router.navigate(['/']);
   }
 }
