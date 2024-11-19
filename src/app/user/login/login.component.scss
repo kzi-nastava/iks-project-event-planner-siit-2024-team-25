@@ -1,0 +1,99 @@
+@use '@angular/material' as mat;
+@use '../../../theme/m3-theme.scss' as theme;
+
+$primary: mat.get-theme-color(theme.$light-theme, primary);
+
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+
+  .login-image-section {
+    flex: 1;
+    background-color: $primary;
+
+    .login-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .login-form-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+
+    .login-card {
+      width: 100%;
+      max-width: 450px;
+
+      .content {
+        padding: 2rem;
+
+        .actions {
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          flex-wrap: wrap;
+          gap: 5px;
+        }
+      }
+
+      mat-form-field {
+        width: 100%;
+        margin-bottom: 1rem;
+
+        .mat-form-field-suffix {
+          display: flex;
+          align-items: center;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+
+    .login-image-section,
+    .login-form-section {
+      flex: none;
+      width: 100%;
+      height: 50%;
+    }
+  }
+}
+
+// General card styles
+.card {
+  background-color: #303C6C29;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 17%;
+  display: flex;
+  flex-direction: column;
+  margin: 2vh;
+
+  .header {
+    background-color: mat.get-theme-color(theme.$light-theme, primary);
+    color: mat.get-theme-color(theme.$light-theme, on-primary);
+    padding: 1vh 2vw 1vh 2vw;
+    text-align: left;
+    border-radius: 8px;
+    display: block;
+
+    h1, h2 {
+      font: REM, sans-serif;
+      font-size: 1.8rem;
+    }
+  }
+
+  .content {
+    padding: 1rem;
+  }
+}
