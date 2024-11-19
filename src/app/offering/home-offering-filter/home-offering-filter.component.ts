@@ -16,6 +16,8 @@ export class HomeOfferingFilterComponent {
   isAvtive: boolean;
 
   today: Date;
+  sortCategories: string[];
+  sortTypes: string[];
 
   constructor() {
     this.today = new Date();
@@ -23,6 +25,9 @@ export class HomeOfferingFilterComponent {
     this.filterParams = {
       name: '',
     };
+
+    this.sortCategories = ['', 'Name', 'Start date', 'Country'];
+    this.sortTypes = ['', 'ACS', 'DESC'];
   }
 
   showOfferingFilter(): void {

@@ -54,7 +54,11 @@
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
       <mat-label>Sort category</mat-label>
-      <mat-select [(ngModel)]="filterParams!.sortCategory"> </mat-select>
+      <mat-select [(ngModel)]="filterParams!.sortCategory">
+        <mat-option *ngFor="let category of sortCategories" [value]="category">
+          {{ category }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </mat-grid-tile>
 
@@ -68,11 +72,7 @@
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
       <mat-label>Max participants</mat-label>
-      <input
-        matInput
-        [(ngModel)]="filterParams!.maxParticipants"
-        placeholder=""
-      />
+      <input matInput [(ngModel)]="filterParams!.maxParticipants" />
     </mat-form-field>
   </mat-grid-tile>
 
@@ -113,7 +113,11 @@
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
       <mat-label>Sort type</mat-label>
-      <mat-select [(ngModel)]="filterParams!.sortType"> </mat-select>
+      <mat-select [(ngModel)]="filterParams!.sortType">
+        <mat-option *ngFor="let type of sortTypes" [value]="type">
+          {{ type }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </mat-grid-tile>
 </mat-grid-list>
