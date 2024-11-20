@@ -23,13 +23,7 @@ import { MatSlider, MatSliderModule } from '@angular/material/slider';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-
-
-import { MatGridListModule } from '@angular/material/grid-list';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker'; 
-
-
-
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 const components = [
   CommonModule,
@@ -58,10 +52,7 @@ const components = [
   DialogModule,
   MatDialogContent,
   MatTabsModule,
-
-
   MatButtonToggleModule,
-
   MatGridListModule,
   NgxMaterialTimepickerModule,
 ];
