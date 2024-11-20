@@ -12,11 +12,17 @@ import { LayoutModule } from './layout/layout.module';
 import { OfferingModule } from './offering/offering.module';
 
 @NgModule({
-  declarations:  [AppComponent, HomeComponent],
-  imports: [BrowserModule, AppRoutingModule, LayoutModule, MaterialModule,EventModule,
-    OfferingModule],
+  declarations: [AppComponent, HomeComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    LayoutModule,
+    MaterialModule,
+    EventModule,
+    OfferingModule,
+  ],
 
-  providers: [provideAnimationsAsync(), provideToastr()], 
+  providers: [provideAnimationsAsync(), provideToastr()],
 
   bootstrap: [AppComponent],
 })

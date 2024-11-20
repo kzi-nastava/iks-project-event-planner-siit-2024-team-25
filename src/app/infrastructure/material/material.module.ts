@@ -1,7 +1,7 @@
 import { DialogModule } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -21,8 +21,10 @@ import { MatSlider, MatSliderModule } from '@angular/material/slider';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+
 import { MatGridListModule } from '@angular/material/grid-list';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker'; // Dodajte ovu liniju
+
 
 const components = [
   CommonModule,
@@ -47,15 +49,18 @@ const components = [
   MatSlideToggle,
   MatAutocompleteModule,
   MatStepperModule,
-  ReactiveFormsModule,
+
+ 
+
   MatDialogModule,
   DialogModule,
   MatDialogContent,
   MatTabsModule,
-  MatSelectModule,
+
+ 
   MatGridListModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
+  
+  
   NgxMaterialTimepickerModule
 ];
 
