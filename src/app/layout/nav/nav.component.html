@@ -37,22 +37,20 @@
         >
       </a>
 
-      <a routerLink="/user/register" routerLinkActive="active" class="nav-item">
-        <div class="icon-container">
-          <mat-icon>person_add_alt_1</mat-icon>
-        </div>
-        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
-          >Sign up</span
-        >
-      </a>
-      <a routerLink="./servicePage" routerLinkActive="active" class="nav-item">
-        <div class="icon-container">
-          <mat-icon>Service</mat-icon>
-        </div>
-        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
-          >Service</span
-        >
-      </a>
+]
+        <a routerLink="/user/register" routerLinkActive="active" class="nav-item">
+          <div class="icon-container">
+            <mat-icon>person_add_alt_1</mat-icon>
+          </div>
+          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Sign up</span>
+        </a>
+        <a routerLink="/service/services" routerLinkActive="active" class="nav-item">
+          <div class="icon-container">
+            
+            <mat-icon>Service</mat-icon>
+          </div>
+          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Service</span>
+        </a>
       } @else {
       <a routerLink="/user/profile" routerLinkActive="active" class="nav-item">
         <div class="icon-container">
@@ -201,10 +199,10 @@
     </nav>
   </mat-sidenav>
 
-  <mat-sidenav-content
-    [class.content-expanded]="isExpanded && !(isHandset$ | async)"
-  >
-    <mat-toolbar>
+
+  <mat-sidenav-content [class.content-expanded]="isExpanded && !(isHandset$ | async)">
+    <mat-toolbar style="z-index: 2000;">
+
       <button
         mat-icon-button
         class="menu-button"

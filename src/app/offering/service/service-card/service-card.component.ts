@@ -22,7 +22,7 @@ export class ServiceCardComponent{
     event.stopPropagation();
     console.log('Service you clicked: ');
     console.log(this.serviceMenager.getServiceById(id));
-    this.router.navigate(['/serviceEditForm', this.service.id]);
+    this.router.navigate(['/service/serviceForm', this.service.id]);
   }
 
   openDialog(event: Event, s: Service) {

@@ -6,10 +6,10 @@ import { ServiceFormComponent } from './service-form/service-form.component';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'servicePage', component: ListServicesComponent },
-  {path : 'serviceDetails/:id', component:ServiceDetailsComponent},
-  {path:'serviceEditForm/:id' , component:ServiceFormComponent},
-  {path :'serviceCreateForm', component: ServiceFormComponent},
+  { path: 'services', component: ListServicesComponent },
+  {path : 'services/:id', component:ServiceDetailsComponent},
+  {path:'serviceForm/:id' , component:ServiceFormComponent},
+  {path :'serviceForm', component: ServiceFormComponent},
 ]
 
 @NgModule({
