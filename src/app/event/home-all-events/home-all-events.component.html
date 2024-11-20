@@ -8,7 +8,7 @@
     <p>{{ currentPage }}</p>
     <button (click)="getNextPage()"><mat-icon>navigate_next</mat-icon></button>
   </div>
-  <div class="top-events-container">
+  <div class="home-events-container">
     <div *ngFor="let event of allEvents">
       <app-home-event-card
         (clicked)="toggleFavouriteEvent($event)"
