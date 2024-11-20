@@ -7,7 +7,10 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+
 import { confirmPasswordValidator } from '../../infrastructure/validators/confirmPasswordValidator';
+import { RegisterSuccessDialogComponent } from '../register-success-dialog/register-success-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +26,10 @@ export class RegisterComponent implements OnInit {
   companyPictures: File[] = [];
   waitingResponse = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group(
@@ -97,8 +103,13 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log(this.form.get('email')?.value);
+      const email = this.form.get('email')?.value;
+      console.log(email);
       this.form.reset();
+      this.dialog.open(RegisterSuccessDialogComponent, {
+        width: '400px',
+        data: { email },
+      });
     }
   }
 }
