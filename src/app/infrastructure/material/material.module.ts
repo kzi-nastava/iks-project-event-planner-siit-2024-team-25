@@ -23,7 +23,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { MatGridListModule } from '@angular/material/grid-list';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker'; // Dodajte ovu liniju
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker'; 
 
 
 const components = [
@@ -49,19 +49,12 @@ const components = [
   MatSlideToggle,
   MatAutocompleteModule,
   MatStepperModule,
-
- 
-
   MatDialogModule,
   DialogModule,
   MatDialogContent,
   MatTabsModule,
-
- 
   MatGridListModule,
-  
-  
-  NgxMaterialTimepickerModule
+  NgxMaterialTimepickerModule,
 ];
 
 @NgModule({

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Service } from './model/service';
 import { Offeringtype } from './model/offering.type.enum';
 import { ReservationType } from './model/reservation.type.enum';
+import { Observable, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class OfferingServiceService {
       reservationDeadline: 6,
       reservationType: ReservationType.AUTOMATIC,
       eventTypes: [],
-      offeringCategory: {name:'1'},
+      offeringCategory: { name: '1' },
       minArrangement: 0,
       maxArrangement: 0
     },
@@ -47,7 +48,7 @@ export class OfferingServiceService {
       reservationDeadline: 6,
       reservationType: ReservationType.AUTOMATIC,
       eventTypes: [],
-      offeringCategory: {name:'1'},
+      offeringCategory: { name: '1' },
       minArrangement: 0,
       maxArrangement: 0
     },
@@ -67,7 +68,7 @@ export class OfferingServiceService {
       reservationDeadline: 6,
       reservationType: ReservationType.MANUAL,
       eventTypes: [],
-      offeringCategory: {name:'1'},
+      offeringCategory: { name: '1' },
       minArrangement: 0,
       maxArrangement: 0
     },
@@ -87,7 +88,7 @@ export class OfferingServiceService {
       reservationDeadline: 6,
       reservationType: ReservationType.AUTOMATIC,
       eventTypes: [],
-      offeringCategory: {name:'1'},
+      offeringCategory: { name: '1' },
       minArrangement: 0,
       maxArrangement: 0
     },
@@ -107,7 +108,7 @@ export class OfferingServiceService {
       reservationDeadline: 6,
       reservationType: ReservationType.MANUAL,
       eventTypes: [],
-      offeringCategory: {name:'1'},
+      offeringCategory: { name: '1' },
       minArrangement: 0,
       maxArrangement: 0
     },
@@ -127,7 +128,7 @@ export class OfferingServiceService {
       reservationDeadline: 6,
       reservationType: ReservationType.AUTOMATIC,
       eventTypes: [],
-      offeringCategory: {name:'1'},
+      offeringCategory: { name: '1' },
       minArrangement: 0,
       maxArrangement: 0
     },
@@ -146,39 +147,39 @@ export class OfferingServiceService {
       cancellationDeadline: 4,
       reservationDeadline: 6,
       reservationType: ReservationType.AUTOMATIC,
-      eventTypes: [{name:'dasd'}],
-      offeringCategory: {name:'1'},
+      eventTypes: [{ name: 'dasd' }],
+      offeringCategory: { name: '1' },
       minArrangement: 2,
       maxArrangement: 3
     },
     {
-    id: 8,
-    name: "Event Planning",
-    description: "Organize unforgettable events tailored to your needs.",
-    price: 1000,
-    images: ["event-planning.jpg"],
-    discount: 5,
-    isVisible: true,
-    isAvailable: true,
-    offeringType: Offeringtype.ACCEPTED,
-    specifics: "Includes venue selection and catering",
-    duration: -1,
-    cancellationDeadline: 4,
-    reservationDeadline: 6,
-    reservationType: ReservationType.MANUAL,
-    eventTypes: [{name:'event 1'}],
-    offeringCategory: {name:'1'},
-    minArrangement: 2,
-    maxArrangement: 3
-  }
+      id: 8,
+      name: "Event Planning",
+      description: "Organize unforgettable events tailored to your needs.",
+      price: 1000,
+      images: ["event-planning.jpg"],
+      discount: 5,
+      isVisible: true,
+      isAvailable: true,
+      offeringType: Offeringtype.ACCEPTED,
+      specifics: "Includes venue selection and catering",
+      duration: -1,
+      cancellationDeadline: 4,
+      reservationDeadline: 6,
+      reservationType: ReservationType.MANUAL,
+      eventTypes: [{ name: 'event 1' }],
+      offeringCategory: { name: '1' },
+      minArrangement: 2,
+      maxArrangement: 3
+    }
   ];
-  
 
-  getAll() : Service[]{
-    return this.services;
+
+  getAll(): Observable<Service[]> {
+    return of(this.services);
   }
 
-  getServiceById(id: number) : Service | undefined{
+  /*getServiceById(id: number) : Service | undefined{
     return this.services.find(service => service.id === id);
   }
 
@@ -209,5 +210,38 @@ export class OfferingServiceService {
     }
     return null;
     
-  } 
+  } */
+
+  getServiceById(id: number): Observable<Service> {
+    const s = this.services.find(service => service.id === id);
+    if (s) {
+      return of(s); // Vraća Observable sa pronađenim servisom
+    } else {
+      return throwError(() => new Error(`Service with ID ${id} not found`)); // Greška ako nije pronađen
+    }
+  }
+
+  addService(s: Service|undefined): Observable<Service> {
+    if(s != null){
+      if (this.services.push(s)) {
+        console.log('Service you created: ');
+        console.log(s);
+      }
+    }
+    
+    return of();
+  }
+
+  updateService(updatedService: Service|undefined): Observable<Service> {
+    if(updatedService != null){
+      const index = this.services.findIndex(service => service.id === updatedService.id);
+      if (index !== -1) {
+        this.services[index] = updatedService;
+        console.log('Service you updated: ');
+        console.log(updatedService);
+        return of(updatedService);
+      }
+    }
+    return of();
+  }
 }

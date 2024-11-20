@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Service } from '../model/service';
 import { ServiceDialogComponent } from '../service-dialog/service-dialog.component';
 import { ServiceDialogInformationComponent } from '../service-dialog/service-dialog-information.component';
 import { OfferingServiceService } from '../offering-service.service';
 import { Router } from '@angular/router';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list-services',
@@ -17,18 +18,25 @@ export class ListServicesComponent implements OnInit {
   clickedService: String = "";
   isFilter: boolean = false;
   options: string[] = ['One', 'Two', 'Three'];
-
-
-  constructor(private serviceManage: OfferingServiceService, private router: Router) { }
-
-  ngOnInit(): void {
-    this.getAll();
-  }
-
-  getAll():void{
-    this.services = this.serviceManage.getAll();
-    this.filteredServices = [...this.services];
-  }
+  
+    constructor(private serviceManage: OfferingServiceService, private router: Router) { }
+  
+    ngOnInit(): void {
+      this.getAll();
+      console.log(this.services)
+    }
+  
+    getAll():void{
+      this.serviceManage.getAll().subscribe({
+        next: (services: Service[]) => {
+          this.services = services;
+        },
+        error: (_) => {
+          console.log("Greska!")
+        }
+      })
+      this.filteredServices = [...this.services];
+    }
 
   onServiceClicked(s: Service) {
     this.clickedService = s.name;
@@ -47,7 +55,7 @@ export class ListServicesComponent implements OnInit {
   }
 
   goToCreateService(){
-    this.router.navigate(['/serviceCreateForm'])
+    this.router.navigate(['/service/serviceForm'])
   }
 }
 

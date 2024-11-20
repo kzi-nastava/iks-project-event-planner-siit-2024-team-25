@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from '../model/service';
 import { EventType } from '../model/event-type';
 import { OfferingCategory } from '../model/offering-category';
+import { server } from 'typescript';
 
 @Component({
   selector: 'app-service-form',
@@ -90,15 +91,28 @@ export class ServiceFormComponent {
   addNewService(){
     this.updateFrontServiceData();
     if (this.isEditMode) {
-      const updatedService = this.serviceMenager.updateService(this.service);
-      if (updatedService) {
-        this.router.navigate(['/servicePage']);
-      }
+      let updatedService:Service;
+      this.serviceMenager.updateService(this.service).subscribe({
+        next:(s:Service)=>{
+          updatedService = s;
+          this.router.navigate(['/services']);
+        },
+        error:(_)=>{
+          console.log("err")
+        }
+      })
+      
     } else {
-      const addedService = this.serviceMenager.addService(this.service);
-      if (addedService) {
-        this.router.navigate(['/servicePage']);
-      }
+      let addedService: Service
+      this.serviceMenager.addService(this.service).subscribe({
+        next:(s:Service)=>{
+          addedService = s;
+          this.router.navigate(['/services']);
+        },
+        error:(_)=>{
+          console.log("err")
+        }
+      })
     }
     this.refreshService(); 
   }
@@ -113,7 +127,7 @@ export class ServiceFormComponent {
   }
 
   backToHome() {
-    this.router.navigate(['/servicePage']);
+    this.router.navigate(['/services']);
   }
   onStepChange(event: StepperSelectionEvent) {
   if (event.selectedIndex === 2) {
@@ -252,7 +266,14 @@ export class ServiceFormComponent {
       this.actionDialog = 'Edited'
       this.isEditMode = true;
       this.idService = Number(serviceName)
-      this.service = this.serviceMenager.getServiceById(this.idService);
+      this.serviceMenager.getServiceById(this.idService).subscribe({
+        next:(s: Service)=>{
+          this.service = s;
+        },
+        error:(_)=>{
+          console.log("err")
+        }
+      })
       this.setServiceDataFront();
     }else{
       this.titleForm = 'Create a service'

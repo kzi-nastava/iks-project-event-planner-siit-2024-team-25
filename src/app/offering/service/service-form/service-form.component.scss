@@ -2,6 +2,14 @@
 @use '@angular/material' as mat;
 @use '../../../../theme/m3-theme.scss' as theme;
 
+.border-class{
+  border: 2px solid; 
+  color: #5b79b0;
+  padding: 3rem;         /* Dodaj malo unutrašnjeg razmaka */
+  border-radius: 5px; 
+  display: inline-block;
+}
+
 .form-container {
   display: flex;
   flex-direction: row;  
