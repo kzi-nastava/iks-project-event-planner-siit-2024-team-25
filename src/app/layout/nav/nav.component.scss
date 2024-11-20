@@ -1,6 +1,6 @@
-@use 'sass:map';
-@use '@angular/material' as mat;
-@use '../../../theme/m3-theme.scss' as theme;
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "../../../theme/m3-theme.scss" as theme;
 
 $transition-duration: 0.3s;
 $sidenav-expanded-width: 260px;
@@ -142,13 +142,16 @@ $sidenav-collapsed-width: 70px;
             }
 
             .badge {
-              background-color: mat.get-theme-color(theme.$light-theme, on-primary);
+              background-color: mat.get-theme-color(
+                theme.$light-theme,
+                on-primary
+              );
               color: mat.get-theme-color(theme.$light-theme, primary);
             }
           }
 
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             left: -8px;
             top: 50%;
@@ -174,7 +177,10 @@ $sidenav-collapsed-width: 70px;
       gap: 12px;
       border-top: 1px solid rgba(0, 0, 0, 0.08);
       min-height: 68px;
-      background-color: mat.get-theme-color(theme.$light-theme, surface-variant);
+      background-color: mat.get-theme-color(
+        theme.$light-theme,
+        surface-variant
+      );
 
       .avatar {
         position: relative;
@@ -197,7 +203,8 @@ $sidenav-collapsed-width: 70px;
           height: 12px;
           border-radius: 50%;
           background-color: #22c55e;
-          border: 2px solid mat.get-theme-color(theme.$light-theme, surface-variant);
+          border: 2px solid
+            mat.get-theme-color(theme.$light-theme, surface-variant);
         }
       }
 
@@ -236,6 +243,7 @@ $sidenav-collapsed-width: 70px;
       color: mat.get-theme-color(theme.$light-theme, on-primary);
       height: 64px;
       position: fixed;
+      z-index: 20000;
 
       .menu-button {
         margin-right: 16px;
