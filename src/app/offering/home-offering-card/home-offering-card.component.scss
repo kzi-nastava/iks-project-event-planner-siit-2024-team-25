@@ -57,20 +57,27 @@
     }
   
     .description {
-      font-size:  1.4vh;
+      font-size:  1.5vh;
       color:#333; 
       text-align: justify;
       padding-left: 1vw;
       padding-right: 1vw;
       overflow: hidden;
       height: 9vh;
+
+      display: -webkit-box;       
+      line-clamp: 3;   
+      -webkit-line-clamp: 3;        
+      -webkit-box-orient: vertical;  
+      overflow: hidden;              
+      text-overflow: ellipsis;  
     }
 
     .rating{
       flex-wrap: wrap;
         display: flex;
         padding-left: 1.4vh;
-        font-size: 0.8vw;
+        font-size:  1.5vh;
         align-items: center;
         color: #333; 
 
@@ -88,7 +95,7 @@
         flex-wrap: wrap;
         display: flex;
         padding-left: 1.4vh;
-        font-size: 0.8vw;
+        font-size:  1.5vh;
         align-items: center;
         color: #333; 
       }
@@ -97,7 +104,7 @@
         flex-wrap: wrap;
         display: flex;
         align-items: center;
-        font-size: 0.8vw;
+        font-size:  1.5vh;
         color: #333; 
         padding-right: 1vh;
 
@@ -107,7 +114,7 @@
     transition: transform 0.2s ease-in-out;
 
     &:hover {
-        transform: translateY(-10px); 
+        transform: scale(1.1)
       }
   }
   
