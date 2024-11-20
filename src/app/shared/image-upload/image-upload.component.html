@@ -1,0 +1,42 @@
+<ngx-dropzone
+  class="stylish-dropzone"
+  [multiple]="multiple"
+  [maxFileSize]="maxFileSize"
+  [accept]="'image/*'"
+  (change)="onSelect($event)"
+>
+  @if (images.length === 0) {
+    <ngx-dropzone-label class="dropzone-label">
+      <mat-icon class="upload-icon">cloud_upload</mat-icon>
+      <p class="upload-text">
+        Drag and drop or click to upload {{ multiple ? 'images' : 'an image' }}
+      </p>
+      <p class="upload-subtitle">
+        Supported formats: JPG, PNG, GIF (max {{ maxFileSize / 1000000 }}MB)
+      </p>
+    </ngx-dropzone-label>
+  }
+
+  @for (image of images; track image) {
+    <div class="preview-container" [class.single-mode]="!multiple">
+      <div class="preview-item">
+        <img
+          [src]="image.preview"
+          [alt]="image.file.name"
+          class="preview-image"
+        />
+        <button
+          type="button"
+          class="remove-button"
+          (click)="onRemove(0); $event.stopPropagation()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  }
+</ngx-dropzone>
+
+@if (error) {
+  <mat-error class="error-message">{{ error }}</mat-error>
+}
