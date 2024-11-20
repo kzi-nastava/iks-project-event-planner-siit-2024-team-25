@@ -19,6 +19,7 @@ import { ServiceRoutingModule } from './service-routing.module';
     ServiceCardComponent,
     ServiceDetailsComponent,
   ],
+
   imports: [
     MaterialModule,
     CommonModule,

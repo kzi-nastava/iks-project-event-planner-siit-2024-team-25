@@ -1,52 +1,67 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HomeOffering } from '../model/home-offering.model';
 import { DecimalPipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { OfferingFilterParams } from '../model/home-offering-filter-params-model';
 import { OfferingService } from '../services/offering.service';
 
 @Component({
   selector: 'app-home-all-offerings',
   templateUrl: './home-all-offerings.component.html',
   styleUrl: './home-all-offerings.component.scss',
-  providers: [DecimalPipe]
+  providers: [DecimalPipe],
 })
 export class HomeAllOfferingsComponent implements OnInit {
-
-  allOfferings: HomeOffering[] = []  
+  allOfferings: HomeOffering[] = [];
   currentPage: number = 1;
 
-  constructor(private offeringService: OfferingService, private decimalPipe: DecimalPipe){}
+  @Input()
+  filterParams?: OfferingFilterParams;
+
+  constructor(
+    private offeringService: OfferingService,
+    private decimalPipe: DecimalPipe
+  ) {}
 
   ngOnInit(): void {
     this.getOfferings(1);
   }
 
+  filterOfferings(filterParams: OfferingFilterParams): void {
+    console.log('doslo do servisa');
+    this.offeringService.getFilteredOfferings(filterParams).subscribe({
+      next: (allOfferings: HomeOffering[]) => {
+        if (allOfferings) {
+          this.allOfferings = allOfferings;
+        }
+      },
+    });
+  }
+
   formatRating(rating: number): string {
-    return this.decimalPipe.transform(rating, '1.1') || ''; 
+    return this.decimalPipe.transform(rating, '1.1') || '';
   }
 
   toggleFavouriteOfferings(offering: HomeOffering): void {
     offering.isFavourite = !offering.isFavourite;
   }
 
-  getOfferings(page: number){
+  getOfferings(page: number) {
     this.offeringService.getOfferings(page).subscribe({
-      next: (allOfferings: HomeOffering[]) =>{
+      next: (allOfferings: HomeOffering[]) => {
         this.allOfferings = allOfferings;
-      }
+      },
     });
   }
 
-  getNextPage(){
+  getNextPage() {
     this.currentPage++;
     this.getOfferings(this.currentPage);
   }
 
-  getPreviousPage(){
-    if(this.currentPage > 1){
+  getPreviousPage() {
+    if (this.currentPage > 1) {
       this.currentPage--;
       this.getOfferings(this.currentPage);
-    } 
+    }
   }
-  
 }
