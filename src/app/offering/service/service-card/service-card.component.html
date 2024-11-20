@@ -1,0 +1,23 @@
+<div [routerLink]="['/service',service.id]">
+    <div class="header">
+        <h2>{{service.name}}</h2>
+
+    </div>
+    <div class="price">
+        <p>{{service.price}}</p>
+    </div>
+    <div class="description">
+        <p *ngIf="service.description.length>70">{{service.description.slice(0,70)}}...</p>
+        <p *ngIf="service.description.length<=70">{{service.description}}</p>
+    </div>
+    <div class="footer">
+        <button mat-icon-button matSuffix (click)="openDialog($event, service)">
+            <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button matSuffix (click)="openEditPage($event, service.id)">
+            <mat-icon>edit</mat-icon>
+        </button>
+    </div>
+</div>
+
+

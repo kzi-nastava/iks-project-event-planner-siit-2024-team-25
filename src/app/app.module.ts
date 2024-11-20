@@ -17,11 +17,13 @@ import { OfferingModule } from './offering/offering.module';
     BrowserModule,
     AppRoutingModule,
     LayoutModule,
+    MaterialModule,
     EventModule,
     OfferingModule,
-    MaterialModule,
   ],
+
   providers: [provideAnimationsAsync(), provideToastr()],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}

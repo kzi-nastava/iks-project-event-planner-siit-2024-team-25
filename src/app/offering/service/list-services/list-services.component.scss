@@ -1,0 +1,56 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use '../../../../theme/m3-theme.scss' as theme;
+
+
+.form-container {
+  display: flex;
+  flex-direction: row;  /* Vertikalni raspored elemenata */
+  align-items: center;  /* Centriranje elemenata horizontalno */
+  justify-content: center;  /* Centriranje elemenata vertikalno */
+  gap: 20px;  /* Razmak između svakog mat-form-field elementa */
+}
+  
+.example-search-bar {
+    display: block;
+    width: 40%;
+    margin: 0 auto;
+  }
+  
+  .service-container{
+      margin-left: 10vh;
+      margin-right: 10vh;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+      gap: 16px;
+      border: 2px solid mat.get-theme-color(theme.$light-theme, primary); 
+      border-radius: 5vh;
+      padding-right: 32px;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+  }
+
+    .fab-button {
+        position: fixed;
+        bottom: 20px;  /* Razmak od dna */
+        right: 20px;   /* Razmak od desne ivice */
+        z-index: 1000; /* Osigurava da dugme bude iznad drugih elemenata */
+      }
+
+      .service-card {
+
+        background-color: #303C6C29;
+        border-radius: 10px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%; 
+        display: flex;
+        flex-direction: column;
+        margin: 2vh;
+       
+        transition: transform 0.2s ease-in-out;
+
+  &:hover {
+      transform: translateY(-10px);  // Efekat pri hover-u
+    }
+
+      }

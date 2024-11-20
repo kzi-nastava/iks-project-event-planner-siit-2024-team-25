@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HomeEvent } from '../model/home-event.model';
 import { Observable, of } from 'rxjs';
+import { HomeEventFilterParams } from '../model/home-event-filter-param.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
+
 
 
   constructor() { }
@@ -165,6 +167,15 @@ export class EventService {
       country: "Republika Srbija"
     }
   ];
+
+  getFilteredEvents(filterParams: HomeEventFilterParams) {
+    return of(this.allEvents.filter(o =>{
+      if(filterParams.name){
+        return o.name.includes(filterParams.name);
+      }
+      return true;
+    }));
+  }
 
   getTopEvents(): Observable<HomeEvent[]> {
     return of(this.topEvents);
