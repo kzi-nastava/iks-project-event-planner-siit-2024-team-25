@@ -5,6 +5,7 @@
 $transition-duration: 0.3s;
 $sidenav-expanded-width: 260px;
 $sidenav-collapsed-width: 70px;
+$toolbar-height: 64px;
 
 .shell-container {
   height: 100vh;
@@ -234,7 +235,7 @@ $sidenav-collapsed-width: 70px;
     mat-toolbar {
       background-color: mat.get-theme-color(theme.$light-theme, primary);
       color: mat.get-theme-color(theme.$light-theme, on-primary);
-      height: 64px;
+      height: $toolbar-height;
       position: fixed;
 
       .menu-button {
@@ -247,6 +248,7 @@ $sidenav-collapsed-width: 70px;
         font-weight: 500;
         color: mat.get-theme-color(theme.$light-theme, on-primary);
         text-decoration: none;
+        font-family: REM, sans-serif;
       }
 
       .toolbar-actions {
@@ -291,6 +293,7 @@ $sidenav-collapsed-width: 70px;
     .content {
       padding: 1px;
       margin: 0 auto;
+      margin-top: $toolbar-height;
     }
   }
 
