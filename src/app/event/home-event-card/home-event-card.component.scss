@@ -1,98 +1,103 @@
-@use 'sass:map';
-@use '@angular/material' as mat;
-@use '../../../theme/m3-theme.scss' as theme;
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "../../../theme/m3-theme.scss" as theme;
 
 .event-card {
+  cursor: pointer;
+  background-color: #303c6c29;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .header {
+    background-color: mat.get-theme-color(theme.$light-theme, primary);
+    color: white;
+    padding: 0.5vw;
+    text-align: left;
+    border-radius: 8px;
+    font-family: "Times New Roman", Times, serif;
+    display: block;
+    height: 33%;
+  }
+
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .heart {
     cursor: pointer;
-    background-color: #303C6C29;
-    border-radius: 10px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%; 
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    
-    .header {
-      background-color: mat.get-theme-color(theme.$light-theme, primary);
-      color: white; 
-      padding: 0.5vw;
-      text-align: left;
-      border-radius: 8px;
-      font-family: 'Times New Roman', Times, serif;
-      display: block;
-      height: 33%;
-    }
-      
-    .title {
-        font-size: 2rem;
-        font-weight: bold;
-      }
-      
-    .heart {
-        cursor: pointer;
-        color: #ff4d4d; 
-        transition: transform 0.2s; 
-      
-        &:hover {
-          transform: scale(1.1); 
-        }
-      }
-      
-      .heart.liked {
-        color: #ff0000; 
-      }
-  
-    .info{
-      display: flex;
-      justify-content: space-between; 
-      padding-right: 2vh;
-
-      .organizer {
-        margin-top: 0.5vw;
-        font-size:  1.45vh;
-        color: black; 
-        padding-left: 1vw;
-      }
-  
-      .date {
-        flex-wrap: wrap;
-        display: flex;
-        align-items: center;
-        font-size: 1.45vh;
-        color: black; 
-        padding-right: 1vh;
-      }
-    }
-    
-  
-    .description {
-      font-size:  1.5vh;
-      color:black; 
-      text-align: justify;
-      padding-left: 1vw;
-      padding-right: 1vw;
-      height: 9vh;
-    }
-  
-    .footer {
-      display: flex;
-      justify-content: space-between; 
-  
-      .location {
-        flex-wrap: wrap;
-        display: flex;
-        align-items: center;
-        padding-left: 1.4vh;
-        font-size:  1.5vh;
-        align-items: center;
-        color: #333; 
-      }
-    }
-
-    transition: transform 0.2s ease-in-out;
+    color: #ff4d4d;
+    transition: transform 0.2s;
 
     &:hover {
-        transform: scale(1.1); 
-      }
+      transform: scale(1.1);
+    }
   }
-  
+
+  .heart.liked {
+    color: #ff0000;
+  }
+
+  .info {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 2vh;
+
+    .organizer {
+      margin-top: 0.5vw;
+      font-size: 1.45vh;
+      color: black;
+      padding-left: 1vw;
+    }
+
+    .date {
+      flex-wrap: wrap;
+      display: flex;
+      align-items: center;
+      font-size: 1.45vh;
+      color: black;
+      padding-right: 1vh;
+    }
+  }
+
+  .description {
+    font-size: 1.5vh;
+    color: black;
+    text-align: justify;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    height: 9vh;
+
+    display: -webkit-box;       
+    line-clamp: 3;   
+    -webkit-line-clamp: 3;        
+    -webkit-box-orient: vertical;  
+    overflow: hidden;              
+    text-overflow: ellipsis;   
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+
+    .location {
+      flex-wrap: wrap;
+      display: flex;
+      align-items: center;
+      padding-left: 1.4vh;
+      font-size: 1.5vh;
+      align-items: center;
+      color: #333;
+    }
+  }
+
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}

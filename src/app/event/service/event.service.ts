@@ -18,7 +18,7 @@ export class EventService {
       name: 'Music Concert',
       date: new Date('2024-12-01'),
       city: "Uzice",
-      description: 'A great music concert with various artists.',
+      description: 'A great music concert with various artists.wwwwwwwwwwwwww wwwwwwwwwww wwwwwwww wwwww wwwwwwwwwww wwwwwwww wwww',
       organizerName: 'Stefan',
       isLiked: false,
       country: "Republika Srbija"
