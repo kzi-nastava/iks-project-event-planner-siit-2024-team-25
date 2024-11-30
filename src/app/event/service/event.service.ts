@@ -5,12 +5,16 @@ import { HomeEventFilterParams } from '../model/home-event-filter-param.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environment/environment';
 import { Page } from '../../shared/model/page.mode';
+import { AuthService } from '../../infrastructure/auth/service/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {}
 
   private allEvents: HomeEvent[] = [
     {
@@ -128,8 +132,17 @@ export class EventService {
   }
 
   getTopEvents(): Observable<HomeEvent[]> {
+    const user = this.authService.getUser(); // Dohvati trenutnog korisnika
+
+    let params = new HttpParams();
+
+    if (user) {
+      params = params.set('country', user.country ?? '');
+      params = params.set('city', user.city ?? '');
+    }
+
     return this.httpClient
-      .get<Page<HomeEvent>>('http://localhost:8080/api/events/top')
+      .get<Page<HomeEvent>>('http://localhost:8080/api/events/top', { params })
       .pipe(map((page) => page.content));
   }
 

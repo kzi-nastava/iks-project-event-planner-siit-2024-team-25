@@ -58,6 +58,8 @@ export class LoginService {
       email,
       fullName: 'John Doe',
       role,
+      country: 'Serbia',
+      city: 'Novi Sad',
     };
   }
 }
