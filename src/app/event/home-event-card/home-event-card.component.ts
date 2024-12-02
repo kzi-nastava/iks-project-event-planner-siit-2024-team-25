@@ -1,17 +1,16 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, Time } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { HomeEvent } from '../model/home-event.model';
 
 @Component({
   selector: 'app-home-event-card',
   templateUrl: './home-event-card.component.html',
-  styleUrl: './home-event-card.component.scss'
+  styleUrl: './home-event-card.component.scss',
 })
 export class HomeEventCardComponent {
-
   @Input()
-  event!: HomeEvent
-  
+  event!: HomeEvent;
+
   @Output()
   clicked: EventEmitter<HomeEvent> = new EventEmitter<HomeEvent>();
 
@@ -19,15 +18,14 @@ export class HomeEventCardComponent {
     this.clicked.emit(this.event);
   }
 
-  constructor(private datePipe: DatePipe){}
-  
-  formatDate(date: Date): string {
-    return this.datePipe.transform(date, 'dd-MM-yyyy') || ''; 
+  constructor(private datePipe: DatePipe) {}
+
+  formatDateTime(date: string): string {
+    const dateObj = new Date(date);
+    return this.datePipe.transform(dateObj, 'yyyy-MM-dd HH:mm') || '';
   }
 
-  formatLocation(country: string, city: string){
-    return country + "," + city
+  formatLocation(country: string, city: string) {
+    return country + ',' + city;
   }
-
-
 }

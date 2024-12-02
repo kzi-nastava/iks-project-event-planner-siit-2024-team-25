@@ -20,7 +20,7 @@
     border-radius: 8px;
     font-family: "Times New Roman", Times, serif;
     display: block;
-    height: 33%;
+    height: max-content;
   }
 
   .title {
@@ -72,12 +72,12 @@
     padding-right: 1vw;
     height: 9vh;
 
-    display: -webkit-box;       
-    line-clamp: 3;   
-    -webkit-line-clamp: 3;        
-    -webkit-box-orient: vertical;  
-    overflow: hidden;              
-    text-overflow: ellipsis;   
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .footer {

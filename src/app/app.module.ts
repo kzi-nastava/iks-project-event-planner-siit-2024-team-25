@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './infrastructure/material/material.module';
 import { LayoutModule } from './layout/layout.module';
 import { OfferingModule } from './offering/offering.module';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -22,7 +23,7 @@ import { OfferingModule } from './offering/offering.module';
     OfferingModule,
   ],
 
-  providers: [provideAnimationsAsync(), provideToastr()],
+  providers: [provideAnimationsAsync(), provideToastr(), provideHttpClient()],
 
   bootstrap: [AppComponent],
 })
