@@ -50,12 +50,14 @@ export class HomeAllOfferingsComponent implements OnInit {
   }
 
   getNextPage() {
-    this.currentPage++;
-    this.getOfferings(this.currentPage);
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.getOfferings(this.currentPage);
+    }
   }
 
   getPreviousPage() {
-    if (this.currentPage > 1) {
+    if (this.currentPage > 0) {
       this.currentPage--;
       this.getOfferings(this.currentPage);
     }
