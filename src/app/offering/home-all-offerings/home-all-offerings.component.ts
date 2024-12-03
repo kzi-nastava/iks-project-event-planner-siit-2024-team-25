@@ -11,8 +11,9 @@ import { OfferingService } from '../services/offering.service';
   providers: [DecimalPipe],
 })
 export class HomeAllOfferingsComponent implements OnInit {
-  allOfferings: HomeOffering[] = [];
-  currentPage: number = 1;
+  currentOfferings: HomeOffering[] = [];
+  currentPage: number = 0;
+  totalPages: number = 1;
 
   @Input()
   filterParams?: OfferingFilterParams;
@@ -23,19 +24,10 @@ export class HomeAllOfferingsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getOfferings(1);
+    this.getOfferings(this.currentPage);
   }
 
-  filterOfferings(filterParams: OfferingFilterParams): void {
-    console.log('doslo do servisa');
-    this.offeringService.getFilteredOfferings(filterParams).subscribe({
-      next: (allOfferings: HomeOffering[]) => {
-        if (allOfferings) {
-          this.allOfferings = allOfferings;
-        }
-      },
-    });
-  }
+  filterOfferings(filterParams: OfferingFilterParams): void {}
 
   formatRating(rating: number): string {
     return this.decimalPipe.transform(rating, '1.1') || '';
@@ -47,19 +39,25 @@ export class HomeAllOfferingsComponent implements OnInit {
 
   getOfferings(page: number) {
     this.offeringService.getOfferings(page).subscribe({
-      next: (allOfferings: HomeOffering[]) => {
-        this.allOfferings = allOfferings;
+      next: ({ currentOfferings, totalPages }) => {
+        this.currentOfferings = currentOfferings;
+        this.totalPages = totalPages;
+      },
+      error: (err) => {
+        console.error('Error fetching events:', err);
       },
     });
   }
 
   getNextPage() {
-    this.currentPage++;
-    this.getOfferings(this.currentPage);
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.getOfferings(this.currentPage);
+    }
   }
 
   getPreviousPage() {
-    if (this.currentPage > 1) {
+    if (this.currentPage > 0) {
       this.currentPage--;
       this.getOfferings(this.currentPage);
     }

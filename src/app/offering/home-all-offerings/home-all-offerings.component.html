@@ -1,16 +1,15 @@
-@if (allOfferings) {
+@if (currentOfferings) {
 <div class="container">
-  <app-home-offering-filter
-   (clicked)="filterOfferings($event)"  />
+  <app-home-offering-filter (clicked)="filterOfferings($event)" />
   <div class="pagination">
     <button (click)="getPreviousPage()">
       <mat-icon>navigate_before</mat-icon>
     </button>
-    <p>{{ currentPage }}</p>
+    <p>{{ currentPage + 1 }}/{{ totalPages }}</p>
     <button (click)="getNextPage()"><mat-icon>navigate_next</mat-icon></button>
   </div>
   <div class="all-offerings-container">
-    <div *ngFor="let offer of allOfferings">
+    <div *ngFor="let offer of currentOfferings">
       <app-home-offering-card
         (clicked)="toggleFavouriteOfferings($event)"
         [offering]="offer"
@@ -18,4 +17,5 @@
     </div>
   </div>
 </div>
+
 }
