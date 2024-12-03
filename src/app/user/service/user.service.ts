@@ -93,6 +93,14 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
+  public activateAccount(activationCode: string): Observable<void> {
+    return this.httpClient
+      .post<void>(environment.apiHost + '/api/auth/activate', {
+        verificationCode: activationCode,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorResponse: ErrorResponse | null = null;
 

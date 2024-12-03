@@ -6,6 +6,7 @@ import { NgxMatInputTelComponent } from 'ngx-mat-input-tel';
 import { AuthModule } from '../infrastructure/auth/auth.module';
 import { MaterialModule } from '../infrastructure/material/material.module';
 import { SharedModule } from '../shared/shared.module';
+import { ActivateComponent } from './activate/activate.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterSuccessDialogComponent } from './register-success-dialog/register-success-dialog.component';
 import { RegisterComponent } from './register/register.component';
@@ -16,6 +17,7 @@ import { UserRoutingModule } from './user-routing.module';
     LoginComponent,
     RegisterComponent,
     RegisterSuccessDialogComponent,
+    ActivateComponent,
   ],
   imports: [
     CommonModule,
