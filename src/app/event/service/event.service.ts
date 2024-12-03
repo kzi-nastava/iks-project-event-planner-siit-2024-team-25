@@ -132,7 +132,7 @@ export class EventService {
   }
 
   getTopEvents(): Observable<HomeEvent[]> {
-    const user = this.authService.getUser(); // Dohvati trenutnog korisnika
+    const user = this.authService.getUser();
 
     let params = new HttpParams();
 
@@ -146,7 +146,20 @@ export class EventService {
       .pipe(map((page) => page.content));
   }
 
-  getEvents(page: number): Observable<HomeEvent[]> {
-    return of(this.allEvents);
+  getEvents(
+    page: number
+  ): Observable<{ currentEvents: HomeEvent[]; totalPages: number }> {
+    let params = new HttpParams();
+
+    params = params.set('page', page);
+
+    return this.httpClient
+      .get<Page<HomeEvent>>('http://localhost:8080/api/events/all', { params })
+      .pipe(
+        map((page) => ({
+          currentEvents: page.content,
+          totalPages: page.totalPages,
+        }))
+      );
   }
 }

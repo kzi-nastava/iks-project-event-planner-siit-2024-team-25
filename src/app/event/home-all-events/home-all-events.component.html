@@ -1,15 +1,15 @@
-@if (allEvents) {
+@if (currentEvents) {
 <div class="container">
   <app-home-event-filter (clicked)="filterEvents($event)" />
   <div class="pagination">
     <button (click)="getPreviousPage()">
       <mat-icon>navigate_before</mat-icon>
     </button>
-    <p>{{ currentPage }}</p>
+    <p>{{ currentPage + 1 }}/{{ totalPages }}</p>
     <button (click)="getNextPage()"><mat-icon>navigate_next</mat-icon></button>
   </div>
   <div class="home-events-container">
-    <div *ngFor="let event of allEvents">
+    <div *ngFor="let event of currentEvents">
       <app-home-event-card
         (clicked)="toggleFavouriteEvent($event)"
         [event]="event"
