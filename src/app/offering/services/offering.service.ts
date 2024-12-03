@@ -14,7 +14,7 @@ export class OfferingService {
     private httpClient: HttpClient,
     private authService: AuthService
   ) {}
-  
+
   getTopOfferings(): Observable<HomeOffering[]> {
     const user = this.authService.getUser();
 
@@ -49,14 +49,13 @@ export class OfferingService {
           totalPages: page.totalPages,
         }))
       );
+  }
 
   getFilteredOfferings(
     filterParams: OfferingFilterParams
   ): Observable<HomeOffering[]> {
-     return this.httpClient
-      .get<Page<HomeOffering>>('http://localhost:8080/api/offerings/top', {
-        params,
-      })
+    return this.httpClient
+      .get<Page<HomeOffering>>('http://localhost:8080/api/offerings/')
       .pipe(map((page) => page.content));
   }
 }
