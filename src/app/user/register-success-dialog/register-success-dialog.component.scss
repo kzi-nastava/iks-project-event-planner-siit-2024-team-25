@@ -1,0 +1,55 @@
+@use '@angular/material' as mat;
+@use '../../../theme/m3-theme.scss' as theme;
+
+$primary: mat.get-theme-color(theme.$light-theme, primary);
+
+.dialog-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+
+  .dialog-content {
+    max-width: 400px;
+    width: 100%;
+
+    .success-icon {
+      font-size: 4rem;
+      color: #4caf50;
+      margin-bottom: 1rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .verification-message {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+
+      strong {
+        color: $primary;
+      }
+    }
+
+    .mat-mdc-dialog-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+
+      .action-button {
+        min-width: 120px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+}

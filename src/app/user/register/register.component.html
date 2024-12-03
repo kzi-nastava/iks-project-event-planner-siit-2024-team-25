@@ -8,14 +8,14 @@
     <div class="role-selector">
       <mat-button-toggle-group
         [(ngModel)]="selectedRole"
-        name="roleSelector"
         [hideSingleSelectionIndicator]="true"
+        name="roleSelector"
       >
-        <mat-button-toggle value="organizer">
+        <mat-button-toggle value="EVENT_ORGANIZER">
           <mat-icon>event</mat-icon>
           Event Organizer
         </mat-button-toggle>
-        <mat-button-toggle value="owner">
+        <mat-button-toggle value="OWNER">
           <mat-icon>business</mat-icon>
           Service Provider
         </mat-button-toggle>
@@ -23,30 +23,31 @@
     </div>
 
     <div class="content">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <form (ngSubmit)="onSubmit()" [formGroup]="form">
         <div class="form-sections">
           <div class="left-section">
             <div>
               <mat-form-field appearance="outline" class="primary">
                 <mat-label>Email</mat-label>
-                <input matInput formControlName="email" type="email" required>
+                <input formControlName="email" matInput required type="email">
                 <mat-error *ngIf="form.get('email')?.invalid">
                   Please enter a valid email
                 </mat-error>
               </mat-form-field>
 
+
               <mat-form-field appearance="outline" class="primary">
                 <mat-label>Password</mat-label>
                 <input
-                  matInput
-                  formControlName="password"
                   [type]="hidePassword ? 'password' : 'text'"
+                  formControlName="password"
+                  matInput
                   required>
                 <button
-                  type="button"
+                  (click)="togglePasswordVisibility('password')"
                   mat-icon-button
                   matSuffix
-                  (click)="togglePasswordVisibility('password')">
+                  type="button">
                   <mat-icon>
                     {{ hidePassword ? 'visibility_off' : 'visibility' }}
                   </mat-icon>
@@ -59,15 +60,15 @@
               <mat-form-field appearance="outline" class="primary">
                 <mat-label>Confirm Password</mat-label>
                 <input
-                  matInput
-                  formControlName="confirmPassword"
                   [type]="hideConfirmPassword ? 'password' : 'text'"
+                  formControlName="confirmPassword"
+                  matInput
                   required>
                 <button
-                  type="button"
+                  (click)="togglePasswordVisibility('confirmPassword')"
                   mat-icon-button
                   matSuffix
-                  (click)="togglePasswordVisibility('confirmPassword')">
+                  type="button">
                   <mat-icon>
                     {{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}
                   </mat-icon>
@@ -79,20 +80,20 @@
 
               <mat-form-field appearance="outline" class="primary">
                 <mat-label>First Name</mat-label>
-                <input matInput formControlName="firstName" required>
+                <input formControlName="firstName" matInput required>
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="primary">
                 <mat-label>Last Name</mat-label>
-                <input matInput formControlName="lastName" required>
+                <input formControlName="lastName" matInput required>
               </mat-form-field>
 
               <div class="file-upload">
                 <label>Profile Picture</label>
                 <app-image-upload
-                  [multiple]="false"
-                  [maxFileSize]="2000000"
                   (imagesChanged)="onProfilePictureSelected($event)"
+                  [maxFileSize]="2000000"
+                  [multiple]="false"
                 />
               </div>
             </div>
@@ -101,33 +102,33 @@
           <div class="vertical-divider"></div>
 
           <div class="right-section">
-            <ng-container *ngIf="selectedRole === 'organizer'">
+            <ng-container *ngIf="selectedRole === 'EVENT_ORGANIZER'">
               <div formGroupName="eventOrganizerFields">
                 <mat-form-field appearance="outline" class="primary">
                   <mat-label>Country</mat-label>
-                  <input matInput formControlName="country">
+                  <input formControlName="country" matInput>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="primary">
                   <mat-label>City</mat-label>
-                  <input matInput formControlName="city">
+                  <input formControlName="city" matInput>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="primary">
                   <mat-label>Address</mat-label>
-                  <input matInput formControlName="address">
+                  <input formControlName="address" matInput>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="primary">
                   <mat-label>Phone Number</mat-label>
                   <ngx-mat-input-tel
-                    [preferredCountries]="['rs']"
+                    #phone
                     [enablePlaceholder]="true"
                     [enableSearch]="true"
-                    name="phoneNumber"
+                    [preferredCountries]="['rs']"
                     autocomplete="tel"
                     formControlName="phoneNumber"
-                    #phone
+                    name="phoneNumber"
                   />
                   <mat-hint>e.g. {{ phone.selectedCountry.placeHolder }}</mat-hint>
                   <mat-error *ngIf="form.get('phoneNumber')?.invalid">
@@ -138,38 +139,38 @@
               </div>
             </ng-container>
 
-            <ng-container *ngIf="selectedRole === 'owner'">
+            <ng-container *ngIf="selectedRole === 'OWNER'">
               <div formGroupName="ownerFields">
                 <mat-form-field appearance="outline" class="primary">
                   <mat-label>Company Name</mat-label>
-                  <input matInput formControlName="companyName">
+                  <input formControlName="companyName" matInput>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="primary">
                   <mat-label>Country</mat-label>
-                  <input matInput formControlName="country">
+                  <input formControlName="country" matInput>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="primary">
                   <mat-label>City</mat-label>
-                  <input matInput formControlName="city">
+                  <input formControlName="city" matInput>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="primary">
                   <mat-label>Company Address</mat-label>
-                  <input matInput formControlName="address">
+                  <input formControlName="address" matInput>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="primary">
                   <mat-label>Contact Phone</mat-label>
                   <ngx-mat-input-tel
-                    [preferredCountries]="['rs']"
+                    #phone
                     [enablePlaceholder]="true"
                     [enableSearch]="true"
-                    name="contactPhone"
+                    [preferredCountries]="['rs']"
                     autocomplete="tel"
                     formControlName="contactPhone"
-                    #phone
+                    name="contactPhone"
                   />
                   <mat-hint>e.g. {{ phone.selectedCountry.placeHolder }}</mat-hint>
                   <mat-error *ngIf="form.get('contactPhone')?.invalid">
@@ -179,15 +180,15 @@
 
                 <mat-form-field appearance="outline" class="primary">
                   <mat-label>Description</mat-label>
-                  <textarea matInput formControlName="description" rows="4"></textarea>
+                  <textarea formControlName="description" matInput rows="4"></textarea>
                 </mat-form-field>
 
                 <div class="file-upload">
                   <label>Pictures (optional)</label>
                   <app-image-upload
-                    [multiple]="true"
-                    [maxFileSize]="2000000"
                     (imagesChanged)="onCompanyPicturesSelected($event)"
+                    [maxFileSize]="2000000"
+                    [multiple]="true"
                   />
                 </div>
               </div>
@@ -197,14 +198,14 @@
 
         <div class="actions">
           <button
-            mat-flat-button
-            class="primary"
-            type="submit"
             [disabled]="form.invalid"
+            class="primary"
+            mat-flat-button
+            type="submit"
           >
             Register
           </button>
-          <a mat-button class="secondary" routerLink="/user/login">
+          <a class="secondary" mat-button routerLink="/user/login">
             Already have an account? Login
           </a>
         </div>
