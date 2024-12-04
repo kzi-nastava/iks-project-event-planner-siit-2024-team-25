@@ -6,6 +6,7 @@ import { map, Observable, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environment/environment';
 import { Page } from '../../shared/model/page.mode';
+import { ServiceCreateDTO } from './model/serviceCreateDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -193,15 +194,9 @@ export class OfferingServiceService {
     }
   }
 
-  addService(s: Service|undefined): Observable<Service> {
-    if(s != null){
-      if (this.services.push(s)) {
-        console.log('Service you created: ');
-        console.log(s);
-      }
-    }
-    
-    return of();
+  addService(s: ServiceCreateDTO): Observable<Service> {
+    console.log(s)
+    return this.httpClinet.post<Service>("http://localhost:8080/api/services",s)
   }
 
   updateService(updatedService: Service|undefined): Observable<Service> {
