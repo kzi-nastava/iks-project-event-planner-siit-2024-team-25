@@ -2,14 +2,17 @@ import { Injectable } from '@angular/core';
 import { Service } from './model/service';
 import { Offeringtype } from './model/offering.type.enum';
 import { ReservationType } from './model/reservation.type.enum';
-import { Observable, of, throwError } from 'rxjs';
+import { map, Observable, of, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environment/environment';
+import { Page } from '../../shared/model/page.mode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OfferingServiceService {
 
-  constructor() { }
+  constructor(private httpClinet: HttpClient) { }
 
   services: Service[] = [
     {
@@ -176,48 +179,17 @@ export class OfferingServiceService {
 
 
   getAll(): Observable<Service[]> {
-    return of(this.services);
+    return this.httpClinet
+    .get<Page<Service>>("http://localhost:8080/api/services")
+    .pipe(map((page) => page.content));
   }
-
-  /*getServiceById(id: number) : Service | undefined{
-    return this.services.find(service => service.id === id);
-  }
-
-  addService(s : Service | undefined): Service|null{
-    if(s!=null){
-      if(this.services.push(s)){
-        console.log('Service you created: ');
-        console.log(s);
-        return s;
-      }
-    }
-    
-    return null;
-  }
-
-  updateService(updatedService: Service| undefined):Service|null{
-    if(updatedService!=null){
-      const index = this.services.findIndex(service => service.id === updatedService.id);
-    
-      if (index !== -1) {
-        this.services[index] = updatedService;
-        console.log('Service you updated: ') ;
-        console.log(updatedService);
-        return updatedService;
-      } else {
-        return null;
-      }
-    }
-    return null;
-    
-  } */
 
   getServiceById(id: number): Observable<Service> {
     const s = this.services.find(service => service.id === id);
     if (s) {
-      return of(s); // Vraća Observable sa pronađenim servisom
+      return of(s); 
     } else {
-      return throwError(() => new Error(`Service with ID ${id} not found`)); // Greška ako nije pronađen
+      return throwError(() => new Error(`Service with ID ${id} not found`)); 
     }
   }
 

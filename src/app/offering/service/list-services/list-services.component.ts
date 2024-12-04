@@ -14,7 +14,6 @@ import { MatPaginator } from '@angular/material/paginator';
 export class ListServicesComponent implements OnInit {
 
   services: Service[] = [];
-  filteredServices: Service[] = [];
   clickedService: String = "";
   isFilter: boolean = false;
   options: string[] = ['One', 'Two', 'Three'];
@@ -23,7 +22,6 @@ export class ListServicesComponent implements OnInit {
   
     ngOnInit(): void {
       this.getAll();
-      console.log(this.services)
     }
   
     getAll():void{
@@ -35,7 +33,6 @@ export class ListServicesComponent implements OnInit {
           console.log("Greska!")
         }
       })
-      this.filteredServices = [...this.services];
     }
 
   onServiceClicked(s: Service) {
@@ -45,9 +42,9 @@ export class ListServicesComponent implements OnInit {
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
     const query = input.value || '';
-    this.filteredServices = this.services.filter(service =>
+    /*this.services = this.services.filter(service =>
       service.name.toLowerCase().includes(query.toLowerCase())
-    );
+    );*/
   }
 
   clickFilter() {
