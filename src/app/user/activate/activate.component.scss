@@ -1,0 +1,118 @@
+@use '@angular/material' as mat;
+@use '../../../theme/m3-theme.scss' as theme;
+
+$primary: mat.get-theme-color(theme.$light-theme, primary);
+$on-primary: mat.get-theme-color(theme.$light-theme, on-primary);
+
+.verification-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f4f8;
+  padding: 1rem;
+}
+
+.card {
+  background-color: #303C6C29;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .header {
+    background-color: $primary;
+    color: $on-primary;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    display: block;
+
+    h1, h2 {
+      font-family: REM, sans-serif;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+  }
+
+  .content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  width: 100%;
+
+  .spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100%;
+  }
+
+  .status-text {
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0;
+  }
+
+  &.success {
+    color: #4CAF50;
+  }
+
+  &.error {
+    color: #F44336;
+  }
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+.status-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+.success-icon {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+}
+
+.error-icon {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #F44336;
+}
+
+// Responsive adjustments
+@media (max-width: 600px) {
+  .verification-container {
+    padding: 1rem;
+    background-color: transparent;
+  }
+
+  .card {
+    width: 100%;
+    box-shadow: none;
+    background-color: transparent;
+  }
+}

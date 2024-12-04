@@ -8,9 +8,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 import { confirmPasswordValidator } from '../../infrastructure/validators/confirmPasswordValidator';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { RegisterRequest } from '../model/register.request.model';
+import { RegisterResponse } from '../model/register.response.model';
 import { RegisterSuccessDialogComponent } from '../register-success-dialog/register-success-dialog.component';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +23,7 @@ import { RegisterSuccessDialogComponent } from '../register-success-dialog/regis
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent implements OnInit {
-  selectedRole: 'organizer' | 'owner' = 'organizer';
+  selectedRole: 'EVENT_ORGANIZER' | 'OWNER' = 'EVENT_ORGANIZER';
   form!: FormGroup;
   hidePassword = true;
   hideConfirmPassword = true;
@@ -29,6 +34,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
+    private userService: UserService,
+    private toastService: ToastrService,
   ) {}
 
   ngOnInit() {
@@ -43,18 +50,18 @@ export class RegisterComponent implements OnInit {
 
         // Role Specific Fields
         eventOrganizerFields: this.fb.group({
-          country: ['', [this.requiredForRole('organizer')]],
-          city: ['', [this.requiredForRole('organizer')]],
-          address: ['', [this.requiredForRole('organizer')]],
-          phoneNumber: [null, [this.requiredForRole('organizer')]],
+          country: ['', [this.requiredForRole('EVENT_ORGANIZER')]],
+          city: ['', [this.requiredForRole('EVENT_ORGANIZER')]],
+          address: ['', [this.requiredForRole('EVENT_ORGANIZER')]],
+          phoneNumber: [null, [this.requiredForRole('EVENT_ORGANIZER')]],
         }),
 
         ownerFields: this.fb.group({
-          companyName: ['', [this.requiredForRole('owner')]],
-          country: ['', [this.requiredForRole('owner')]],
-          city: ['', [this.requiredForRole('owner')]],
-          address: ['', [this.requiredForRole('owner')]],
-          contactPhone: ['', [this.requiredForRole('owner')]],
+          companyName: ['', [this.requiredForRole('OWNER')]],
+          country: ['', [this.requiredForRole('OWNER')]],
+          city: ['', [this.requiredForRole('OWNER')]],
+          address: ['', [this.requiredForRole('OWNER')]],
+          contactPhone: ['', [this.requiredForRole('OWNER')]],
           description: [''],
           companyPictures: [null],
         }),
@@ -65,7 +72,7 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  private requiredForRole(role: 'organizer' | 'owner'): ValidatorFn {
+  private requiredForRole(role: 'EVENT_ORGANIZER' | 'OWNER'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
 
@@ -103,12 +110,66 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      const email = this.form.get('email')?.value;
-      console.log(email);
-      this.form.reset();
-      this.dialog.open(RegisterSuccessDialogComponent, {
-        width: '400px',
-        data: { email },
+      this.waitingResponse = true;
+
+      const formValues = this.form.value;
+
+      const registerRequest: RegisterRequest = {
+        email: formValues.email,
+        password: formValues.password,
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
+        profilePicture: this.profilePicture,
+        userRole: this.selectedRole,
+        ...(this.selectedRole === 'OWNER' && {
+          ownerFields: {
+            companyName: formValues.ownerFields.companyName,
+            companyAddress: {
+              country: formValues.ownerFields.country,
+              city: formValues.ownerFields.city,
+              address: formValues.ownerFields.address,
+            },
+            contactPhone: formValues.ownerFields.contactPhone,
+            description: formValues.ownerFields.description,
+            companyPictures: this.companyPictures,
+          },
+        }),
+        ...(this.selectedRole === 'EVENT_ORGANIZER' && {
+          eventOrganizerFields: {
+            livingAddress: {
+              country: formValues.eventOrganizerFields.country,
+              city: formValues.eventOrganizerFields.city,
+              address: formValues.eventOrganizerFields.address,
+            },
+            phoneNumber: formValues.eventOrganizerFields.phoneNumber,
+          },
+        }),
+      };
+
+      this.userService.register(registerRequest).subscribe({
+        next: (registerResponse: RegisterResponse) => {
+          this.waitingResponse = false;
+          this.form.reset();
+          this.dialog.open(RegisterSuccessDialogComponent, {
+            width: '480px',
+            data: registerResponse,
+          });
+        },
+        error: (error: ErrorResponse) => {
+          this.waitingResponse = false;
+          this.toastService.error(error.message, 'Failed to register');
+
+          console.log(error);
+
+          if (error.errors) {
+            Object.keys(error.errors).forEach((fieldName) => {
+              const control = this.form.get(fieldName);
+              if (control) {
+                control.setErrors({ serverError: error.errors[fieldName] });
+              }
+            });
+          }
+        },
       });
     }
   }
