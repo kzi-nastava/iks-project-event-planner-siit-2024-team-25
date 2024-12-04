@@ -82,6 +82,7 @@ export class ListServicesComponent implements OnInit {
     this.nameFilter = "";
     this.availableFilter = false;
     this.refreshProperites();
+    this.getAll()
   }
 
   clickFilter() {
