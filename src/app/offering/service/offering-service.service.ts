@@ -3,7 +3,7 @@ import { Service } from './model/service';
 import { Offeringtype } from './model/offering.type.enum';
 import { ReservationType } from './model/reservation.type.enum';
 import { map, Observable, of, throwError } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environment/environment';
 import { Page } from '../../shared/model/page.mode';
 import { ServiceCreateDTO } from './model/serviceCreateDTO';
@@ -179,9 +179,22 @@ export class OfferingServiceService {
   ];
 
 
-  getAll(): Observable<Service[]> {
+  getAll(properties: any): Observable<Service[]> {
+    let params = new HttpParams();
+    if(properties){
+      if(properties.name != ""){
+        params = params.set('name', properties.name)
+      }
+      if(properties.price > 0){
+        params = params.set('price', properties.price)
+      }
+      if(properties.availableFilter){
+        params = params.set('available', properties.available)
+      }
+    }
+    console.log(params)
     return this.httpClinet
-    .get<Page<Service>>("http://localhost:8080/api/services")
+    .get<Page<Service>>("http://localhost:8080/api/services",{ params: params})
     .pipe(map((page) => page.content));
   }
 
