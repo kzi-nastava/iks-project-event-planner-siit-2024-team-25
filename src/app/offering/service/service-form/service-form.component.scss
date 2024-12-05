@@ -10,12 +10,18 @@
   display: inline-block;
 }
 
+.error-message {
+  color: #f44336;
+  font-size: 0.875rem;
+}
+
 .form-container {
   display: flex;
   flex-direction: row;  
   align-items: center;  
   justify-content: center;  
   gap: 20px;  
+  margin-bottom: 2rem;
 }
 
   .fab-button {

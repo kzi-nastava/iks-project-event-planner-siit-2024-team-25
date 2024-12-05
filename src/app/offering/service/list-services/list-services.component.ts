@@ -13,31 +13,45 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class ListServicesComponent implements OnInit {
 
+  pageProperties = {
+    name: "",
+    price: 0,
+    availableFilter: false,
+    available: false
+  }
+
   services: Service[] = [];
-  filteredServices: Service[] = [];
   clickedService: String = "";
   isFilter: boolean = false;
   options: string[] = ['One', 'Two', 'Three'];
-  
-    constructor(private serviceManage: OfferingServiceService, private router: Router) { }
-  
-    ngOnInit(): void {
-      this.getAll();
-      console.log(this.services)
-    }
-  
-    getAll():void{
-      this.serviceManage.getAll().subscribe({
-        next: (services: Service[]) => {
-          this.services = services;
-        },
-        error: (_) => {
-          console.log("Greska!")
-        }
-      })
-      this.filteredServices = [...this.services];
-    }
 
+  nameFilter: string = "";
+  priceFIlter: number = 0;
+  availableFilter: boolean = false;
+  setAvailableFilter(){
+    this.pageProperties.availableFilter = true;
+  }
+
+  constructor(private serviceManage: OfferingServiceService, private router: Router) { }
+
+  ngOnInit(): void {
+    this.getAll();
+  }
+
+  getAll(): void {
+    this.serviceManage.getAll(this.pageProperties).subscribe({
+      next: (services: Service[]) => {
+        this.services = services;
+        this.refreshProperites()
+      },
+      error: (_) => {
+        console.log("Greska!")
+        this.refreshProperites()
+      }
+    })
+  }
+
+  // get details service page
   onServiceClicked(s: Service) {
     this.clickedService = s.name;
   }
@@ -45,16 +59,37 @@ export class ListServicesComponent implements OnInit {
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
     const query = input.value || '';
-    this.filteredServices = this.services.filter(service =>
-      service.name.toLowerCase().includes(query.toLowerCase())
-    );
+    this.pageProperties.name = query
+    this.getAll();
+  }
+
+  searchAndFilter(){
+    this.pageProperties.name = this.nameFilter.toLocaleLowerCase();
+    this.pageProperties.price = this.priceFIlter;
+    this.pageProperties.available = this.availableFilter;
+    this.getAll();
+  }
+
+  refreshProperites(){
+    this.pageProperties.name = "";
+    this.pageProperties.price = 0;
+    this.pageProperties.availableFilter = false;
+    this.pageProperties.available = false
+  }
+
+  cancelFilter(){
+    this.priceFIlter = 0;
+    this.nameFilter = "";
+    this.availableFilter = false;
+    this.refreshProperites();
+    this.getAll()
   }
 
   clickFilter() {
     this.isFilter = !this.isFilter;
   }
 
-  goToCreateService(){
+  goToCreateService() {
     this.router.navigate(['/service/serviceForm'])
   }
 }

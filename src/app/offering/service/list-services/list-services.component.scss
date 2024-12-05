@@ -5,10 +5,10 @@
 
 .form-container {
   display: flex;
-  flex-direction: row;  /* Vertikalni raspored elemenata */
-  align-items: center;  /* Centriranje elemenata horizontalno */
-  justify-content: center;  /* Centriranje elemenata vertikalno */
-  gap: 20px;  /* Razmak između svakog mat-form-field elementa */
+  flex-direction: row;  
+  align-items: center;  
+  justify-content: center;  
+  gap: 20px;  
 }
   
 .example-search-bar {
