@@ -1,0 +1,65 @@
+@use '@angular/material' as mat;
+@use '../../../theme/m3-theme.scss' as theme;
+
+.event-type-container {
+  max-width: 900px;
+  margin: 2rem auto;
+
+  mat-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+
+    mat-card-header {
+      margin-bottom: 1rem;
+      background-color: mat.get-theme-color(theme.$light-theme, primary);
+      color: white;
+      padding: 1rem;
+      border-radius: 12px 12px 0 0;
+
+      mat-card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: white;
+      }
+
+      mat-card-subtitle {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+
+    mat-table {
+      width: 100%;
+
+      mat-header-cell {
+        font-weight: bold;
+        color: mat.get-theme-color(theme.$light-theme, primary);
+      }
+
+      mat-cell {
+        padding: 0.5rem;
+      }
+
+      mat-header-row {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+
+      mat-row:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+        transition: background-color 0.3s ease;
+      }
+    }
+  }
+
+  .mat-mdc-button.primary {
+    background-color: mat.get-theme-color(theme.$light-theme, primary);
+    color: white;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken(mat.get-theme-color(theme.$light-theme, primary), 10%);
+    }
+  }
+}

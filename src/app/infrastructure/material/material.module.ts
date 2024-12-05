@@ -22,6 +22,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSlider, MatSliderModule } from '@angular/material/slider';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
@@ -57,6 +58,7 @@ const components = [
   MatGridListModule,
   NgxMaterialTimepickerModule,
   MatProgressSpinnerModule,
+  MatTableModule,
 ];
 
 @NgModule({

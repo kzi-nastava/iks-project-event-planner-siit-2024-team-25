@@ -1,12 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeTopEventsComponent } from './home-top-events/home-top-events.component';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { MaterialModule } from '../infrastructure/material/material.module';
+import { OfferingModule } from '../offering/offering.module';
+import { EventRoutingModule } from './event-routing.module';
+import { EventTypeListComponent } from './event-type-list/event-type-list.component';
+import { EventTypeComponent } from './event-type/event-type.component';
 import { HomeAllEventsComponent } from './home-all-events/home-all-events.component';
 import { HomeEventCardComponent } from './home-event-card/home-event-card.component';
-import { OfferingModule } from '../offering/offering.module';
 import { HomeEventFilterComponent } from './home-event-filter/home-event-filter.component';
-import { FormsModule } from '@angular/forms';
+import { HomeTopEventsComponent } from './home-top-events/home-top-events.component';
 
 @NgModule({
   declarations: [
@@ -14,8 +18,17 @@ import { FormsModule } from '@angular/forms';
     HomeAllEventsComponent,
     HomeEventCardComponent,
     HomeEventFilterComponent,
+    EventTypeComponent,
+    EventTypeListComponent,
   ],
-  imports: [CommonModule, MaterialModule, OfferingModule, FormsModule],
+  imports: [
+    CommonModule,
+    EventRoutingModule,
+    MaterialModule,
+    OfferingModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   exports: [HomeTopEventsComponent, HomeAllEventsComponent],
 })
 export class EventModule {}
