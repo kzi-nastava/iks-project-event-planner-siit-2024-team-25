@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { HomeEventFilterParams } from '../model/home-event-filter-param.model';
-import { DatePipe } from '@angular/common';
+import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
+import { EventTypeService } from '../service/event-type.service';
+import { EventTypePreviewModel } from '../model/event.type.preview.model';
 
 @Component({
   selector: 'app-home-event-filter',
@@ -8,7 +9,7 @@ import { DatePipe } from '@angular/common';
   styleUrl: './home-event-filter.component.scss',
 })
 export class HomeEventFilterComponent implements OnInit {
-  constructor(private datePipe: DatePipe) {}
+  constructor(private eventTypeService: EventTypeService) {}
 
   @Output()
   clicked: EventEmitter<HomeEventFilterParams> =
@@ -24,8 +25,15 @@ export class HomeEventFilterComponent implements OnInit {
   sortDirectionsMap?: Map<string, string>;
   sortBy: { display: string; value: string }[] = [];
   sortDirection: { display: string; value: string }[] = [];
+  eventTypes?: EventTypePreviewModel[] = [];
 
   ngOnInit(): void {
+    this.eventTypeService.getAllEventTypes().subscribe({
+      next: (eventTypes: EventTypePreviewModel[]) => {
+        this.eventTypes = eventTypes;
+      },
+    });
+
     this.today = new Date();
     this.isAvtive = false;
     this.filterParams = {};

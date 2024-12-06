@@ -11,7 +11,6 @@ import { MaterialModule } from './infrastructure/material/material.module';
 import { LayoutModule } from './layout/layout.module';
 import { OfferingModule } from './offering/offering.module';
 import { provideHttpClient } from '@angular/common/http';
-import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -24,12 +23,7 @@ import { DatePipe } from '@angular/common';
     OfferingModule,
   ],
 
-  providers: [
-    provideAnimationsAsync(),
-    provideToastr(),
-    provideHttpClient(),
-    DatePipe,
-  ],
+  providers: [provideAnimationsAsync(), provideToastr(), provideHttpClient()],
 
   bootstrap: [AppComponent],
 })

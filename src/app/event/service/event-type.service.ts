@@ -5,6 +5,7 @@ import { EventType } from '../model/event.type.model';
 import { environment } from '../../../environment/environment';
 import { ErrorResponse } from '../../shared/model/error.response.model';
 import { OfferingCategory } from '../model/offering-category.model';
+import { EventTypePreviewModel } from '../model/event.type.preview.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,14 @@ export class EventTypeService {
   getEventTypes(): Observable<EventType[]> {
     return this.httpClient
       .get<EventType[]>(environment.apiHost + '/api/event-types')
+      .pipe(catchError(this.handleError));
+  }
+
+  getAllEventTypes(): Observable<EventTypePreviewModel[]> {
+    return this.httpClient
+      .get<EventTypePreviewModel[]>(
+        environment.apiHost + '/api/event-types/all'
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -43,7 +52,7 @@ export class EventTypeService {
           description: eventType.description,
           isActive: eventType.isActive,
           categories: eventType.categories,
-        },
+        }
       )
       .pipe(catchError(this.handleError));
   }
@@ -73,7 +82,7 @@ export class EventTypeService {
           code: error.status,
           message: errorResponse?.message ?? error.message,
           errors: errorResponse?.errors,
-        }) as ErrorResponse,
+        } as ErrorResponse)
     );
   }
 }

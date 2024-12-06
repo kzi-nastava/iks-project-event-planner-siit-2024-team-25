@@ -16,7 +16,11 @@
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
       <mat-label>Event type</mat-label>
-      <mat-select [(ngModel)]="filterParams!.eventType"> </mat-select>
+      <mat-select [(ngModel)]="filterParams!.eventTypeId">
+        <mat-option *ngFor="let type of eventTypes" [value]="type.id">
+          {{ type.name }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </mat-grid-tile>
 

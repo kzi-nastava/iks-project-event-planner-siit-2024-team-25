@@ -11,7 +11,7 @@ export interface HomeEventFilterParams {
   endTime?: string;
   sortBy?: string;
   sortDirection?: string;
-  eventType?: string;
+  eventTypeId?: number;
   country?: string;
   city?: string;
 }

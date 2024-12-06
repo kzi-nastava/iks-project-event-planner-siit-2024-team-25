@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HomeEvent } from '../model/home-event.model';
 import { map, Observable, of } from 'rxjs';
-import { HomeEventFilterParams } from '../model/home-event-filter-param.model';
+import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Page } from '../../shared/model/page.mode';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
@@ -42,7 +42,6 @@ export class EventService {
         }
       });
 
-      // Handling date fields with datePipe transformation
       if (filterParams.startDate) {
         params = params.set(
           'startDate',
@@ -59,10 +58,6 @@ export class EventService {
     }
 
     return params;
-  }
-
-  private formatTime(time: Date): string {
-    return '';
   }
 
   getEvents(
