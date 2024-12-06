@@ -1,15 +1,16 @@
 import { Time } from '@angular/common';
 
 export interface HomeEventFilterParams {
-  name?: string;
-  description?: string;
+  [key: string]: any;
+  nameContains?: string;
+  descriptionContains?: string;
   maxParticipants?: string;
   startDate?: Date;
-  startTime?: Time;
+  startTime?: string;
   endDate?: Date;
-  endTime?: Time;
-  sortCategory?: string;
-  sortType?: string;
+  endTime?: string;
+  sortBy?: string;
+  sortDirection?: string;
   eventType?: string;
   country?: string;
   city?: string;

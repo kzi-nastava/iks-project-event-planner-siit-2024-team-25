@@ -14,6 +14,7 @@ export class HomeAllEventsComponent implements OnInit {
   currentEvents: HomeEvent[] = [];
   currentPage: number = 0;
   totalPages: number = 1;
+  filterParams?: HomeEventFilterParams;
 
   constructor(private datePipe: DatePipe, private eventService: EventService) {}
 
@@ -22,15 +23,16 @@ export class HomeAllEventsComponent implements OnInit {
   }
 
   filterEvents(filterParams: HomeEventFilterParams): void {
-    this.eventService.getFilteredEvents(filterParams).subscribe({
-      next: (allEvents: HomeEvent[]) => {
-        this.currentEvents = allEvents;
-      },
-    });
+    this.filterParams = filterParams;
+    this.currentPage = 0;
+    this.getEvents(this.currentPage, filterParams);
   }
 
-  private getEvents(currentPage: number) {
-    this.eventService.getEvents(currentPage).subscribe({
+  private getEvents(
+    currentPage: number,
+    filterParams?: HomeEventFilterParams
+  ): void {
+    this.eventService.getEvents(currentPage, this.filterParams).subscribe({
       next: ({ currentEvents, totalPages }) => {
         this.currentEvents = currentEvents;
         this.totalPages = totalPages;
@@ -45,17 +47,17 @@ export class HomeAllEventsComponent implements OnInit {
     event.isLiked = !event.isLiked;
   }
 
-  getNextPage() {
-    if (this.currentPage < this.totalPages - 1) {
-      this.currentPage++;
-      this.getEvents(this.currentPage);
+  getPreviousPage(): void {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.getEvents(this.currentPage, this.filterParams);
     }
   }
 
-  getPreviousPage() {
-    if (this.currentPage > 0) {
-      this.currentPage--;
-      this.getEvents(this.currentPage);
+  getNextPage(): void {
+    if (this.currentPage < this.totalPages - 1) {
+      this.currentPage++;
+      this.getEvents(this.currentPage, this.filterParams);
     }
   }
 }

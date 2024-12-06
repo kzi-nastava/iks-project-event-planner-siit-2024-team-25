@@ -1,6 +1,6 @@
 <mat-form-field class="search-bar" appearance="outline">
   <mat-label>Search</mat-label>
-  <input matInput [(ngModel)]="filterParams!.name" placeholder="Name" />
+  <input matInput [(ngModel)]="filterParams!.nameContains" placeholder="Name" />
   <button mat-icon-button matSuffix>
     <mat-icon (click)="searchEvents()">search</mat-icon>
   </button>
@@ -46,6 +46,7 @@
         [(ngModel)]="filterParams!.startTime"
         [ngxTimepicker]="pickerStart"
         placeholder="Select time"
+        [format]="24"
       />
       <ngx-material-timepicker #pickerStart></ngx-material-timepicker>
     </mat-form-field>
@@ -54,9 +55,9 @@
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
       <mat-label>Sort category</mat-label>
-      <mat-select [(ngModel)]="filterParams!.sortCategory">
-        <mat-option *ngFor="let category of sortCategories" [value]="category">
-          {{ category }}
+      <mat-select [(ngModel)]="filterParams!.sortBy">
+        <mat-option *ngFor="let category of sortBy" [value]="category.value">
+          {{ category.display }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -65,7 +66,11 @@
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
       <mat-label>Description</mat-label>
-      <input matInput [(ngModel)]="filterParams!.description" placeholder="" />
+      <input
+        matInput
+        [(ngModel)]="filterParams!.descriptionContains"
+        placeholder=""
+      />
     </mat-form-field>
   </mat-grid-tile>
 
@@ -105,6 +110,7 @@
         [(ngModel)]="filterParams!.endTime"
         [ngxTimepicker]="pickerEndTime"
         placeholder="Select time"
+        [format]="24"
       />
       <ngx-material-timepicker #pickerEndTime></ngx-material-timepicker>
     </mat-form-field>
@@ -113,9 +119,9 @@
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
       <mat-label>Sort type</mat-label>
-      <mat-select [(ngModel)]="filterParams!.sortType">
-        <mat-option *ngFor="let type of sortTypes" [value]="type">
-          {{ type }}
+      <mat-select [(ngModel)]="filterParams!.sortDirection">
+        <mat-option *ngFor="let type of sortDirection" [value]="type.value">
+          {{ type.display }}
         </mat-option>
       </mat-select>
     </mat-form-field>
