@@ -67,4 +67,9 @@ export class HomeEventFilterComponent implements OnInit {
   searchEvents(): void {
     this.clicked.emit(this.filterParams);
   }
+
+  refreshEventFilter() {
+    this.filterParams = {};
+    this.clicked.emit(this.filterParams);
+  }
 }
