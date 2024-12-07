@@ -22,6 +22,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./event/event.module').then((m) => m.EventModule),
   },
+  {
+    path: 'offering-category',
+    loadChildren: () =>
+      import('./offering/offering-category/offering-category.module').then((m) => m.OfferingCategoryModule),
+  }
 ];
 
 @NgModule({
