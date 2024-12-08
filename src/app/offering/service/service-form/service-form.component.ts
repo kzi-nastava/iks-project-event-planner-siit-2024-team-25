@@ -62,7 +62,7 @@ export class ServiceFormComponent {
   reservationTypeService: ReservationType = ReservationType.MANUAL;
   imagesService: string[] = [];
   eventTypesService: EventType[] = [];
-  categoryTypeService: OfferingCategory = { name: '' , description:"1", type:OfferingCategoryType.ACCEPTED, id:-1}
+  categoryTypeService: OfferingCategory = { name: '' , description:"1", status:OfferingCategoryType.ACCEPTED, id:-1}
 
   constructor(private router: Router, private _formBuilder: FormBuilder, private route: ActivatedRoute, public dialog: MatDialog, private serviceMenager: OfferingServiceService) {
   }
@@ -213,7 +213,7 @@ export class ServiceFormComponent {
       }
       this.eventTypesService = this.firstFormGroup.value.eventTypes.map(c => ({ name: c }));
     }
-    this.categoryTypeService = { name: this.firstFormGroup.value.categoryType, description:"1", type:OfferingCategoryType.ACCEPTED , id:-1};
+    this.categoryTypeService = { name: this.firstFormGroup.value.categoryType, description:"1", status:OfferingCategoryType.ACCEPTED , id:-1};
 
 
     if (this.reservationTypeString === 'Manual') {

@@ -4,5 +4,5 @@ export interface OfferingCategory {
     id: number
     name: string;
     description: string;
-    type: OfferingCategoryType
+    status: OfferingCategoryType
 }

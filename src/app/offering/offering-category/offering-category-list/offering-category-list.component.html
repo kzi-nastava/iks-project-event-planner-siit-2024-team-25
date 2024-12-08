@@ -1,10 +1,14 @@
-<div class="container">
+<div class="container" *ngIf="!isSubmitted">
   <h3>Offering categories</h3>
-  <button mat-button>View submitted categories</button>
+  <button mat-button (click)="swicthSubmitted(); getAllSubmitted()">View submitted offering categories</button>
+</div>
+<div class="container" *ngIf="isSubmitted">
+  <h3>Submitted offering categories</h3>
+  <button mat-button (click)="swicthSubmitted(); getAll()">View offering categories</button>
 </div>
 
 <div class="example-container mat-elevation-z8">
-    <mat-table #table [dataSource]="offeringCategories">
+    <mat-table #table [dataSource]="offeringCategories" *ngIf="!isSubmitted">
   
       <ng-container matColumnDef="position">
         <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
@@ -41,4 +45,37 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+
+    <mat-table #table [dataSource]="submittedOfferings" *ngIf="isSubmitted">
+
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="offering name">
+        <mat-header-cell *matHeaderCellDef> Offering name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.offeringName }} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="category name">
+        <mat-header-cell *matHeaderCellDef> Category name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.categoryName }} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="category description">
+        <mat-header-cell *matHeaderCellDef> Category description </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.description }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="approve">
+        <mat-header-cell *matHeaderCellDef> Approve </mat-header-cell>
+        <mat-cell *matCellDef="let element"> 
+          <button mat-icon-button (click)="onApprove(element.categoryId)">
+            <mat-icon>check</mat-icon>
+          </button>  
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedSubmittedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedSubmittedColumns;"></mat-row>
+    </mat-table>
+
   </div>

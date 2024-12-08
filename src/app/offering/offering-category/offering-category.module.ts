@@ -5,6 +5,7 @@ import { OfferingCategoryRoutingModule } from './offering-category-routing.modul
 import { MaterialModule } from '../../infrastructure/material/material.module';
 import { EditDialogComponent } from './dialogs/edit-dialog/edit-dialog.component';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
+import { ApproveDialogComponent } from './dialogs/approve-dialog/approve-dialog.component';
 
 
 
@@ -12,7 +13,8 @@ import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.com
   declarations: [
     OfferingCategoryListComponent,
     EditDialogComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    ApproveDialogComponent
   ],
   imports: [
     CommonModule,
