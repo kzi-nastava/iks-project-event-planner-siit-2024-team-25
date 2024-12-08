@@ -32,8 +32,8 @@ export class LoginService {
             country: 'Serbia',
             city: 'Novi Sad',
           };
-          this.authService.setUser(user);
           this.authService.setToken(response.jwt);
+          this.authService.setUser(user);
         }),
         catchError(this.handleError),
         map(() => void 0),
