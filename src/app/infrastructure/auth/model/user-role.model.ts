@@ -1,7 +1,7 @@
 export enum UserRole {
-  Regular,
-  EventOrganizer,
-  Owner,
-  Admin,
-  Unauthenticated,
+  Regular = 'REGULAR',
+  EventOrganizer = 'EVENT_ORGANIZER',
+  Owner = 'OWNER',
+  Admin = 'ADMIN',
+  Unauthenticated = 'UNAUTHENTICATED',
 }
