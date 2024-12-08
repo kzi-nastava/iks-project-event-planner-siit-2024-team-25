@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoginService } from '../service/login.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { LoginService } from '../service/login.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private loginService: LoginService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   get email() {
-    return this.form.get('name');
+    return this.form.get('email');
   }
 
   get password() {
@@ -52,8 +53,7 @@ export class LoginComponent implements OnInit {
             this.toastr.success("You've successfully logged in!", 'Success');
             this.router.navigate(['/']);
           },
-          error: (e) => {
-            const err = e as Error;
+          error: (err: ErrorResponse) => {
             this.toastr.error(err.message, 'Oops!');
           },
         });

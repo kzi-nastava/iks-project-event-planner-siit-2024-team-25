@@ -7,7 +7,8 @@ import { User } from '../model/user.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private user = new BehaviorSubject<User | null>(null);
+  private user = new BehaviorSubject<User | null>(this.getStoredUser());
+  private token = new BehaviorSubject<string | null>(this.getStoredToken());
 
   user$: Observable<User | null> = this.user.asObservable();
 
@@ -15,7 +16,7 @@ export class AuthService {
     map((user) => user !== null),
   );
 
-  userRole$: Observable<UserRole | null> = this.user$.pipe(
+  userRole$: Observable<UserRole> = this.user$.pipe(
     map((user) => user?.role ?? UserRole.Unauthenticated),
   );
 
@@ -24,10 +25,39 @@ export class AuthService {
   }
 
   setUser(user: User | null) {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
     this.user.next(user);
   }
 
+  private getStoredUser(): User | null {
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) return null;
+    return JSON.parse(storedUser);
+  }
+
+  getToken(): string | null {
+    return this.token.getValue();
+  }
+
+  setToken(token: string | null) {
+    if (token) {
+      localStorage.setItem('jwt', token);
+    } else {
+      localStorage.removeItem('jwt');
+    }
+    this.token.next(token);
+  }
+
+  private getStoredToken(): string | null {
+    return localStorage.getItem('jwt');
+  }
+
   logOut() {
-    this.user.next(null);
+    this.setUser(null);
+    this.setToken(null);
   }
 }

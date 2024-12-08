@@ -1,65 +1,59 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from '../../infrastructure/auth/service/auth.service';
-import { UserRole } from '../../infrastructure/auth/model/user-role.model';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { environment } from '../../../environment/environment';
 import { User } from '../../infrastructure/auth/model/user.model';
-import { catchError, delay, map, Observable, of, tap, throwError } from 'rxjs';
+import { AuthService } from '../../infrastructure/auth/service/auth.service';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { LoginResponse } from '../model/login.response.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private httpClient: HttpClient,
+  ) {}
 
   login(email: string, password: string): Observable<void> {
-    return this.simulateLoginRequest(email, password).pipe(
-      tap((user: User) => this.authService.setUser(user)),
-      catchError((err) => {
-        return throwError(() => new Error(err.message));
-      }),
-      map(() => void 0)
-    );
-  }
-
-  // TODO: make an actual server request
-  private simulateLoginRequest(
-    email: string,
-    password: string
-  ): Observable<User> {
-    try {
-      let user = this.getMockedUser(email, password);
-      return of(user).pipe(
-        delay(1000) // simulate network delay
+    return this.httpClient
+      .post<LoginResponse>(environment.apiHost + '/api/auth/login', {
+        email,
+        password,
+      })
+      .pipe(
+        tap((response) => {
+          const user: User = {
+            userId: response.userId,
+            email: response.email,
+            fullName: response.fullName,
+            role: response.role,
+            country: 'Serbia',
+            city: 'Novi Sad',
+          };
+          this.authService.setUser(user);
+          this.authService.setToken(response.jwt);
+        }),
+        catchError(this.handleError),
+        map(() => void 0),
       );
-    } catch (e) {
-      const err = e as Error;
-      return throwError(() => new Error(err.message));
-    }
   }
 
-  private getMockedUser(email: string, password: string): User {
-    let role = UserRole.Regular;
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorResponse: ErrorResponse | null = null;
 
-    switch (password) {
-      case 'organizer123':
-        role = UserRole.EventOrganizer;
-        break;
-      case 'owner123':
-        role = UserRole.Owner;
-        break;
-      case 'admin123':
-        role = UserRole.Admin;
-        break;
-      case 'error123':
-        throw new Error('Invalid credentials!');
+    if (error.error && typeof error.error === 'object') {
+      errorResponse = error.error as ErrorResponse;
     }
 
-    return {
-      userId: 1,
-      email,
-      fullName: 'John Doe',
-      role,
-      country: 'Serbia',
-      city: 'Novi Sad',
-    };
+    return throwError(
+      () =>
+        ({
+          code: error.status,
+          message: errorResponse?.message ?? error.message,
+          errors: errorResponse?.errors,
+        }) as ErrorResponse,
+    );
   }
 }
