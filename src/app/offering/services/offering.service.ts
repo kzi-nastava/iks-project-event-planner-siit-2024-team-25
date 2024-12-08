@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HomeOffering } from '../model/home-offering.model';
-import { map, Observable, of } from 'rxjs';
-import { OfferingFilterParams } from '../model/home-offering-filter-params-model';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { AuthService } from '../../infrastructure/auth/service/auth.service';
+import { Injectable } from '@angular/core';
+import { map, Observable, switchMap } from 'rxjs';
+import { AddressService } from '../../infrastructure/location/address.service';
+import { Location } from '../../infrastructure/location/location.model';
 import { Page } from '../../shared/model/page.mode';
+import { OfferingFilterParams } from '../model/home-offering-filter-params-model';
+import { HomeOffering } from '../model/home-offering.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,28 +13,30 @@ import { Page } from '../../shared/model/page.mode';
 export class OfferingService {
   constructor(
     private httpClient: HttpClient,
-    private authService: AuthService
+    private locationService: AddressService,
   ) {}
 
   getTopOfferings(): Observable<HomeOffering[]> {
-    const user = this.authService.getUser();
+    return this.locationService.address$.pipe(
+      switchMap((address: Location | null) => {
+        let params = new HttpParams();
 
-    let params = new HttpParams();
+        if (address) {
+          params = params.set('country', address.country ?? '');
+          params = params.set('city', address.city ?? '');
+        }
 
-    if (user) {
-      params = params.set('country', user.country ?? '');
-      params = params.set('city', user.city ?? '');
-    }
-
-    return this.httpClient
-      .get<Page<HomeOffering>>('http://localhost:8080/api/offerings/top', {
-        params,
-      })
-      .pipe(map((page) => page.content));
+        return this.httpClient
+          .get<Page<HomeOffering>>('http://localhost:8080/api/offerings/top', {
+            params,
+          })
+          .pipe(map((page) => page.content));
+      }),
+    );
   }
 
   getOfferings(
-    page: number
+    page: number,
   ): Observable<{ currentOfferings: HomeOffering[]; totalPages: number }> {
     let params = new HttpParams();
 
@@ -47,12 +50,12 @@ export class OfferingService {
         map((page) => ({
           currentOfferings: page.content,
           totalPages: page.totalPages,
-        }))
+        })),
       );
   }
 
   getFilteredOfferings(
-    filterParams: OfferingFilterParams
+    filterParams: OfferingFilterParams,
   ): Observable<HomeOffering[]> {
     return this.httpClient
       .get<Page<HomeOffering>>('http://localhost:8080/api/offerings/')
