@@ -12,7 +12,7 @@
   </mat-form-field>
 
   <p>
-    <mat-checkbox [(ngModel)]="disableSelect">Choose an created category</mat-checkbox>
+    <mat-checkbox [(ngModel)]="disableSelect">Choose already created category</mat-checkbox>
   </p>
   <p *ngIf="disableSelect">
     <mat-select placeholder="Choose an offering category" [(ngModel)]="selectedOfferingCategoryOptionId">

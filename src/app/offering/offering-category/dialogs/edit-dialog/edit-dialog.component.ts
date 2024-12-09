@@ -13,7 +13,10 @@ export class EditDialogComponent {
   ) {}
 
   onEdit(): void {
-    this.dialogRef.close(this.data.category);
+    if(this.data.category.name){
+      this.dialogRef.close(this.data.category);
+    }
+    
   }
 
   onCancel(): void {

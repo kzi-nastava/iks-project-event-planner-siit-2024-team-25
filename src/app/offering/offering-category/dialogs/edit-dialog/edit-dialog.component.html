@@ -4,8 +4,9 @@
     <mat-label>Category Name</mat-label>
     <input matInput placeholder="Enter category name" [(ngModel)]="data.category.name">
   </mat-form-field>
+  <mat-error *ngIf="!data.category.name">Name is required</mat-error>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" [mat-dialog-close]="data" (click)="onEdit()">Edit</button>
+  <button mat-raised-button color="primary" (click)="onEdit()">Edit</button>
 </mat-dialog-actions>

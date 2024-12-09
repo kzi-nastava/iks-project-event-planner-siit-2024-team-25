@@ -61,6 +61,7 @@ export class OfferingCategoryListComponent implements OnInit {
             category:cat,
           },
           width: '24rem',
+          disableClose: true
         });
   
         //observable objekat which will be activated after closing dialog

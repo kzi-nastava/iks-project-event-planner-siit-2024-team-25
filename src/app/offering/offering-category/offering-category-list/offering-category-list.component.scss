@@ -20,6 +20,10 @@
     font-weight: 500;
     white-space: nowrap;
   }
+  h4{
+    color: mat.get-theme-color(theme.$light-theme, primary);
+    margin-left: 3rem;
+  }
   .container {
     display: flex;
     justify-content:space-around;

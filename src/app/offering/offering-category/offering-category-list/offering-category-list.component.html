@@ -6,7 +6,8 @@
   <h3>Submitted offering categories</h3>
   <button mat-button (click)="swicthSubmitted(); getAll()">View offering categories</button>
 </div>
-
+<h4 *ngIf="submittedOfferings.length==0 && isSubmitted">There is no submitted categories</h4>
+<h4 *ngIf="offeringCategories.length==0 && !isSubmitted">There is no offering categories</h4>
 <div class="example-container mat-elevation-z8">
     <mat-table #table [dataSource]="offeringCategories" *ngIf="!isSubmitted">
   
