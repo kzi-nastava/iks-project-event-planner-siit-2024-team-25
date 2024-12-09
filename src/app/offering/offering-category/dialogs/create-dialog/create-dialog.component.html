@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Create category</h2>
+<mat-dialog-content>
+<form [formGroup]="offeringForm">
+    <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Category name</mat-label>
+        <input matInput placeholder="Enter category name" formControlName="name">
+    </mat-form-field>
+    <mat-error *ngIf="offeringForm.get('name')?.hasError('required')">Name is required</mat-error>
+
+    <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Category description</mat-label>
+        <input matInput placeholder="Enter category description" formControlName="description"/>
+    </mat-form-field>
+    <mat-error *ngIf="offeringForm.get('description')?.hasError('required')">Description is required</mat-error>
+</form>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onApprove()">Create</button>
+</mat-dialog-actions>

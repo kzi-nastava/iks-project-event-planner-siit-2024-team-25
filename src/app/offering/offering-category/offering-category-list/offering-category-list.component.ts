@@ -10,6 +10,7 @@ import { OfferingService } from '../../services/offering.service';
 import { SubmittedOffering } from '../model/submitted-offering';
 import { ApproveDialogComponent } from '../dialogs/approve-dialog/approve-dialog.component';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
+import { CreateDialogComponent } from '../dialogs/create-dialog/create-dialog.component';
 
 @Component({
   selector: 'app-offering-category-list',
@@ -111,6 +112,23 @@ export class OfferingCategoryListComponent implements OnInit {
               console.log("error")
             }
           })
+        }
+      },
+      error:(_) =>{
+        console.log("error")
+      }
+    })
+  }
+
+  onCreate(){
+    const dialogRef = this.dialog.open(CreateDialogComponent, {
+      width: '24rem'
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next:(check)=>{
+        if(check){
+          this.getAll();
         }
       },
       error:(_) =>{

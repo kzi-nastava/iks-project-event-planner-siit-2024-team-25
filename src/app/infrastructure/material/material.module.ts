@@ -10,7 +10,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogContent, MatDialogModule } from '@angular/material/dialog';
-import { MAT_ERROR, MatError, MatFormFieldModule } from '@angular/material/form-field';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -27,6 +27,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const components = [
   CommonModule,
@@ -62,6 +63,7 @@ const components = [
   MatTableModule,
   MatCheckbox,
   MatError,
+  ReactiveFormsModule
 ];
 
 @NgModule({
