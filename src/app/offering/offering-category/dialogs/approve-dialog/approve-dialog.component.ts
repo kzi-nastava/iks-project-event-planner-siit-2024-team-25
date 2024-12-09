@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OfferingCategory } from '../../model/offering-category';
 import { OfferingCategoryService } from '../../offering-category.service';
@@ -15,6 +15,8 @@ export class ApproveDialogComponent implements OnInit {
   selectedOfferingCategoryOptionId : number = -1
   offeringCategoryOption: OfferingCategory[] = []
 
+  nameCategory = new FormControl("", [Validators.required, Validators.minLength(3)])
+
   constructor(public dialogRef: MatDialogRef<any>,
     @Inject(MAT_DIALOG_DATA) public data: { submittedOffer:any }, private offeringCategoryService:OfferingCategoryService
   ) {}
@@ -26,6 +28,7 @@ export class ApproveDialogComponent implements OnInit {
     this.offeringCategoryService.getAll().subscribe({
       next:(offers:OfferingCategory[])=>{
         this.offeringCategoryOption = offers
+        this.selectedOfferingCategoryOptionId = offers[0].id
       },
       error: (_) => {
         console.log("error")
@@ -34,19 +37,23 @@ export class ApproveDialogComponent implements OnInit {
   }
 
   onApprove(): void {
-    if(this.disableSelect){
-      this.offeringCategoryService.getById(this.selectedOfferingCategoryOptionId).subscribe({
-        next: (value: OfferingCategory)=>{
-          console.log(value, "chose")
-          this.dialogRef.close(value)
-        },
-        error: (_)=>{
-          console.log("error")
-        }
-      })
+    if(this.data.submittedOffer.name){
+      if(this.disableSelect){
+        this.offeringCategoryService.getById(this.selectedOfferingCategoryOptionId).subscribe({
+          next: (value: OfferingCategory)=>{
+            this.dialogRef.close(value)
+          },
+          error: (_)=>{
+            console.log("error")
+          }
+        })
+      }else{
+        this.dialogRef.close(this.data.submittedOffer);
+      }
     }else{
-      this.dialogRef.close(this.data.submittedOffer);
+      return;
     }
+    
     
   }
 

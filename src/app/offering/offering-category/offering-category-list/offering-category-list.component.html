@@ -36,7 +36,7 @@
       <ng-container matColumnDef="delete">
         <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
         <mat-cell *matCellDef="let element"> 
-          <button mat-icon-button color="warn" >
+          <button mat-icon-button color="warn" (click)="onDelete(element.id, element.name)">
             <mat-icon>delete</mat-icon>
           </button>  
         </mat-cell>
@@ -68,7 +68,7 @@
       <ng-container matColumnDef="approve">
         <mat-header-cell *matHeaderCellDef> Approve </mat-header-cell>
         <mat-cell *matCellDef="let element"> 
-          <button mat-icon-button (click)="onApprove(element.categoryId)">
+          <button mat-icon-button (click)="onApprove(element.categoryId, element.offeringId)">
             <mat-icon>check</mat-icon>
           </button>  
         </mat-cell>

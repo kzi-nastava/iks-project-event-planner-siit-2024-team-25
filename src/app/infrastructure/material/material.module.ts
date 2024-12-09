@@ -10,7 +10,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogContent, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_ERROR, MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -60,7 +60,8 @@ const components = [
   NgxMaterialTimepickerModule,
   MatProgressSpinnerModule,
   MatTableModule,
-  MatCheckbox
+  MatCheckbox,
+  MatError,
 ];
 
 @NgModule({

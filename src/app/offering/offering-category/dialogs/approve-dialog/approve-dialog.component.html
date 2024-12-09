@@ -4,6 +4,8 @@
     <mat-label>Category name</mat-label>
     <input matInput placeholder="Enter category name" [(ngModel)]="data.submittedOffer.name" [disabled]="disableSelect">
   </mat-form-field>
+  <mat-error *ngIf="!data.submittedOffer.name">Name is required</mat-error>
+
   <mat-form-field appearance="fill" style="width: 100%;">
     <mat-label>Category description</mat-label>
     <input matInput placeholder="Enter category description" [(ngModel)]="data.submittedOffer.description" [disabled]="disableSelect">
@@ -22,5 +24,5 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" [mat-dialog-close]="data" (click)="onApprove()">Approve</button>
+  <button mat-raised-button color="primary" (click)="onApprove()">Approve</button>
 </mat-dialog-actions>

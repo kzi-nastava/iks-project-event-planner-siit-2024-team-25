@@ -20,6 +20,13 @@ export class OfferingService {
     return this.httpClient.get<SubmittedOffering[]>('http://localhost:8080/api/offerings/submitted');
   }
 
+  updateOfferingsCategory(offeringId:number, categoryId:number, updateCategoryId:number):Observable<void>{
+    let params = new HttpParams()
+    .set('categoryId', categoryId)
+    .set('updateCategoryId', updateCategoryId)
+    return this.httpClient.put<void>('http://localhost:8080/api/offerings/'+offeringId+"/updateCategory", null, {params});
+  }
+
   getTopOfferings(): Observable<HomeOffering[]> {
     const user = this.authService.getUser();
 

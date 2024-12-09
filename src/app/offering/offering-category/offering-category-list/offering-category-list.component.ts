@@ -9,6 +9,7 @@ import { switchMap } from 'rxjs';
 import { OfferingService } from '../../services/offering.service';
 import { SubmittedOffering } from '../model/submitted-offering';
 import { ApproveDialogComponent } from '../dialogs/approve-dialog/approve-dialog.component';
+import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-offering-category-list',
@@ -19,7 +20,7 @@ export class OfferingCategoryListComponent implements OnInit {
 
   offeringCategories: OfferingCategory[] = []
   submittedOfferings: SubmittedOffering[] = []
-  currentOfferingCategory: OfferingCategory = {
+  currentOfferingCategory: OfferingCategory = {  
     id:-1,
     name: '',
     description: '',
@@ -90,8 +91,35 @@ export class OfferingCategoryListComponent implements OnInit {
       },
     });
   }
+
+  onDelete( id:number, name:String,){
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data:{
+        nameCategory:name
+      },
+      width: '24rem'
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next:(check)=>{
+        if(check){
+          this.offeringCategoryService.deleteOfferingCategory(id).subscribe({
+            next:()=>{
+              this.getAll();
+            },
+            error:(_)=>{
+              console.log("error")
+            }
+          })
+        }
+      },
+      error:(_) =>{
+        console.log("error")
+      }
+    })
+  }
   
-  //submitted
+  //submitted table
   getAllSubmitted(){
     this.offeringService.getSubmittedOfferings().subscribe({
       next:(offers:SubmittedOffering[])=>{
@@ -103,13 +131,15 @@ export class OfferingCategoryListComponent implements OnInit {
     })
   }
 
-  onApprove(categoryId: number){
+  onApprove(categoryId: number, offeringId:number){
     this.offeringCategoryService.getSubmittedById(categoryId).pipe(
       switchMap((cat) => {
         const dialogRef = this.dialog.open(ApproveDialogComponent, {
           data:{
             submittedOffer:cat
-          },width:'24rem'
+          },width:'24rem',
+          disableClose: true,
+          
         });
         return dialogRef.afterClosed();
       })
@@ -120,7 +150,7 @@ export class OfferingCategoryListComponent implements OnInit {
               // update offering, set ofering_cat_id to new 
               // delete submitted category
               // notify owner-a
-              this.updateOffering();
+              this.updateOffering(categoryId, offeringId, offer.id);
           }else{
             offer.status = OfferingCategoryType.ACCEPTED
             this.offeringCategoryService.updateOfferingCategory(offer.id, offer).subscribe({
@@ -141,8 +171,15 @@ export class OfferingCategoryListComponent implements OnInit {
     })
   }
 
-  updateOffering(){
-    
+  updateOffering(offer:number, offeringId:number, updateCategoryId:number){
+    this.offeringService.updateOfferingsCategory(offeringId,offer, updateCategoryId).subscribe({
+      next: ()=>{
+        this.getAllSubmitted()
+      },
+      error:(_)=>{
+        console.log("error")
+      }
+    })
   }
 }
 
