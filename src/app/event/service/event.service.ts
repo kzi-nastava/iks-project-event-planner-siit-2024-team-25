@@ -6,6 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environment/environment';
 import { Page } from '../../shared/model/page.mode';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
+import { EventInvitation } from '../model/event.invitation.model';
 
 @Injectable({
   providedIn: 'root',
@@ -161,5 +162,17 @@ export class EventService {
           totalPages: page.totalPages,
         }))
       );
+  }
+
+  sendInvitations(invitations: EventInvitation[], eventId: number): void {
+    this.httpClient
+      .post(
+        `http://localhost:8080/api/events/${eventId}/send-invitations`,
+        invitations
+      )
+      .subscribe({
+        next: () => console.log('Invitations sent successfully.'),
+        error: (error) => console.error('Failed to send invitations:', error),
+      });
   }
 }
