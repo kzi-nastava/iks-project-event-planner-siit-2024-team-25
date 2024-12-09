@@ -1,6 +1,8 @@
 import { DatePipe, Time } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { HomeEvent } from '../model/home-event.model';
+import { MatDialog } from '@angular/material/dialog';
+import { EventInvitationsComponent } from '../event-invitations/event-invitations.component';
 
 @Component({
   selector: 'app-home-event-card',
@@ -18,7 +20,7 @@ export class HomeEventCardComponent {
     this.clicked.emit(this.event);
   }
 
-  constructor(private datePipe: DatePipe) {}
+  constructor(private datePipe: DatePipe, private dialog: MatDialog) {}
 
   formatDateTime(date: string): string {
     const dateObj = new Date(date);
@@ -27,5 +29,16 @@ export class HomeEventCardComponent {
 
   formatLocation(country: string, city: string) {
     return country + ',' + city;
+  }
+
+  openEmailDialog(): void {
+    const dialogRef = this.dialog.open(EventInvitationsComponent, {
+      width: '650px',
+    });
+    dialogRef.afterClosed().subscribe((emails) => {
+      if (emails) {
+        console.log('Emails received from dialog:', emails);
+      }
+    });
   }
 }
