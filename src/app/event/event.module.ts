@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -32,5 +32,6 @@ import { EventInvitationsComponent } from './event-invitations/event-invitations
     ReactiveFormsModule,
   ],
   exports: [HomeTopEventsComponent, HomeAllEventsComponent],
+  providers: [DatePipe],
 })
 export class EventModule {}

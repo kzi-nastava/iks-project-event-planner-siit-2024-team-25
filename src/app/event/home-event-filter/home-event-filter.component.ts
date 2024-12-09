@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { HomeEventFilterParams } from '../model/home-event-filter-param.model';
+import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
+import { EventTypeService } from '../service/event-type.service';
+import { EventTypePreviewModel } from '../model/event.type.preview.model';
 
 @Component({
   selector: 'app-home-event-filter',
@@ -7,6 +9,8 @@ import { HomeEventFilterParams } from '../model/home-event-filter-param.model';
   styleUrl: './home-event-filter.component.scss',
 })
 export class HomeEventFilterComponent implements OnInit {
+  constructor(private eventTypeService: EventTypeService) {}
+
   @Output()
   clicked: EventEmitter<HomeEventFilterParams> =
     new EventEmitter<HomeEventFilterParams>();
@@ -17,18 +21,51 @@ export class HomeEventFilterComponent implements OnInit {
 
   today!: Date;
 
-  sortCategories!: string[];
-  sortTypes!: string[];
+  sortByMap?: Map<string, string>;
+  sortDirectionsMap?: Map<string, string>;
+  sortBy: { display: string; value: string }[] = [];
+  sortDirection: { display: string; value: string }[] = [];
+  eventTypes?: EventTypePreviewModel[] = [];
 
   ngOnInit(): void {
+    this.eventTypeService.getAllEventTypes().subscribe({
+      next: (eventTypes: EventTypePreviewModel[]) => {
+        this.eventTypes = eventTypes;
+      },
+    });
+
     this.today = new Date();
     this.isAvtive = false;
-    this.filterParams = {
-      name: '',
-    };
+    this.filterParams = {};
 
-    this.sortCategories = ['', 'Name', 'Start date', 'Country'];
-    this.sortTypes = ['', 'ACS', 'DESC'];
+    this.sortByMap = new Map([
+      ['', ''],
+      ['Name', 'name'],
+      ['Start Date', 'startDate'],
+      ['Organizer', 'organizer.firstName'],
+      ['Country', 'location.country'],
+      ['City', 'location.city'],
+    ]);
+
+    this.sortDirectionsMap = new Map([
+      ['', ''],
+      ['Ascending', 'asc'],
+      ['Descending', 'desc'],
+    ]);
+
+    this.sortBy = Array.from(this.sortByMap.entries()).map(
+      ([display, value]) => ({
+        display,
+        value,
+      })
+    );
+
+    this.sortDirection = Array.from(this.sortDirectionsMap.entries()).map(
+      ([display, value]) => ({
+        display,
+        value,
+      })
+    );
   }
 
   showEventFilter(): void {
@@ -36,6 +73,11 @@ export class HomeEventFilterComponent implements OnInit {
   }
 
   searchEvents(): void {
+    this.clicked.emit(this.filterParams);
+  }
+
+  refreshEventFilter() {
+    this.filterParams = {};
     this.clicked.emit(this.filterParams);
   }
 }

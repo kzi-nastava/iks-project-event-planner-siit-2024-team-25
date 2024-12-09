@@ -6,6 +6,8 @@ import { environment } from '../../../environment/environment';
 import { ErrorResponse } from '../../shared/model/error.response.model';
 import { RegisterRequest } from '../model/register.request.model';
 import { RegisterResponse } from '../model/register.response.model';
+import { RegisterQuickRequest } from '../model/register.quick.request.model';
+import { RegisterQuickResponse } from '../model/register.quick.response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +15,33 @@ import { RegisterResponse } from '../model/register.response.model';
 export class UserService {
   constructor(private httpClient: HttpClient) {}
 
+  quickRegister(
+    registerRequest: RegisterQuickRequest
+  ): Observable<RegisterQuickResponse> {
+    const formData = new FormData();
+
+    formData.append('email', registerRequest.email);
+    formData.append('password', registerRequest.password);
+    formData.append('firstName', registerRequest.firstName);
+    formData.append('lastName', registerRequest.lastName);
+    formData.append('userRole', registerRequest.userRole);
+    if (registerRequest.invitationCode) {
+      formData.append('invitationCode', registerRequest.invitationCode);
+    }
+    if (registerRequest.profilePicture) {
+      formData.append('profilePicture', registerRequest.profilePicture);
+    }
+
+    return this.httpClient
+      .post<RegisterQuickResponse>(
+        environment.apiHost + '/api/auth/register/quick',
+        formData
+      )
+      .pipe(catchError(this.handleError));
+  }
+
   public register(
-    registerRequest: RegisterRequest,
+    registerRequest: RegisterRequest
   ): Observable<RegisterResponse> {
     const formData = new FormData();
 
@@ -27,27 +54,27 @@ export class UserService {
     if (registerRequest.userRole === 'OWNER' && registerRequest.ownerFields) {
       formData.append(
         'ownerFields.companyName',
-        registerRequest.ownerFields.companyName,
+        registerRequest.ownerFields.companyName
       );
       formData.append(
         'ownerFields.companyAddress.country',
-        registerRequest.ownerFields.companyAddress.country,
+        registerRequest.ownerFields.companyAddress.country
       );
       formData.append(
         'ownerFields.companyAddress.city',
-        registerRequest.ownerFields.companyAddress.city,
+        registerRequest.ownerFields.companyAddress.city
       );
       formData.append(
         'ownerFields.companyAddress.address',
-        registerRequest.ownerFields.companyAddress.address,
+        registerRequest.ownerFields.companyAddress.address
       );
       formData.append(
         'ownerFields.contactPhone',
-        registerRequest.ownerFields!.contactPhone,
+        registerRequest.ownerFields!.contactPhone
       );
       formData.append(
         'ownerFields.description',
-        registerRequest.ownerFields.description || '',
+        registerRequest.ownerFields.description || ''
       );
 
       for (let file of registerRequest.ownerFields!.companyPictures ?? []) {
@@ -61,19 +88,19 @@ export class UserService {
     ) {
       formData.append(
         'eventOrganizerFields.livingAddress.country',
-        registerRequest.eventOrganizerFields.livingAddress.country,
+        registerRequest.eventOrganizerFields.livingAddress.country
       );
       formData.append(
         'eventOrganizerFields.livingAddress.city',
-        registerRequest.eventOrganizerFields.livingAddress.city,
+        registerRequest.eventOrganizerFields.livingAddress.city
       );
       formData.append(
         'eventOrganizerFields.livingAddress.address',
-        registerRequest.eventOrganizerFields.livingAddress.address,
+        registerRequest.eventOrganizerFields.livingAddress.address
       );
       formData.append(
         'eventOrganizerFields.phoneNumber',
-        registerRequest.eventOrganizerFields.phoneNumber,
+        registerRequest.eventOrganizerFields.phoneNumber
       );
     }
 
@@ -81,14 +108,14 @@ export class UserService {
       formData.append(
         'profilePicture',
         registerRequest.profilePicture,
-        registerRequest.profilePicture.name,
+        registerRequest.profilePicture.name
       );
     }
 
     return this.httpClient
       .post<RegisterResponse>(
         environment.apiHost + '/api/auth/register',
-        formData,
+        formData
       )
       .pipe(catchError(this.handleError));
   }
@@ -114,7 +141,7 @@ export class UserService {
           code: error.status,
           message: errorResponse?.message ?? error.message,
           errors: errorResponse?.errors,
-        }) as ErrorResponse,
+        } as ErrorResponse)
     );
   }
 }
