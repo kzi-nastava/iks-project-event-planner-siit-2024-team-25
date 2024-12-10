@@ -1,0 +1,56 @@
+<div class="dialog">
+  <div class="header">
+    <h2>Enter Email Addresses</h2>
+  </div>
+  <div class="container">
+    <form [formGroup]="emailForm">
+      <label for="email-input">Email:</label>
+      <mat-form-field appearance="outline" class="primary">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          id="email-input"
+          formControlName="email"
+          type="email"
+          required
+        />
+        <mat-error *ngIf="emailForm.get('email')?.invalid">
+          Please enter a valid email
+        </mat-error>
+      </mat-form-field>
+      <div class="center">
+        <button
+          mat-flat-button
+          class="primary"
+          type="submit"
+          (click)="addEmail()"
+          [disabled]="emailForm.get('email')?.invalid"
+        >
+          Add Email
+        </button>
+      </div>
+    </form>
+
+    <div>
+      <h3>Emails:</h3>
+      <div *ngFor="let email of emails">
+        <p>{{ email }}</p>
+      </div>
+    </div>
+
+    <div class="dialog-buttons">
+      <button
+        mat-flat-button
+        class="primary"
+        type="submit"
+        (click)="submitEmails()"
+        [disabled]="emails.length === 0"
+      >
+        Submit
+      </button>
+      <button mat-button class="secondary" type="button" mat-dialog-close>
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
