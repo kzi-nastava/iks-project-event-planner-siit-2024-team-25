@@ -33,9 +33,31 @@ export class OfferingService {
   }
 
   getOfferings(
-    page: number
+    page: number,
+    filterParams?: OfferingFilterParams
   ): Observable<{ currentOfferings: HomeOffering[]; totalPages: number }> {
-    let params = new HttpParams();
+    if (filterParams) {
+      if (filterParams.criteria === 'ALL') {
+        return this.getAllOfferings(page, filterParams);
+      } else if (filterParams.criteria === 'PRODUCTS') {
+        return this.getAllOfferings(page, filterParams);
+      } else {
+        return this.getAllOfferings(page, filterParams);
+      }
+    } else {
+      return this.getAllOfferings(page, filterParams);
+    }
+  }
+
+  getAllProducts() {}
+  getAllServices() {}
+
+  getAllOfferings(
+    page: number,
+    filterParams?: OfferingFilterParams
+  ): Observable<{ currentOfferings: HomeOffering[]; totalPages: number }> {
+    let params = this.getHttpParams(filterParams);
+    console.log(params);
 
     params = params.set('page', page);
 
@@ -51,11 +73,36 @@ export class OfferingService {
       );
   }
 
-  getFilteredOfferings(
-    filterParams: OfferingFilterParams
-  ): Observable<HomeOffering[]> {
-    return this.httpClient
-      .get<Page<HomeOffering>>('http://localhost:8080/api/offerings/')
-      .pipe(map((page) => page.content));
+  private getHttpParams(filterParams?: OfferingFilterParams): HttpParams {
+    let params = new HttpParams();
+
+    if (!filterParams) {
+      return params;
+    }
+    if (filterParams.categoryId) {
+      params = params.set('categoryId', filterParams.categoryId);
+    }
+    if (filterParams.name) {
+      params = params.set('name', filterParams.name);
+    }
+    if (filterParams.eventTypeId) {
+      params = params.set('eventTypeId', filterParams.eventTypeId);
+    }
+    if (filterParams.minPrice) {
+      params = params.set('minPrice', filterParams.minPrice);
+    }
+    if (filterParams.maxPrice) {
+      params = params.set('maxPrice', filterParams.maxPrice);
+    }
+    if (filterParams.description) {
+      params = params.set('description', filterParams.description);
+    }
+    if (filterParams.sortCategory) {
+      params = params.set('sortBy', filterParams.sortCategory);
+    }
+    if (filterParams.sortType) {
+      params = params.set('sortDirection', filterParams.sortType);
+    }
+    return params;
   }
 }
