@@ -9,9 +9,10 @@ import { ReservationType } from '../model/reservation.type.enum';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from '../model/service';
 import { EventType } from '../model/event-type';
-import { OfferingCategory } from '../model/offering-category';
+import { OfferingCategory } from '../../offering-category/model/offering-category';
 import { ServiceCreateDTO } from '../model/serviceCreateDTO';
 import { MatStepper } from '@angular/material/stepper';
+import { OfferingCategoryType } from '../../offering-category/model/offering-category-type.enum';
 
 @Component({
   selector: 'app-service-form',
@@ -61,7 +62,7 @@ export class ServiceFormComponent {
   reservationTypeService: ReservationType = ReservationType.MANUAL;
   imagesService: string[] = [];
   eventTypesService: EventType[] = [];
-  categoryTypeService: OfferingCategory = { name: '' }
+  categoryTypeService: OfferingCategory = { name: '' , description:"1", status:OfferingCategoryType.ACCEPTED, id:-1}
 
   constructor(private router: Router, private _formBuilder: FormBuilder, private route: ActivatedRoute, public dialog: MatDialog, private serviceMenager: OfferingServiceService) {
   }
@@ -212,7 +213,7 @@ export class ServiceFormComponent {
       }
       this.eventTypesService = this.firstFormGroup.value.eventTypes.map(c => ({ name: c }));
     }
-    this.categoryTypeService = { name: this.firstFormGroup.value.categoryType };
+    this.categoryTypeService = { name: this.firstFormGroup.value.categoryType, description:"1", status:OfferingCategoryType.ACCEPTED , id:-1};
 
 
     if (this.reservationTypeString === 'Manual') {
