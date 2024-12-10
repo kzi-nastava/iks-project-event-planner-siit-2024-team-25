@@ -9,5 +9,5 @@ export interface OfferingFilterParams {
   description?: string;
   sortCategory?: string;
   sortType?: string;
-  criteria?: 'ALL' | 'PRODUCTS' | 'SERVICES';
+  criteria?: string;
 }

@@ -37,20 +37,56 @@ export class OfferingService {
     filterParams?: OfferingFilterParams
   ): Observable<{ currentOfferings: HomeOffering[]; totalPages: number }> {
     if (filterParams) {
-      if (filterParams.criteria === 'ALL') {
-        return this.getAllOfferings(page, filterParams);
+      if (filterParams.criteria === 'SERVICES') {
+        return this.getAllServices(page, filterParams);
       } else if (filterParams.criteria === 'PRODUCTS') {
-        return this.getAllOfferings(page, filterParams);
-      } else {
-        return this.getAllOfferings(page, filterParams);
+        return this.getAllProducts(page, filterParams);
       }
-    } else {
       return this.getAllOfferings(page, filterParams);
     }
+    return this.getAllOfferings(page, filterParams);
   }
 
-  getAllProducts() {}
-  getAllServices() {}
+  getAllProducts(
+    page: number,
+    filterParams?: OfferingFilterParams
+  ): Observable<{ currentOfferings: HomeOffering[]; totalPages: number }> {
+    let params = this.getHttpParams(filterParams);
+    console.log(params);
+
+    params = params.set('page', page);
+
+    return this.httpClient
+      .get<Page<HomeOffering>>('http://localhost:8080/api/products/all', {
+        params,
+      })
+      .pipe(
+        map((page) => ({
+          currentOfferings: page.content,
+          totalPages: page.totalPages,
+        }))
+      );
+  }
+  getAllServices(
+    page: number,
+    filterParams?: OfferingFilterParams
+  ): Observable<{ currentOfferings: HomeOffering[]; totalPages: number }> {
+    let params = this.getHttpParams(filterParams);
+    console.log(params);
+
+    params = params.set('page', page);
+
+    return this.httpClient
+      .get<Page<HomeOffering>>('http://localhost:8080/api/services/all', {
+        params,
+      })
+      .pipe(
+        map((page) => ({
+          currentOfferings: page.content,
+          totalPages: page.totalPages,
+        }))
+      );
+  }
 
   getAllOfferings(
     page: number,
