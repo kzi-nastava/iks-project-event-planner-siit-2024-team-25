@@ -8,12 +8,14 @@ import { Offeringtype } from '../model/offering.type.enum';
 import { ReservationType } from '../model/reservation.type.enum';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from '../model/service';
-import { EventType } from '../model/event-type';
 import { OfferingCategory } from '../../offering-category/model/offering-category';
 import { ServiceCreateDTO } from '../model/serviceCreateDTO';
 import { MatStepper } from '@angular/material/stepper';
 import { OfferingCategoryType } from '../../offering-category/model/offering-category-type.enum';
 import { OfferingCategoryService } from '../../offering-category/offering-category.service';
+import { EventTypeService } from '../../../event/service/event-type.service';
+import { EventType } from '../../../event/model/event.type.model';
+import { EventTypePreviewModel } from '../../../event/model/event.type.preview.model';
 
 @Component({
   selector: 'app-service-form',
@@ -34,6 +36,9 @@ export class ServiceFormComponent {
   })
   isAvailable: boolean = false;
   isVisible: boolean = false;
+  imagesService: string[] = [];
+  reservationTypeString: string = ''
+  reservationTypeService: ReservationType = ReservationType.MANUAL;
   get name() {
     return this.firstFormGroup.get('name');
   }
@@ -54,20 +59,17 @@ export class ServiceFormComponent {
     this.stepper.next();
   }
 
-  reservationTypeString: string = ''
-  reservationTypeService: ReservationType = ReservationType.MANUAL;
-  
-  imagesService: string[] = [];
-  eventTypesService: EventType[] = [];
-  categoryTypeService: OfferingCategory = { name: '', description: "1", status: OfferingCategoryType.ACCEPTED, id: -1 }
-
-  constructor(private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private serviceMenager: OfferingServiceService, private offeringCategoriesService:OfferingCategoryService) {
+  constructor(private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private serviceMenager: OfferingServiceService, private offeringCategoriesService:OfferingCategoryService, private eventTypeService:EventTypeService) {
   }
 
   offeringCategoriesAll: string[] = []; // categories
   mapToOfferingCategory = new Map<number, number>();
   selectedCategoryId :number = -1
-  eventTypesAll: string[] = ['one e', 'two e', 'three e']// event types
+
+  eventTypesAll: string[] = []// event types
+  mapToEventTypes = new Map<number,number>();
+  selectedEventTypesIds:number[] = []
+
   secondFormGroup!: FormGroup;
 
   @Output() toggle = new EventEmitter<void>();
@@ -196,19 +198,21 @@ export class ServiceFormComponent {
       })
   }
 
+  getEventTypes(){
+    this.eventTypeService.getAllEventTypes().subscribe({
+      next: (res:EventTypePreviewModel[]) =>{
+        let pos = 0;
+        res.forEach(elem => {
+          this.eventTypesAll.push(elem.name)
+          this.mapToEventTypes.set(pos,elem.id);
+          pos++;
+        })
+      }
+    })
+  }
+
 
   setupModels() {
-
-    //event types
-    if (this.firstFormGroup.value.eventTypes != null) {
-      if (typeof this.firstFormGroup.value.eventTypes === 'string') {
-        this.firstFormGroup.value.eventTypes = [this.firstFormGroup.value.eventTypes];
-      }
-      this.eventTypesService = this.firstFormGroup.value.eventTypes.map(c => ({ name: c }));
-    }
-    //categories
-    this.categoryTypeService = { name: this.firstFormGroup.value.categoryType, description: "1", status: OfferingCategoryType.ACCEPTED, id: -1 };
-
     // enum
     this.checkReservationType();
     //bonus
@@ -231,6 +235,16 @@ export class ServiceFormComponent {
       this.selectedCategoryId = this.mapToOfferingCategory.get(index) || -1;
       
     }
+  }
+  onSelectionChange(): void {
+    const selectedPositions: number[] = this.firstFormGroup.get('eventTypes')?.value || [];
+    this.updateSelectedEventIds(selectedPositions);
+  }
+
+  private updateSelectedEventIds(selectedPositions: number[]): void {
+    this.selectedEventTypesIds = selectedPositions
+      .map(position => this.mapToEventTypes.get(position))
+      .filter(id => id !== undefined) as number[];
   }
 
   titleForm: string = 'Create a service'
@@ -303,6 +317,7 @@ export class ServiceFormComponent {
       this.isEditMode = true;
     }
     this.getOfferingCategories();
+    this.getEventTypes();
   }
 
 

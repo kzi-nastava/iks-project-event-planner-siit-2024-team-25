@@ -34,8 +34,8 @@
         </div>
          <div style="width: 33%;">
           <mat-form-field style="width: 100%;">
-            <mat-select placeholder="Event types" formControlName="eventTypes" multiple>
-              <mat-option *ngFor="let option of eventTypesAll" [value]="option">
+            <mat-select placeholder="Event types" formControlName="eventTypes" multiple (selectionChange)="onSelectionChange()">
+              <mat-option *ngFor="let option of eventTypesAll; let i = index" [value]="i">
                 {{option}}
               </mat-option>
             </mat-select>
