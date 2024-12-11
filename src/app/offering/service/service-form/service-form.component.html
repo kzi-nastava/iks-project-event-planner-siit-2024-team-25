@@ -71,8 +71,9 @@
       <div class="example-form form-container">
         <mat-form-field class="example-full-width" style="width: 40%;">
           <input type="text" placeholder="Type category" matInput [matAutocomplete]="auto"
-            formControlName="categoryType">
-          <mat-autocomplete #auto="matAutocomplete">
+            formControlName="categoryType" (input)="onInputCategory($event)"
+            >
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelectedCategory($event)">
             <mat-option *ngFor="let option of offeringCategoriesAll" [value]="option">
               {{option}}
             </mat-option>
@@ -87,7 +88,7 @@
           Discount: {{ discountFront }} %
 
         </div>
-        <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel (input)="setSliderFront($event)">
+        <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel (input)="setSliderDiscount($event)">
           <input matSliderThumb formControlName="discountt">
         </mat-slider>
       </div>
@@ -108,29 +109,7 @@
   <mat-step [stepControl]="secondFormGroup" style="margin: 30px; ">
     <form [formGroup]="secondFormGroup" style="display: grid;place-items: center;">
       <ng-template matStepLabel>Step 2</ng-template>
-      <div style="margin: 2rem;">
-
-
-        <div class="form-container">
-          <div [formGroup]="formCancellationDeadline" class="form-container">
-            <div>
-              Cancellation deadline: {{ sliderValueCancellationDeadline }} day(s)
-            </div>
-            <mat-slider [min]="1" [max]="10" [step]="1" thumbLabel>
-              <input matSliderThumb [(ngModel)]="sliderValueCancellationDeadline" [ngModelOptions]="{standalone: true}">
-            </mat-slider>
-          </div>
-
-          <div [formGroup]="formReservationDeadline" class="form-container">
-            <div>
-              Reservation deadline: {{ sliderValueReservationDeadline }} day(s)
-            </div>
-            <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel>
-              <input matSliderThumb [(ngModel)]="sliderValueReservationDeadline" [ngModelOptions]="{standalone: true}">
-            </mat-slider>
-          </div>
-        </div>
-      </div>
+      
 
       <div style="display: flex;
         align-content: center;
@@ -140,6 +119,29 @@
         width: 100%;
         margin: 2rem;
         margin-top: 0rem;">
+
+        <div class="border-class" style="margin-right: 2rem;">
+          <div [formGroup]="formGroupCancellationDeadline" class="form-container">
+            <div>
+              Cancellation deadline: {{ cancellationDeadlinfront }} day(s)
+    
+            </div>
+            <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel (input)="setSliderCancellationDeadline($event)">
+              <input matSliderThumb formControlName="cancellationDeadline">
+            </mat-slider>
+          </div>
+  
+          <div [formGroup]="formGroupReservationDeadline" class="form-container">
+            <div>
+              Reservation deadline: {{ reservationDeadlineFront }} day(s)
+    
+            </div>
+            <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel (input)="setSliderReservationDeadline($event)">
+              <input matSliderThumb formControlName="reservationDeadline">
+            </mat-slider>
+          </div>
+        </div>
+
         <div class="border-class" style="margin-right: 2rem;">
           <div class="form-container">
             <p style="align-items: center;">Reservation type</p>
@@ -150,6 +152,7 @@
             <mat-radio-button value="Automatic">Automatic</mat-radio-button>
           </mat-radio-group>
         </div>
+
         <div class="border-class" style="margin-left: 2rem;">
           <mat-slide-toggle class="form-container" style="margin: 20px;" [(ngModel)]="isAvailable"
             [ngModelOptions]="{standalone: true}">Is available to users</mat-slide-toggle>
@@ -167,33 +170,43 @@
 
           </div>
           <p class="form-container">You are not able to set both min/max arrangement and service duration</p>
-          <div [formGroup]="formToogle" class="form-container">
+          <div class="form-container">
             <mat-slide-toggle [(ngModel)]="isDurationShow" [ngModelOptions]="{standalone: true}"></mat-slide-toggle>
           </div>
           <div class="form-container">
-            <div *ngIf="isDurationShow" [formGroup]="formDuration">
+
+            <div *ngIf="isDurationShow" [formGroup]="formGroupDuration" class="form-container">
               <div>
-                Service duration: {{ sliderValueDuration }} h
+                Duration: {{ durationtFront }} h
+      
               </div>
-              <mat-slider [min]="1" [max]="96" [step]="1" thumbLabel>
-                <input matSliderThumb [(ngModel)]="sliderValueDuration" [ngModelOptions]="{standalone: true}">
+              <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel (input)="setSliderDuration($event)">
+                <input matSliderThumb formControlName="duration">
               </mat-slider>
             </div>
 
-            <div *ngIf="!isDurationShow" [formGroup]="formMinMaxArr">
+            <div *ngIf="!isDurationShow" [formGroup]="formGroupMinArrangement" class="form-container">
               <div>
-                Minimum arrangement: {{ sliderValueMinArrangement }} h
+                Minimum arrangement: {{ minArrangementFront }} h
+      
               </div>
-              <mat-slider [min]="1" [max]="96" [step]="1" thumbLabel>
-                <input matSliderThumb [(ngModel)]="sliderValueMinArrangement" [ngModelOptions]="{standalone: true}">
-              </mat-slider>
-              <div>
-                Maximum arrangement: {{ sliderValueMaxArrangement }} h
-              </div>
-              <mat-slider [min]="1" [max]="96" [step]="1" thumbLabel>
-                <input matSliderThumb [(ngModel)]="sliderValueMaxArrangement" [ngModelOptions]="{standalone: true}">
+              <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel (input)="setSliderMinArrangement($event)">
+                <input matSliderThumb formControlName="minArrangement">
               </mat-slider>
             </div>
+
+            <div *ngIf="!isDurationShow" [formGroup]="formGroupMaxArrangement" class="form-container">
+              <div>
+                Maximum arrangement: {{ maxArrangementFront }} h
+      
+              </div>
+              <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel (input)="setSliderMaxArrangement($event)">
+                <input matSliderThumb formControlName="maxArrangement">
+              </mat-slider>
+            </div>
+
+
+
           </div>
         </div>
       </div>
@@ -237,7 +250,7 @@
         <mat-icon>arrow_back</mat-icon>
       </button>
       <button mat-button (click)="stepper.reset()">Reset</button>
-      <button mat-fab color="primary" *ngIf="saveButtonShow" (click)="addNewService()" class="fab-save-button">
+      <button mat-fab color="primary" *ngIf="saveButtonShow" (click)="saveService()" class="fab-save-button">
         <mat-icon>save</mat-icon>
       </button>
     </div>

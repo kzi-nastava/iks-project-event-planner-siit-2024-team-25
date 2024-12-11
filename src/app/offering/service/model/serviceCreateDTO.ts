@@ -17,5 +17,5 @@ export interface ServiceCreateDTO{
     reservationType: ReservationType,
     ownerId: number;
     eventTypesIDs: number[],
-    offeringCategoryID: number;
+    offeringCategoryID?: number | null;
 }
