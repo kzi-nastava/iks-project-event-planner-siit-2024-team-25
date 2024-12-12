@@ -8,14 +8,17 @@ export interface ServiceCreateDTO{
     price?: number | null,
     images: string[],
     discount: number,
-    isVisible: boolean,
-    isAvailable: boolean,
+    visible?: boolean | null,
+    available?: boolean | null,
     specifics: string,
     duration: number,
     cancellationDeadline: number,
     reservationDeadline: number,
     reservationType: ReservationType,
+    minimumArrangement:number,
+    maximumArrangement: number,
     ownerId: number;
     eventTypesIDs: number[],
+    offeringCategoryName: String,
     offeringCategoryID?: number | null;
 }

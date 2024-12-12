@@ -1,5 +1,5 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, input, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ServiceDialogInformationComponent } from '../service-dialog/service-dialog-information.component';
@@ -34,8 +34,10 @@ export class ServiceFormComponent {
     categoryType: new FormControl(),
 
   })
-  isAvailable: boolean = false;
-  isVisible: boolean = false;
+  secondFormGroup = new FormGroup({
+    isAvailable : new FormControl(false),
+    isVisible:new FormControl(false)
+  })
   imagesService: string[] = [];
   reservationTypeString: string = ''
   reservationTypeService: ReservationType = ReservationType.MANUAL;
@@ -65,12 +67,12 @@ export class ServiceFormComponent {
   offeringCategoriesAll: string[] = []; // categories
   mapToOfferingCategory = new Map<number, number>();
   selectedCategoryId :number = -1
+  selectedNameCategory: String = ""
 
   eventTypesAll: string[] = []// event types
   mapToEventTypes = new Map<number,number>();
   selectedEventTypesIds:number[] = []
 
-  secondFormGroup!: FormGroup;
 
   @Output() toggle = new EventEmitter<void>();
 
@@ -97,12 +99,6 @@ export class ServiceFormComponent {
   }
 
   saveService() {
-    /*if (this.isEditMode) {
-      this.serviceMenager.updateService()
-      if (updatedService) {
-        this.router.navigate(['/service/services']);
-      }
-    } else */{
       if (this.firstFormGroup.valid) {
         this.setupModels();
         const service: ServiceCreateDTO = {
@@ -111,31 +107,40 @@ export class ServiceFormComponent {
           price: this.firstFormGroup.value.price,
           images: this.imagesService, // TODO
           discount: this.discountFront,
-          isVisible: this.isVisible,
-          isAvailable: this.isAvailable,
+          visible: this.secondFormGroup.value.isVisible,
+          available: this.secondFormGroup.value.isAvailable,
           specifics: this.firstFormGroup.value.specifics,
           duration: this.durationtFront,
           cancellationDeadline: this.cancellationDeadlinfront,
           reservationDeadline: this.reservationDeadlineFront,
           reservationType: this.reservationTypeService,
           ownerId: 1,
-          eventTypesIDs: [1],
+          eventTypesIDs: this.selectedEventTypesIds,
+          minimumArrangement: this.minArrangementFront,
+          maximumArrangement: this.maxArrangementFront,
+          offeringCategoryName: this.selectedNameCategory
         };
         if(this.selectedCategoryId === -1){
           service.offeringCategoryID = null
         }else{
           service.offeringCategoryID = this.selectedCategoryId;
         }
-        this.serviceMenager.addService(service).subscribe({
-          next: (s: Service) => {
-            this.router.navigate(['/service/services'])
-            this.openSaveDialog();
-          },
-          error: (err) => {
-            this.openErrorDialog("not created, server error")
-          }
-        });
-      }
+        if(this.isEditMode){
+
+        }else{
+          console.log(service)
+          this.serviceMenager.addService(service).subscribe({
+            next: (s: Service) => {
+              this.router.navigate(['/service/services'])
+              this.openSaveDialog();
+            },
+            error: (err) => {
+              this.openErrorDialog("not created, server error")
+            }
+          });
+        }
+        
+      
     }
   }
 
@@ -169,11 +174,11 @@ export class ServiceFormComponent {
   // you are not able to pick both, when we create an object we can check which one to choose
   checkDurationOrArrangement() {
     if (this.isDurationShow) {
-      this.minArrangementFront = -1;
-      this.maxArrangementFront = -1;
+      this.minArrangementFront = 0;
+      this.maxArrangementFront = 0;
     }
     else {
-      this.durationtFront = -1;
+      this.durationtFront = 0;
     }
   }
 
@@ -184,6 +189,14 @@ export class ServiceFormComponent {
       this.reservationTypeService = ReservationType.AUTOMATIC;
     }
   }
+
+  setupModels() {
+    // enum
+    this.checkReservationType();
+    //bonus
+    this.checkDurationOrArrangement()
+  }
+
 
   getOfferingCategories(){
       this.offeringCategoriesService.getAll().subscribe({
@@ -212,18 +225,12 @@ export class ServiceFormComponent {
   }
 
 
-  setupModels() {
-    // enum
-    this.checkReservationType();
-    //bonus
-    this.checkDurationOrArrangement()
-  }
-
   onInputCategory(event: Event): void {
     const input = (event.target as HTMLInputElement).value;
 
     if (!this.offeringCategoriesAll.includes(input)) {
       this.selectedCategoryId = -1;
+      this.selectedNameCategory = input;
     }
   }
   onOptionSelectedCategory(event: any): void {
@@ -233,7 +240,7 @@ export class ServiceFormComponent {
     // Retrieve the ID from the HashMap
     if (index !== -1) {
       this.selectedCategoryId = this.mapToOfferingCategory.get(index) || -1;
-      
+      this.selectedNameCategory = selectedOption;
     }
   }
   onSelectionChange(): void {
@@ -307,6 +314,10 @@ export class ServiceFormComponent {
   setSliderMaxArrangement(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     this.maxArrangementFront = Number(inputElement.value);
+  }
+
+  fillForm(){
+    //get service and fill the form
   }
 
   ngOnInit() {

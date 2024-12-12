@@ -171,8 +171,7 @@ export class OfferingCategoryListComponent implements OnInit {
               // notify owner-a
               this.updateOffering(categoryId, offeringId, offer.id);
           }else{
-            offer.status = OfferingCategoryType.ACCEPTED
-            this.offeringCategoryService.updateOfferingCategory(offer.id, offer).subscribe({
+            this.offeringCategoryService.approveOfferingCategory(offer.id, offer,offeringId).subscribe({
               next: (response) => {
                 this.getAllSubmitted()
               },

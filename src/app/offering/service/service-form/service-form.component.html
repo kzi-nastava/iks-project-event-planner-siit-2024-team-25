@@ -154,9 +154,9 @@
         </div>
 
         <div class="border-class" style="margin-left: 2rem;">
-          <mat-slide-toggle class="form-container" style="margin: 20px;" [(ngModel)]="isAvailable"
-            [ngModelOptions]="{standalone: true}">Is available to users</mat-slide-toggle>
-          <mat-slide-toggle class="form-container" [(ngModel)]="isVisible" [ngModelOptions]="{standalone: true}">Is
+          <mat-slide-toggle class="form-container" style="margin: 20px;" formControlName="isAvailable"
+            >Is available to users</mat-slide-toggle>
+          <mat-slide-toggle class="form-container" formControlName="isVisible">Is
             visible to organizer</mat-slide-toggle>
 
         </div>

@@ -29,7 +29,6 @@ export class OfferingServiceService {
         params = params.set('available', properties.available)
       }
     }
-    console.log(params)
     return this.httpClinet
     .get<Page<Service>>("http://localhost:8080/api/services",{ params: params})
     .pipe(map((page) => page.content));
