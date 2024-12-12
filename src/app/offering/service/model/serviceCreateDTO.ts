@@ -18,7 +18,7 @@ export interface ServiceCreateDTO{
     minimumArrangement:number,
     maximumArrangement: number,
     ownerId: number;
-    eventTypesIDs: number[],
-    offeringCategoryName: String,
+    eventTypesIDs?: number[] | null,
+    offeringCategoryName?: String | null,
     offeringCategoryID?: number | null;
 }

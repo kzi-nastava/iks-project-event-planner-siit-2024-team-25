@@ -35,8 +35,8 @@
          <div style="width: 33%;">
           <mat-form-field style="width: 100%;">
             <mat-select placeholder="Event types" formControlName="eventTypes" multiple (selectionChange)="onSelectionChange()">
-              <mat-option *ngFor="let option of eventTypesAll; let i = index" [value]="i">
-                {{option}}
+              <mat-option *ngFor="let entry of eventTypeAll | keyvalue" [value]="entry.key">
+                {{entry.value}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -71,11 +71,11 @@
       <div class="example-form form-container">
         <mat-form-field class="example-full-width" style="width: 40%;">
           <input type="text" placeholder="Type category" matInput [matAutocomplete]="auto"
-            formControlName="categoryType" (input)="onInputCategory($event)"
-            >
+            formControlName="categoryTypeName" (input)="onInputCategory($event)"
+            [attr.disabled]="isDisabledCategory">
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelectedCategory($event)">
-            <mat-option *ngFor="let option of offeringCategoriesAll" [value]="option">
-              {{option}}
+            <mat-option *ngFor="let option of offeringCategoryTypeAll | keyvalue" [value]="option.key">
+              {{option.value}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>

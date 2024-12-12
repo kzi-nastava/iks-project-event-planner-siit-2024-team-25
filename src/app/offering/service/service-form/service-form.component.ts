@@ -16,6 +16,9 @@ import { OfferingCategoryService } from '../../offering-category/offering-catego
 import { EventTypeService } from '../../../event/service/event-type.service';
 import { EventType } from '../../../event/model/event.type.model';
 import { EventTypePreviewModel } from '../../../event/model/event.type.preview.model';
+import { ServiceUpdateDTO } from '../model/serviceUpdateDTO';
+import { isVoidExpression } from 'typescript';
+import { NUM_LOCK } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-service-form',
@@ -30,14 +33,16 @@ export class ServiceFormComponent {
     description: new FormControl("", [Validators.required]),
     specifics: new FormControl(),
     price: new FormControl(0, [Validators.required, Validators.min(1)]),
-    eventTypes: new FormControl([]),
-    categoryType: new FormControl(),
-
+    eventTypes: new FormControl<number[]>([], [Validators.minLength(0)]),
+    categoryTypeId: new FormControl<number>(-1),
+    categoryTypeName: new FormControl<String>("", [Validators.required])
   })
   secondFormGroup = new FormGroup({
     isAvailable : new FormControl(false),
     isVisible:new FormControl(false)
   })
+  offeringCategoryTypeAll: Map<number,String> = new Map(); // options 
+  eventTypeAll: Map<number, String> = new Map(); // options
   imagesService: string[] = [];
   reservationTypeString: string = ''
   reservationTypeService: ReservationType = ReservationType.MANUAL;
@@ -64,14 +69,7 @@ export class ServiceFormComponent {
   constructor(private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private serviceMenager: OfferingServiceService, private offeringCategoriesService:OfferingCategoryService, private eventTypeService:EventTypeService) {
   }
 
-  offeringCategoriesAll: string[] = []; // categories
-  mapToOfferingCategory = new Map<number, number>();
-  selectedCategoryId :number = -1
-  selectedNameCategory: String = ""
 
-  eventTypesAll: string[] = []// event types
-  mapToEventTypes = new Map<number,number>();
-  selectedEventTypesIds:number[] = []
 
 
   @Output() toggle = new EventEmitter<void>();
@@ -101,34 +99,21 @@ export class ServiceFormComponent {
   saveService() {
       if (this.firstFormGroup.valid) {
         this.setupModels();
-        const service: ServiceCreateDTO = {
-          name: this.firstFormGroup.value.name,
-          description: this.firstFormGroup.value.description,
-          price: this.firstFormGroup.value.price,
-          images: this.imagesService, // TODO
-          discount: this.discountFront,
-          visible: this.secondFormGroup.value.isVisible,
-          available: this.secondFormGroup.value.isAvailable,
-          specifics: this.firstFormGroup.value.specifics,
-          duration: this.durationtFront,
-          cancellationDeadline: this.cancellationDeadlinfront,
-          reservationDeadline: this.reservationDeadlineFront,
-          reservationType: this.reservationTypeService,
-          ownerId: 1,
-          eventTypesIDs: this.selectedEventTypesIds,
-          minimumArrangement: this.minArrangementFront,
-          maximumArrangement: this.maxArrangementFront,
-          offeringCategoryName: this.selectedNameCategory
-        };
-        if(this.selectedCategoryId === -1){
-          service.offeringCategoryID = null
-        }else{
-          service.offeringCategoryID = this.selectedCategoryId;
-        }
+        
         if(this.isEditMode){
-
-        }else{
+          const service = this.updateService()
           console.log(service)
+          this.serviceMenager.updateService(service,this.updatingServiceId).subscribe({
+            next: (s: Service) => {
+              this.router.navigate(['/service/services'])
+              this.openSaveDialog();
+            },
+            error: (err) => {
+              this.openErrorDialog("not created, server error")
+            }
+          })
+        }else{
+          const service = this.createService();
           this.serviceMenager.addService(service).subscribe({
             next: (s: Service) => {
               this.router.navigate(['/service/services'])
@@ -142,6 +127,56 @@ export class ServiceFormComponent {
         
       
     }
+  }
+
+  createService(){
+    const service: ServiceCreateDTO = {
+      name: this.firstFormGroup.value.name,
+      description: this.firstFormGroup.value.description,
+      price: this.firstFormGroup.value.price,
+      images: this.imagesService, // TODO
+      discount: this.discountFront,
+      visible: this.secondFormGroup.value.isVisible,
+      available: this.secondFormGroup.value.isAvailable,
+      specifics: this.firstFormGroup.value.specifics,
+      duration: this.durationtFront,
+      cancellationDeadline: this.cancellationDeadlinfront,
+      reservationDeadline: this.reservationDeadlineFront,
+      reservationType: this.reservationTypeService,
+      ownerId: 1,
+      eventTypesIDs: this.firstFormGroup.value.eventTypes,
+      minimumArrangement: this.minArrangementFront,
+      maximumArrangement: this.maxArrangementFront,
+      offeringCategoryName: this.firstFormGroup.value.categoryTypeName
+    };
+    if(this.firstFormGroup.value.categoryTypeId === -1){
+      service.offeringCategoryID = null
+    }else{
+      service.offeringCategoryID = this.firstFormGroup.value.categoryTypeId;
+    }
+    return service;
+  }
+
+  updateService(){
+    const service: ServiceUpdateDTO = {
+      name: this.firstFormGroup.value.name,
+      description: this.firstFormGroup.value.description,
+      price: this.firstFormGroup.value.price,
+      images: this.imagesService, // TODO
+      discount: this.discountFront,
+      visible: this.secondFormGroup.value.isVisible,
+      available: this.secondFormGroup.value.isAvailable,
+      specifics: this.firstFormGroup.value.specifics,
+      duration: this.durationtFront,
+      cancellationDeadline: this.cancellationDeadlinfront,
+      reservationDeadline: this.reservationDeadlineFront,
+      reservationType: this.reservationTypeService,
+      eventTypesIDs: this.firstFormGroup.value.eventTypes,
+      minimumArrangement: this.minArrangementFront,
+      maximumArrangement: this.maxArrangementFront,
+      status: Offeringtype.ACCEPTED
+    };
+    return service;
   }
 
   addImage() {
@@ -201,11 +236,8 @@ export class ServiceFormComponent {
   getOfferingCategories(){
       this.offeringCategoriesService.getAll().subscribe({
         next: (res:OfferingCategory[])=>{
-          let pos = 0;
           res.forEach(element => {
-            this.offeringCategoriesAll.push(element.name);
-            this.mapToOfferingCategory.set(pos,element.id);
-            pos++;
+            this.offeringCategoryTypeAll.set(element.id,element.name)
           });
         }
       })
@@ -214,11 +246,9 @@ export class ServiceFormComponent {
   getEventTypes(){
     this.eventTypeService.getAllEventTypes().subscribe({
       next: (res:EventTypePreviewModel[]) =>{
-        let pos = 0;
+        this.eventTypeAll.clear();
         res.forEach(elem => {
-          this.eventTypesAll.push(elem.name)
-          this.mapToEventTypes.set(pos,elem.id);
-          pos++;
+          this.eventTypeAll.set(elem.id,elem.name);
         })
       }
     })
@@ -227,32 +257,29 @@ export class ServiceFormComponent {
 
   onInputCategory(event: Event): void {
     const input = (event.target as HTMLInputElement).value;
-
-    if (!this.offeringCategoriesAll.includes(input)) {
-      this.selectedCategoryId = -1;
-      this.selectedNameCategory = input;
+    if (!Array.from(this.offeringCategoryTypeAll.values()).includes(input)) {
+      this.firstFormGroup.patchValue({
+        categoryTypeId: -1,
+        categoryTypeName: input
+      })
     }
+
+    
   }
   onOptionSelectedCategory(event: any): void {
-    const selectedOption = event.option.value;
-    const index = this.offeringCategoriesAll.indexOf(selectedOption);
-
-    // Retrieve the ID from the HashMap
-    if (index !== -1) {
-      this.selectedCategoryId = this.mapToOfferingCategory.get(index) || -1;
-      this.selectedNameCategory = selectedOption;
-    }
+    const selectedOption = event.option.value; // offering category type ID
+    this.firstFormGroup.patchValue({
+      categoryTypeId: selectedOption,
+      categoryTypeName: this.offeringCategoryTypeAll.get(selectedOption)
+    })
   }
   onSelectionChange(): void {
-    const selectedPositions: number[] = this.firstFormGroup.get('eventTypes')?.value || [];
-    this.updateSelectedEventIds(selectedPositions);
+    const selectedPositions: number[] = this.firstFormGroup.get('eventTypes')?.value || []; // event type IDs
+    this.firstFormGroup.patchValue({
+      eventTypes: selectedPositions
+    })
   }
 
-  private updateSelectedEventIds(selectedPositions: number[]): void {
-    this.selectedEventTypesIds = selectedPositions
-      .map(position => this.mapToEventTypes.get(position))
-      .filter(id => id !== undefined) as number[];
-  }
 
   titleForm: string = 'Create a service'
   isEditMode = false;
@@ -317,15 +344,77 @@ export class ServiceFormComponent {
   }
 
   fillForm(){
-    //get service and fill the form
+    this.serviceMenager.getServiceById(this.updatingServiceId).subscribe({
+      next:(s:Service)=>{
+        this.firstFormGroup.patchValue({
+          name:s.name,
+          description:s.description,
+          specifics: s.specifics,
+          price: s.price,
+          categoryTypeId: s.offeringCategory.id,
+          categoryTypeName: s.offeringCategory.name,
+          eventTypes: s.eventTypes.map(e => e.id)
+        })
+        this.onSelectionChange();
+        this.isDisabledCategory = true
+        if(s.reservationType == ReservationType.AUTOMATIC.toString()){
+          this.reservationTypeString = "Automatic"
+        }
+        else{
+          this.reservationTypeString = "Manual"
+        }
+        //this.reservationTypeService = s.reservationType
+        this.secondFormGroup.patchValue({
+          isAvailable: s.available,
+          isVisible: s.visible
+        })
+        this.formGroupDiscount.patchValue({
+          discountt: s.discount
+        })
+        this.discountFront = s.discount;
+
+        this.formGroupDuration.patchValue({
+          duration: s.duration
+        })
+        this.durationtFront = s.duration;
+
+        this.formGroupCancellationDeadline.patchValue({
+          cancellationDeadline: s.cancellationDeadline
+        })
+        this.cancellationDeadlinfront = s.cancellationDeadline;
+
+        this.formGroupReservationDeadline.patchValue({
+          reservationDeadline :s.reservationDeadline
+        })
+        this.reservationDeadlineFront = s.reservationDeadline;
+
+        this.formGroupMinArrangement.patchValue({
+          minArrangement:s.minimumArrangement
+        })
+        this.minArrangementFront = s.minimumArrangement;
+
+        this.formGroupMaxArrangement.patchValue({
+          maxArrangement: s.maximumArrangement
+        })
+        this.maxArrangementFront = s.maximumArrangement;
+      },
+      error:(_) => {
+        console.log("error")
+      }
+    })
+    
   }
 
+  updatingServiceId: number = -1;
+  isDisabledCategory: boolean = false
   ngOnInit() {
     const serviceName = this.route.snapshot.paramMap.get('id');
+    this.updatingServiceId = Number(serviceName);
     if (serviceName) {
       this.titleForm = 'Edit the service'
       this.actionDialog = 'Edited'
       this.isEditMode = true;
+      this.fillForm()
     }
     this.getOfferingCategories();
     this.getEventTypes();

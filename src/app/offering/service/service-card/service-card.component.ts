@@ -20,8 +20,6 @@ export class ServiceCardComponent{
 
   openEditPage(event:Event, id: number){
     event.stopPropagation();
-    console.log('Service you clicked: ');
-    //console.log(this.serviceMenager.getServiceById(id));
     this.router.navigate(['/service/serviceForm', this.service.id]);
   }
 
