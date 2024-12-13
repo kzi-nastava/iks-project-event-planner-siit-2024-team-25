@@ -6,6 +6,7 @@ import { ActivateComponent } from './activate/activate.component';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { RegisterQuickComponent } from './register-quick/register-quick.component';
 
 const routes: Routes = [
   {
@@ -18,10 +19,8 @@ const routes: Routes = [
     component: RegisterComponent,
     canActivate: [unauthenticatedGuard],
   },
-  {
-    path: 'activate',
-    component: ActivateComponent,
-  },
+  { path: 'activate', component: ActivateComponent },
+  { path: 'register/quick', component: RegisterQuickComponent },
 ];
 
 @NgModule({

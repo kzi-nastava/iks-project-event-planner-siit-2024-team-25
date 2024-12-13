@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Approve category</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Category name</mat-label>
+    <input matInput placeholder="Enter category name" [(ngModel)]="data.submittedOffer.name" [disabled]="disableSelect">
+  </mat-form-field>
+  <mat-error *ngIf="!data.submittedOffer.name">Name is required</mat-error>
+
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Category description</mat-label>
+    <input matInput placeholder="Enter category description" [(ngModel)]="data.submittedOffer.description" [disabled]="disableSelect">
+  </mat-form-field>
+
+  <p>
+    <mat-checkbox [(ngModel)]="disableSelect">Choose already created category</mat-checkbox>
+  </p>
+  <p *ngIf="disableSelect">
+    <mat-select placeholder="Choose an offering category" [(ngModel)]="selectedOfferingCategoryOptionId">
+        <mat-option *ngFor="let option of offeringCategoryOption" [value]="option.id">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onApprove()">Approve</button>
+</mat-dialog-actions>
