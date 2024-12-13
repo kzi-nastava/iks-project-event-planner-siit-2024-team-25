@@ -52,7 +52,7 @@
 <div class="service-container">
   
   <div class="service-card" *ngFor="let service of services">
-    <app-service-card [service]="service"></app-service-card>
+    <app-service-card [service]="service" (refresh)="getAll()"></app-service-card>
   </div>
 </div>
 

@@ -18,6 +18,9 @@ export class ServiceCardComponent{
   @Input()
   service!: Service;
 
+  @Output()
+  refresh= new EventEmitter<Boolean>();
+
   openEditPage(event:Event, id: number){
     event.stopPropagation();
     this.router.navigate(['/service/serviceForm', this.service.id]);
@@ -27,19 +30,29 @@ export class ServiceCardComponent{
     event.stopPropagation();
     const dialogRef = this.dialog.open(ServiceDialogComponent, {
       data: {
-        serviceName: s.name
+        serviceName: s.name,
+        serviceId: s.id
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.response === 'yes') {
-        console.log(result)
-        this.dialog.open(ServiceDialogInformationComponent, {
-          data: {
-            serviceName: result.serviceName,
-            action: "deleted"
+        this.serviceMenager.deleteService(result.serviceId).subscribe({
+          next:()=>{
+            this.refresh.emit();
+            const dialogTemp = this.dialog.open(ServiceDialogInformationComponent, {
+              data: {
+                serviceName: result.serviceName,
+                action: "deleted"
+              }
+            })
+            
+          },
+          error:(_)=>{
+            console.log("error")
           }
         })
+        
       }
     });
   }

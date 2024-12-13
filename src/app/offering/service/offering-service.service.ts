@@ -68,4 +68,7 @@ export class OfferingServiceService {
   updateService(updatedService: ServiceUpdateDTO, id:number): Observable<Service> {
     return this.httpClinet.put<Service>("http://localhost:8080/api/services/"+id,updatedService);
   }
+  deleteService(id:number):Observable<void>{
+    return this.httpClinet.delete<void>("http://localhost:8080/api/services/"+id);
+  }
 }
