@@ -24,7 +24,7 @@
           <mat-form-field appearance="outline" class="primary">
             <mat-label>Password</mat-label>
             <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
-            <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+            <button type="button" mat-icon-button matSuffix (click)="togglePasswordVisibility()">
               <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
             <mat-error *ngIf="password?.invalid">
