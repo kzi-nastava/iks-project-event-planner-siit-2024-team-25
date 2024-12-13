@@ -45,6 +45,31 @@
   }
   .image-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    justify-content: center;
+  }
+  .image-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .image-table td {
+    padding: 10rem;
+  }
+  
+  .added-image {
+    max-width: 20rem;
+    max-height: 20rem;
+  }
+  
+  .image-table td button {
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  .image-table td button:hover {
+    background-color: darkred;
   }

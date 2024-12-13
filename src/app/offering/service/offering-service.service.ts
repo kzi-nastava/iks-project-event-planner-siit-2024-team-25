@@ -32,6 +32,12 @@ export class OfferingServiceService {
       if(properties.availableFilter){
         params = params.set('available', properties.available)
       }
+      if(properties.eventTypeId != -1){
+        params = params.set('eventTypeId', properties.eventTypeId)
+      }
+      if(properties.offeringCategoryTypeId != -1){
+        params = params.set('offeringCategoryId', properties.offeringCategoryTypeId)
+      }
     }
     return this.httpClinet
     .get<Page<Service>>("http://localhost:8080/api/services",{ params: params})

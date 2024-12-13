@@ -5,6 +5,10 @@ import { ServiceDialogInformationComponent } from '../service-dialog/service-dia
 import { OfferingServiceService } from '../offering-service.service';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
+import { EventTypeService } from '../../../event/service/event-type.service';
+import { OfferingCategoryService } from '../../offering-category/offering-category.service';
+import { EventType } from '../model/event-type';
+import { OfferingCategory } from '../../offering-category/model/offering-category';
 
 @Component({
   selector: 'app-list-services',
@@ -17,25 +21,37 @@ export class ListServicesComponent implements OnInit {
     name: "",
     price: 0,
     availableFilter: false,
-    available: false
+    available: false,
+    eventTypeId: -1,
+    offeringCategoryTypeId: -1
   }
 
   services: Service[] = [];
   clickedService: String = "";
   isFilter: boolean = false;
-  options: string[] = ['One', 'Two', 'Three'];
 
+  // filter fields front
   nameFilter: string = "";
   priceFIlter: number = 0;
   availableFilter: boolean = false;
+  selectedEventType:String|undefined = "";
+  selectedCategory:String|undefined = ""
+
+  eventTypeAll:Map<number, String> = new Map();
+  offeringCategoryTypeAll:Map<number,String> = new Map();
+
   setAvailableFilter(){
     this.pageProperties.availableFilter = true;
   }
 
-  constructor(private serviceManage: OfferingServiceService, private router: Router) { }
+  constructor(private serviceManage: OfferingServiceService, private router: Router, private eventTypeService: EventTypeService,
+    private offeringCategoryTypeService: OfferingCategoryService
+  ) { }
 
   ngOnInit(): void {
     this.getAll();
+    this.getEventTypes()
+    this.getOfferingCategoryTypes()
   }
 
   getAll(): void {
@@ -46,9 +62,45 @@ export class ListServicesComponent implements OnInit {
       },
       error: (_) => {
         console.log("Greska!")
-        this.refreshProperites()
       }
     })
+  }
+
+  getEventTypes(){
+    this.eventTypeService.getEventTypes().subscribe({
+      next:(res:EventType[])=>{
+        res.forEach(element => {
+          this.eventTypeAll.set(element.id,element.name)
+        });
+      },
+      error:(_)=>{
+        console.log("error")
+      }
+    })
+  }
+
+  getOfferingCategoryTypes(){
+    this.offeringCategoryTypeService.getAll().subscribe({
+      next:(res:OfferingCategory[])=>{
+        res.forEach(element => {
+          this.offeringCategoryTypeAll.set(element.id,element.name)
+        });
+      },
+      error:(_)=>{
+        console.log("error")
+      }
+    })
+  }
+
+  onEventTypeSelected(event: any) {
+    const inputValue = event.value;
+    this.pageProperties.eventTypeId = inputValue;
+    this.selectedEventType = this.eventTypeAll.get(inputValue);
+  }
+  onCategoryTypeSelected(event:any){
+    const inputValue = event.value;
+    this.pageProperties.offeringCategoryTypeId = inputValue;
+    this.selectedCategory = this.offeringCategoryTypeAll.get(inputValue);
   }
 
   // get details service page
@@ -64,7 +116,7 @@ export class ListServicesComponent implements OnInit {
   }
 
   searchAndFilter(){
-    this.pageProperties.name = this.nameFilter.toLocaleLowerCase();
+    this.pageProperties.name = this.nameFilter;
     this.pageProperties.price = this.priceFIlter;
     this.pageProperties.available = this.availableFilter;
     this.getAll();
@@ -73,6 +125,8 @@ export class ListServicesComponent implements OnInit {
   refreshProperites(){
     this.pageProperties.name = "";
     this.pageProperties.price = 0;
+    this.pageProperties.eventTypeId = -1;
+    this.pageProperties.offeringCategoryTypeId = -1;
     this.pageProperties.availableFilter = false;
     this.pageProperties.available = false
   }

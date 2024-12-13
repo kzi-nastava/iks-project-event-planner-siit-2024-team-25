@@ -158,7 +158,7 @@
           </mat-radio-group>
         </div>
 
-        <div class="border-class" style="margin-left: 2rem;">
+        <div class="border-class">
           <mat-slide-toggle class="form-container" style="margin: 20px;" formControlName="isAvailable">Is available to
             users</mat-slide-toggle>
           <mat-slide-toggle class="form-container" formControlName="isVisible">Is
@@ -236,11 +236,14 @@
 
   <mat-step style="margin: 30px;">
     <ng-template matStepLabel showSaveButton()>Step 3</ng-template>
-    <div class="image-container">
-      <div *ngFor="let image of imagesService">
-        <img [src]="image" alt="Image" class="added-image" />
-      </div>
-    </div>
+    <table class="image-table">
+      <tr *ngFor="let image of imagesService; let i = index">
+        <td><img [src]="image" alt="Image" class="added-image" /></td>
+        <td>
+          <button (click)="deleteImage(i)"><mat-icon>delete</mat-icon></button>
+        </td>
+      </tr>
+    </table>
 
     <div class="form-container">
       <button mat-raised-button color="primary" style="margin: 30px;" (click)="addImage()">Add Image</button>

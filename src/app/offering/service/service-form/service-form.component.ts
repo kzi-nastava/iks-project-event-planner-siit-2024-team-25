@@ -190,6 +190,9 @@ export class ServiceFormComponent {
     const newImage = 'https://static.vecteezy.com/system/resources/previews/009/875/161/non_2x/3d-like-hand-with-blue-speech-bubble-free-png.png';
     this.imagesService.push(newImage);
   }
+  deleteImage(index: number): void {
+    this.imagesService.splice(index, 1);
+  }
   backToHome() {
     this.router.navigate(['/service/services']);
   }
