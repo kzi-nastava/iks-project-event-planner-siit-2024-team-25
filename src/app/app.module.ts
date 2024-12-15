@@ -1,3 +1,4 @@
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -7,10 +8,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EventModule } from './event/event.module';
 import { HomeComponent } from './home/home.component';
+import { jwtInterceptor } from './infrastructure/auth/interceptor/jwt.interceptor';
 import { MaterialModule } from './infrastructure/material/material.module';
 import { LayoutModule } from './layout/layout.module';
 import { OfferingModule } from './offering/offering.module';
-import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -23,7 +24,11 @@ import { provideHttpClient } from '@angular/common/http';
     OfferingModule,
   ],
 
-  providers: [provideAnimationsAsync(), provideToastr(), provideHttpClient()],
+  providers: [
+    provideAnimationsAsync(),
+    provideToastr(),
+    provideHttpClient(withInterceptors([jwtInterceptor])),
+  ],
 
   bootstrap: [AppComponent],
 })

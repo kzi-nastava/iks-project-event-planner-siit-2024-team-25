@@ -1,5 +1,5 @@
 import { EventType } from "./event-type";
-import { OfferingCategory } from "./offering-category";
+import { OfferingCategory } from "../../offering-category/model/offering-category";
 import { Offeringtype } from "./offering.type.enum";
 import { ReservationType } from "./reservation.type.enum";
 

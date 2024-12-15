@@ -5,6 +5,7 @@ import { OfferingFilterParams } from '../model/home-offering-filter-params-model
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { Page } from '../../shared/model/page.mode';
+import { SubmittedOffering } from '../offering-category/model/submitted-offering';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,17 @@ export class OfferingService {
     private httpClient: HttpClient,
     private authService: AuthService
   ) {}
+
+  getSubmittedOfferings():Observable<SubmittedOffering[]>{
+    return this.httpClient.get<SubmittedOffering[]>('http://localhost:8080/api/offerings/submitted');
+  }
+
+  updateOfferingsCategory(offeringId:number, categoryId:number, updateCategoryId:number):Observable<void>{
+    let params = new HttpParams()
+    .set('categoryId', categoryId)
+    .set('updateCategoryId', updateCategoryId)
+    return this.httpClient.put<void>('http://localhost:8080/api/offerings/'+offeringId+"/updateCategory", null, {params});
+  }
 
   getTopOfferings(): Observable<HomeOffering[]> {
     const user = this.authService.getUser();

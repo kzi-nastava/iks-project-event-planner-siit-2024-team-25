@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoginService } from '../service/login.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { LoginService } from '../service/login.service';
 
 @Component({
   selector: 'app-login',
@@ -14,15 +15,19 @@ export class LoginComponent implements OnInit {
   form!: FormGroup;
   hidePassword = true;
   waitingResponse = false;
+  redirectUrl!: string;
 
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
     private router: Router,
-    private toastr: ToastrService
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
+    this.redirectUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -30,7 +35,7 @@ export class LoginComponent implements OnInit {
   }
 
   get email() {
-    return this.form.get('name');
+    return this.form.get('email');
   }
 
   get password() {
@@ -50,10 +55,13 @@ export class LoginComponent implements OnInit {
         .subscribe({
           next: () => {
             this.toastr.success("You've successfully logged in!", 'Success');
-            this.router.navigate(['/']);
+            this.router.navigateByUrl(this.redirectUrl).then((succeeded) => {
+              if (!succeeded) {
+                this.router.navigateByUrl('/');
+              }
+            });
           },
-          error: (e) => {
-            const err = e as Error;
+          error: (err: ErrorResponse) => {
             this.toastr.error(err.message, 'Oops!');
           },
         });
