@@ -5,7 +5,11 @@
     <button (click)="getPreviousPage()">
       <mat-icon>navigate_before</mat-icon>
     </button>
-    <p>{{ currentPage + 1 }}/{{ totalPages }}</p>
+    @if (totalPages > 0) {
+      <p>{{ currentPage + 1 }}/{{ totalPages }}</p>
+    } @else {
+      <p>No results</p>
+      }
     <button (click)="getNextPage()"><mat-icon>navigate_next</mat-icon></button>
   </div>
   <div class="all-offerings-container">

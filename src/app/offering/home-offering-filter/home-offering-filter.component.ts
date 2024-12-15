@@ -2,6 +2,8 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { OfferingFilterParams } from '../model/home-offering-filter-params-model';
 import { EventTypeService } from '../../event/service/event-type.service';
 import { EventTypePreviewModel } from '../../event/model/event.type.preview.model';
+import { OfferingCategoryService } from '../offering-category/offering-category.service';
+import { OfferingCategoryPreview } from '../offering-category/model/offering-category.preview.model';
 
 @Component({
   selector: 'app-home-offering-filter',
@@ -9,13 +11,18 @@ import { EventTypePreviewModel } from '../../event/model/event.type.preview.mode
   styleUrl: './home-offering-filter.component.scss',
 })
 export class HomeOfferingFilterComponent implements OnInit {
-  constructor(private eventTypeService: EventTypeService) {}
+  constructor(private eventTypeService: EventTypeService, private offeringCategoryService: OfferingCategoryService) {}
   ngOnInit(): void {
     this.eventTypeService.getAllEventTypes().subscribe({
       next: (eventTypes: EventTypePreviewModel[]) => {
         this.eventTypes = eventTypes;
       },
     });
+    this.offeringCategoryService.getAllCategories().subscribe({
+      next: (categories: OfferingCategoryPreview[]) => {
+        this.offeringCategories = categories;
+      }
+    })
   }
 
   @Output()
@@ -27,6 +34,7 @@ export class HomeOfferingFilterComponent implements OnInit {
   isActive: boolean = false;
 
   eventTypes: EventTypePreviewModel[] = [];
+  offeringCategories: OfferingCategoryPreview[] = []
 
   today: Date = new Date();
   sortCategories = [

@@ -58,7 +58,11 @@
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
       <mat-label>Category</mat-label>
-      <mat-select [(ngModel)]="filterParams!.categoryId"> </mat-select>
+      <mat-select [(ngModel)]="filterParams!.categoryId">
+      <mat-option *ngFor="let category of offeringCategories" [value]="category.id">
+        {{ category.name }}
+      </mat-option>  
+      </mat-select>
     </mat-form-field>
   </mat-grid-tile>
 
