@@ -32,6 +32,7 @@ export class HomeOfferingFilterComponent implements OnInit {
   filterParams: OfferingFilterParams = {};
 
   isActive: boolean = false;
+  numColumns: number = 3;
 
   eventTypes: EventTypePreviewModel[] = [];
   offeringCategories: OfferingCategoryPreview[] = []
@@ -66,5 +67,12 @@ export class HomeOfferingFilterComponent implements OnInit {
   refreshEventFilter() {
     this.filterParams = {};
     this.clicked.emit(this.filterParams);
+  }
+  updateColumns() {
+    if (this.filterParams.criteria === 'SERVICES') {
+      this.numColumns = 5;
+    } else if (this.filterParams.criteria !== 'SERVICES') {
+      this.numColumns = 3;
+    }
   }
 }

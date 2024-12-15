@@ -10,4 +10,8 @@ export interface OfferingFilterParams {
   sortCategory?: string;
   sortType?: string;
   criteria?: string;
+  startDate?: Date;
+  startTime?: string;
+  endDate?: Date;
+  endTime?: string;
 }

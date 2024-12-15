@@ -6,6 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { Page } from '../../shared/model/page.mode';
 import { SubmittedOffering } from '../offering-category/model/submitted-offering';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,8 @@ import { SubmittedOffering } from '../offering-category/model/submitted-offering
 export class OfferingService {
   constructor(
     private httpClient: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private datePipe: DatePipe
   ) {}
 
   getSubmittedOfferings():Observable<SubmittedOffering[]>{
@@ -150,6 +152,30 @@ export class OfferingService {
     }
     if (filterParams.sortType) {
       params = params.set('sortDirection', filterParams.sortType);
+    }
+    if (filterParams.startDate) {
+      params = params.set(
+        'startDate',
+        this.datePipe.transform(filterParams.startDate, 'yyyy-MM-dd')!
+      );
+    }
+
+    if (filterParams.endDate) {
+      params = params.set(
+        'endDate',
+        this.datePipe.transform(filterParams.endDate, 'yyyy-MM-dd')!
+      );
+    }
+    if (filterParams.startTime) {
+      params = params.set(
+        'startTime',filterParams.startTime
+      );
+    }
+
+    if (filterParams.endTime) {
+      params = params.set(
+        'endTime',filterParams.endTime
+      );
     }
     return params;
   }

@@ -53,7 +53,7 @@ export class HomeAllOfferingsComponent implements OnInit {
   }
 
   getNextPage() {
-    if (this.currentPage < this.totalPages) {
+    if (this.currentPage < this.totalPages-1) {
       this.currentPage++;
       this.getOfferings(this.currentPage);
     }
