@@ -28,7 +28,7 @@
       <p>{{ formatLocation(event.country, event.city) }}</p>
     </div>
   </div>
-  <button mat-raised-button color="primary" (click)="openEmailDialog()">
+  <button mat-raised-button color="primary" (click)="openEmailDialog(event.id)">
     Open Email Form
   </button>
 </div>

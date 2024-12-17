@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EventService } from '../service/event.service';
 import { EventInvitation } from '../model/event.invitation.model';
 
@@ -17,7 +17,8 @@ export class EventInvitationsComponent {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EventInvitationsComponent>,
-    private eventService: EventService
+    private eventService: EventService,
+    @Inject(MAT_DIALOG_DATA) public data: { eventId: number }
   ) {
     this.emailForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -34,8 +35,7 @@ export class EventInvitationsComponent {
   }
 
   submitEmails(): void {
-    //TO DO get eventId from URL
-    this.eventService.sendInvitations(this.invitations, 4);
+    this.eventService.sendInvitations(this.invitations, this.data.eventId);
     this.dialogRef.close(this.emails);
   }
 }

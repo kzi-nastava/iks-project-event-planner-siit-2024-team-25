@@ -31,14 +31,10 @@ export class HomeEventCardComponent {
     return country + ',' + city;
   }
 
-  openEmailDialog(): void {
-    const dialogRef = this.dialog.open(EventInvitationsComponent, {
+  openEmailDialog(eventId: number): void {
+    this.dialog.open(EventInvitationsComponent, {
       width: '650px',
-    });
-    dialogRef.afterClosed().subscribe((emails) => {
-      if (emails) {
-        console.log('Emails received from dialog:', emails);
-      }
+      data: { eventId }
     });
   }
 }
