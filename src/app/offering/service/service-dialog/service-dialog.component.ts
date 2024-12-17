@@ -9,14 +9,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class ServiceDialogComponent {
   constructor(public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: { serviceName:string }
+    @Inject(MAT_DIALOG_DATA) public data: { serviceName:string, serviceId:number }
   ) {}
 
   onYesClick(): void {
-    this.dialogRef.close({response:"yes",serviceName: this.data.serviceName}); // Vraća true za potvrdu
+    this.dialogRef.close({response:"yes",serviceName: this.data.serviceName, serviceId: this.data.serviceId}); 
   }
 
   onNoClick(): void {
-    this.dialogRef.close("no"); // Vraća false za odbijanje
+    this.dialogRef.close("no"); 
   }
 }

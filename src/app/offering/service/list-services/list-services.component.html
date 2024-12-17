@@ -16,25 +16,23 @@
 
   <div class="form-container" *ngIf="isFilter">
     <form>
-      <mat-form-field>
-        <input type="text" placeholder="Category" matInput [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of options" [value]="option">
-            {{option}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-select [(ngModel)]="selectedEventType" placeholder="Event type" (selectionChange)="onEventTypeSelected($event)">
+            <mat-option *ngFor="let entry of eventTypeAll | keyvalue" [value]="entry.key">
+              {{ entry.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
     </form>
   
     <form>
       <mat-form-field>
-        <input type="text" placeholder="Event type" matInput [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of options" [value]="option">
-            {{option}}
+        <mat-select [(ngModel)]="selectedCategory" placeholder="Category type" (selectionChange)="onCategoryTypeSelected($event)">
+          <mat-option *ngFor="let entry of offeringCategoryTypeAll | keyvalue" [value]="entry.key">
+            {{ entry.value }}
           </mat-option>
-        </mat-autocomplete>
+        </mat-select>
       </mat-form-field>
 
     </form>
@@ -54,7 +52,7 @@
 <div class="service-container">
   
   <div class="service-card" *ngFor="let service of services">
-    <app-service-card [service]="service"></app-service-card>
+    <app-service-card [service]="service" (refresh)="getAll()"></app-service-card>
   </div>
 </div>
 
