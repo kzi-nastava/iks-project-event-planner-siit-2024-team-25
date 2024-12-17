@@ -12,6 +12,7 @@ import { HomeEventCardComponent } from './home-event-card/home-event-card.compon
 import { HomeEventFilterComponent } from './home-event-filter/home-event-filter.component';
 import { HomeTopEventsComponent } from './home-top-events/home-top-events.component';
 import { EventInvitationsComponent } from './event-invitations/event-invitations.component';
+import { EventPageComponent } from './event-page/event-page.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { EventInvitationsComponent } from './event-invitations/event-invitations
     EventTypeComponent,
     EventTypeListComponent,
     EventInvitationsComponent,
+    EventPageComponent,
   ],
   imports: [
     CommonModule,

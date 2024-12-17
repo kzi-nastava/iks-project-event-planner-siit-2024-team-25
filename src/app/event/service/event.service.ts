@@ -18,6 +18,17 @@ export class EventService {
     private datePipe: DatePipe
   ) {}
 
+  getEvent(id: number, invitationCode: string = '') {
+    let params = new HttpParams();
+
+    if(invitationCode !== ''){
+      params = params.set("invitationCode", invitationCode);
+    }
+    return this.httpClient
+      .get<Page<HomeEvent>>('http://localhost:8080/api/events/'+id, { params })
+      .pipe(map((page) => page.content));
+  }
+
   getTopEvents(): Observable<HomeEvent[]> {
     const user = this.authService.getUser();
 
