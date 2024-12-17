@@ -21,8 +21,6 @@ export class EventPageComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         this.invitationCode = params['invitationCode'];
 
-        console.log(this.invitationCode)
-
         this.eventService.getEvent(this.eventId, this.invitationCode).subscribe({
           next: () => {console.log("vratio se zahtev")},
           error: () => {this.router.navigateByUrl('/')}
