@@ -1,17 +1,17 @@
-import { Time } from "@angular/common";
+import { Time } from '@angular/common';
 
 export interface OfferingFilterParams {
   name?: string;
-  eventType?: string;
-  category?: string;
+  eventTypeId?: number;
+  categoryId?: number;
   maxPrice?: number;
   minPrice?: number;
-  country?: string;
-  city?: string;
+  description?: string;
+  sortCategory?: string;
+  sortType?: string;
+  criteria?: string;
   startDate?: Date;
-  startTime?: Time,
-  endTime?: Time,
+  startTime?: string;
   endDate?: Date;
-  sortCategory?: string,
-  sortType?: string,
+  endTime?: string;
 }
