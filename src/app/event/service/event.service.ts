@@ -1,12 +1,20 @@
+import { DatePipe } from '@angular/common';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HomeEvent } from '../model/home-event.model';
-import { map, Observable, of } from 'rxjs';
-import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Page } from '../../shared/model/page.mode';
+import { catchError, map, Observable, throwError } from 'rxjs';
+import { environment } from '../../../environment/environment';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { Page } from '../../shared/model/page.mode';
 import { EventInvitation } from '../model/event.invitation.model';
-import { DatePipe, Time } from '@angular/common';
+import { Event } from '../model/event.model';
+import { EventRequest } from '../model/event.request.model';
+import { HomeEvent } from '../model/home-event.model';
+import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +23,7 @@ export class EventService {
   constructor(
     private httpClient: HttpClient,
     private authService: AuthService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {}
 
   getTopEvents(): Observable<HomeEvent[]> {
@@ -46,14 +54,14 @@ export class EventService {
       if (filterParams.startDate) {
         params = params.set(
           'startDate',
-          this.datePipe.transform(filterParams.startDate, 'yyyy-MM-dd')!
+          this.datePipe.transform(filterParams.startDate, 'yyyy-MM-dd')!,
         );
       }
 
       if (filterParams.endDate) {
         params = params.set(
           'endDate',
-          this.datePipe.transform(filterParams.endDate, 'yyyy-MM-dd')!
+          this.datePipe.transform(filterParams.endDate, 'yyyy-MM-dd')!,
         );
       }
     }
@@ -63,7 +71,7 @@ export class EventService {
 
   getEvents(
     page: number,
-    filterParams?: HomeEventFilterParams
+    filterParams?: HomeEventFilterParams,
   ): Observable<{ currentEvents: HomeEvent[]; totalPages: number }> {
     let params = this.getHttpParams(filterParams);
 
@@ -80,7 +88,7 @@ export class EventService {
         map((page) => ({
           currentEvents: page.content,
           totalPages: page.totalPages,
-        }))
+        })),
       );
   }
 
@@ -88,11 +96,34 @@ export class EventService {
     this.httpClient
       .post(
         `http://localhost:8080/api/events/${eventId}/send-invitations`,
-        invitations
+        invitations,
       )
       .subscribe({
         next: () => console.log('Invitations sent successfully.'),
         error: (error) => console.error('Failed to send invitations:', error),
       });
+  }
+
+  createEvent(eventRequest: EventRequest): Observable<Event> {
+    return this.httpClient
+      .post<Event>(environment.apiHost + '/api/events', eventRequest)
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorResponse: ErrorResponse | null = null;
+
+    if (error.error && typeof error.error === 'object') {
+      errorResponse = error.error as ErrorResponse;
+    }
+
+    return throwError(
+      () =>
+        ({
+          code: error.status,
+          message: errorResponse?.message ?? error.message,
+          errors: errorResponse?.errors,
+        }) as ErrorResponse,
+    );
   }
 }
