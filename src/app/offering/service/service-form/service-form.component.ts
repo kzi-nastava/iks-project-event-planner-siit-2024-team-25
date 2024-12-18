@@ -15,6 +15,7 @@ import { EventTypeService } from '../../../event/service/event-type.service';
 import { EventTypePreviewModel } from '../../../event/model/event.type.preview.model';
 import { ServiceUpdateDTO } from '../model/serviceUpdateDTO';
 import { minArrayLength } from '../../../shared/model/Validators';
+import { AuthService } from '../../../infrastructure/auth/service/auth.service';
 
 @Component({
   selector: 'app-service-form',
@@ -77,7 +78,8 @@ export class ServiceFormComponent {
     this.arrangementValidator = this.minArrangementFront >= this.maxArrangementFront ? false : true
   }
 
-  constructor(private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private serviceMenager: OfferingServiceService, private offeringCategoriesService: OfferingCategoryService, private eventTypeService: EventTypeService) {
+  constructor(private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private serviceMenager: OfferingServiceService, private offeringCategoriesService: OfferingCategoryService, 
+    private eventTypeService: EventTypeService, private authService : AuthService) {
   }
 
   @Output() toggle = new EventEmitter<void>();
@@ -151,7 +153,7 @@ export class ServiceFormComponent {
       cancellationDeadline: this.cancellationDeadlinfront,
       reservationDeadline: this.reservationDeadlineFront,
       reservationType: this.reservationTypeService,
-      ownerId: 1,
+      ownerId: this.loggedOwner,
       eventTypesIDs: this.firstFormGroup.value.eventTypes,
       minimumArrangement: this.minArrangementFront,
       maximumArrangement: this.maxArrangementFront,
@@ -411,6 +413,7 @@ export class ServiceFormComponent {
 
   }
 
+  loggedOwner : number | undefined;
   updatingServiceId: number = -1;
   isDisabledCategory: boolean = false
   ngOnInit() {
@@ -424,6 +427,7 @@ export class ServiceFormComponent {
     }
     this.getOfferingCategories();
     this.getEventTypes();
+    this.loggedOwner = this.authService.getUser()?.userId
   }
 
 

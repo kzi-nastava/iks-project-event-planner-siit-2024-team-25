@@ -6,6 +6,7 @@ import { UserRole } from '../infrastructure/auth/model/user-role.model';
 import { EventTypeListComponent } from './event-type-list/event-type-list.component';
 
 import { EventTypeComponent } from './event-type/event-type.component';
+import { BudgetPlanComponent } from './budget-plan/budget-plan.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,11 @@ const routes: Routes = [
     canActivate: [roleGuard],
     data: { roles: [UserRole.Admin] },
   },
+  {
+    path: 'budget-plan',
+    component: BudgetPlanComponent,
+    data: { roles: [UserRole.Admin] },
+  }
 ];
 
 @NgModule({

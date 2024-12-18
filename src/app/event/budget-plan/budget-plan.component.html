@@ -1,0 +1,41 @@
+
+<div class="container">
+    <h3>{{eventName}}`s budget plan </h3>
+  </div>
+  <div class="example-container mat-elevation-z8">
+    <mat-table #table [dataSource]="budgetItems">
+  
+      <ng-container matColumnDef="offeringCategory">
+        <mat-header-cell *matHeaderCellDef> Offering category </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.offeringCategory.name}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="budget">
+        <mat-header-cell *matHeaderCellDef> Budget </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.money}} </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef > Edit </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="onEdit(element.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef > Delete </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="onDelete(element.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    
+  </div>
+  <button class="container" mat-button>Add new bidget item</button>
