@@ -1,6 +1,8 @@
 
 <div class="container">
     <h3>{{eventName}}`s budget plan </h3>
+    <div class="price-display">{{overallBidget}}.00 $</div>
+      
   </div>
   <div class="example-container mat-elevation-z8">
     <mat-table #table [dataSource]="budgetItems">
@@ -38,4 +40,11 @@
     </mat-table>
     
   </div>
-  <button class="container" mat-button>Add new bidget item</button>
+  <div class="container">
+
+    <button style="align-items: center;" mat-button>Add new bidget item</button>
+  </div>
+
+  <button mat-fab color="primary" class="fab-button">
+    <mat-icon>B</mat-icon>
+  </button>

@@ -21,3 +21,19 @@
     margin: 3rem;
     margin-top: 1rem;
   }
+  .fab-button {
+    position: fixed;
+    bottom: 20px;
+    left: 110px;   
+    z-index: 1000; 
+  }
+  .price-display {
+    font-size: 1.5em;
+    color: mat.get-theme-color(theme.$light-theme, primary);
+    font-weight: bold;
+    border: 2px solid mat.get-theme-color(theme.$light-theme, primary);
+    padding: 10px;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+  }

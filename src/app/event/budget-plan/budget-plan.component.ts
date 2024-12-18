@@ -13,6 +13,7 @@ export class BudgetPlanComponent {
   eventName: String | undefined = "Event one";
   eventId: number | undefined;
   budgetItems: BudgetItem[] = []
+  overallBidget: number = 0;
   displayedColumns = ['offeringCategory', 'budget', 'edit','delete'];
 
   constructor() { }
