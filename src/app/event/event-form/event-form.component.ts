@@ -104,7 +104,7 @@ export class EventFormComponent implements OnInit {
         this.isLoading = false;
         this.form.reset();
         this.toastService.success('Successfully created a new event.');
-        this.router.navigate(['/event', event.id]);
+        this.router.navigate(['/event', event.id, 'agenda']);
       },
       error: (error: ErrorResponse) => {
         this.isLoading = false;

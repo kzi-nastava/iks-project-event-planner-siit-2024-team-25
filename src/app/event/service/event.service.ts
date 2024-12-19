@@ -10,6 +10,7 @@ import { environment } from '../../../environment/environment';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { ErrorResponse } from '../../shared/model/error.response.model';
 import { Page } from '../../shared/model/page.mode';
+import { Activity } from '../model/activity.model';
 import { EventInvitation } from '../model/event.invitation.model';
 import { Event } from '../model/event.model';
 import { EventRequest } from '../model/event.request.model';
@@ -25,6 +26,12 @@ export class EventService {
     private authService: AuthService,
     private datePipe: DatePipe,
   ) {}
+
+  getEvent(eventId: number): Observable<Event> {
+    return this.httpClient
+      .get<Event>(environment.apiHost + `/api/events/${eventId}`)
+      .pipe(catchError(this.handleError));
+  }
 
   getTopEvents(): Observable<HomeEvent[]> {
     const user = this.authService.getUser();
@@ -107,6 +114,32 @@ export class EventService {
   createEvent(eventRequest: EventRequest): Observable<Event> {
     return this.httpClient
       .post<Event>(environment.apiHost + '/api/events', eventRequest)
+      .pipe(catchError(this.handleError));
+  }
+
+  getAgenda(eventId: number): Observable<Activity[]> {
+    return this.httpClient
+      .get<Activity[]>(environment.apiHost + `/api/events/${eventId}/agenda`)
+      .pipe(catchError(this.handleError));
+  }
+
+  addActivity(eventId: number, activity: Activity): Observable<Activity> {
+    return this.httpClient
+      .post<Activity>(environment.apiHost + `/api/events/${eventId}/agenda`, {
+        name: activity.name,
+        description: activity.description,
+        startTime: activity.startTime,
+        endTime: activity.endTime,
+        location: activity.location,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  removeActivity(eventId: number, activityId: number) {
+    return this.httpClient
+      .delete(
+        environment.apiHost + `/api/events/${eventId}/agenda/${activityId}`,
+      )
       .pipe(catchError(this.handleError));
   }
 
