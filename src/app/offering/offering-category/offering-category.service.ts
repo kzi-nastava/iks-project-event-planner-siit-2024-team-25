@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OfferingCategory } from './model/offering-category';
 import { ThumbPosition } from '@angular/material/slider/testing';
+import { OfferingCategoryPreview } from './model/offering-category.preview.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class OfferingCategoryService {
   getAll():Observable<OfferingCategory[]>{
     return this.httpClient.get<OfferingCategory[]>("http://localhost:8080/api/offering-categories/");
   }
+  getAllCategories():Observable<OfferingCategoryPreview[]>{
+    return this.httpClient.get<OfferingCategoryPreview[]>("http://localhost:8080/api/offering-categories/all");
+  }
   getById(id:number):Observable<OfferingCategory>{
     return this.httpClient.get<OfferingCategory>("http://localhost:8080/api/offering-categories/"+id);
   }
@@ -22,6 +26,11 @@ export class OfferingCategoryService {
   }
   updateOfferingCategory(id:number, category:OfferingCategory):Observable<OfferingCategory>{
     return this.httpClient.put<OfferingCategory>("http://localhost:8080/api/offering-categories/"+id,category)
+  }
+  approveOfferingCategory(id:number, category:OfferingCategory, offeringId:number):Observable<OfferingCategory>{
+    let params = new HttpParams();
+    params = params.set("offeringId", offeringId);
+    return this.httpClient.put<OfferingCategory>("http://localhost:8080/api/offering-categories/"+id+"/approve",category,{ params: params})
   }
   createOfferingCategory(category:OfferingCategory):Observable<OfferingCategory>{
     return this.httpClient.post<OfferingCategory>("http://localhost:8080/api/offering-categories/",category)

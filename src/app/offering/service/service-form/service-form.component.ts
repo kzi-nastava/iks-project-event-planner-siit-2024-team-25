@@ -1,5 +1,5 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, input, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ServiceDialogInformationComponent } from '../service-dialog/service-dialog-information.component';
@@ -8,11 +8,13 @@ import { Offeringtype } from '../model/offering.type.enum';
 import { ReservationType } from '../model/reservation.type.enum';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from '../model/service';
-import { EventType } from '../model/event-type';
 import { OfferingCategory } from '../../offering-category/model/offering-category';
 import { ServiceCreateDTO } from '../model/serviceCreateDTO';
-import { MatStepper } from '@angular/material/stepper';
-import { OfferingCategoryType } from '../../offering-category/model/offering-category-type.enum';
+import { OfferingCategoryService } from '../../offering-category/offering-category.service';
+import { EventTypeService } from '../../../event/service/event-type.service';
+import { EventTypePreviewModel } from '../../../event/model/event.type.preview.model';
+import { ServiceUpdateDTO } from '../model/serviceUpdateDTO';
+import { minArrayLength } from '../../../shared/model/Validators';
 
 @Component({
   selector: 'app-service-form',
@@ -20,88 +22,65 @@ import { OfferingCategoryType } from '../../offering-category/model/offering-cat
   styleUrl: './service-form.component.scss'
 })
 export class ServiceFormComponent {
-
+  //attr
   firstFormGroup = new FormGroup({
     name: new FormControl("", [Validators.required, Validators.minLength(3)]),
     description: new FormControl("", [Validators.required]),
     specifics: new FormControl(),
     price: new FormControl(0, [Validators.required, Validators.min(1)]),
-    eventTypes: new FormControl([]),
-    categoryType: new FormControl(),
-
+    eventTypes: new FormControl<number[]>([], [minArrayLength(1)]),
+    categoryTypeId: new FormControl<number>(-1),
+    categoryTypeName: new FormControl<String>("", [Validators.required])
   })
+  secondFormGroup = new FormGroup({
+    isAvailable: new FormControl(false),
+    isVisible: new FormControl(false)
+  })
+  offeringCategoryTypeAll: Map<number, String> = new Map(); // options 
+  eventTypeAll: Map<number, String> = new Map(); // options
+  imagesService: string[] = [];
+  reservationTypeString: string = ''
+  reservationTypeService: ReservationType = ReservationType.MANUAL;
   get name() {
     return this.firstFormGroup.get('name');
   }
-  get price(){
+  get price() {
     return this.firstFormGroup.get('price')
   }
-  get description(){
+  get description() {
     return this.firstFormGroup.get('description')
   }
-  isFirstValidPressed = false;
+  get offeringCategoryName() {
+    return this.firstFormGroup.get('categoryTypeName');
+  }
+  get eventTypes() {
+    return this.firstFormGroup.get('eventTypes')
+  }
 
   @ViewChild('stepper') stepper: any;
   onFirstStepDone() {
-    this.isFirstValidPressed = true;
+    this.firstFormGroup.markAllAsTouched();
     if (!this.firstFormGroup.valid) {
-      
       return;
     }
     this.stepper.next();
   }
-
-  formGroupDiscount = new FormGroup({
-    discountt: new FormControl()
-  })
-
-
-  isAvailable: boolean = false;
-  isVisible: boolean = false;
-  reservationTypeString: string = ''
-  reservationTypeService: ReservationType = ReservationType.MANUAL;
-  imagesService: string[] = [];
-  eventTypesService: EventType[] = [];
-  categoryTypeService: OfferingCategory = { name: '' , description:"1", status:OfferingCategoryType.ACCEPTED, id:-1}
-
-  constructor(private router: Router, private _formBuilder: FormBuilder, private route: ActivatedRoute, public dialog: MatDialog, private serviceMenager: OfferingServiceService) {
+  onSecondStepDone(){
+    if(!this.arrangementValidator && !this.isDurationShow){
+      return
+    }
+    this.stepper.next();
   }
 
-  offeringCategoriesAll: string[] = ['One c', 'Two c', 'Three c']; // categories
-  eventTypesAll: string[] = ['one e', 'two e', 'three e']// event types
+  arrangementValidator = true;
+  validatorArrangement() {
+    this.arrangementValidator = this.minArrangementFront >= this.maxArrangementFront ? false : true
+  }
 
-  titleForm: string = 'Create a service'
-  isEditMode = false;
-  actionDialog: string = 'Created'
-  isDurationShow = true;
-  saveButtonShow = false;
-  cancelButtonShow = true;
-
-  formToogle!: FormGroup;
-  secondFormGroup!: FormGroup;
-  //formGroupDiscount!: FormGroup<any>;// sliders
-  formDuration!: FormGroup<any>;
-  formMinMaxArr!: FormGroup<any>;
-  formCancellationDeadline!: FormGroup<any>;
-  formReservationDeadline!: FormGroup<any>;
-
-  sliderValueDiscount: number = 0;
-  sliderValueDuration: number = 0;
-  sliderValueMinArrangement: number = 0;
-  sliderValueMaxArrangement: number = 0;
-  sliderValueCancellationDeadline: number = 0;
-  sliderValueReservationDeadline: number = 0;
-
-
-  discountFront = 0;
+  constructor(private router: Router, private route: ActivatedRoute, public dialog: MatDialog, private serviceMenager: OfferingServiceService, private offeringCategoriesService: OfferingCategoryService, private eventTypeService: EventTypeService) {
+  }
 
   @Output() toggle = new EventEmitter<void>();
-
-  setSliderFront(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.discountFront = Number(inputElement.value);
-  }
-
 
   openSaveDialog() {
     const dialogRef = this.dialog.open(ServiceDialogInformationComponent, {
@@ -115,7 +94,6 @@ export class ServiceFormComponent {
       this.backToHome();
     });
   }
-
   openErrorDialog(s: String) {
     const dialogRef = this.dialog.open(ServiceDialogInformationComponent, {
       data: {
@@ -125,36 +103,26 @@ export class ServiceFormComponent {
     })
   }
 
-  addNewService() {
-    /*if (this.isEditMode) {
-      this.serviceMenager.updateService()
-      if (updatedService) {
-        this.router.navigate(['/service/services']);
-      }
-    } else */{
-      if (this.firstFormGroup.valid) {
-        this.setupModels();
-        if (this.firstFormGroup.invalid) {
-          console.log('Form is invalid:', this.firstFormGroup.errors);
-          return;
-        }
-        const service: ServiceCreateDTO = {
-          name: this.firstFormGroup.get('name')?.value,
-          description: this.firstFormGroup.value.description,
-          price: this.firstFormGroup.value.price,
-          images: this.imagesService,
-          discount: this.discountFront,
-          isVisible: this.isVisible,
-          isAvailable: this.isAvailable,
-          specifics: this.firstFormGroup.value.specifics,
-          duration: this.sliderValueDuration,
-          cancellationDeadline: this.sliderValueCancellationDeadline,
-          reservationDeadline: this.sliderValueReservationDeadline,
-          reservationType: this.reservationTypeService,
-          ownerId: 11,
-          eventTypesIDs: [1, 2, 3],
-          offeringCategoryID: 1
-        };
+  saveService() {
+    this.firstFormGroup.markAllAsTouched();
+    this.firstFormGroup.get('price')?.markAsDirty();
+    if (this.firstFormGroup.valid) {
+      this.setupModels();
+
+      if (this.isEditMode) {
+        const service = this.updateService()
+        console.log(service)
+        this.serviceMenager.updateService(service, this.updatingServiceId).subscribe({
+          next: (s: Service) => {
+            this.router.navigate(['/service/services'])
+            this.openSaveDialog();
+          },
+          error: (err) => {
+            this.openErrorDialog("not created, server error")
+          }
+        })
+      } else {
+        const service = this.createService();
         this.serviceMenager.addService(service).subscribe({
           next: (s: Service) => {
             this.router.navigate(['/service/services'])
@@ -165,17 +133,70 @@ export class ServiceFormComponent {
           }
         });
       }
+
+
     }
+  }
+  createService() {
+    const service: ServiceCreateDTO = {
+      name: this.firstFormGroup.value.name,
+      description: this.firstFormGroup.value.description,
+      price: this.firstFormGroup.value.price,
+      images: this.imagesService, // TODO
+      discount: this.discountFront,
+      visible: this.secondFormGroup.value.isVisible,
+      available: this.secondFormGroup.value.isAvailable,
+      specifics: this.firstFormGroup.value.specifics,
+      duration: this.durationtFront,
+      cancellationDeadline: this.cancellationDeadlinfront,
+      reservationDeadline: this.reservationDeadlineFront,
+      reservationType: this.reservationTypeService,
+      ownerId: 1,
+      eventTypesIDs: this.firstFormGroup.value.eventTypes,
+      minimumArrangement: this.minArrangementFront,
+      maximumArrangement: this.maxArrangementFront,
+      offeringCategoryName: this.firstFormGroup.value.categoryTypeName
+    };
+    if (this.firstFormGroup.value.categoryTypeId === -1) {
+      service.offeringCategoryID = null
+    } else {
+      service.offeringCategoryID = this.firstFormGroup.value.categoryTypeId;
+    }
+    return service;
+  }
+  updateService() {
+    const service: ServiceUpdateDTO = {
+      name: this.firstFormGroup.value.name,
+      description: this.firstFormGroup.value.description,
+      price: this.firstFormGroup.value.price,
+      images: this.imagesService, // TODO
+      discount: this.discountFront,
+      visible: this.secondFormGroup.value.isVisible,
+      available: this.secondFormGroup.value.isAvailable,
+      specifics: this.firstFormGroup.value.specifics,
+      duration: this.durationtFront,
+      cancellationDeadline: this.cancellationDeadlinfront,
+      reservationDeadline: this.reservationDeadlineFront,
+      reservationType: this.reservationTypeService,
+      eventTypesIDs: this.firstFormGroup.value.eventTypes,
+      minimumArrangement: this.minArrangementFront,
+      maximumArrangement: this.maxArrangementFront,
+      status: Offeringtype.ACCEPTED
+    };
+    return service;
   }
 
   addImage() {
-    const newImage = 'assets/images/R.jpg';
+    const newImage = 'https://static.vecteezy.com/system/resources/previews/009/875/161/non_2x/3d-like-hand-with-blue-speech-bubble-free-png.png';
     this.imagesService.push(newImage);
   }
-
+  deleteImage(index: number): void {
+    this.imagesService.splice(index, 1);
+  }
   backToHome() {
     this.router.navigate(['/service/services']);
   }
+
   onStepChange(event: StepperSelectionEvent) {
     if (event.selectedIndex === 2) {
       this.saveButtonShow = true;
@@ -198,70 +219,211 @@ export class ServiceFormComponent {
   // you are not able to pick both, when we create an object we can check which one to choose
   checkDurationOrArrangement() {
     if (this.isDurationShow) {
-      this.sliderValueMinArrangement = -1;
-      this.sliderValueMaxArrangement = -1;
+      this.minArrangementFront = -1;
+      this.maxArrangementFront = -1;
     }
     else {
-      this.sliderValueDuration = -1;
+      this.durationtFront = -1;
     }
   }
-
-  setupModels() {
-    if (this.firstFormGroup.value.eventTypes != null) {
-      if (typeof this.firstFormGroup.value.eventTypes === 'string') {
-        this.firstFormGroup.value.eventTypes = [this.firstFormGroup.value.eventTypes];
-      }
-      this.eventTypesService = this.firstFormGroup.value.eventTypes.map(c => ({ name: c }));
-    }
-    this.categoryTypeService = { name: this.firstFormGroup.value.categoryType, description:"1", status:OfferingCategoryType.ACCEPTED , id:-1};
-
-
+  checkReservationType() {
     if (this.reservationTypeString === 'Manual') {
       this.reservationTypeService = ReservationType.MANUAL;
     } else if (this.reservationTypeString === 'Automatic') {
       this.reservationTypeService = ReservationType.AUTOMATIC;
     }
+  }
+  // set up requestDTO
+  setupModels() {
+    // enum
+    this.checkReservationType();
+    //bonus
     this.checkDurationOrArrangement()
   }
 
-  setupSliders() {
-    this.formMinMaxArr = new FormGroup({
-      sliderValueMinArrangement: new FormControl(0),
-      sliderValueMaxArrangement: new FormControl(0)
-    });
-    this.formDuration = new FormGroup({
-      sliderValueDuration: new FormControl(1)
-    });
-    this.formCancellationDeadline = new FormGroup({
-      sliderValueCancellationDeadline: new FormControl(1)
+  getOfferingCategories() {
+    this.offeringCategoriesService.getAll().subscribe({
+      next: (res: OfferingCategory[]) => {
+        res.forEach(element => {
+          this.offeringCategoryTypeAll.set(element.id, element.name)
+        });
+      }
     })
-    this.formReservationDeadline = new FormGroup({
-      sliderValueReservationDeadline: new FormControl(5)
+  }
+  getEventTypes() {
+    this.eventTypeService.getAllEventTypes().subscribe({
+      next: (res: EventTypePreviewModel[]) => {
+        this.eventTypeAll.clear();
+        res.forEach(elem => {
+          this.eventTypeAll.set(elem.id, elem.name);
+        })
+      }
     })
-    this.formToogle = this._formBuilder.group({
-      isDurationShow: [false],
-    });
   }
 
+  onInputCategory(event: Event): void {
+    const input = (event.target as HTMLInputElement).value;
+    if (!Array.from(this.offeringCategoryTypeAll.values()).includes(input)) {
+      this.firstFormGroup.patchValue({
+        categoryTypeId: -1,
+        categoryTypeName: input
+      })
+    }
+
+
+  }
+  onOptionSelectedCategory(event: any): void {
+    const selectedOption = event.option.value; // offering category type ID
+    this.firstFormGroup.patchValue({
+      categoryTypeId: selectedOption,
+      categoryTypeName: this.offeringCategoryTypeAll.get(selectedOption)
+    })
+  }
+  onSelectionChange(): void {
+    const selectedPositions: number[] = this.firstFormGroup.get('eventTypes')?.value || []; // event type IDs
+    this.firstFormGroup.patchValue({
+      eventTypes: selectedPositions
+    })
+  }
+
+
+  titleForm: string = 'Create a service'
+  isEditMode = false;
+  actionDialog: string = 'Created'
+  isDurationShow = true;
+  saveButtonShow = false;
+  cancelButtonShow = true;
+
+  //set sliders
+  formGroupDiscount = new FormGroup({
+    discountt: new FormControl()
+  })
+  discountFront = 0;
+  setSliderDiscount(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.discountFront = Number(inputElement.value);
+  }
+
+  formGroupCancellationDeadline = new FormGroup({
+    cancellationDeadline: new FormControl()
+  })
+  cancellationDeadlinfront = 0;
+  setSliderCancellationDeadline(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.cancellationDeadlinfront = Number(inputElement.value);
+  }
+
+  formGroupReservationDeadline = new FormGroup({
+    reservationDeadline: new FormControl()
+  })
+  reservationDeadlineFront = 0;
+  setSliderReservationDeadline(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.reservationDeadlineFront = Number(inputElement.value);
+  }
+
+  formGroupDuration = new FormGroup({
+    duration: new FormControl()
+  })
+  durationtFront = 1;
+  setSliderDuration(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.durationtFront = Number(inputElement.value);
+  }
+
+  formGroupMinArrangement = new FormGroup({
+    minArrangement: new FormControl()
+  })
+  minArrangementFront = 0;
+  setSliderMinArrangement(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.minArrangementFront = Number(inputElement.value);
+  }
+
+  formGroupMaxArrangement = new FormGroup({
+    maxArrangement: new FormControl()
+  })
+  maxArrangementFront = 1;
+  setSliderMaxArrangement(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.maxArrangementFront = Number(inputElement.value);
+  }
+
+  fillForm() {
+    this.serviceMenager.getServiceById(this.updatingServiceId).subscribe({
+      next: (s: Service) => {
+        this.firstFormGroup.patchValue({
+          name: s.name,
+          description: s.description,
+          specifics: s.specifics,
+          price: s.price,
+          categoryTypeId: s.offeringCategory.id,
+          categoryTypeName: s.offeringCategory.name,
+          eventTypes: s.eventTypes.map(e => e.id)
+        })
+        this.onSelectionChange();
+        this.imagesService = s.images;
+        this.isDisabledCategory = true
+        if (s.reservationType == ReservationType.AUTOMATIC.toString()) {
+          this.reservationTypeString = "Automatic"
+        }
+        else {
+          this.reservationTypeString = "Manual"
+        }
+        this.secondFormGroup.patchValue({
+          isAvailable: s.available,
+          isVisible: s.visible
+        })
+        this.formGroupDiscount.patchValue({
+          discountt: s.discount
+        })
+        this.discountFront = s.discount;
+
+        this.formGroupDuration.patchValue({
+          duration: s.duration == -1? 1:s.duration
+        })
+        this.durationtFront = this.formGroupDuration.value.duration;
+
+        this.formGroupCancellationDeadline.patchValue({
+          cancellationDeadline: s.cancellationDeadline
+        })
+        this.cancellationDeadlinfront = s.cancellationDeadline;
+
+        this.formGroupReservationDeadline.patchValue({
+          reservationDeadline: s.reservationDeadline
+        })
+        this.reservationDeadlineFront = s.reservationDeadline;
+
+        this.formGroupMinArrangement.patchValue({
+          minArrangement: s.minimumArrangement == -1 ? 1 :s.minimumArrangement
+        })
+        this.minArrangementFront = this.formGroupMinArrangement.value.minArrangement
+
+        this.formGroupMaxArrangement.patchValue({
+          maxArrangement: s.maximumArrangement == -1 ? 1 :s.maximumArrangement
+        })
+        this.maxArrangementFront = this.formGroupMaxArrangement.value.maxArrangement
+      },
+      error: (_) => {
+        console.log("error")
+      }
+    })
+
+  }
+
+  updatingServiceId: number = -1;
+  isDisabledCategory: boolean = false
   ngOnInit() {
     const serviceName = this.route.snapshot.paramMap.get('id');
+    this.updatingServiceId = Number(serviceName);
     if (serviceName) {
       this.titleForm = 'Edit the service'
       this.actionDialog = 'Edited'
       this.isEditMode = true;
-      //this.idService = Number(serviceName)
-      //this.service = this.serviceMenager.getServiceById(this.idService);
-      //this.setServiceDataFront();
-    } else {
-      this.titleForm = 'Create a service'
-      this.actionDialog = 'Created'
-      this.isEditMode = false;
+      this.fillForm()
     }
-
-    this.setupSliders();
-
-
-
+    this.getOfferingCategories();
+    this.getEventTypes();
   }
 
 

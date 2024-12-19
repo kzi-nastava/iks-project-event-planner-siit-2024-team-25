@@ -27,7 +27,10 @@ export class HomeAllOfferingsComponent implements OnInit {
     this.getOfferings(this.currentPage);
   }
 
-  filterOfferings(filterParams: OfferingFilterParams): void {}
+  filterOfferings(filterParams: OfferingFilterParams): void {
+    this.filterParams = filterParams;
+    this.getOfferings(this.currentPage);
+  }
 
   formatRating(rating: number): string {
     return this.decimalPipe.transform(rating, '1.1') || '';
@@ -38,7 +41,7 @@ export class HomeAllOfferingsComponent implements OnInit {
   }
 
   getOfferings(page: number) {
-    this.offeringService.getOfferings(page).subscribe({
+    this.offeringService.getOfferings(page, this.filterParams).subscribe({
       next: ({ currentOfferings, totalPages }) => {
         this.currentOfferings = currentOfferings;
         this.totalPages = totalPages;
@@ -50,7 +53,7 @@ export class HomeAllOfferingsComponent implements OnInit {
   }
 
   getNextPage() {
-    if (this.currentPage < this.totalPages) {
+    if (this.currentPage < this.totalPages-1) {
       this.currentPage++;
       this.getOfferings(this.currentPage);
     }
