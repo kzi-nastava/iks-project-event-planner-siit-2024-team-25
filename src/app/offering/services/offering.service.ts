@@ -6,6 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { Page } from '../../shared/model/page.mode';
 import { SubmittedOffering } from '../offering-category/model/submitted-offering';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -17,14 +18,14 @@ export class OfferingService {
   ) {}
 
   getSubmittedOfferings():Observable<SubmittedOffering[]>{
-    return this.httpClient.get<SubmittedOffering[]>('http://localhost:8080/api/offerings/submitted');
+    return this.httpClient.get<SubmittedOffering[]>(`${environment.apiHost}/api/offerings/submitted`);
   }
 
   updateOfferingsCategory(offeringId:number, categoryId:number, updateCategoryId:number):Observable<void>{
     let params = new HttpParams()
     .set('categoryId', categoryId)
     .set('updateCategoryId', updateCategoryId)
-    return this.httpClient.put<void>('http://localhost:8080/api/offerings/'+offeringId+"/updateCategory", null, {params});
+    return this.httpClient.put<void>(`${environment.apiHost}/api/offerings/`+offeringId+"/updateCategory", null, {params});
   }
 
   getTopOfferings(): Observable<HomeOffering[]> {
@@ -38,7 +39,7 @@ export class OfferingService {
     }
 
     return this.httpClient
-      .get<Page<HomeOffering>>('http://localhost:8080/api/offerings/top', {
+      .get<Page<HomeOffering>>(`${environment.apiHost}/api/offerings/top`, {
         params,
       })
       .pipe(map((page) => page.content));
@@ -52,7 +53,7 @@ export class OfferingService {
     params = params.set('page', page);
 
     return this.httpClient
-      .get<Page<HomeOffering>>('http://localhost:8080/api/offerings/', {
+      .get<Page<HomeOffering>>(`${environment.apiHost}/api/offerings/`, {
         params,
       })
       .pipe(
@@ -67,7 +68,7 @@ export class OfferingService {
     filterParams: OfferingFilterParams
   ): Observable<HomeOffering[]> {
     return this.httpClient
-      .get<Page<HomeOffering>>('http://localhost:8080/api/offerings/')
+      .get<Page<HomeOffering>>(`${environment.apiHost}/api/offerings/`)
       .pipe(map((page) => page.content));
   }
 }

@@ -6,7 +6,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Page } from '../../shared/model/page.mode';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { EventInvitation } from '../model/event.invitation.model';
-import { DatePipe, Time } from '@angular/common';
+import { DatePipe } from '@angular/common';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class EventService {
       params = params.set("invitationCode", invitationCode);
     }
     return this.httpClient
-      .get<Page<HomeEvent>>('http://localhost:8080/api/events/'+id, { params })
+      .get<Page<HomeEvent>>(`${environment.apiHost}/api/events/`+id, { params })
       .pipe(map((page) => page.content));
   }
 
@@ -40,7 +41,7 @@ export class EventService {
     }
 
     return this.httpClient
-      .get<Page<HomeEvent>>('http://localhost:8080/api/events/top', { params })
+      .get<Page<HomeEvent>>(`${environment.apiHost}/api/events/top`, { params })
       .pipe(map((page) => page.content));
   }
 
@@ -86,7 +87,7 @@ export class EventService {
     console.log(params);
 
     return this.httpClient
-      .get<Page<HomeEvent>>('http://localhost:8080/api/events/all', { params })
+      .get<Page<HomeEvent>>(`${environment.apiHost}/api/events/all`, { params })
       .pipe(
         map((page) => ({
           currentEvents: page.content,
@@ -98,7 +99,7 @@ export class EventService {
   sendInvitations(invitations: EventInvitation[], eventId: number): void {
     this.httpClient
       .post(
-        `http://localhost:8080/api/events/${eventId}/send-invitations`,
+        `${environment.apiHost}/api/events/${eventId}/send-invitations`,
         invitations
       )
       .subscribe({
