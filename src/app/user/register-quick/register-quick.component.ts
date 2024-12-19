@@ -90,9 +90,11 @@ export class RegisterQuickComponent implements OnInit {
             .login(registerResponse.userEmail, registerResponse.password)
             .subscribe({
               next: () => {
-                console.log(registerResponse.eventId);
+                const url = `/event/${registerResponse.eventId}`;
+                const queryParams = registerRequest.invitationCode ? { invitationCode: registerRequest.invitationCode } : {};
+                
+                this.router.navigate([url], { queryParams: queryParams });
                 this.form.reset();
-                this.router.navigate(['/'], {});
               },
             });
         },
