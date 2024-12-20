@@ -8,6 +8,7 @@ import { BudgetPlanService } from '../service/budget-plan.service';
 import { BudgetItemRequestDTO } from '../model/budget-item-request.dto';
 import { SaveDialogComponent } from '../dialogs/save-dialog/save-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { DeleteDialogComponent } from '../../offering/offering-category/dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-budget-plan',
@@ -129,8 +130,25 @@ export class BudgetPlanComponent implements OnInit {
     return budgetItem;
   }
 
-  onDelete(arg0: any) {
-    throw new Error('Method not implemented.');
+  onDelete(id:number, name:String) {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {
+        nameCategory: name
+      }
+    })
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if(res){
+        this.budgetItemService.deleteBudgetItem(id).subscribe({
+          next:()=>{
+            this.getBudgetItems();
+          },
+          error:(_)=>{
+            console.log("error")
+          }
+        })
+      }
+    });
   }
 
 }

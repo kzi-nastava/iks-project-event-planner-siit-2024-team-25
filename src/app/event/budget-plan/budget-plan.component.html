@@ -28,7 +28,7 @@
       <ng-container matColumnDef="delete">
         <mat-header-cell *matHeaderCellDef > Delete </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <button mat-icon-button (click)="onDelete(element.id)">
+          <button mat-icon-button (click)="onDelete(element.id, element.offeringCategory.name)">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>

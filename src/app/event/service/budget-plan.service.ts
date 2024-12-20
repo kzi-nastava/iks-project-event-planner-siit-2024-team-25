@@ -44,4 +44,7 @@ export class BudgetPlanService {
   updateBudgetItem(request:BudgetItemRequestDTO, id:number):Observable<BudgetItem>{
     return this.httpClient.put<BudgetItem>(environment.apiHost + "/api/budget-items/"+id, request)
   }
+  deleteBudgetItem(id:number):Observable<void>{
+    return this.httpClient.delete<void>(environment.apiHost + "/api/budget-items/"+id)
+  }
 }
