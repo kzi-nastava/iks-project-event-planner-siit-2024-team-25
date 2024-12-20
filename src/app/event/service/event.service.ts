@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HomeEvent } from '../model/home-event.model';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Page } from '../../shared/model/page.mode';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { EventInvitation } from '../model/event.invitation.model';
 import { DatePipe, Time } from '@angular/common';
+import { Event } from '../model/event.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,10 @@ export class EventService {
     private authService: AuthService,
     private datePipe: DatePipe
   ) {}
+
+  getEvent(id:number): Observable<Event>{
+    return this.httpClient.get<Event>('http://localhost:8080/api/events/'+id)
+  }
 
   getTopEvents(): Observable<HomeEvent[]> {
     const user = this.authService.getUser();

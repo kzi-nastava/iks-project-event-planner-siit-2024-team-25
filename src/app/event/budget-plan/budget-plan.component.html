@@ -1,7 +1,7 @@
 
 <div class="container">
-    <h3>{{eventName}}`s budget plan </h3>
-    <div class="price-display">{{overallBidget}}.00 $</div>
+    <h3>{{event?.name}}`s budget plan </h3>
+    <div class="price-display">{{overallBudget}}.00 $</div>
       
   </div>
   <div class="example-container mat-elevation-z8">
@@ -14,7 +14,7 @@
   
       <ng-container matColumnDef="budget">
         <mat-header-cell *matHeaderCellDef> Budget </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.money}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.budget}} </mat-cell>
       </ng-container>
       
       <ng-container matColumnDef="edit">
@@ -29,7 +29,7 @@
         <mat-header-cell *matHeaderCellDef > Delete </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <button mat-icon-button (click)="onDelete(element.id)">
-            <mat-icon>edit</mat-icon>
+            <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
       </ng-container>
@@ -42,7 +42,7 @@
   </div>
   <div class="container">
 
-    <button style="align-items: center;" mat-button>Add new bidget item</button>
+    <button style="align-items: center;" mat-button (click)="saveBudgetItem()">Add new bidget item</button>
   </div>
 
   <button mat-fab color="primary" class="fab-button">

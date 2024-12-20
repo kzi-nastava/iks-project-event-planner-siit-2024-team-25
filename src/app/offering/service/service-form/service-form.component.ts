@@ -113,7 +113,6 @@ export class ServiceFormComponent {
 
       if (this.isEditMode) {
         const service = this.updateService()
-        console.log(service)
         this.serviceMenager.updateService(service, this.updatingServiceId).subscribe({
           next: (s: Service) => {
             this.router.navigate(['/service/services'])
