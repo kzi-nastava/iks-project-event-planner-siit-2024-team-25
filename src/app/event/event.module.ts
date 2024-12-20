@@ -13,6 +13,7 @@ import { HomeEventFilterComponent } from './home-event-filter/home-event-filter.
 import { HomeTopEventsComponent } from './home-top-events/home-top-events.component';
 import { EventInvitationsComponent } from './event-invitations/event-invitations.component';
 import { BudgetPlanComponent } from './budget-plan/budget-plan.component';
+import { SaveDialogComponent } from './dialogs/save-dialog/save-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { BudgetPlanComponent } from './budget-plan/budget-plan.component';
     EventTypeListComponent,
     EventInvitationsComponent,
     BudgetPlanComponent,
+    SaveDialogComponent,
   ],
   imports: [
     CommonModule,

@@ -20,7 +20,7 @@
       <ng-container matColumnDef="edit">
         <mat-header-cell *matHeaderCellDef > Edit </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <button mat-icon-button (click)="onEdit(element.id)">
+          <button mat-icon-button (click)="openEditDialog(element.id, element.budget)">
             <mat-icon>edit</mat-icon>
           </button>
         </mat-cell>
@@ -42,7 +42,7 @@
   </div>
   <div class="container">
 
-    <button style="align-items: center;" mat-button (click)="saveBudgetItem()">Add new bidget item</button>
+    <button style="align-items: center;" mat-button (click)="openCreateDialog()">Add new bidget item</button>
   </div>
 
   <button mat-fab color="primary" class="fab-button">

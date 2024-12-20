@@ -31,7 +31,17 @@ export class BudgetPlanService {
     );
   }
 
+  
+  isOfferingCategorySuitableForEvent(eventId:number, offeringCategoryId:number):Observable<Boolean>{
+    let params = new HttpParams()
+    .set('eventId', eventId)
+    return this.httpClient.get<Boolean>(environment.apiHost + `/api/budget-items/${offeringCategoryId}/is-suitable`, {params:params})
+  }
+
   createBudgetItemForEevnt(request: BudgetItemRequestDTO):Observable<BudgetItem>{
-    return this.httpClient.post<BudgetItem>(environment.apiHost + "/api/budget-items", request)
+    return this.httpClient.post<BudgetItem>(environment.apiHost + "/api/budget-items/", request)
+  }
+  updateBudgetItem(request:BudgetItemRequestDTO, id:number):Observable<BudgetItem>{
+    return this.httpClient.put<BudgetItem>(environment.apiHost + "/api/budget-items/"+id, request)
   }
 }

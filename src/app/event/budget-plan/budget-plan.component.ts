@@ -6,67 +6,131 @@ import { EventTypeService } from '../service/event-type.service';
 import { EventType } from '../model/event.type.model';
 import { BudgetPlanService } from '../service/budget-plan.service';
 import { BudgetItemRequestDTO } from '../model/budget-item-request.dto';
+import { SaveDialogComponent } from '../dialogs/save-dialog/save-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-budget-plan',
   templateUrl: './budget-plan.component.html',
   styleUrl: './budget-plan.component.scss'
 })
-export class BudgetPlanComponent implements OnInit{
+export class BudgetPlanComponent implements OnInit {
 
   eventId: number = 25;
   event: Event | undefined;
 
   budgetItems: BudgetItem[] = []
-  budgetItemsTemp: BudgetItem[] = []
   overallBudget: number = 0;
-  displayedColumns = ['offeringCategory', 'budget', 'edit','delete'];
+  displayedColumns = ['offeringCategory', 'budget', 'edit', 'delete'];
 
-  constructor(private eventService: EventService, private eventTypeService:EventTypeService, private budgetItemService: BudgetPlanService) { }
+  budgetField = 0;
+  offeringIdField = -1;
+
+  constructor(private eventService: EventService, private eventTypeService: EventTypeService,
+    private budgetItemService: BudgetPlanService, public dialog: MatDialog,) { }
   ngOnInit(): void {
+   this.getBudgetItems();
+  }
+
+  getBudgetItems(){
     this.eventService.getEvent(this.eventId).subscribe({
-      next:(e:Event)=>{
+      next: (e: Event) => {
         this.event = e;
         this.budgetItemService.getBudgetItemsByEvent(e.id).subscribe({
-          next: (res)=>{
+          next: (res) => {
             console.log(res)
             this.budgetItems = res
-          } ,
-          error:(_) => {
+            this.overallBudget = 0
+            res.forEach(element => {
+              this.overallBudget += element.budget
+            });
+          },
+          error: (_) => {
             console.log("error")
           }
         })
       },
-      error:(_)=>{
+      error: (_) => {
         console.log("error");
       }
     })
   }
 
-  saveBudgetItem(){
+  openCreateDialog() {
+    const dialogRef = this.dialog.open(SaveDialogComponent, {
+      data: {
+        budget: 0,
+        eventTypeId: this.event?.eventType.id,
+        eventId: this.event?.id,
+        isEdit: false
+      }
+    })
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if(res){
+        this.budgetField = res.budget
+        this.offeringIdField = res.offerId
+        this.saveBudgetItem()
+      }
+    });
+  }
+  saveBudgetItem() {
     const budgetItem = this.onCreate()
     this.budgetItemService.createBudgetItemForEevnt(budgetItem).subscribe({
-      next:(res)=>{
-        console.log(res)
+      next: (res) => {
+        this.getBudgetItems()
       },
       error(err) {
         console.log(err)
       },
     })
   }
-
-  onDelete(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
-  onEdit(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
-  onCreate(){
+  onCreate() {
     const budgetItem: BudgetItemRequestDTO = {
-      budget: 100,
-      offeringCategoryId: 9,
+      budget: this.budgetField,
+      offeringCategoryId: this.offeringIdField,
       eventId: this.eventId,
     }
     return budgetItem;
   }
+
+  openEditDialog(id:number, budget:number){
+    const dialogRef = this.dialog.open(SaveDialogComponent, {
+      data: {
+        budget: budget,
+        eventTypeId: this.event?.eventType.id,
+        eventId: this.event?.id,
+        isEdit: true
+      }
+    })
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if(res){
+        this.budgetField = res.budget
+        this.editBudgetItem(id)
+      }
+    });
+  }
+  editBudgetItem(id:number){
+    const budgetItem = this.onEdit();
+    this.budgetItemService.updateBudgetItem(budgetItem,id).subscribe({
+      next:(res)=>{
+        this.getBudgetItems();
+      },
+      error:(_)=>{
+        console.log("error")
+      }
+    })
+  }
+  onEdit() {
+    const budgetItem: BudgetItemRequestDTO = {
+      budget: this.budgetField,
+    }
+    return budgetItem;
+  }
+
+  onDelete(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
+
 }
