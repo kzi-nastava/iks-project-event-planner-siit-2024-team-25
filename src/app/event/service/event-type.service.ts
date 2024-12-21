@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, throwError } from 'rxjs';
 import { EventType } from '../model/event.type.model';
@@ -27,12 +31,21 @@ export class EventTypeService {
       .pipe(catchError(this.handleError));
   }
 
-  getEventTypesByIds(ids:number[]){
+  getEventTypeByEvent(eventId: number): Observable<EventType> {
+    return this.httpClient
+      .get<EventType>(environment.apiHost + '/api/event-types/event/' + eventId)
+      .pipe(catchError(this.handleError));
+  }
+
+  getEventTypesByIds(ids: number[]) {
     let params = new HttpParams();
-    ids.forEach(id => {
+    ids.forEach((id) => {
       params = params.append('ids', id);
     });
-    return this.httpClient.get<EventTypePreviewModel[]>(environment.apiHost + '/api/event-types/offering', {params:params})
+    return this.httpClient.get<EventTypePreviewModel[]>(
+      environment.apiHost + '/api/event-types/offering',
+      { params: params }
+    );
   }
 
   getEventType(eventTypeId: number): Observable<EventType> {

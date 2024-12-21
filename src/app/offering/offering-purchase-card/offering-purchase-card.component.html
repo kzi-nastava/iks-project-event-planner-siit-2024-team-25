@@ -1,0 +1,33 @@
+<div class="top-offerings-container">
+  <div class="offering-card">
+    <div class="header">
+      <h2 class="title">{{ offering.name }}</h2>
+      <mat-icon class="heart" (click)="changeFavouriteOffering()">
+        {{ offering.isFavourite ? "favorite" : "favorite_border" }}
+      </mat-icon>
+    </div>
+    <div class="info">
+      <div class="owner">
+        <p>{{ offering.ownerName }}</p>
+      </div>
+      <div class="rating">
+        <mat-icon>star</mat-icon>
+        <p>{{ formatRating(offering.rating) }}</p>
+      </div>
+    </div>
+    <div class="description">
+      <p>{{ offering.description }}</p>
+    </div>
+    <div class="footer">
+      <div class="location">
+        <mat-icon>location_on</mat-icon>
+        <p>{{ formatLocation(offering.country, offering.city) }}</p>
+      </div>
+      <div class="price">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <p>{{ offering.price }}$</p>
+      </div>
+    </div>
+    <button mat-raised-button color="primary">Buy</button>
+  </div>
+</div>

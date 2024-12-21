@@ -45,6 +45,8 @@ export class OrganizerEventCardComponent {
   }
 
   purchase() {
-    this.router.navigate([`/event/my-events/${this.event.id}`]);
+    this.router.navigate([`/event/my-events/${this.event.id}`], {
+      state: { event: this.event.id },
+    });
   }
 }

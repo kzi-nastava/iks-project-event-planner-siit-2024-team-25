@@ -34,7 +34,6 @@ export class OrganizerEventComponent implements OnInit {
       .subscribe({
         next: ({ currentEvents, totalPages }) => {
           this.currentEvents = currentEvents;
-          console.log(currentEvents);
           this.totalPages = totalPages;
         },
         error: (err) => {
