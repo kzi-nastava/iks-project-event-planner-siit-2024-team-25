@@ -1,0 +1,26 @@
+@if (currentEvents) {
+<div class="container">
+  <app-home-event-filter (clicked)="filterEvents($event)" />
+  <div class="pagination">
+    <button (click)="getPreviousPage()">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    @if (totalPages > 0) {
+    <p>{{ currentPage }}/{{ totalPages }}</p>
+    } @else {
+    <p>No results</p>
+    }
+
+    <button (click)="getNextPage()"><mat-icon>navigate_next</mat-icon></button>
+  </div>
+  <div class="home-events-container">
+    <div *ngFor="let event of currentEvents">
+      <app-organizer-event-card
+        (clicked)="toggleFavouriteEvent($event)"
+        [event]="event"
+      />
+    </div>
+  </div>
+</div>
+
+}

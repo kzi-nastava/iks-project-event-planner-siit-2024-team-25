@@ -7,6 +7,8 @@ import { EventTypeListComponent } from './event-type-list/event-type-list.compon
 
 import { EventTypeComponent } from './event-type/event-type.component';
 import { EventPageComponent } from './event-page/event-page.component';
+import { OrganizerEventComponent } from './organizer-event/organizer-event.component';
+import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/organizer-event-purchase.component';
 
 const routes: Routes = [
   {
@@ -22,11 +24,30 @@ const routes: Routes = [
     data: { roles: [UserRole.Admin] },
   },
   {
+    path: 'my-events',
+    component: OrganizerEventComponent,
+    canActivate: [roleGuard],
+    data: { roles: [UserRole.EventOrganizer] },
+  },
+  {
+    path: 'my-events/:id',
+    component: OrganizerEventPurchaseComponent,
+    canActivate: [roleGuard],
+    data: { roles: [UserRole.EventOrganizer] },
+  },
+  {
     path: ':id',
     component: EventPageComponent,
     canActivate: [roleGuard],
-    data: { roles: [UserRole.Regular, UserRole.Owner, UserRole.EventOrganizer, UserRole.Admin] },
-    }
+    data: {
+      roles: [
+        UserRole.Regular,
+        UserRole.Owner,
+        UserRole.EventOrganizer,
+        UserRole.Admin,
+      ],
+    },
+  },
 ];
 
 @NgModule({

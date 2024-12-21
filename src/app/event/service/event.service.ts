@@ -22,12 +22,37 @@ export class EventService {
   getEvent(id: number, invitationCode: string = '') {
     let params = new HttpParams();
 
-    if(invitationCode !== ''){
-      params = params.set("invitationCode", invitationCode);
+    if (invitationCode !== '') {
+      params = params.set('invitationCode', invitationCode);
     }
     return this.httpClient
-      .get<Page<HomeEvent>>(`${environment.apiHost}/api/events/`+id, { params })
+      .get<Page<HomeEvent>>(`${environment.apiHost}/api/events/` + id, {
+        params,
+      })
       .pipe(map((page) => page.content));
+  }
+
+  getMyEvents(
+    page: number,
+    filterParams?: HomeEventFilterParams
+  ): Observable<{ currentEvents: HomeEvent[]; totalPages: number }> {
+    let params = this.getHttpParams(filterParams);
+
+    console.log(filterParams?.startTime);
+    console.log(filterParams?.endTime);
+
+    params = params.set('page', page);
+
+    console.log(params);
+
+    return this.httpClient
+      .get<Page<HomeEvent>>(`${environment.apiHost}/api/events/`, { params })
+      .pipe(
+        map((page) => ({
+          currentEvents: page.content,
+          totalPages: page.totalPages,
+        }))
+      );
   }
 
   getTopEvents(): Observable<HomeEvent[]> {
