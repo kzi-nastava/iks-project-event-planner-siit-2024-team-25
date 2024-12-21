@@ -1,7 +1,7 @@
 import { DialogModule } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -26,8 +26,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltip } from '@angular/material/tooltip';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { ReactiveFormsModule } from '@angular/forms';
 
 const components = [
   CommonModule,
@@ -63,7 +63,8 @@ const components = [
   MatTableModule,
   MatCheckbox,
   MatError,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  MatTooltip,
 ];
 
 @NgModule({
