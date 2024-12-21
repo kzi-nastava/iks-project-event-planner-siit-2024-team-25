@@ -1,13 +1,22 @@
-import { Injectable } from '@angular/core';
-import { HomeEvent } from '../model/home-event.model';
-import { map, Observable, of } from 'rxjs';
-import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Page } from '../../shared/model/page.mode';
-import { AuthService } from '../../infrastructure/auth/service/auth.service';
-import { EventInvitation } from '../model/event.invitation.model';
 import { DatePipe } from '@angular/common';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError, map, Observable, throwError } from 'rxjs';
+
 import { environment } from '../../../environment/environment';
+import { AuthService } from '../../infrastructure/auth/service/auth.service';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { Page } from '../../shared/model/page.mode';
+import { Activity } from '../model/activity.model';
+import { EventInvitation } from '../model/event.invitation.model';
+import { Event } from '../model/event.model';
+import { EventRequest } from '../model/event.request.model';
+import { HomeEvent } from '../model/home-event.model';
+import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +28,13 @@ export class EventService {
     private datePipe: DatePipe
   ) {}
 
-  getEvent(id: number, invitationCode: string = '') {
+  getEvent(eventId: number): Observable<Event> {
+    return this.httpClient
+      .get<Event>(environment.apiHost + `/api/events/${eventId}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getHomeEvent(id: number, invitationCode: string = '') {
     let params = new HttpParams();
 
     if (invitationCode !== '') {
@@ -131,5 +146,54 @@ export class EventService {
         next: () => console.log('Invitations sent successfully.'),
         error: (error) => console.error('Failed to send invitations:', error),
       });
+  }
+
+  createEvent(eventRequest: EventRequest): Observable<Event> {
+    return this.httpClient
+      .post<Event>(environment.apiHost + '/api/events', eventRequest)
+      .pipe(catchError(this.handleError));
+  }
+
+  getAgenda(eventId: number): Observable<Activity[]> {
+    return this.httpClient
+      .get<Activity[]>(environment.apiHost + `/api/events/${eventId}/agenda`)
+      .pipe(catchError(this.handleError));
+  }
+
+  addActivity(eventId: number, activity: Activity): Observable<Activity> {
+    return this.httpClient
+      .post<Activity>(environment.apiHost + `/api/events/${eventId}/agenda`, {
+        name: activity.name,
+        description: activity.description,
+        startTime: activity.startTime,
+        endTime: activity.endTime,
+        location: activity.location,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  removeActivity(eventId: number, activityId: number) {
+    return this.httpClient
+      .delete(
+        environment.apiHost + `/api/events/${eventId}/agenda/${activityId}`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorResponse: ErrorResponse | null = null;
+
+    if (error.error && typeof error.error === 'object') {
+      errorResponse = error.error as ErrorResponse;
+    }
+
+    return throwError(
+      () =>
+        ({
+          code: error.status,
+          message: errorResponse?.message ?? error.message,
+          errors: errorResponse?.errors,
+        } as ErrorResponse)
+    );
   }
 }

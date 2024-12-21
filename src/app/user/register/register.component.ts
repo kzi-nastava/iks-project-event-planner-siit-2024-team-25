@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 
 import { confirmPasswordValidator } from '../../infrastructure/validators/confirmPasswordValidator';
+import { passwordValidator } from '../../infrastructure/validators/passwordValidator';
 import { ErrorResponse } from '../../shared/model/error.response.model';
 import { RegisterRequest } from '../model/register.request.model';
 import { RegisterResponse } from '../model/register.response.model';
@@ -42,7 +43,7 @@ export class RegisterComponent implements OnInit {
     this.form = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required]],
+        password: ['', [Validators.required, passwordValidator()]],
         confirmPassword: ['', Validators.required],
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],

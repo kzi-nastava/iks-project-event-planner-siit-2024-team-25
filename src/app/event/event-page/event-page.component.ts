@@ -24,10 +24,10 @@ export class EventPageComponent implements OnInit {
         this.invitationCode = params['invitationCode'];
 
         this.eventService
-          .getEvent(this.eventId, this.invitationCode)
+          .getHomeEvent(this.eventId, this.invitationCode)
           .subscribe({
             next: () => {
-              console.log('vratio se zahtev');
+              console.log('ok');
             },
             error: () => {
               this.router.navigateByUrl('/');
