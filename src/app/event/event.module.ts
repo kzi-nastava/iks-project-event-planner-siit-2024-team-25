@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../infrastructure/material/material.module';
 import { OfferingModule } from '../offering/offering.module';
 import { EventFormComponent } from './event-form/event-form.component';
-import { EventInvitationsComponent } from './event-invitations/event-invitations.component';
 import { EventRoutingModule } from './event-routing.module';
 import { EventTypeListComponent } from './event-type-list/event-type-list.component';
 import { EventTypeComponent } from './event-type/event-type.component';
@@ -14,6 +13,8 @@ import { HomeEventCardComponent } from './home-event-card/home-event-card.compon
 import { HomeEventFilterComponent } from './home-event-filter/home-event-filter.component';
 import { HomeTopEventsComponent } from './home-top-events/home-top-events.component';
 import { AgendaComponent } from './agenda/agenda.component';
+import { EventInvitationsComponent } from './event-invitations/event-invitations.component';
+import { EventPageComponent } from './event-page/event-page.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AgendaComponent } from './agenda/agenda.component';
     EventInvitationsComponent,
     EventFormComponent,
     AgendaComponent,
+    EventPageComponent,
   ],
   imports: [
     CommonModule,

@@ -8,6 +8,7 @@ import { EventFormComponent } from './event-form/event-form.component';
 import { EventTypeListComponent } from './event-type-list/event-type-list.component';
 
 import { EventTypeComponent } from './event-type/event-type.component';
+import { EventPageComponent } from './event-page/event-page.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,12 @@ const routes: Routes = [
     canActivate: [roleGuard],
     data: { roles: [UserRole.Admin] },
   },
+  {
+    path: ':id',
+    component: EventPageComponent,
+    canActivate: [roleGuard],
+    data: { roles: [UserRole.Regular, UserRole.Owner, UserRole.EventOrganizer, UserRole.Admin] },
+    }
 ];
 
 @NgModule({
