@@ -118,6 +118,14 @@
           My Events
         </span>
       </a>
+      <a routerLink="/event/budget-plan" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>money</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Budget plan
+        </span>
+      </a>
       } @else if (isAdmin$ | async) {
       <a
         routerLink="/offering-categories"

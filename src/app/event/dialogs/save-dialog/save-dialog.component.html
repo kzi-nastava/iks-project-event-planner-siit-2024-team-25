@@ -1,0 +1,36 @@
+<h2 mat-dialog-title *ngIf="!data.isEdit">Create budget item</h2>
+<h2 mat-dialog-title *ngIf="data.isEdit">Update category budget</h2>
+<mat-dialog-content>
+    <form [formGroup]="budgetForm">
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Category Budget (€)</mat-label>
+          <input 
+            matInput 
+            type="number" 
+            placeholder="Enter category budget" 
+            formControlName="budget" 
+            min="1">
+          
+        </mat-form-field>
+        <mat-error *ngIf="budgetForm.get('budget')?.hasError('required')">
+            Budget is required.
+          </mat-error>
+          <mat-error *ngIf="budgetForm.get('budget')?.hasError('min')">
+            Budget must be at least €1.
+          </mat-error>
+      </form>
+
+  <p>
+    <mat-select placeholder="Choose an offering category" [(ngModel)]="selectedOfferingCategoryOptionId" [disabled]="data.isEdit">
+        <mat-option *ngFor="let option of offeringCategoryOption" [value]="option.id" (onSelectionChange)="refreshError()">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="selectedOfferingCategoryOptionId==-1 && !data.isEdit">You must choose offering category</mat-error>
+      <mat-error *ngIf="!isSelecetedOfferingCategorySuitable && selectedOfferingCategoryOptionId !=-1 && !data.isEdit">Offering category has already been added to budget</mat-error>
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onApprove()">Approve</button>
+</mat-dialog-actions>

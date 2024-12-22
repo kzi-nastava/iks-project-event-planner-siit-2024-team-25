@@ -14,10 +14,15 @@ import { HomeEventFilterComponent } from './home-event-filter/home-event-filter.
 import { HomeTopEventsComponent } from './home-top-events/home-top-events.component';
 import { AgendaComponent } from './agenda/agenda.component';
 import { EventInvitationsComponent } from './event-invitations/event-invitations.component';
+
+import { BudgetPlanComponent } from './budget-plan/budget-plan.component';
+import { SaveDialogComponent } from './dialogs/save-dialog/save-dialog.component';
+
 import { EventPageComponent } from './event-page/event-page.component';
 import { OrganizerEventComponent } from './organizer-event/organizer-event.component';
 import { OrganizerEventCardComponent } from './organizer-event-card/organizer-event-card.component';
 import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/organizer-event-purchase.component';
+
 
 @NgModule({
   declarations: [
@@ -28,12 +33,17 @@ import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/orga
     EventTypeComponent,
     EventTypeListComponent,
     EventInvitationsComponent,
+
+    BudgetPlanComponent,
+    SaveDialogComponent,
+
     EventFormComponent,
     AgendaComponent,
     EventPageComponent,
     OrganizerEventComponent,
     OrganizerEventCardComponent,
     OrganizerEventPurchaseComponent,
+
   ],
   imports: [
     CommonModule,

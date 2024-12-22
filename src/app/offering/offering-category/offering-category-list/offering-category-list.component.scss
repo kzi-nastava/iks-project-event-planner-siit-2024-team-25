@@ -28,11 +28,14 @@
     display: flex;
     justify-content:space-around;
     align-items: center;
+    
   }
 
   .fab-button {
     position: fixed;
-    bottom: 20px;  /* Razmak od dna */
-    right: 20px;   /* Razmak od desne ivice */
-    z-index: 1000; /* Osigurava da dugme bude iznad drugih elemenata */
+    bottom: 20px; 
+    right: 20px;   
+    z-index: 1000;
   }
+ 
+  

@@ -31,6 +31,16 @@ export class EventTypeService {
       .pipe(catchError(this.handleError));
   }
 
+
+  getCategoriesByEventType(eventTypeId: number) : Observable<OfferingCategory[]>{
+    let params = new HttpParams()
+    .set('eventTypeId', eventTypeId)
+    return this.httpClient.get<OfferingCategory[]>(environment.apiHost + "/api/event-types/offering-categories", {params:params})
+  }
+  
+
+ 
+
   getEventTypeByEvent(eventId: number): Observable<EventType> {
     return this.httpClient
       .get<EventType>(environment.apiHost + '/api/event-types/event/' + eventId)
@@ -38,6 +48,7 @@ export class EventTypeService {
   }
 
   getEventTypesByIds(ids: number[]) {
+
     let params = new HttpParams();
     ids.forEach((id) => {
       params = params.append('ids', id);

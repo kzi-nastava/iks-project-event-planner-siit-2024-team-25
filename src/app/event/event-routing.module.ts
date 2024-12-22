@@ -8,9 +8,13 @@ import { EventFormComponent } from './event-form/event-form.component';
 import { EventTypeListComponent } from './event-type-list/event-type-list.component';
 
 import { EventTypeComponent } from './event-type/event-type.component';
+
+import { BudgetPlanComponent } from './budget-plan/budget-plan.component';
+
 import { EventPageComponent } from './event-page/event-page.component';
 import { OrganizerEventComponent } from './organizer-event/organizer-event.component';
 import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/organizer-event-purchase.component';
+
 
 const routes: Routes = [
   {
@@ -37,7 +41,12 @@ const routes: Routes = [
     canActivate: [roleGuard],
     data: { roles: [UserRole.Admin] },
   },
-  {
+  { 
+    path: 'budget-plan',
+    component: BudgetPlanComponent,
+    data: { roles: [UserRole.Admin] },
+  },
+{
     path: 'my-events',
     component: OrganizerEventComponent,
     canActivate: [roleGuard],

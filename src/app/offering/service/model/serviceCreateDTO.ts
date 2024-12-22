@@ -17,7 +17,7 @@ export interface ServiceCreateDTO{
     reservationType: ReservationType,
     minimumArrangement:number,
     maximumArrangement: number,
-    ownerId: number;
+    ownerId: number | undefined;
     eventTypesIDs?: number[] | null,
     offeringCategoryName?: String | null,
     offeringCategoryID?: number | null;
