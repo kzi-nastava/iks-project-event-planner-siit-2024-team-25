@@ -44,30 +44,8 @@
           >Sign up</span
         >
       </a>
-      <a
-        routerLink="/service/services"
-        routerLinkActive="active"
-        class="nav-item"
-      >
-        <div class="icon-container">
-          <mat-icon>Service</mat-icon>
-        </div>
-        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
-          >Service</span
-        >
-      </a>
-      <a
-        routerLink="/offering-category/offering-categories"
-        routerLinkActive="active"
-        class="nav-item"
-      >
-        <div class="icon-container">
-          <mat-icon>category</mat-icon>
-        </div>
-        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
-          >Offering categories</span
-        >
-      </a>
+      
+      
       } @else {
       <a routerLink="/user/profile" routerLinkActive="active" class="nav-item">
         <div class="icon-container">
@@ -105,6 +83,18 @@
           My Products/Services
         </span>
       </a>
+      <a
+        routerLink="/service/services"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <div class="icon-container">
+          <mat-icon>Service</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
+          >Service</span
+        >
+      </a>
       } @else if (isOrganizer$ | async) {
       <a
         routerLink="/event/my-events"
@@ -127,17 +117,17 @@
         </span>
       </a>
       } @else if (isAdmin$ | async) {
-      <a
-        routerLink="/offering-categories"
+        <a
+        routerLink="/offering-category/offering-categories"
         routerLinkActive="active"
         class="nav-item"
       >
         <div class="icon-container">
           <mat-icon>category</mat-icon>
         </div>
-        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-          Categories
-        </span>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
+          >Offering categories</span
+        >
       </a>
       <a routerLink="/event/types" routerLinkActive="active" class="nav-item">
         <div class="icon-container">
