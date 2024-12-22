@@ -1,0 +1,102 @@
+<div class="agenda-container" *ngIf="event">
+  <!-- Left Sidebar - Add Activity Form -->
+  <aside class="agenda-sidebar">
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>Add Activity</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="activity-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Activity Name</mat-label>
+            <input matInput formControlName="name" placeholder="Enter activity name">
+            <mat-error *ngIf="form.get('name')?.errors?.['required']">Name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="3"></textarea>
+          </mat-form-field>
+
+          <div class="datetime-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Start Time</mat-label>
+              <input matInput type="time" formControlName="startTime">
+            </mat-form-field>
+          </div>
+
+          <div class="datetime-group">
+            <mat-form-field appearance="outline">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>End Time</mat-label>
+              <input matInput type="time" formControlName="endTime">
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Location</mat-label>
+            <input matInput formControlName="location">
+            <mat-icon matSuffix>location_on</mat-icon>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-button class="primary" type="button" (click)="form.reset()">Clear</button>
+            <button mat-raised-button class="primary" type="submit" [disabled]="form.invalid || waitingForResponse">
+              Add Activity
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </aside>
+
+  <!-- Main Content - Timeline -->
+  <main class="agenda-main">
+    <header class="agenda-header">
+      <h1>{{event.name}}</h1>
+    </header>
+
+    <div class="timeline-container">
+      <div class="timeline-item" *ngFor="let activity of activities">
+        <div class="timeline-marker"></div>
+        
+        <mat-card class="timeline-card">
+          <mat-card-header>
+            <mat-card-title>{{activity.name}}</mat-card-title>
+            <button mat-icon-button (click)="onRemove(activity.id!)" class="remove-button">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="time-badge">
+              <mat-icon>schedule</mat-icon>
+              <span>{{activity.startTime | date:'shortTime'}} - {{activity.endTime | date:'shortTime'}}</span>
+            </div>
+
+            <p *ngIf="activity.description" class="description">{{activity.description}}</p>
+
+            <div class="location" *ngIf="activity.location">
+              <mat-icon>location_on</mat-icon>
+              <span>{{activity.location}}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </main>
+</div>

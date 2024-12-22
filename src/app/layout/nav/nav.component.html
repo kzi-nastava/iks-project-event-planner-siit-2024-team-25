@@ -8,7 +8,7 @@
   >
     <div class="sidenav-header">
       <a class="logo-container" routerLink="/">
-        <img alt="Logo" class="logo" src="/logo_white.png"/>
+        <img alt="Logo" class="logo" src="/logo_white.png" />
       </a>
     </div>
 
@@ -28,165 +28,189 @@
       </a>
 
       @if (!(loggedIn$ | async)) {
-        <a routerLink="/user/login" routerLinkActive="active" class="nav-item">
-          <div class="icon-container">
-            <mat-icon>login</mat-icon>
-          </div>
-          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-            Log in
-          </span>
-        </a>
-        <a routerLink="/user/register" routerLinkActive="active" class="nav-item">
-          <div class="icon-container">
-            <mat-icon>person_add_alt_1</mat-icon>
-          </div>
-          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Sign up</span>
-        </a>
-        
-        
-      } @else {
-        <a routerLink="/user/profile" routerLinkActive="active" class="nav-item">
-          <div class="icon-container">
-            <mat-icon>person</mat-icon>
-          </div>
-          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-            Profile
-          </span>
-        </a>
-
-        <a routerLink="/notifications" routerLinkActive="active" class="nav-item">
-          <div class="icon-container">
-            <mat-icon>notifications</mat-icon>
-          </div>
-          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-            Notifications
-          </span>
-        </a>
-
-        <a routerLink="/messages" routerLinkActive="active" class="nav-item">
-          <div class="icon-container">
-            <mat-icon>chat</mat-icon>
-          </div>
-          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-            Messages
-          </span>
-        </a>
-        
-
-        @if (isOwner$ | async) {
-          <a routerLink="/my-offerings" routerLinkActive="active" class="nav-item">
-            <div class="icon-container">
-              <mat-icon>shopping_bag</mat-icon>
-            </div>
-            <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-              My Products/Services
-            </span>
-          </a>
-          <a routerLink="/service/services" routerLinkActive="active" class="nav-item">
-            <div class="icon-container">
-  
-              <mat-icon>Service</mat-icon>
-            </div>
-            <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Service</span>
-          </a>
-          
-        } @else if (isOrganizer$ | async) {
-          <a routerLink="/my-events" routerLinkActive="active" class="nav-item">
-            <div class="icon-container">
-              <mat-icon>event</mat-icon>
-            </div>
-            <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-              My Events
-            </span>
-          </a>
-          <a routerLink="/event/budget-plan" routerLinkActive="active" class="nav-item">
-            <div class="icon-container">
-              <mat-icon>money</mat-icon>
-            </div>
-            <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-              Budget plan
-            </span>
-          </a>
-          
-        } @else if (isAdmin$ | async) {
-          
-          <a routerLink="/event/types" routerLinkActive="active" class="nav-item">
-            <div class="icon-container">
-              <mat-icon>event_note</mat-icon>
-            </div>
-            <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-              Event Types
-            </span>
-          </a>
-          <a routerLink="/offering-category/offering-categories" routerLinkActive="active" class="nav-item">
-            <div class="icon-container">
-  
-              <mat-icon>category</mat-icon>
-            </div>
-            <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Offering categories</span>
-          </a>
-        }
-
-        <a routerLink="/favorites" routerLinkActive="active" class="nav-item">
-          <div class="icon-container">
-            <mat-icon>favorite</mat-icon>
-          </div>
-          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-            Favorites
-          </span>
-        </a>
-
-        <a routerLink="/calendar" routerLinkActive="active" class="nav-item">
-          <div class="icon-container">
-            <mat-icon>calendar_month</mat-icon>
-          </div>
-          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
-          >Calendar</span>
-        </a>
-
-        @if (isAdmin$ | async) {
-          <a routerLink="/reports" routerLinkActive="active" class="nav-item">
-            <div class="icon-container">
-              <mat-icon>report</mat-icon>
-            </div>
-            <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-              Reports
-            </span>
-          </a>
-          <a routerLink="/blocks" routerLinkActive="active" class="nav-item">
-            <div class="icon-container">
-              <mat-icon>block</mat-icon>
-            </div>
-            <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-              Blocks</span>
-          </a>
-          <a routerLink="/reviews" routerLinkActive="active" class="nav-item">
-            <div class="icon-container">
-              <mat-icon>reviews</mat-icon>
-            </div>
-            <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-              Reviews
-            </span>
-          </a>
-        }
-
-        <a routerLink="/settings" routerLinkActive="active" class="nav-item">
-          <div class="icon-container">
-            <mat-icon>settings</mat-icon>
-          </div>
-          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-            Settings
-          </span>
-        </a>
-
-        <span class="nav-item" (click)="logOut()">
-          <div class="icon-container">
-            <mat-icon>logout</mat-icon>
-          </div>
-          <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-            Log out
-          </span>
+      <a routerLink="/user/login" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>login</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Log in
         </span>
+      </a>
+      <a routerLink="/user/register" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>person_add_alt_1</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
+          >Sign up</span
+        >
+      </a>
+      <a
+        routerLink="/service/services"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <div class="icon-container">
+          <mat-icon>Service</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
+          >Service</span
+        >
+      </a>
+      <a
+        routerLink="/offering-category/offering-categories"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <div class="icon-container">
+          <mat-icon>category</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
+          >Offering categories</span
+        >
+      </a>
+      } @else {
+      <a routerLink="/user/profile" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>person</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Profile
+        </span>
+      </a>
+
+      <a routerLink="/notifications" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>notifications</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Notifications
+        </span>
+      </a>
+
+      <a routerLink="/messages" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>chat</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Messages
+        </span>
+      </a>
+
+      @if (isOwner$ | async) {
+      <a routerLink="/my-offerings" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>shopping_bag</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          My Products/Services
+        </span>
+      </a>
+      } @else if (isOrganizer$ | async) {
+      <a
+        routerLink="/event/my-events"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <div class="icon-container">
+          <mat-icon>event</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          My Events
+        </span>
+      </a>
+      <a routerLink="/event/budget-plan" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>money</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Budget plan
+        </span>
+      </a>
+      } @else if (isAdmin$ | async) {
+      <a
+        routerLink="/offering-categories"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <div class="icon-container">
+          <mat-icon>category</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Categories
+        </span>
+      </a>
+      <a routerLink="/event/types" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>event_note</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Event Types
+        </span>
+      </a>
+      }
+
+      <a routerLink="/favorites" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>favorite</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Favorites
+        </span>
+      </a>
+
+      <a routerLink="/calendar" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>calendar_month</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
+          >Calendar</span
+        >
+      </a>
+
+      @if (isAdmin$ | async) {
+      <a routerLink="/reports" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>report</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Reports
+        </span>
+      </a>
+      <a routerLink="/blocks" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>block</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Blocks</span
+        >
+      </a>
+      <a routerLink="/reviews" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>reviews</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Reviews
+        </span>
+      </a>
+      }
+
+      <a routerLink="/settings" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>settings</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Settings
+        </span>
+      </a>
+
+      <span class="nav-item" (click)="logOut()">
+        <div class="icon-container">
+          <mat-icon>logout</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Log out
+        </span>
+      </span>
       }
 
       <span
@@ -195,17 +219,19 @@
         class="nav-item"
       >
         <div class="icon-container">
-          <mat-icon>{{ isExpanded ? "chevron_left" : "chevron_right" }}</mat-icon>
+          <mat-icon>{{
+            isExpanded ? "chevron_left" : "chevron_right"
+          }}</mat-icon>
         </div>
         <span *ngIf="isExpanded" class="nav-label">Collapse</span>
       </span>
     </nav>
   </mat-sidenav>
 
-
-  <mat-sidenav-content [class.content-expanded]="isExpanded && !(isHandset$ | async)">
-    <mat-toolbar style="z-index: 2000;">
-
+  <mat-sidenav-content
+    [class.content-expanded]="isExpanded && !(isHandset$ | async)"
+  >
+    <mat-toolbar style="z-index: 2000">
       <button
         (click)="drawer.toggle()"
         *ngIf="isHandset$ | async"
@@ -232,7 +258,7 @@
     </mat-toolbar>
 
     <div class="content">
-      <ng-content/>
+      <ng-content />
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -7,13 +7,20 @@
   <button mat-icon-button matSuffix>
     <mat-icon (click)="showOfferingFilter()">filter_list</mat-icon>
   </button>
+  <button mat-icon-button matSuffix>
+    <mat-icon (click)="refreshEventFilter()">refresh</mat-icon>
+  </button>
 </mat-form-field>
 
-<mat-grid-list *ngIf="isAvtive" cols="6" rowHeight="4:1">
+<mat-grid-list *ngIf="isActive" [cols]="numColumns" rowHeight="6:1" >
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
-      <mat-label>Event type</mat-label>
-      <mat-select [(ngModel)]="filterParams!.eventType"> </mat-select>
+      <mat-label>Criteria</mat-label>
+      <mat-select [(ngModel)]="filterParams!.criteria" (selectionChange)="updateColumns()">
+        <mat-option *ngFor="let criteria of criteries" [value]="criteria.value">
+          {{ criteria.label }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </mat-grid-tile>
 
@@ -26,53 +33,56 @@
 
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
-      <mat-label>Country</mat-label>
-      <input matInput [(ngModel)]="filterParams!.country" placeholder="" />
-    </mat-form-field>
-  </mat-grid-tile>
-
-  <mat-grid-tile>
-    <mat-form-field>
-      <mat-label>Start date</mat-label>
-      <input
-        matInput
-        [(ngModel)]="filterParams!.startDate"
-        [matDatepicker]="datepickerStart"
-        [min]="today"
-      />
-      <mat-datepicker #datepickerStart />
-      <mat-datepicker-toggle [for]="datepickerStart" matSuffix />
-    </mat-form-field>
-  </mat-grid-tile>
-
-  <mat-grid-tile>
-    <mat-form-field>
-      <mat-label>Start time</mat-label>
-      <input
-        matInput
-        [(ngModel)]="filterParams!.startTime"
-        [ngxTimepicker]="pickerStart"
-        placeholder="Select time"
-      />
-      <ngx-material-timepicker #pickerStart></ngx-material-timepicker>
-    </mat-form-field>
-  </mat-grid-tile>
-
-  <mat-grid-tile>
-    <mat-form-field class="example-full-width">
       <mat-label>Sort category</mat-label>
       <mat-select [(ngModel)]="filterParams!.sortCategory">
-        <mat-option *ngFor="let category of sortCategories" [value]="category">
-          {{ category }}
+        <mat-option
+          *ngFor="let category of sortCategories"
+          [value]="category.value"
+        >
+          {{ category.label }}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </mat-grid-tile>
 
-  <mat-grid-tile>
+  @if (filterParams.criteria === "SERVICES") {
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Start date</mat-label>
+        <input
+          matInput
+          [(ngModel)]="filterParams!.startDate"
+          [matDatepicker]="datepickerStart"
+          [min]="today"
+        />
+        <mat-datepicker #datepickerStart />
+        <mat-datepicker-toggle [for]="datepickerStart" matSuffix />
+      </mat-form-field>
+    </mat-grid-tile>
+    
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Start time</mat-label>
+        <input
+          matInput
+          [(ngModel)]="filterParams!.startTime"
+          [ngxTimepicker]="pickerStart"
+          placeholder="Select time"
+          [format]="24"
+        />
+        <ngx-material-timepicker #pickerStart></ngx-material-timepicker>
+      </mat-form-field>
+    </mat-grid-tile>
+  }
+
+  <mat-grid-tile >
     <mat-form-field class="example-full-width">
       <mat-label>Category</mat-label>
-      <mat-select [(ngModel)]="filterParams!.category"> </mat-select>
+      <mat-select [(ngModel)]="filterParams!.categoryId">
+      <mat-option *ngFor="let category of offeringCategories" [value]="category.id">
+        {{ category.name }}
+      </mat-option>  
+      </mat-select>
     </mat-form-field>
   </mat-grid-tile>
 
@@ -85,11 +95,16 @@
 
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
-      <mat-label>City</mat-label>
-      <input matInput [(ngModel)]="filterParams!.city" placeholder="" />
+      <mat-label>Sort type</mat-label>
+      <mat-select [(ngModel)]="filterParams!.sortType"
+        ><mat-option *ngFor="let type of sortTypes" [value]="type.value">
+          {{ type.label }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </mat-grid-tile>
 
+  @if (filterParams.criteria === "SERVICES") {
   <mat-grid-tile>
     <mat-form-field>
       <mat-label>End date</mat-label>
@@ -112,19 +127,31 @@
         [(ngModel)]="filterParams!.endTime"
         [ngxTimepicker]="pickerEndTime"
         placeholder="Select time"
+        [format]="24"
       />
       <ngx-material-timepicker #pickerEndTime></ngx-material-timepicker>
+    </mat-form-field>
+  </mat-grid-tile>
+  }
+  
+  <mat-grid-tile>
+    <mat-form-field class="example-full-width">
+      <mat-label>Event type</mat-label>
+      <mat-select [(ngModel)]="filterParams!.eventTypeId"
+        ><mat-option
+          *ngFor="let eventType of eventTypes"
+          [value]="eventType.id"
+        >
+          {{ eventType.name }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </mat-grid-tile>
 
   <mat-grid-tile>
     <mat-form-field class="example-full-width">
-      <mat-label>Sort type</mat-label>
-      <mat-select [(ngModel)]="filterParams!.sortType"
-        ><mat-option *ngFor="let type of sortTypes" [value]="type">
-          {{ type }}
-        </mat-option>
-      </mat-select>
+      <mat-label>Description</mat-label>
+      <input matInput [(ngModel)]="filterParams!.description" placeholder="" />
     </mat-form-field>
   </mat-grid-tile>
 </mat-grid-list>

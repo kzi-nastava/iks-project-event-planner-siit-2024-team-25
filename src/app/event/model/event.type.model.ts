@@ -5,5 +5,5 @@ export interface EventType {
   name: string;
   description: string;
   isActive: string;
-  categories: OfferingCategory[]
+  categories: OfferingCategory[];
 }

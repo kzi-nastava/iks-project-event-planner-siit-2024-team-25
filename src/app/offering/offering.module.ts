@@ -5,8 +5,10 @@ import { MaterialModule } from '../infrastructure/material/material.module';
 import { HomeAllOfferingsComponent } from './home-all-offerings/home-all-offerings.component';
 import { HomeOfferingCardComponent } from './home-offering-card/home-offering-card.component';
 import { HomeOfferingFilterComponent } from './home-offering-filter/home-offering-filter.component';
-import { FormsModule } from '@angular/forms'; // Uvoz FormsModule
+import { FormsModule } from '@angular/forms';
 import { ServiceModule } from './service/service.module';
+import { OfferingPurchaseCardComponent } from './offering-purchase-card/offering-purchase-card.component';
+import { PurchaseOfferingFilterComponent } from './purchase-offering-filter/purchase-offering-filter.component';
 
 @NgModule({
   declarations: [
@@ -14,8 +16,15 @@ import { ServiceModule } from './service/service.module';
     HomeAllOfferingsComponent,
     HomeOfferingCardComponent,
     HomeOfferingFilterComponent,
+    OfferingPurchaseCardComponent,
+    PurchaseOfferingFilterComponent,
   ],
   imports: [CommonModule, FormsModule, ServiceModule, MaterialModule],
-  exports: [HomeTopOfferingsComponent, HomeAllOfferingsComponent],
+  exports: [
+    HomeTopOfferingsComponent,
+    HomeAllOfferingsComponent,
+    OfferingPurchaseCardComponent,
+    PurchaseOfferingFilterComponent,
+  ],
 })
 export class OfferingModule {}
