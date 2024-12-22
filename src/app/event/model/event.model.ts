@@ -1,18 +1,8 @@
-<<<<<<< HEAD
-import { EventType } from "./event.type.model";
-import { OfferingCategory } from "./offering-category.model";
-
-export interface Event{
-    id: number;
-    name: String;
-    eventType: EventType;
-}
-=======
 import { EventTypePreviewModel } from './event.type.preview.model';
 import { PrivacyType } from './privacy-type.model';
 
 export interface Event {
-  id?: number;
+  id: number;
   eventType: EventTypePreviewModel;
   name: string;
   description?: string;
@@ -30,4 +20,3 @@ export interface Event {
     longitude?: number;
   };
 }
->>>>>>> develop

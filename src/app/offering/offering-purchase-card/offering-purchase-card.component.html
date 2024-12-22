@@ -1,4 +1,4 @@
-<div class="top-offerings-container">
+<div class="top-offerings-container" (click)="openServiceBookDialog()">
   <div class="offering-card">
     <div class="header">
       <h2 class="title">{{ offering.name }}</h2>
@@ -28,6 +28,5 @@
         <p>{{ offering.price }}$</p>
       </div>
     </div>
-    <button mat-raised-button color="primary">Buy</button>
   </div>
 </div>
