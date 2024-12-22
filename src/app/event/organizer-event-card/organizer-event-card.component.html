@@ -1,0 +1,43 @@
+<div class="event-card">
+  <div class="header">
+    <div class="title">{{ event.name }}</div>
+    <mat-icon
+      class="heart"
+      [ngClass]="{ liked: event.isLiked }"
+      (click)="changeFavouriteEvent()"
+    >
+      {{ event.isLiked ? "favorite" : "favorite_border" }}
+    </mat-icon>
+  </div>
+  <div class="info">
+    <div class="organizer">
+      <p>{{ event.organizerName }}</p>
+    </div>
+    <div class="date">
+      <mat-icon>date_range</mat-icon>
+      <p>{{ formatDateTime(event.startDateTime) }}</p>
+    </div>
+  </div>
+
+  <div class="description">
+    <p>{{ event.description }}</p>
+  </div>
+  <div class="footer">
+    <div class="location">
+      <mat-icon>location_on</mat-icon>
+      <p>{{ formatLocation(event.country, event.city) }}</p>
+    </div>
+  </div>
+  <div class="options">
+    <button mat-raised-button color="primary" (click)="purchase()">
+      Purchase
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openEmailDialog(event.id)"
+    >
+      Invite guests
+    </button>
+  </div>
+</div>

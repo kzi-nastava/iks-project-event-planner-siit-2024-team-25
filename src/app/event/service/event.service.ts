@@ -47,6 +47,29 @@ export class EventService {
       .pipe(map((page) => page.content));
   }
 
+  getMyEvents(
+    page: number,
+    filterParams?: HomeEventFilterParams
+  ): Observable<{ currentEvents: HomeEvent[]; totalPages: number }> {
+    let params = this.getHttpParams(filterParams);
+
+    console.log(filterParams?.startTime);
+    console.log(filterParams?.endTime);
+
+    params = params.set('page', page);
+
+    console.log(params);
+
+    return this.httpClient
+      .get<Page<HomeEvent>>(`${environment.apiHost}/api/events/`, { params })
+      .pipe(
+        map((page) => ({
+          currentEvents: page.content,
+          totalPages: page.totalPages,
+        }))
+      );
+  }
+
   getTopEvents(): Observable<HomeEvent[]> {
     const user = this.authService.getUser();
 
