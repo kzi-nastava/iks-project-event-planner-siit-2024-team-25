@@ -19,6 +19,7 @@ export class BookServiceDialogComponent implements OnInit {
   maxEndTime!: string;
   minEndTime!: string;
   eventStartTime!: string;
+  isAvailable!: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +45,6 @@ export class BookServiceDialogComponent implements OnInit {
             this.event = event;
             this.purchase.startDate = event.startDate;
             this.purchase.endDate = event.startDate;
-
             this.setMinStartTime();
           },
         });
@@ -134,7 +134,17 @@ export class BookServiceDialogComponent implements OnInit {
       } else {
         this.errorMessage = null;
       }
+      this.isServiceAvailable();
     }
+  }
+  isServiceAvailable() {
+    this.serviceService
+      .isServiceAvailable(this.event.id, this.service.id, this.purchase)
+      .subscribe({
+        next: (available: boolean) => {
+          this.isAvailable = available;
+        },
+      });
   }
 
   setMinStartTime(): void {
