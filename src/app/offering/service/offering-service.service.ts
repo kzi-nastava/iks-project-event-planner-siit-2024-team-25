@@ -125,7 +125,7 @@ export class OfferingServiceService {
     }
 
     return this.httpClinet.get<boolean>(
-      `${environment.apiHost}/api/events/${eventId}/service/${serviceId}/available`,
+      `${environment.apiHost}/api/purchase/service/${serviceId}/available`,
       { params: params }
     );
   }
@@ -135,31 +135,8 @@ export class OfferingServiceService {
     serviceId: number,
     purchase: PurchaseRequest
   ): Observable<boolean> {
-    // let params = new HttpParams();
-
-    // if (purchase) {
-    //   if (purchase.startDate) {
-    //     params = params.set(
-    //       'startDate',
-    //       this.datePipe.transform(purchase.startDate, 'yyyy-MM-dd')!
-    //     );
-    //   }
-    //   if (purchase.endDate) {
-    //     params = params.set(
-    //       'endDate',
-    //       this.datePipe.transform(purchase.endDate, 'yyyy-MM-dd')!
-    //     );
-    //   }
-    //   if (purchase.startTime) {
-    //     params = params.set('startTime', purchase.startTime);
-    //   }
-    //   if (purchase.endTime) {
-    //     params = params.set('endTime', purchase.endTime);
-    //   }
-    // }
-
     return this.httpClinet.post<boolean>(
-      `${environment.apiHost}/api/events/${eventId}/services/${serviceId}/purchase`,
+      `${environment.apiHost}/api/purchase/event/${eventId}/service/${serviceId}`,
       purchase
     );
   }

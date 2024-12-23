@@ -33,7 +33,6 @@ export class OrganizerEventPurchaseComponent implements OnInit {
 
   filterOfferings(filterParams: OfferingFilterParams): void {
     this.filterParams = filterParams;
-    console.log(filterParams);
     this.getOfferings(this.currentPage);
   }
 

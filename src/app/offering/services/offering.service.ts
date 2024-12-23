@@ -19,15 +19,25 @@ export class OfferingService {
     private datePipe: DatePipe
   ) {}
 
-  getSubmittedOfferings():Observable<SubmittedOffering[]>{
-    return this.httpClient.get<SubmittedOffering[]>(`${environment.apiHost}/api/offerings/submitted`);
+  getSubmittedOfferings(): Observable<SubmittedOffering[]> {
+    return this.httpClient.get<SubmittedOffering[]>(
+      `${environment.apiHost}/api/offerings/submitted`
+    );
   }
 
-  updateOfferingsCategory(offeringId:number, categoryId:number, updateCategoryId:number):Observable<void>{
+  updateOfferingsCategory(
+    offeringId: number,
+    categoryId: number,
+    updateCategoryId: number
+  ): Observable<void> {
     let params = new HttpParams()
-    .set('categoryId', categoryId)
-    .set('updateCategoryId', updateCategoryId)
-    return this.httpClient.put<void>(`${environment.apiHost}/api/offerings/`+offeringId+"/updateCategory", null, {params});
+      .set('categoryId', categoryId)
+      .set('updateCategoryId', updateCategoryId);
+    return this.httpClient.put<void>(
+      `${environment.apiHost}/api/offerings/` + offeringId + '/updateCategory',
+      null,
+      { params }
+    );
   }
 
   getTopOfferings(): Observable<HomeOffering[]> {
@@ -87,10 +97,10 @@ export class OfferingService {
     filterParams?: OfferingFilterParams
   ): Observable<{ currentOfferings: HomeOffering[]; totalPages: number }> {
     let params = this.getHttpParams(filterParams);
-    console.log(params);
 
     params = params.set('page', page);
 
+    console.log(params);
     return this.httpClient
       .get<Page<HomeOffering>>(`${environment.apiHost}/api/services/all`, {
         params,
@@ -142,7 +152,7 @@ export class OfferingService {
     if (filterParams.minPrice) {
       params = params.set('minPrice', filterParams.minPrice);
     }
-    if (filterParams.maxPrice) {
+    if (filterParams.maxPrice !== undefined) {
       params = params.set('maxPrice', filterParams.maxPrice);
     }
     if (filterParams.description) {
@@ -168,15 +178,11 @@ export class OfferingService {
       );
     }
     if (filterParams.startTime) {
-      params = params.set(
-        'startTime',filterParams.startTime
-      );
+      params = params.set('startTime', filterParams.startTime);
     }
 
     if (filterParams.endTime) {
-      params = params.set(
-        'endTime',filterParams.endTime
-      );
+      params = params.set('endTime', filterParams.endTime);
     }
     return params;
   }

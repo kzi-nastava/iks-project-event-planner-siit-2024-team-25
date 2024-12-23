@@ -6,9 +6,6 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-
-
-
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 import { environment } from '../../../environment/environment';
@@ -25,7 +22,6 @@ import { EventRequest } from '../model/event.request.model';
 import { HomeEvent } from '../model/home-event.model';
 import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -35,7 +31,6 @@ export class EventService {
     private authService: AuthService,
     private datePipe: DatePipe
   ) {}
-
 
   getEvent(eventId: number): Observable<Event> {
     return this.httpClient
@@ -77,7 +72,6 @@ export class EventService {
           totalPages: page.totalPages,
         }))
       );
-
   }
 
   getTopEvents(): Observable<HomeEvent[]> {
