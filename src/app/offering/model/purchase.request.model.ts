@@ -3,4 +3,5 @@ export interface PurchaseRequest {
   startTime?: string;
   endDate?: Date;
   endTime?: string;
+  price?: number;
 }

@@ -3,10 +3,7 @@
     <h1>{{ service.name }}</h1>
     <label>Price: {{ service.price }} $</label>
     <label>Discount: {{ service.discount }}</label>
-    <label
-      >Total price:
-      {{ (service.price * (100 - service.discount)) / 100 }} $</label
-    >
+    <label>Total price: {{ purchase.price }} $</label>
     @if (service.duration) {
     <label>Service duration: {{ service.duration }} hours</label>
     }@else {
@@ -97,6 +94,7 @@
       class="primary"
       type="submit"
       [disabled]="!isAvailable"
+      (click)="bookService()"
     >
       Book a service
     </button>

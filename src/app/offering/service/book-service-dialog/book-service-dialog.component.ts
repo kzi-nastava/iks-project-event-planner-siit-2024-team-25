@@ -5,6 +5,8 @@ import { Event } from '../../../event/model/event.model';
 import { ActivatedRoute } from '@angular/router';
 import { EventService } from '../../../event/service/event.service';
 import { OfferingServiceService } from '../offering-service.service';
+import { ToastrService } from 'ngx-toastr';
+import { ErrorResponse } from '../../../shared/model/error.response.model';
 
 @Component({
   selector: 'app-book-service-dialog',
@@ -15,7 +17,7 @@ export class BookServiceDialogComponent implements OnInit {
   purchase: PurchaseRequest = {};
   service!: Service;
   event!: Event;
-  errorMessage: string | null = null;
+  errorMessage?: string;
   maxEndTime!: string;
   minEndTime!: string;
   eventStartTime!: string;
@@ -24,7 +26,8 @@ export class BookServiceDialogComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
-    private serviceService: OfferingServiceService
+    private serviceService: OfferingServiceService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +36,8 @@ export class BookServiceDialogComponent implements OnInit {
         this.serviceService.getServiceById(+params['id']).subscribe({
           next: (service: Service) => {
             this.service = service;
+            this.purchase.price =
+              (service.price * (100 - service.discount)) / 100;
           },
         });
       }
@@ -60,7 +65,7 @@ export class BookServiceDialogComponent implements OnInit {
       this.purchase.startTime &&
       this.service.duration
     ) {
-      this.errorMessage = null;
+      this.errorMessage = undefined;
 
       const [hours, minutes] = this.purchase.startTime.split(':').map(Number);
       const startDateTime = new Date(this.purchase.startDate);
@@ -73,6 +78,7 @@ export class BookServiceDialogComponent implements OnInit {
       this.purchase.endTime = `${this.padZero(
         endDateTime.getHours()
       )}:${this.padZero(endDateTime.getMinutes())}`;
+      this.isServiceAvailable();
     } else if (this.purchase.startDate && this.purchase.startTime) {
       this.purchase.endTime = undefined;
       const [hours, minutes] = this.purchase.startTime.split(':').map(Number);
@@ -132,7 +138,7 @@ export class BookServiceDialogComponent implements OnInit {
       ) {
         this.errorMessage = `The selected duration is outside the allowed range of ${this.service.minimumArrangement} to ${this.service.maximumArrangement} hours.`;
       } else {
-        this.errorMessage = null;
+        this.errorMessage = undefined;
       }
       this.isServiceAvailable();
     }
@@ -156,5 +162,30 @@ export class BookServiceDialogComponent implements OnInit {
     this.eventStartTime = `${this.padZero(
       minStartTime.getHours()
     )}:${this.padZero(minStartTime.getMinutes())}`;
+  }
+
+  bookService() {
+    this.serviceService
+      .bookService(this.event.id, this.service.id, this.purchase)
+      .subscribe({
+        next: (successful: boolean) => {
+          if (successful) {
+            this.toastr.success(
+              "You've successfully booked this service for your event!",
+              'Success'
+            );
+          }
+        },
+        error: (err: ErrorResponse) => {
+          if (this.isAvailable) {
+            this.toastr.error(
+              "Sorry, you haven't enough money to book this service",
+              'Oops!'
+            );
+          } else {
+            this.toastr.error(this.errorMessage, 'Oops!');
+          }
+        },
+      });
   }
 }
