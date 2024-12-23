@@ -1,6 +1,23 @@
 <div class="dialog">
+  <div class="offeringInfo">
+    <h1>{{ service.name }}</h1>
+    <label>Service price: {{ service.price }} $</label>
+    @if (service.duration) {
+    <label>Service duration: {{ service.duration }} hours</label>
+    }@else {
+    <label
+      >Service minimum arrangement:
+      {{ service.minimumArrangement }} hours</label
+    >
+    <label
+      >Service maximum arrangement:
+      {{ service.maximumArrangement }} hours</label
+    >
+    }
+  </div>
   <div class="dateTime">
-    <mat-grid-list cols="2" rowHeight="6:1">
+    <h3>Choose date and time</h3>
+    <mat-grid-list cols="4" rowHeight="6:1">
       <mat-grid-tile>
         <mat-form-field>
           <mat-label>Start date</mat-label>
@@ -26,6 +43,7 @@
             [ngxTimepicker]="pickerStart"
             placeholder="Select time"
             [format]="24"
+            [min]="eventStartTime"
           />
           <ngx-material-timepicker #pickerStart></ngx-material-timepicker>
         </mat-form-field>
@@ -64,20 +82,5 @@
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
-  </div>
-
-  <div class="offeringInfo">
-    @if (service.duration) {
-    <label>Service duration: {{ service.duration }} hours</label>
-    }@else {
-    <label
-      >Service minimum arrangement:
-      {{ service.minimumArrangement }} hours</label
-    >
-    <label
-      >Service maximum arrangement:
-      {{ service.maximumArrangement }} hours</label
-    >
-    }
   </div>
 </div>
