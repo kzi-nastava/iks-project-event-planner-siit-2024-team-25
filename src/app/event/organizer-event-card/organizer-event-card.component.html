@@ -27,6 +27,7 @@
       <mat-icon>location_on</mat-icon>
       <p>{{ formatLocation(event.country, event.city) }}</p>
     </div>
+    <button mat-button (click)="openBudgetPlan()">Budget plan<mat-icon>money</mat-icon>  </button>
   </div>
   <div class="options">
     <button mat-raised-button color="primary" (click)="purchase()">

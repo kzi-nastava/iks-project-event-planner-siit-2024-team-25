@@ -49,4 +49,9 @@ export class OrganizerEventCardComponent {
       state: { event: this.event.id },
     });
   }
+  openBudgetPlan(){
+    this.router.navigate([`/event/budget-plan`], {
+      state: {eventId: this.event.id}
+    })
+  }
 }
