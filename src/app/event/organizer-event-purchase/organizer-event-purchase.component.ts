@@ -29,12 +29,10 @@ export class OrganizerEventPurchaseComponent implements OnInit {
       this.eventId = eventFromState;
       console.log(this.eventId);
     }
-    this.getOfferings(this.currentPage);
   }
 
   filterOfferings(filterParams: OfferingFilterParams): void {
     this.filterParams = filterParams;
-    console.log(filterParams);
     this.getOfferings(this.currentPage);
   }
 

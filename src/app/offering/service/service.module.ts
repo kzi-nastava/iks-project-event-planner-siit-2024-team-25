@@ -9,6 +9,7 @@ import { ServiceDialogInformationComponent } from './service-dialog/service-dial
 import { ServiceDialogComponent } from './service-dialog/service-dialog.component';
 import { ServiceFormComponent } from './service-form/service-form.component';
 import { ServiceRoutingModule } from './service-routing.module';
+import { BookServiceDialogComponent } from './book-service-dialog/book-service-dialog.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ServiceRoutingModule } from './service-routing.module';
     ServiceDialogInformationComponent,
     ServiceCardComponent,
     ServiceDetailsComponent,
+    BookServiceDialogComponent,
   ],
 
   imports: [

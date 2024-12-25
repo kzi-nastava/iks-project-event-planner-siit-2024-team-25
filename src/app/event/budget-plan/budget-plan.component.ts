@@ -13,48 +13,51 @@ import { DeleteDialogComponent } from '../../offering/offering-category/dialogs/
 @Component({
   selector: 'app-budget-plan',
   templateUrl: './budget-plan.component.html',
-  styleUrl: './budget-plan.component.scss'
+  styleUrl: './budget-plan.component.scss',
 })
 export class BudgetPlanComponent implements OnInit {
-
   eventId: number = 25;
   event: Event | undefined;
 
-  budgetItems: BudgetItem[] = []
+  budgetItems: BudgetItem[] = [];
   overallBudget: number = 0;
   displayedColumns = ['offeringCategory', 'budget', 'edit', 'delete'];
 
   budgetField = 0;
   offeringIdField = -1;
 
-  constructor(private eventService: EventService, private eventTypeService: EventTypeService,
-    private budgetItemService: BudgetPlanService, public dialog: MatDialog,) { }
+  constructor(
+    private eventService: EventService,
+    private eventTypeService: EventTypeService,
+    private budgetItemService: BudgetPlanService,
+    public dialog: MatDialog
+  ) {}
   ngOnInit(): void {
-   this.getBudgetItems();
+    this.getBudgetItems();
   }
 
-  getBudgetItems(){
+  getBudgetItems() {
     this.eventService.getEvent(this.eventId).subscribe({
       next: (e: Event) => {
         this.event = e;
         this.budgetItemService.getBudgetItemsByEvent(e.id).subscribe({
           next: (res) => {
-            console.log(res)
-            this.budgetItems = res
-            this.overallBudget = 0
-            res.forEach(element => {
-              this.overallBudget += element.budget
+            console.log(res);
+            this.budgetItems = res;
+            this.overallBudget = 0;
+            res.forEach((element) => {
+              this.overallBudget += element.budget;
             });
           },
           error: (_) => {
-            console.log("error")
-          }
-        })
+            console.log('error');
+          },
+        });
       },
       error: (_) => {
-        console.log("error");
-      }
-    })
+        console.log('error');
+      },
+    });
   }
 
   openCreateDialog() {
@@ -63,92 +66,91 @@ export class BudgetPlanComponent implements OnInit {
         budget: 0,
         eventTypeId: this.event?.eventType.id,
         eventId: this.event?.id,
-        isEdit: false
-      }
-    })
+        isEdit: false,
+      },
+    });
 
     dialogRef.afterClosed().subscribe((res) => {
-      if(res){
-        this.budgetField = res.budget
-        this.offeringIdField = res.offerId
-        this.saveBudgetItem()
+      if (res) {
+        this.budgetField = res.budget;
+        this.offeringIdField = res.offerId;
+        this.saveBudgetItem();
       }
     });
   }
   saveBudgetItem() {
-    const budgetItem = this.onCreate()
+    const budgetItem = this.onCreate();
     this.budgetItemService.createBudgetItemForEevnt(budgetItem).subscribe({
       next: (res) => {
-        this.getBudgetItems()
+        this.getBudgetItems();
       },
       error(err) {
-        console.log(err)
+        console.log(err);
       },
-    })
+    });
   }
   onCreate() {
     const budgetItem: BudgetItemRequestDTO = {
       budget: this.budgetField,
       offeringCategoryId: this.offeringIdField,
       eventId: this.eventId,
-    }
+    };
     return budgetItem;
   }
 
-  openEditDialog(id:number, budget:number){
+  openEditDialog(id: number, budget: number) {
     const dialogRef = this.dialog.open(SaveDialogComponent, {
       data: {
         budget: budget,
         eventTypeId: this.event?.eventType.id,
         eventId: this.event?.id,
-        isEdit: true
-      }
-    })
+        isEdit: true,
+      },
+    });
 
     dialogRef.afterClosed().subscribe((res) => {
-      if(res){
-        this.budgetField = res.budget
-        this.editBudgetItem(id)
+      if (res) {
+        this.budgetField = res.budget;
+        this.editBudgetItem(id);
       }
     });
   }
-  editBudgetItem(id:number){
+  editBudgetItem(id: number) {
     const budgetItem = this.onEdit();
-    this.budgetItemService.updateBudgetItem(budgetItem,id).subscribe({
-      next:(res)=>{
+    this.budgetItemService.updateBudgetItem(budgetItem, id).subscribe({
+      next: (res) => {
         this.getBudgetItems();
       },
-      error:(_)=>{
-        console.log("error")
-      }
-    })
+      error: (_) => {
+        console.log('error');
+      },
+    });
   }
   onEdit() {
     const budgetItem: BudgetItemRequestDTO = {
       budget: this.budgetField,
-    }
+    };
     return budgetItem;
   }
 
-  onDelete(id:number, name:String) {
+  onDelete(id: number, name: String) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: {
-        nameCategory: name
-      }
-    })
+        nameCategory: name,
+      },
+    });
 
     dialogRef.afterClosed().subscribe((res) => {
-      if(res){
+      if (res) {
         this.budgetItemService.deleteBudgetItem(id).subscribe({
-          next:()=>{
+          next: () => {
             this.getBudgetItems();
           },
-          error:(_)=>{
-            console.log("error")
-          }
-        })
+          error: (_) => {
+            console.log('error');
+          },
+        });
       }
     });
   }
-
 }

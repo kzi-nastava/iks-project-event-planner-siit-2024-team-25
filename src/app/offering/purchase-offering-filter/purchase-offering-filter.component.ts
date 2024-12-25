@@ -3,6 +3,7 @@ import { EventTypeService } from '../../event/service/event-type.service';
 import { OfferingFilterParams } from '../model/home-offering-filter-params-model';
 import { EventType } from '../../event/model/event.type.model';
 import { OfferingCategory } from '../../event/model/offering-category.model';
+import { BudgetPlanService } from '../../event/service/budget-plan.service';
 
 @Component({
   selector: 'app-purchase-offering-filter',
@@ -19,7 +20,10 @@ export class PurchaseOfferingFilterComponent implements OnInit {
   eventTypes!: EventType;
   offeringCategories!: OfferingCategory[];
 
-  constructor(private eventTypeService: EventTypeService) {}
+  constructor(
+    private eventTypeService: EventTypeService,
+    private budgetService: BudgetPlanService
+  ) {}
 
   ngOnInit(): void {
     if (this.filterCriteria == 'P') {
@@ -71,10 +75,30 @@ export class PurchaseOfferingFilterComponent implements OnInit {
   }
 
   searchOfferings(): void {
-    this.clicked.emit(this.filterParams);
+    if (this.filterParams.categoryId) {
+      this.budgetService
+        .getLeftMoneyForBudgetItem(this.eventId, this.filterParams.categoryId)
+        .subscribe({
+          next: (leftMoney: number) => {
+            this.filterParams.maxPrice = leftMoney;
+            this.clicked.emit(this.filterParams);
+          },
+          error: (_) => {
+            this.filterParams.maxPrice = undefined;
+            this.clicked.emit(this.filterParams);
+          },
+        });
+    } else {
+      this.clicked.emit(this.filterParams);
+    }
   }
   refreshEventFilter() {
     this.filterParams = {};
+    if (this.filterCriteria == 'P') {
+      this.filterParams.criteria = this.criteries.at(0)?.value;
+    } else {
+      this.filterParams.criteria = this.criteries.at(1)?.value;
+    }
     this.clicked.emit(this.filterParams);
   }
   updateColumns() {

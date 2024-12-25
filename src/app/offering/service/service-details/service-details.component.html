@@ -1,2 +1,5 @@
-<p style="margin: 40px; margin-top: 80px;">service-details works! </p>
-Servce id: {{serviceId}}
+<p style="margin: 40px; margin-top: 80px">service-details works!</p>
+Servce id: {{ serviceId }}
+<div *ngIf="showButton">
+  <button (click)="openBookServiceForm()">book a service</button>
+</div>

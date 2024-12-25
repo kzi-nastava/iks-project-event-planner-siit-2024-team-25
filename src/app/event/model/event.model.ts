@@ -1,8 +1,3 @@
-
-
-
-
-
 import { EventTypePreviewModel } from './event.type.preview.model';
 import { PrivacyType } from './privacy-type.model';
 
