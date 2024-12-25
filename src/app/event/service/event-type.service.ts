@@ -33,9 +33,7 @@ export class EventTypeService {
 
 
   getCategoriesByEventType(eventTypeId: number) : Observable<OfferingCategory[]>{
-    let params = new HttpParams()
-    .set('eventTypeId', eventTypeId)
-    return this.httpClient.get<OfferingCategory[]>(environment.apiHost + "/api/event-types/offering-categories", {params:params})
+    return this.httpClient.get<OfferingCategory[]>(environment.apiHost + "/api/event-types/"+eventTypeId+"/offering-categories")
   }
   
 

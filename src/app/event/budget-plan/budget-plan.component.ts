@@ -29,10 +29,8 @@ export class BudgetPlanComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
-    private eventTypeService: EventTypeService,
     private budgetItemService: BudgetPlanService,
     public dialog: MatDialog,
-    private router : ActivatedRoute
   ) {
     
   }
@@ -49,10 +47,12 @@ export class BudgetPlanComponent implements OnInit {
   getBudgetItems() {
     this.eventService.getEvent(this.eventId).subscribe({
       next: (e: Event) => {
+        console.log(e)
         this.event = e;
+        
+        console.log(this.event)
         this.budgetItemService.getBudgetItemsByEvent(e.id).subscribe({
           next: (res) => {
-            console.log(res);
             this.budgetItems = res;
             this.overallBudget = 0;
             res.forEach((element) => {
