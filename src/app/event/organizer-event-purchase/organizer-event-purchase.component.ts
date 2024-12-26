@@ -97,6 +97,7 @@ export class OrganizerEventPurchaseComponent implements OnInit {
   // products
   filterProducts(filterParamss: OfferingFilterParams):void{
     this.filterParams = filterParamss;
+    console.log(filterParamss)
     this.eventTypeId = filterParamss.eventTypeId;
     this.getAllProducts();
   }
