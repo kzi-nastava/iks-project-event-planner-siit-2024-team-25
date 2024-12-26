@@ -8,8 +8,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class ServiceDialogInformationComponent {
 
-  constructor(public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) public data: { serviceName:string, action:string }
+  constructor(
+    public dialogRef: MatDialogRef<ServiceDialogInformationComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { message: string }
   ) {}
 
+  onClose(): void {
+    this.dialogRef.close();
+  }
 }

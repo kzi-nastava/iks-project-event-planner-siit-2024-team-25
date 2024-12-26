@@ -66,13 +66,21 @@ export class OrganizerEventPurchaseComponent implements OnInit {
   getNextPage() {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
-      this.getOfferings(this.currentPage);
+      this.getCurrentOfferings();
     }
   }
 
   getPreviousPage() {
     if (this.currentPage > 0) {
       this.currentPage--;
+      this.getCurrentOfferings();
+    }
+  }
+
+  getCurrentOfferings(){
+    if(this.currentContainer === "P"){
+      this.getAllProducts()
+    }else{
       this.getOfferings(this.currentPage);
     }
   }
@@ -83,6 +91,8 @@ export class OrganizerEventPurchaseComponent implements OnInit {
     } else if (container === 'SERVICES') {
       this.currentContainer = 'S';
     }
+    this.currentPage = 0
+    this.getCurrentOfferings()
   }
   // products
   filterProducts(filterParamss: OfferingFilterParams):void{

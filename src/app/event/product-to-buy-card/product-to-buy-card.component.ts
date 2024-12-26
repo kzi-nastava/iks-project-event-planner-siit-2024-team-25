@@ -42,8 +42,7 @@ export class ProductToBuyCardComponent {
         console.log(res)
         const dialogRef = this.dialog.open(ServiceDialogInformationComponent, {
               data: {
-                serviceName: "Congrats, " + this.offering.name,
-                action: "is successfully bought"
+                message: "Congrats, " + this.offering.name + " is successfully bought"
               }
             })
       },

@@ -87,8 +87,7 @@ export class ServiceFormComponent {
   openSaveDialog() {
     const dialogRef = this.dialog.open(ServiceDialogInformationComponent, {
       data: {
-        serviceName: this.firstFormGroup.value.name,
-        action: this.actionDialog
+        massage: this.firstFormGroup.value.name + " is successfully created!"
       }
     })
 
@@ -99,8 +98,7 @@ export class ServiceFormComponent {
   openErrorDialog(s: String) {
     const dialogRef = this.dialog.open(ServiceDialogInformationComponent, {
       data: {
-        serviceName: this.firstFormGroup.value.name,
-        action: s
+        massage: this.firstFormGroup.value.name + " is successfully updated!"
       }
     })
   }
