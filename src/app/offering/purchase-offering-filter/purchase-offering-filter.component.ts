@@ -99,6 +99,7 @@ export class PurchaseOfferingFilterComponent implements OnInit {
     } else {
       this.filterParams.criteria = this.criteries.at(1)?.value;
     }
+    this.filterParams.eventTypeId = this.eventTypes.id
     this.clicked.emit(this.filterParams);
   }
   updateColumns() {

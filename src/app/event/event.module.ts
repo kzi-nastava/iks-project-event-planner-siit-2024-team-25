@@ -22,6 +22,7 @@ import { EventPageComponent } from './event-page/event-page.component';
 import { OrganizerEventComponent } from './organizer-event/organizer-event.component';
 import { OrganizerEventCardComponent } from './organizer-event-card/organizer-event-card.component';
 import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/organizer-event-purchase.component';
+import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-card.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/orga
     OrganizerEventComponent,
     OrganizerEventCardComponent,
     OrganizerEventPurchaseComponent,
+    ProductToBuyCardComponent,
 
   ],
   imports: [

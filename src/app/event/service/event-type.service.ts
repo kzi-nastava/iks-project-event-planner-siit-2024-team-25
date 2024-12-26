@@ -35,9 +35,7 @@ export class EventTypeService {
   getCategoriesByEventType(eventTypeId: number) : Observable<OfferingCategory[]>{
     return this.httpClient.get<OfferingCategory[]>(environment.apiHost + "/api/event-types/"+eventTypeId+"/offering-categories")
   }
-  
 
- 
 
   getEventTypeByEvent(eventId: number): Observable<EventType> {
     return this.httpClient

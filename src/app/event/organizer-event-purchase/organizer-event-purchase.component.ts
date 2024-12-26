@@ -3,6 +3,7 @@ import { OfferingService } from '../../offering/services/offering.service';
 import { OfferingFilterParams } from '../../offering/model/home-offering-filter-params-model';
 import { HomeOffering } from '../../offering/model/home-offering.model';
 import { DecimalPipe } from '@angular/common';
+import { ProductPurchase } from '../model/product-purchase.model';
 
 @Component({
   selector: 'app-organizer-event-purchase',
@@ -11,12 +12,17 @@ import { DecimalPipe } from '@angular/common';
   providers: [DecimalPipe],
 })
 export class OrganizerEventPurchaseComponent implements OnInit {
+
   currentContainer: string = 'P';
   currentOfferings: HomeOffering[] = [];
+
   currentPage: number = 0;
   totalPages: number = 0;
   filterParams: OfferingFilterParams = {};
+
+  products:ProductPurchase[] = []
   eventId!: number;
+  eventTypeId! : number | undefined;
 
   constructor(
     private offeringService: OfferingService,
@@ -27,14 +33,15 @@ export class OrganizerEventPurchaseComponent implements OnInit {
     const eventFromState = window.history.state['event'];
     if (eventFromState) {
       this.eventId = eventFromState;
-      console.log(this.eventId);
     }
+    this.getAllProducts()
   }
 
   filterOfferings(filterParams: OfferingFilterParams): void {
     this.filterParams = filterParams;
     this.getOfferings(this.currentPage);
   }
+
 
   formatRating(rating: number): string {
     return this.decimalPipe.transform(rating, '1.1') || '';
@@ -76,5 +83,22 @@ export class OrganizerEventPurchaseComponent implements OnInit {
     } else if (container === 'SERVICES') {
       this.currentContainer = 'S';
     }
+  }
+  // products
+  filterProducts(filterParamss: OfferingFilterParams):void{
+    this.filterParams = filterParamss;
+    this.eventTypeId = filterParamss.eventTypeId;
+    this.getAllProducts();
+  }
+  getAllProducts() {
+    this.offeringService.getProductsPurchase(this.currentPage, this.filterParams).subscribe({
+      next: (res) =>{
+        this.products = res.currentProducts;
+        this.totalPages = res.totalPages;
+      },
+      error:(_)=>{
+        console.log("error")
+      }
+    })
   }
 }
