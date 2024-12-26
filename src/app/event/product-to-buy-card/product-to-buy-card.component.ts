@@ -6,6 +6,8 @@ import { ProductPurchase } from '../model/product-purchase.model';
 import { PurchaseService } from '../service/purchase.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ServiceDialogInformationComponent } from '../../offering/service/service-dialog/service-dialog-information.component';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { ErrorDialogComponent } from '../../shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-product-to-buy-card',
@@ -20,6 +22,8 @@ export class ProductToBuyCardComponent {
   
   @Input()
   eventId! : number;
+
+  errorResponse!: ErrorResponse 
 
   constructor(private decimalPipe: DecimalPipe, 
     private router: Router, private purchaseService : PurchaseService, private dialog : MatDialog) {}
@@ -43,8 +47,13 @@ export class ProductToBuyCardComponent {
               }
             })
       },
-      error:(_)=>{
-        console.log("error")
+      error:(err)=>{
+        this.errorResponse = err.error;
+        this.dialog.open(ErrorDialogComponent, {
+          data: {
+            message: this.errorResponse.message
+          }
+        })
       }
     })
   }
