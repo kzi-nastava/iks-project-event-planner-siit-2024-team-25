@@ -56,13 +56,7 @@ export class EventService {
     filterParams?: HomeEventFilterParams
   ): Observable<{ currentEvents: HomeEvent[]; totalPages: number }> {
     let params = this.getHttpParams(filterParams);
-
-    console.log(filterParams?.startTime);
-    console.log(filterParams?.endTime);
-
     params = params.set('page', page);
-
-    console.log(params);
 
     return this.httpClient
       .get<Page<HomeEvent>>(`${environment.apiHost}/api/events/`, { params })

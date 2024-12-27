@@ -1,19 +1,19 @@
-.success-dialog {
+.error-dialog {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
   
-  .success-icon {
+  .error-icon {
     font-size: 48px;
-    color: #4caf50; /* Material green */
+    color: #f44336; /* Material red */
     margin-bottom: 16px;
   }
   
-  .success-title {
+  .error-title {
     font-size: 24px;
-    color: #4caf50; /* Material green */
+    color: #f44336; /* Material red */
     margin: 0;
   }
   
@@ -25,3 +25,4 @@
   mat-dialog-actions {
     margin-top: 16px;
   }
+  

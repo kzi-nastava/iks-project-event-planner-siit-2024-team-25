@@ -7,7 +7,8 @@ import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { Page } from '../../shared/model/page.mode';
 import { SubmittedOffering } from '../offering-category/model/submitted-offering';
 import { environment } from '../../../environment/environment';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { ProductPurchase } from '../../event/model/product-purchase.model';
 
 @Injectable({
   providedIn: 'root',
@@ -70,6 +71,18 @@ export class OfferingService {
       return this.getAllOfferings(page, filterParams);
     }
     return this.getAllOfferings(page, filterParams);
+  }
+
+  getProductsPurchase(page:number, filterParams? : OfferingFilterParams): 
+  Observable<{currentProducts : ProductPurchase[], totalPages: number}>{
+    let params = this.getHttpParams(filterParams)
+    params = params.set("page", page)
+    return this.httpClient.get<Page<ProductPurchase>>(environment.apiHost + "/api/products/all", {params}).pipe(
+      map((page) =>({
+        currentProducts: page.content,
+        totalPages: page.totalPages,
+      }))
+    )
   }
 
   getAllProducts(

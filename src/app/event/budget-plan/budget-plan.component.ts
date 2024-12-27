@@ -9,6 +9,7 @@ import { BudgetItemRequestDTO } from '../model/budget-item-request.dto';
 import { SaveDialogComponent } from '../dialogs/save-dialog/save-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../offering/offering-category/dialogs/delete-dialog/delete-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-budget-plan',
@@ -16,7 +17,7 @@ import { DeleteDialogComponent } from '../../offering/offering-category/dialogs/
   styleUrl: './budget-plan.component.scss',
 })
 export class BudgetPlanComponent implements OnInit {
-  eventId: number = 25;
+  eventId: number | any = null;
   event: Event | undefined;
 
   budgetItems: BudgetItem[] = [];
@@ -28,21 +29,30 @@ export class BudgetPlanComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
-    private eventTypeService: EventTypeService,
     private budgetItemService: BudgetPlanService,
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+  ) {
+    
+  }
   ngOnInit(): void {
+    const eventFromState = window.history.state['eventId'];
+    if (eventFromState) {
+      this.eventId = eventFromState;
+    }else{
+      console.log("event id not found")
+    }
     this.getBudgetItems();
   }
 
   getBudgetItems() {
     this.eventService.getEvent(this.eventId).subscribe({
       next: (e: Event) => {
+        console.log(e)
         this.event = e;
+        
+        console.log(this.event)
         this.budgetItemService.getBudgetItemsByEvent(e.id).subscribe({
           next: (res) => {
-            console.log(res);
             this.budgetItems = res;
             this.overallBudget = 0;
             res.forEach((element) => {

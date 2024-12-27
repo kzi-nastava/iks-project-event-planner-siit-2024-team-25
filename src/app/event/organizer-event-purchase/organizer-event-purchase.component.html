@@ -10,7 +10,7 @@
   <app-purchase-offering-filter
     [filterCriteria]="currentContainer"
     [eventId]="eventId"
-    (clicked)="filterOfferings($event)"
+    (clicked)="filterProducts($event)"
   />
   <div class="pagination">
     <button (click)="getPreviousPage()">
@@ -23,15 +23,15 @@
     }
     <button (click)="getNextPage()"><mat-icon>navigate_next</mat-icon></button>
   </div>
-  <div class="all-offerings-container">
-    <div *ngFor="let offer of currentOfferings">
-      <app-offering-purchase-card
-        (clicked)="toggleFavouriteOfferings($event)"
-        [offering]="offer"
-      />
-    </div>
+</div>
+<div class="all-offerings-container">
+  <div *ngFor="let product of products">
+    <app-product-to-buy-card [offering]="product" [eventId]="eventId" (refresh)="getAllProducts()"></app-product-to-buy-card>
   </div>
 </div>
+
+
+
 
 } @else {
 <div class="container">

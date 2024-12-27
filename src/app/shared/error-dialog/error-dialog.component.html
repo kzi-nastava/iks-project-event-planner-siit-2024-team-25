@@ -1,0 +1,8 @@
+<div mat-dialog-content class="error-dialog">
+    <mat-icon class="error-icon">error</mat-icon>
+    <h2 class="error-title">An Error Occurred</h2>
+    <p>{{ data.message }}</p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+  </div>
