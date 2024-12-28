@@ -26,7 +26,7 @@ export class AgendaComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private toastService: ToastrService
+    private toastService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -84,7 +84,7 @@ export class AgendaComponent implements OnInit, OnDestroy {
         endTime: [null, [Validators.required]],
         location: [''],
       },
-      { validators: [dateAndTimeValidator] }
+      { validators: [dateAndTimeValidator] },
     );
   }
 
@@ -98,7 +98,7 @@ export class AgendaComponent implements OnInit, OnDestroy {
       description: formValue.description,
       startTime: this.combineDateAndTime(
         formValue.startDate,
-        formValue.startTime
+        formValue.startTime,
       ),
       endTime: this.combineDateAndTime(formValue.endDate, formValue.endTime),
       location: formValue.location,
@@ -106,8 +106,9 @@ export class AgendaComponent implements OnInit, OnDestroy {
 
     this.eventService.addActivity(this.event.id!, activity).subscribe({
       next: (activity: Activity) => {
+        this.waitingForResponse = false;
         this.toastService.success(
-          `Successfully added ${activity.name} to agenda!`
+          `Successfully added ${activity.name} to agenda!`,
         );
         this.form.reset();
         this.form.setErrors({});
@@ -117,7 +118,7 @@ export class AgendaComponent implements OnInit, OnDestroy {
         this.waitingForResponse = false;
         this.toastService.error(
           error.message,
-          'Failed to add activity to agenda'
+          'Failed to add activity to agenda',
         );
         if (error.errors) {
           Object.keys(error.errors).forEach((fieldName) => {
@@ -127,9 +128,6 @@ export class AgendaComponent implements OnInit, OnDestroy {
             }
           });
         }
-      },
-      complete: () => {
-        this.waitingForResponse = false;
       },
     });
   }
@@ -153,5 +151,13 @@ export class AgendaComponent implements OnInit, OnDestroy {
         this.toastService.error(error.message, 'Failed to remove activity');
       },
     });
+  }
+
+  openBudgetPlan() {
+    if (!!this.event?.id) {
+      this.router.navigate([`/event/budget-plan`], {
+        state: { eventId: this.event.id },
+      });
+    }
   }
 }

@@ -1,5 +1,12 @@
 @if (currentEvents) {
 <div class="container">
+  <div class="header-actions">
+    <button mat-raised-button color="primary" routerLink="/event">
+      <mat-icon>add</mat-icon>
+      Create Event
+    </button>
+  </div>
+
   <app-home-event-filter (clicked)="filterEvents($event)" />
   <div class="pagination">
     <button (click)="getPreviousPage()">

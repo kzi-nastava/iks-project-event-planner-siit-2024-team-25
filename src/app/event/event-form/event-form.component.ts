@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, finalize, of } from 'rxjs';
 import { dateAndTimeValidator } from '../../infrastructure/validators/dateAndTimeValidator';
 import { futureDateValidator } from '../../infrastructure/validators/futureDateValidator';
 import { ErrorResponse } from '../../shared/model/error.response.model';
+import { EventInvitationsComponent } from '../event-invitations/event-invitations.component';
 import { Event } from '../model/event.model';
 import { EventRequest } from '../model/event.request.model';
 import { EventType } from '../model/event.type.model';
@@ -28,6 +30,7 @@ export class EventFormComponent implements OnInit {
     private eventService: EventService,
     private eventTypeService: EventTypeService,
     private toastService: ToastrService,
+    private dialog: MatDialog,
     private router: Router,
   ) {}
 
@@ -41,7 +44,7 @@ export class EventFormComponent implements OnInit {
       {
         eventTypeId: [null],
         name: ['', [Validators.required, Validators.minLength(3)]],
-        description: ['', Validators.maxLength(500)],
+        description: ['', Validators.maxLength(255)],
         maxParticipants: [null, [Validators.min(1)]],
         privacyType: [PrivacyType.PRIVATE, Validators.required],
         startDate: [null, [Validators.required, futureDateValidator()]],
@@ -104,7 +107,11 @@ export class EventFormComponent implements OnInit {
         this.isLoading = false;
         this.form.reset();
         this.toastService.success('Successfully created a new event.');
-        this.router.navigate(['/event', event.id, 'agenda']);
+        if (event.privacyType === PrivacyType.PRIVATE) {
+          this.openEmailDialog(event.id);
+        } else {
+          this.goToAgenda(event.id);
+        }
       },
       error: (error: ErrorResponse) => {
         this.isLoading = false;
@@ -120,5 +127,20 @@ export class EventFormComponent implements OnInit {
         }
       },
     });
+  }
+
+  openEmailDialog(eventId: number): void {
+    const dialog = this.dialog.open(EventInvitationsComponent, {
+      width: '650px',
+      data: { eventId },
+    });
+
+    dialog.afterClosed().subscribe(() => {
+      this.goToAgenda(eventId);
+    });
+  }
+
+  goToAgenda(eventId: number) {
+    this.router.navigate(['/event', eventId, 'agenda']);
   }
 }
