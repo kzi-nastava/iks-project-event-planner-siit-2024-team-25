@@ -19,4 +19,8 @@ export interface Event {
     latitude?: number;
     longitude?: number;
   };
+  organizer: {
+    id: number;
+    name: string;
+  };
 }

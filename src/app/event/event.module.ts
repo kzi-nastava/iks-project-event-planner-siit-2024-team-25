@@ -4,7 +4,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from '../infrastructure/material/material.module';
 import { OfferingModule } from '../offering/offering.module';
+import { SharedModule } from '../shared/shared.module';
+import { AgendaComponent } from './agenda/agenda.component';
+
+import { BudgetPlanComponent } from './budget-plan/budget-plan.component';
+import { SaveDialogComponent } from './dialogs/save-dialog/save-dialog.component';
+import { EventAgendaComponent } from './event-agenda/event-agenda.component';
 import { EventFormComponent } from './event-form/event-form.component';
+import { EventInvitationsComponent } from './event-invitations/event-invitations.component';
+
+import { EventPageComponent } from './event-page/event-page.component';
 import { EventRoutingModule } from './event-routing.module';
 import { EventTypeListComponent } from './event-type-list/event-type-list.component';
 import { EventTypeComponent } from './event-type/event-type.component';
@@ -12,18 +21,11 @@ import { HomeAllEventsComponent } from './home-all-events/home-all-events.compon
 import { HomeEventCardComponent } from './home-event-card/home-event-card.component';
 import { HomeEventFilterComponent } from './home-event-filter/home-event-filter.component';
 import { HomeTopEventsComponent } from './home-top-events/home-top-events.component';
-import { AgendaComponent } from './agenda/agenda.component';
-import { EventInvitationsComponent } from './event-invitations/event-invitations.component';
-
-import { BudgetPlanComponent } from './budget-plan/budget-plan.component';
-import { SaveDialogComponent } from './dialogs/save-dialog/save-dialog.component';
-
-import { EventPageComponent } from './event-page/event-page.component';
-import { OrganizerEventComponent } from './organizer-event/organizer-event.component';
 import { OrganizerEventCardComponent } from './organizer-event-card/organizer-event-card.component';
 import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/organizer-event-purchase.component';
-import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-card.component';
 
+import { OrganizerEventComponent } from './organizer-event/organizer-event.component';
+import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-card.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,7 @@ import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-
     OrganizerEventCardComponent,
     OrganizerEventPurchaseComponent,
     ProductToBuyCardComponent,
-
+    EventAgendaComponent,
   ],
   imports: [
     CommonModule,
@@ -54,6 +56,7 @@ import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-
     OfferingModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
   ],
   exports: [HomeTopEventsComponent, HomeAllEventsComponent],
   providers: [DatePipe],
