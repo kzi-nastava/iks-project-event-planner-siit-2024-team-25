@@ -27,7 +27,7 @@
           <mat-icon>account_balance_wallet</mat-icon>
           Budget Plan
         </button>
-        <button mat-raised-button class="primary" [routerLink]="['/event', 'my-events', event.id]">
+        <button mat-raised-button class="primary" (click)="openPurchase()">
           <mat-icon>shopping_cart</mat-icon>
           Buy Products
         </button>

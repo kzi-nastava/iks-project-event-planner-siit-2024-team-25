@@ -95,4 +95,10 @@ export class EventPageComponent implements OnInit, OnDestroy {
       state: { eventId: this.event.id },
     });
   }
+
+  openPurchase() {
+    this.router.navigate([`/event/my-events/${this.event.id}`], {
+      state: { event: this.event.id },
+    });
+  }
 }
