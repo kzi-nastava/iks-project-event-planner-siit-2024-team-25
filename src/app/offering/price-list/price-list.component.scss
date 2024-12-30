@@ -54,3 +54,29 @@
     background-color: rgba(0, 0, 0, 0.5); 
     z-index: 1000;
   }
+
+  
+  .button-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+    margin-top: 20px; 
+    margin-bottom: 20px; 
+    .download-btn {
+      font-size: 16px;
+      padding: 12px 24px;
+      background-color: mat.get-theme-color(theme.$light-theme, primary); 
+      color: white;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }      
+    .download-btn:hover {
+      background-color: #122132; 
+    }
+  }
+  
+  
+  
+  
+  
+ 

@@ -48,7 +48,11 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
-
+            <div class="button-container">
+                <button mat-raised-button class="download-btn">
+                  Download PDF
+                </button>
+              </div>
         </div>
     </mat-tab>
     <mat-tab label="Services">
@@ -91,7 +95,12 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
-
+            <div class="button-container">
+                <button mat-raised-button class="download-btn">
+                  Download PDF
+                </button>
+              </div>
         </div>
     </mat-tab>
 </mat-tab-group>
+
