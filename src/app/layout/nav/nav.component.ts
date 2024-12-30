@@ -5,6 +5,8 @@ import { map, shareReplay } from 'rxjs';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { NotificationServiceService } from '../../communication/notification/service/notification-service.service';
+import { ToastrService } from 'ngx-toastr';
+import { Notification } from '../../communication/notification/model/notification.model';
 
 @Component({
   selector: 'app-nav',
@@ -19,13 +21,15 @@ export class NavComponent implements OnInit {
     private authService: AuthService,
     private breakpointObserver: BreakpointObserver,
     private router: Router,
-    private notificationService: NotificationServiceService
+    private notificationService: NotificationServiceService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.notificationService.notifications$.subscribe(
-      (message: Notification) => {
-        this.notifications.push(message);
+      (notification: Notification) => {
+        this.toastrService.info(notification.message, notification.title);
+        this.notifications.push(notification);
       }
     );
   }

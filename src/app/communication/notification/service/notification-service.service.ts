@@ -48,15 +48,15 @@ export class NotificationServiceService {
   openSocket(userId: number) {
     this.stompClient.subscribe(
       `/notifications/user/${userId}`,
-      (message: { body: Notification }) => {
+      (message: { body: string }) => {
         this.handleResult(message);
       }
     );
   }
-  handleResult(message: { body: Notification }) {
+  handleResult(message: { body: string }) {
     if (message.body) {
-      console.log(message.body);
-      this.notificationsSubject.next(message.body);
+      const notification: Notification = JSON.parse(message.body);
+      this.notificationsSubject.next(notification);
     }
   }
 }
