@@ -80,7 +80,9 @@ export class PurchaseOfferingFilterComponent implements OnInit {
         .getLeftMoneyForBudgetItem(this.eventId, this.filterParams.categoryId)
         .subscribe({
           next: (leftMoney: number) => {
-            this.filterParams.maxPrice = leftMoney;
+            if (leftMoney >= 0) {
+              this.filterParams.maxPrice = leftMoney;
+            }
             this.clicked.emit(this.filterParams);
           },
           error: (_) => {
@@ -99,7 +101,7 @@ export class PurchaseOfferingFilterComponent implements OnInit {
     } else {
       this.filterParams.criteria = this.criteries.at(1)?.value;
     }
-    this.filterParams.eventTypeId = this.eventTypes.id
+    this.filterParams.eventTypeId = this.eventTypes.id;
     this.clicked.emit(this.filterParams);
   }
   updateColumns() {
