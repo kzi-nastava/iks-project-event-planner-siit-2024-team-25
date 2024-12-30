@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PriceListEditDialogComponent } from '../price-list-edit-dialog/price-list-edit-dialog.component';
 import { PriceListItemRequest } from '../model/price-list-requestDTO';
 import { ErrorDialogComponent } from '../../shared/error-dialog/error-dialog.component';
+import { catchError, Observable, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-price-list',
@@ -16,6 +17,7 @@ import { ErrorDialogComponent } from '../../shared/error-dialog/error-dialog.com
 })
 export class PriceListComponent implements OnInit {
 
+  isLoading: boolean = false;
   requestEditDTO : PriceListItemRequest = {price:0, discount:0};
   ownerId?: number;
   isProductList = true;
@@ -44,25 +46,31 @@ export class PriceListComponent implements OnInit {
     if(this.isProductList){
       this.priceListService.getProductsPriceList(this.ownerId).subscribe({
         next: (res)=>{
+          this.isLoading = false;
           this.priceListItems = res;
         },
         error: (_) =>{
+          this.isLoading = false;
           console.log("error")
         }
       })
     }else{
       this.priceListService.getServicesPriceList(this.ownerId).subscribe({
         next: (res)=>{
+          this.isLoading = false;
           this.priceListItems = res;
         },
         error: (_) =>{
+          this.isLoading = false;
           console.log("error")
         }
       })
     }
   }
+  
 
   onOfferingChange(event: MatTabChangeEvent) {
+    console.log("asd")
     if (event.index === 0) {
       this.isProductList = true
     } else{
@@ -71,14 +79,15 @@ export class PriceListComponent implements OnInit {
     this.getPriceList();
   }
 
-  onEditOffering(offeringId: number){
+  onEditOffering(price: number, discount:number, offeringId:number){
     const dialogRef = this.dialog.open(PriceListEditDialogComponent, {
       width: '40rem',
-      data: { price:12, discount:2 },
+      data: { price:price, discount:discount },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.isLoading = true;
         this.requestEditDTO.price = result.price;
         this.requestEditDTO.discount = result.discount;
         this.priceListService.updatePriceListItem(offeringId, this.requestEditDTO).subscribe({
@@ -86,6 +95,7 @@ export class PriceListComponent implements OnInit {
             this.getPriceList();
           },
           error:(_)=>{
+            this.isLoading = false;
             this.dialog.open(ErrorDialogComponent),{
               message: "Server error"
             }
