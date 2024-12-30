@@ -176,6 +176,7 @@ export class BookServiceDialogComponent implements OnInit {
               "You've successfully booked this service for your event!",
               'Success'
             );
+            this.isAvailable = false;
           }
         },
         error: (err: ErrorResponse) => {
