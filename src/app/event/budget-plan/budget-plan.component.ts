@@ -49,8 +49,6 @@ export class BudgetPlanComponent implements OnInit {
       next: (e: Event) => {
         console.log(e)
         this.event = e;
-        
-        console.log(this.event)
         this.budgetItemService.getBudgetItemsByEvent(e.id).subscribe({
           next: (res) => {
             this.budgetItems = res;

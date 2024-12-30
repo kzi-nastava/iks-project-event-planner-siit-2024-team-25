@@ -35,25 +35,9 @@ export class ProductToBuyCardComponent {
   formatLocation(country: string, city: string) {
     return country + ', ' + city;
   }
-  purchaseProduct() {
-    console.log(this.eventId)
-    this.purchaseService.purchaseProduct(this.eventId, this.offering.id).subscribe({
-      next:(res)=>{
-        console.log(res)
-        const dialogRef = this.dialog.open(ServiceDialogInformationComponent, {
-              data: {
-                message: "Congrats, " + this.offering.name + " is successfully bought"
-              }
-            })
-      },
-      error:(err)=>{
-        this.errorResponse = err.error;
-        this.dialog.open(ErrorDialogComponent, {
-          data: {
-            message: this.errorResponse.message
-          }
-        })
-      }
-    })
+  openProductDetails() {
+    this.router.navigate(['/products/' + this.offering.id], {
+      queryParams: { eventId: this.eventId },
+    });
   }
 }
