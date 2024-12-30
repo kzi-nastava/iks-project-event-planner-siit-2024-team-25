@@ -78,7 +78,7 @@
                 </ng-container>
                 <ng-container matColumnDef="priceWithDiscount">
                     <mat-header-cell *matHeaderCellDef> Final price (EUR)</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.priceWithDiscount}}</mat-cell>
+                    <mat-cell *matCellDef="let element"> {{element.priceWithDiscount | number:'1.2-2'}}</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="edit">
