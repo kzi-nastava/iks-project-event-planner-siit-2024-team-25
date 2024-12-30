@@ -60,6 +60,7 @@ export class OfferingServiceService {
       .get<any>(`http://localhost:8080/api/services/${id}`)
       .pipe(
         switchMap((response) => {
+          console.log(response)
           return forkJoin([
             this.offeringCategoryService.getById(response.offeringCategoryID),
             this.eventTypesService.getEventTypesByIds(response.eventTypesIDs),
