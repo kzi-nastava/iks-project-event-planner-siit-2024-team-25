@@ -14,11 +14,11 @@ export class PriceListService {
     private httpClient: HttpClient
   ) { }
 
-  getProductsPriceList(ownerId: number) : Observable<PriceListItem>{
+  getProductsPriceList(ownerId?: number) : Observable<PriceListItem[]>{
     return this.httpClient.get<any>(environment.apiHost + "/api/price-list/" + ownerId + "/products");
   }
 
-  getServicesPriceList(ownerId: number) : Observable<PriceListItem>{
+  getServicesPriceList(ownerId?: number) : Observable<PriceListItem[]>{
     return this.httpClient.get<any>(environment.apiHost + "/api/price-list/" + ownerId + "/services");
   }
 
