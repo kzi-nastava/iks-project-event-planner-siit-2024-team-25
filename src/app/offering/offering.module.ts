@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { ServiceModule } from './service/service.module';
 import { OfferingPurchaseCardComponent } from './offering-purchase-card/offering-purchase-card.component';
 import { PurchaseOfferingFilterComponent } from './purchase-offering-filter/purchase-offering-filter.component';
+import { PriceListComponent } from './price-list/price-list.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PurchaseOfferingFilterComponent } from './purchase-offering-filter/purc
     HomeOfferingFilterComponent,
     OfferingPurchaseCardComponent,
     PurchaseOfferingFilterComponent,
+    PriceListComponent,
   ],
   imports: [CommonModule, FormsModule, ServiceModule, MaterialModule],
   exports: [
