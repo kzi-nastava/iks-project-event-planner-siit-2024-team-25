@@ -1,10 +1,10 @@
-<div class="event-card">
+<div class="event-card" (click)="goToEvent()">
   <div class="header">
     <div class="title">{{ event.name }}</div>
     <mat-icon
       class="heart"
       [ngClass]="{ liked: event.isLiked }"
-      (click)="changeFavouriteEvent()"
+      (click)="changeFavouriteEvent($event)"
     >
       {{ event.isLiked ? "favorite" : "favorite_border" }}
     </mat-icon>
@@ -27,16 +27,18 @@
       <mat-icon>location_on</mat-icon>
       <p>{{ formatLocation(event.country, event.city) }}</p>
     </div>
-    <button mat-button (click)="openBudgetPlan()">Budget plan<mat-icon>money</mat-icon>  </button>
+    <button mat-button (click)="openBudgetPlan($event)">Budget plan
+      <mat-icon>money</mat-icon>
+    </button>
   </div>
   <div class="options">
-    <button mat-raised-button color="primary" (click)="purchase()">
+    <button mat-raised-button color="primary" (click)="purchase($event)">
       Purchase
     </button>
     <button
       mat-raised-button
       color="primary"
-      (click)="openEmailDialog(event.id)"
+      (click)="openEmailDialog(event.id, $event)"
     >
       Invite guests
     </button>
