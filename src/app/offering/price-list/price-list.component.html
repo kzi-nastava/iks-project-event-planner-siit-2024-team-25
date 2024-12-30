@@ -33,7 +33,7 @@
                 <ng-container matColumnDef="edit">
                     <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
                     <mat-cell *matCellDef="let element">
-                        <button mat-icon-button>
+                        <button mat-icon-button (click)="onEditOffering(element.offeringId)">
                             <mat-icon>edit</mat-icon>
                         </button>
                     </mat-cell>
@@ -75,7 +75,7 @@
                 <ng-container matColumnDef="edit">
                     <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
                     <mat-cell *matCellDef="let element">
-                        <button mat-icon-button>
+                        <button mat-icon-button (click)="onEditOffering(element.offeringId)">
                             <mat-icon>edit</mat-icon>
                         </button>
                     </mat-cell>

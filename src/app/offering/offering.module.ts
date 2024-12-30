@@ -11,6 +11,7 @@ import { OfferingPurchaseCardComponent } from './offering-purchase-card/offering
 import { PurchaseOfferingFilterComponent } from './purchase-offering-filter/purchase-offering-filter.component';
 import { PriceListComponent } from './price-list/price-list.component';
 import { OfferingRoutingModule } from './offering-routing.module';
+import { PriceListEditDialogComponent } from './price-list-edit-dialog/price-list-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { OfferingRoutingModule } from './offering-routing.module';
     OfferingPurchaseCardComponent,
     PurchaseOfferingFilterComponent,
     PriceListComponent,
+    PriceListEditDialogComponent,
   ],
   imports: [CommonModule, FormsModule, ServiceModule, MaterialModule, OfferingRoutingModule],
   exports: [

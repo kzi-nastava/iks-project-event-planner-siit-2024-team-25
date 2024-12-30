@@ -4,6 +4,10 @@ import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { PriceListService } from '../services/price-list.service';
 import { PriceListItem } from '../model/price-list-mode';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatDialog } from '@angular/material/dialog';
+import { PriceListEditDialogComponent } from '../price-list-edit-dialog/price-list-edit-dialog.component';
+import { PriceListItemRequest } from '../model/price-list-requestDTO';
+import { ErrorDialogComponent } from '../../shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-price-list',
@@ -12,7 +16,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 })
 export class PriceListComponent implements OnInit {
 
-
+  requestEditDTO : PriceListItemRequest = {price:0, discount:0};
   ownerId?: number;
   isProductList = true;
   priceListItems: PriceListItem[] = []
@@ -21,6 +25,7 @@ export class PriceListComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private priceListService: PriceListService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -66,4 +71,27 @@ export class PriceListComponent implements OnInit {
     this.getPriceList();
   }
 
+  onEditOffering(offeringId: number){
+    const dialogRef = this.dialog.open(PriceListEditDialogComponent, {
+      width: '40rem',
+      data: { price:12, discount:2 },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.requestEditDTO.price = result.price;
+        this.requestEditDTO.discount = result.discount;
+        this.priceListService.updatePriceListItem(offeringId, this.requestEditDTO).subscribe({
+          next:(res)=>{
+            this.getPriceList();
+          },
+          error:(_)=>{
+            this.dialog.open(ErrorDialogComponent),{
+              message: "Server error"
+            }
+          }
+        })
+      }
+    });
+  }
 }
