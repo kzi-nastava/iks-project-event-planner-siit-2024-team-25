@@ -7,4 +7,5 @@ export interface Notification {
   isViewed?: boolean;
   entityId?: number;
   notificationCategory?: NotificationCategory;
+  createdDate?: Date;
 }

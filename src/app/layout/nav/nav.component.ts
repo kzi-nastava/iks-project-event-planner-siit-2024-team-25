@@ -8,6 +8,8 @@ import { NotificationServiceService } from '../../communication/notification/ser
 import { ToastrService } from 'ngx-toastr';
 import { Notification } from '../../communication/notification/model/notification.model';
 import { NotificationCategory } from '../../communication/notification/model/notification-category.model';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationComponent } from '../../communication/notification/notification.component';
 
 @Component({
   selector: 'app-nav',
@@ -23,7 +25,8 @@ export class NavComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private router: Router,
     private notificationService: NotificationServiceService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -96,6 +99,15 @@ export class NavComponent implements OnInit {
     this.authService.logOut();
     this.router.navigate(['/']).then(() => {
       window.location.reload();
+    });
+  }
+
+  openNotifications() {
+    const currentUserId = this.authService.getUser()?.userId;
+
+    this.dialog.open(NotificationComponent, {
+      width: '400px',
+      data: { userId: currentUserId },
     });
   }
 }

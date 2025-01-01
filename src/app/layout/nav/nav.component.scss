@@ -260,7 +260,7 @@ $toolbar-height: 64px;
       }
 
       .toolbar-actions {
-        display: flex;
+        display: block;
         align-items: center;
         gap: 8px;
 
@@ -306,7 +306,7 @@ $toolbar-height: 64px;
   }
 
   .spacer {
-    flex: 1 1 auto;
+    flex: 0.95 2 auto;
   }
 }
 

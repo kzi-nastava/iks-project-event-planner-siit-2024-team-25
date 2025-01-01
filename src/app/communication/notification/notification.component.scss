@@ -1,0 +1,55 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "../../../theme/m3-theme.scss" as theme;
+
+@keyframes slide-in {
+  from {
+    right: -350px;
+  }
+  to {
+    right: 20px;
+  }
+}
+h1 {
+  font-size: 2.1rem;
+  justify-self: center;
+  color: white;
+}
+.notification-container {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 300px;
+  z-index: 1000;
+
+  background-color: #3339;
+  overflow-y: auto;
+  max-height: 55rem;
+
+  -ms-overflow-style: none; /* For Internet Explorer 10+ */
+  scrollbar-width: none; /* For Firefox */
+
+  .notification-container::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and newer Edge */
+  }
+}
+
+.notification {
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  animation: slide-in 0.5s ease-out;
+  background-color: white;
+  cursor: pointer;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-header button:hover {
+  opacity: 0.8;
+}

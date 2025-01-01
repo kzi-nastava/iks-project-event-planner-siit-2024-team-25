@@ -1,1 +1,26 @@
-<p>notification works!</p>
+<div class="notification-container" (scroll)="onScroll()">
+  <h1>Notifications</h1>
+  <div
+    *ngFor="let notification of notifications"
+    class="notification"
+    (click)="openNotification(notification)"
+  >
+    <div class="notification-header">
+      <strong>{{ notification.title }}</strong>
+    </div>
+    <p>{{ notification.message }}</p>
+    <p>{{ formatDate(notification.createdDate) }}</p>
+
+    <mat-icon
+      *ngIf="!notification.isViewed"
+      (click)="toggleViewed(notification, true, $event)"
+      >mark_email_unread</mat-icon
+    >
+    <mat-icon
+      *ngIf="notification.isViewed"
+      (click)="toggleViewed(notification, false, $event)"
+      >mark_email_read</mat-icon
+    >
+  </div>
+  <div *ngIf="isLoading" class="loading-spinner">Loading...</div>
+</div>

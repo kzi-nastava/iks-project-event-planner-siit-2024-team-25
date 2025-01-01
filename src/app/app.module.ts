@@ -12,6 +12,7 @@ import { jwtInterceptor } from './infrastructure/auth/interceptor/jwt.intercepto
 import { MaterialModule } from './infrastructure/material/material.module';
 import { LayoutModule } from './layout/layout.module';
 import { OfferingModule } from './offering/offering.module';
+import { CommunicationModule } from './communication/communication.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -22,6 +23,7 @@ import { OfferingModule } from './offering/offering.module';
     MaterialModule,
     EventModule,
     OfferingModule,
+    CommunicationModule,
   ],
 
   providers: [
