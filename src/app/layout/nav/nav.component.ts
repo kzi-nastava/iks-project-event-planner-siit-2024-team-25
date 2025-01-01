@@ -7,6 +7,7 @@ import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { NotificationServiceService } from '../../communication/notification/service/notification-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { Notification } from '../../communication/notification/model/notification.model';
+import { NotificationCategory } from '../../communication/notification/model/notification-category.model';
 
 @Component({
   selector: 'app-nav',
@@ -28,7 +29,41 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
     this.notificationService.notifications$.subscribe(
       (notification: Notification) => {
-        this.toastrService.info(notification.message, notification.title);
+        const toast = this.toastrService.info(
+          notification.message,
+          notification.title,
+          {
+            closeButton: true,
+            tapToDismiss: false,
+          }
+        );
+
+        toast.onTap.subscribe(() => {
+          if (notification.notificationCategory == NotificationCategory.EVENT) {
+            this.router.navigate([`/event/${notification.entityId}`]);
+          } else if (
+            notification.notificationCategory == NotificationCategory.PRODUCT
+          ) {
+            ///TODO
+            // this.router.navigate([`/product/${notification.entityId}`]);
+          } else if (
+            notification.notificationCategory == NotificationCategory.SERVICE
+          ) {
+            this.router.navigate([
+              `/service/services/${notification.entityId}`,
+            ]);
+          } else if (
+            notification.notificationCategory ==
+            NotificationCategory.OFFERING_CATEGORY
+          ) {
+            if (this.authService.getUser()?.role == UserRole.Admin) {
+              this.router.navigate([`/offering-category/offering-categories`]);
+            } else {
+              this.router.navigate([`/my-offerings`]);
+            }
+          }
+        });
+
         this.notifications.push(notification);
       }
     );
