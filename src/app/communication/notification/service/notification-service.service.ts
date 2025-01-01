@@ -102,7 +102,7 @@ export class NotificationServiceService {
     };
     return this.httpClient.put(
       `${environment.apiHost}/api/notifications/${userId}/view`,
-      notificationRequest // Send the data in the request body
+      notificationRequest
     );
   }
 }

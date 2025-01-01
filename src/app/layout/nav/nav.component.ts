@@ -1,7 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, shareReplay } from 'rxjs';
+import { map, shareReplay, switchMap, take } from 'rxjs';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { NotificationServiceService } from '../../communication/notification/service/notification-service.service';
@@ -10,6 +10,7 @@ import { Notification } from '../../communication/notification/model/notificatio
 import { NotificationCategory } from '../../communication/notification/model/notification-category.model';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationComponent } from '../../communication/notification/notification.component';
+import { User } from '../../infrastructure/auth/model/user.model';
 
 @Component({
   selector: 'app-nav',
@@ -41,31 +42,51 @@ export class NavComponent implements OnInit {
           }
         );
 
-        toast.onTap.subscribe(() => {
-          if (notification.notificationCategory == NotificationCategory.EVENT) {
-            this.router.navigate([`/event/${notification.entityId}`]);
-          } else if (
-            notification.notificationCategory == NotificationCategory.PRODUCT
-          ) {
-            ///TODO
-            // this.router.navigate([`/product/${notification.entityId}`]);
-          } else if (
-            notification.notificationCategory == NotificationCategory.SERVICE
-          ) {
-            this.router.navigate([
-              `/service/services/${notification.entityId}`,
-            ]);
-          } else if (
-            notification.notificationCategory ==
-            NotificationCategory.OFFERING_CATEGORY
-          ) {
-            if (this.authService.getUser()?.role == UserRole.Admin) {
-              this.router.navigate([`/offering-category/offering-categories`]);
-            } else {
-              this.router.navigate([`/my-offerings`]);
+        toast.onTap
+          .pipe(switchMap(() => this.authService.user$.pipe(take(1))))
+          .subscribe(() => {
+            this.authService.user$.subscribe({
+              next: (currentUser: User | null) => {
+                if (currentUser?.userId && notification.id) {
+                  this.notificationService
+                    .toggleViewed(currentUser.userId, notification.id, true)
+                    .subscribe({
+                      error: (err: any) => {
+                        console.log(err);
+                      },
+                    });
+                }
+              },
+            });
+
+            if (
+              notification.notificationCategory == NotificationCategory.EVENT
+            ) {
+              this.router.navigate([`/event/${notification.entityId}`]);
+            } else if (
+              notification.notificationCategory == NotificationCategory.PRODUCT
+            ) {
+              ///TODO
+              // this.router.navigate([`/product/${notification.entityId}`]);
+            } else if (
+              notification.notificationCategory == NotificationCategory.SERVICE
+            ) {
+              this.router.navigate([
+                `/service/services/${notification.entityId}`,
+              ]);
+            } else if (
+              notification.notificationCategory ==
+              NotificationCategory.OFFERING_CATEGORY
+            ) {
+              if (this.authService.getUser()?.role == UserRole.Admin) {
+                this.router.navigate([
+                  `/offering-category/offering-categories`,
+                ]);
+              } else {
+                this.router.navigate([`/my-offerings`]);
+              }
             }
-          }
-        });
+          });
 
         this.notifications.push(notification);
       }
