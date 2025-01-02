@@ -29,8 +29,7 @@ export class NotificationServiceService {
     this.authService.user$.subscribe({
       next: (user) => {
         if (user) {
-          let ws = new SockJS(this.serverUrl);
-          this.stompClient = Stomp.Stomp.over(ws);
+          this.stompClient = Stomp.Stomp.client(this.serverUrl);
           let that = this;
 
           this.stompClient.connect({}, (frame: Stomp.Frame) => {
