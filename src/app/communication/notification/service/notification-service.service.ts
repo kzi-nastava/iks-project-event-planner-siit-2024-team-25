@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import * as Stomp from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { environment } from '../../../../environment/environment';
 import { AuthService } from '../../../infrastructure/auth/service/auth.service';
+import { Page } from '../../../shared/model/page.mode';
+import { Notification } from '../model/notification.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +18,10 @@ export class NotificationServiceService {
   private serverUrl = environment.apiHost + '/socket';
   isLoaded = false;
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private httpClient: HttpClient
+  ) {
     this.connect();
   }
 
@@ -23,8 +29,7 @@ export class NotificationServiceService {
     this.authService.user$.subscribe({
       next: (user) => {
         if (user) {
-          let ws = new SockJS(this.serverUrl);
-          this.stompClient = Stomp.Stomp.over(ws);
+          this.stompClient = Stomp.Stomp.client(this.serverUrl);
           let that = this;
 
           this.stompClient.connect({}, (frame: Stomp.Frame) => {
@@ -48,15 +53,55 @@ export class NotificationServiceService {
   openSocket(userId: number) {
     this.stompClient.subscribe(
       `/notifications/user/${userId}`,
-      (message: { body: Notification }) => {
+      (message: { body: string }) => {
         this.handleResult(message);
       }
     );
   }
-  handleResult(message: { body: Notification }) {
+  handleResult(message: { body: string }) {
     if (message.body) {
-      console.log(message.body);
-      this.notificationsSubject.next(message.body);
+      const notification: Notification = JSON.parse(message.body);
+      this.notificationsSubject.next(notification);
     }
+  }
+
+  getMyNotifications(
+    userId: number,
+    page: number
+  ): Observable<{
+    currentNotifications: Notification[];
+    totalNotifications: number;
+    totalPages: number;
+  }> {
+    let params = new HttpParams();
+    params = params.set('page', page);
+
+    return this.httpClient
+      .get<Page<Notification>>(
+        `${environment.apiHost}/api/notifications/${userId}`,
+        { params }
+      )
+      .pipe(
+        map((page) => ({
+          currentNotifications: page.content,
+          totalNotifications: page.totalElements,
+          totalPages: page.totalPages,
+        }))
+      );
+  }
+
+  toggleViewed(
+    userId: number,
+    notificationId: number,
+    isViewed: boolean
+  ): Observable<Notification> {
+    const notificationRequest = {
+      id: notificationId,
+      isViewed: isViewed,
+    };
+    return this.httpClient.put(
+      `${environment.apiHost}/api/notifications/${userId}/view`,
+      notificationRequest
+    );
   }
 }

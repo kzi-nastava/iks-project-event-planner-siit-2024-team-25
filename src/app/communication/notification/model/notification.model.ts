@@ -1,4 +1,4 @@
-import { NotificationCategory } from '../../../notification/model/notification-category.model';
+import { NotificationCategory } from './notification-category.model';
 
 export interface Notification {
   id?: number;
@@ -7,4 +7,5 @@ export interface Notification {
   isViewed?: boolean;
   entityId?: number;
   notificationCategory?: NotificationCategory;
+  createdDate?: Date;
 }
