@@ -6,6 +6,7 @@ import { Service } from '../model/service';
 import { OfferingServiceService } from '../offering-service.service';
 import { BookServiceDialogComponent } from '../book-service-dialog/book-service-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ErrorDialogComponent } from '../../../shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-service-details',
@@ -13,8 +14,20 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrl: './service-details.component.scss',
 })
 export class ServiceDetailsComponent {
+
+
+  currentSlide = 0;
+  durationShow = true;
+
+  nextSlide() {
+    this.currentSlide = (this.currentSlide + 1) % this.service.images.length;
+  }
+
+  prevSlide() {
+    this.currentSlide = (this.currentSlide - 1 + this.service.images.length) % this.service.images.length;
+  }
   serviceId!: number;
-  showButton: boolean = false;
+  showBookServiceButton: boolean = false;
   service!: Service;
   eventId!: number;
 
@@ -22,12 +35,13 @@ export class ServiceDetailsComponent {
     private route: ActivatedRoute,
     private authService: AuthService,
     private serviceService: OfferingServiceService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     if (this.authService.getUser()?.role == UserRole.EventOrganizer) {
-      this.showButton = true;
+      this.showBookServiceButton = true;
     }
     // Getting 'id' from URL-a
     this.route.params.subscribe((params) => {
@@ -47,8 +61,26 @@ export class ServiceDetailsComponent {
   }
 
   openBookServiceForm() {
-    this.router.navigate(['/services/' + this.service.id + '/purchase/'], {
-      queryParams: { eventId: this.eventId },
-    });
+    if(this.service.available){
+      this.router.navigate(['/services/' + this.service.id + '/purchase/'], {
+        queryParams: { eventId: this.eventId },
+      });
+    }else{
+      this.dialog.open(ErrorDialogComponent, {
+                data: {
+                  message: this.service.name + "currently is not available"
+                }
+              })
+    }
+    
   }
+
+  viewOwnerCompany() {
+    console.log(this.service.ownerInfo.id);
+    this.router.navigate(['/user/' + this.service.ownerInfo.id + "/information"]);
+    throw new Error('Method not implemented.');
+  }
+    chatWithOwner() {
+    throw new Error('Method not implemented.');
+    }
 }

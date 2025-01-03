@@ -28,6 +28,11 @@ const routes: Routes = [
       import('./offering/offering-category/offering-category.module').then((m) => m.OfferingCategoryModule),
   },
   {
+    path: 'products',
+    loadChildren: () =>
+      import('./offering/product/product.module').then((m) => m.ProductModule),
+  },
+  {
     path: 'offering',
     loadChildren: () =>
       import('./offering/offering.module').then((m)=>m.OfferingModule),

@@ -22,4 +22,5 @@ export interface Service {
     offeringCategory: OfferingCategory,
     minimumArrangement:number,
     maximumArrangement: number,
+    ownerInfo: {id: number, firstName:String, lastName:String}
 }

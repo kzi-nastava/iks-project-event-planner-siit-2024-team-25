@@ -1,4 +1,4 @@
-<div class="top-offerings-container" >
+<div class="top-offerings-container" (click)="openProductDetails()">
     <div class="offering-card">
       <div class="header">
         <h2 class="title">{{ offering.name }}</h2>
@@ -27,8 +27,8 @@
         </div>
       </div>
       <div class="options">
-        <button mat-raised-button color="primary" (click)="purchaseProduct()">
-            Buy
+        <button mat-raised-button color="primary" (click)="openProductDetails()">
+            Details
           </button>
       </div>
       
