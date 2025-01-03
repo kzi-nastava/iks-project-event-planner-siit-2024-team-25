@@ -26,6 +26,11 @@ const routes: Routes = [
     path: 'offering-category',
     loadChildren: () =>
       import('./offering/offering-category/offering-category.module').then((m) => m.OfferingCategoryModule),
+  },
+  {
+    path: 'offering',
+    loadChildren: () =>
+      import('./offering/offering.module').then((m)=>m.OfferingModule),
   }
 ];
 
