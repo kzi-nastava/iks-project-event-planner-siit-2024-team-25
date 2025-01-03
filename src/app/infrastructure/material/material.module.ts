@@ -10,6 +10,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogContent, MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
@@ -66,7 +67,7 @@ const components = [
   MatError,
   ReactiveFormsModule,
   MatTooltip,
-  
+  MatExpansionModule,
 ];
 
 @NgModule({

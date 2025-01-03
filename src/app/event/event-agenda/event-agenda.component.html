@@ -1,0 +1,35 @@
+<div class="timeline-container">
+  <ng-container *ngIf="activities.length > 0; else noActivities">
+    <div class="timeline-item" *ngFor="let activity of activities">
+      <div class="timeline-marker"></div>
+
+      <mat-card class="timeline-card">
+        <mat-card-header>
+          <mat-card-title>{{ activity.name }}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="time-badge">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ activity.startTime | date:'shortTime' }} - {{ activity.endTime | date:'shortTime' }}</span>
+            <span class="date-badge">{{ activity.startTime | date:'mediumDate' }}</span>
+          </div>
+
+          <p *ngIf="activity.description" class="description">{{ activity.description }}</p>
+
+          <div class="location" *ngIf="activity.location">
+            <mat-icon>location_on</mat-icon>
+            <span>{{ activity.location }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </ng-container>
+
+  <ng-template #noActivities>
+    <div class="no-activities">
+      <mat-icon>event_busy</mat-icon>
+      <p>No activities have been added to the agenda yet.</p>
+    </div>
+  </ng-template>
+</div>

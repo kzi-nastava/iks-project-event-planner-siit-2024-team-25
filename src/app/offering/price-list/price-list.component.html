@@ -1,0 +1,106 @@
+<div class="container">
+
+    <h3> Price list</h3>
+
+</div>
+<div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner diameter="50"></mat-spinner>
+</div>
+
+<mat-tab-group style="margin-left: 5rem; margin-right: 5rem;" (selectedTabChange)="onOfferingChange($event)">
+    <mat-tab label="Products">
+        <div class="example-container mat-elevation-z8" style="margin-top: 2rem;">
+            <mat-table #table [dataSource]="priceListItems">
+
+                <ng-container matColumnDef="position">
+                    <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Offering name </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="price">
+                    <mat-header-cell *matHeaderCellDef> Price (EUR) </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.price}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="discount">
+                    <mat-header-cell *matHeaderCellDef> Discount %</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.discount}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="priceWithDiscount">
+                    <mat-header-cell *matHeaderCellDef> Final price (EUR)</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.priceWithDiscount | number:'1.2-2'}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="edit">
+                    <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <button mat-icon-button
+                            (click)="onEditOffering(element.price, element.discount,element.offeringId)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <div class="button-container">
+                <button mat-raised-button class="download-btn">
+                  Download PDF
+                </button>
+              </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Services">
+        <div class="example-container mat-elevation-z8" style="margin-top: 2rem;">
+            <mat-table #table [dataSource]="priceListItems">
+
+                <ng-container matColumnDef="position">
+                    <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Offering name </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="price">
+                    <mat-header-cell *matHeaderCellDef> Price (EUR) </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.price}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="discount">
+                    <mat-header-cell *matHeaderCellDef> Discount %</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.discount}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="priceWithDiscount">
+                    <mat-header-cell *matHeaderCellDef> Final price (EUR)</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.priceWithDiscount | number:'1.2-2'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="edit">
+                    <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <button mat-icon-button
+                            (click)="onEditOffering(element.price, element.discount,element.offeringId)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <div class="button-container">
+                <button mat-raised-button class="download-btn">
+                  Download PDF
+                </button>
+              </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>
+
