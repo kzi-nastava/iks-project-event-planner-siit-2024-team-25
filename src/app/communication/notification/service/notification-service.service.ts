@@ -87,7 +87,6 @@ export class NotificationServiceService {
   }
 
   toggleViewed(
-    userId: number,
     notificationId: number,
     isViewed: boolean
   ): Observable<Notification> {
@@ -96,7 +95,7 @@ export class NotificationServiceService {
       isViewed: isViewed,
     };
     return this.httpClient.put(
-      `${environment.apiHost}/api/notifications/${userId}/view`,
+      `${environment.apiHost}/api/notifications/`,
       notificationRequest
     );
   }

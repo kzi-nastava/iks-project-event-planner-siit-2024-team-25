@@ -104,7 +104,7 @@ export class NotificationComponent implements OnInit {
     }
     if (notification.id) {
       this.notificationService
-        .toggleViewed(this.currentUserId, notification.id, isViewed)
+        .toggleViewed(notification.id, isViewed)
         .subscribe({
           next: (response: Notification) => {
             this.notifications.forEach((notification) => {
