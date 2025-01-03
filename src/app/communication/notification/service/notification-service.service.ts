@@ -65,10 +65,7 @@ export class NotificationServiceService {
     }
   }
 
-  getMyNotifications(
-    userId: number,
-    page: number
-  ): Observable<{
+  getMyNotifications(page: number): Observable<{
     currentNotifications: Notification[];
     totalNotifications: number;
     totalPages: number;
@@ -77,10 +74,9 @@ export class NotificationServiceService {
     params = params.set('page', page);
 
     return this.httpClient
-      .get<Page<Notification>>(
-        `${environment.apiHost}/api/notifications/${userId}`,
-        { params }
-      )
+      .get<Page<Notification>>(`${environment.apiHost}/api/notifications/`, {
+        params,
+      })
       .pipe(
         map((page) => ({
           currentNotifications: page.content,

@@ -39,7 +39,7 @@ export class NotificationComponent implements OnInit {
     this.isLoading = true;
 
     this.notificationService
-      .getMyNotifications(this.currentUserId, this.currentPage)
+      .getMyNotifications(this.currentPage)
       .subscribe((response) => {
         this.notifications = [
           ...this.notifications,
