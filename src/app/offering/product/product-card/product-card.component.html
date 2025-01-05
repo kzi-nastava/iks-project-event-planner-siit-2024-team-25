@@ -1,0 +1,20 @@
+<div [routerLink]="['/products', product.id]">
+  <div class="header">
+    <h2>{{ product.name }}</h2>
+  </div>
+  <div class="price">
+    <p>{{ product.price }}RSD</p>
+  </div>
+  <div class="description">
+    <p *ngIf="product.description.length > 70">{{ product.description.slice(0, 70) }}...</p>
+    <p *ngIf="product.description.length <= 70">{{ product.description }}</p>
+  </div>
+  <div class="footer">
+    <button mat-icon-button matSuffix (click)="openDialog($event)">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button mat-icon-button matSuffix (click)="openEditPage($event)">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+</div>

@@ -58,8 +58,7 @@ export class NavComponent implements OnInit {
           } else if (
             notification.notificationCategory == NotificationCategory.PRODUCT
           ) {
-            ///TODO
-            // this.router.navigate([`/product/${notification.entityId}`]);
+            notification.notificationCategory == NotificationCategory.PRODUCT;
           } else if (
             notification.notificationCategory == NotificationCategory.SERVICE
           ) {
