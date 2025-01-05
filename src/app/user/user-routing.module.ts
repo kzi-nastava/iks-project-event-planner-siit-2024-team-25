@@ -7,6 +7,10 @@ import { ActivateComponent } from './activate/activate.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { RegisterQuickComponent } from './register-quick/register-quick.component';
+import { AllReportedUsersComponent } from './all-reported-users/all-reported-users.component';
+import { UserRole } from '../infrastructure/auth/model/user-role.model';
+import { roleGuard } from '../infrastructure/auth/guard/role.guard';
+import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.component';
 
 const routes: Routes = [
   {
@@ -21,6 +25,18 @@ const routes: Routes = [
   },
   { path: 'activate', component: ActivateComponent },
   { path: 'register/quick', component: RegisterQuickComponent },
+  {
+    path: 'reports',
+    component: AllReportedUsersComponent,
+    canActivate: [roleGuard],
+    data: { roles: [UserRole.Admin] },
+  },
+  {
+    path: 'blocks',
+    component: AllBlockedUsersComponent,
+    canActivate: [roleGuard],
+    data: { roles: [UserRole.Admin] },
+  },
 ];
 
 @NgModule({

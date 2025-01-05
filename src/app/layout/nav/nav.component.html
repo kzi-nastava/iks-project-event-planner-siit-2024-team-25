@@ -94,7 +94,11 @@
           >Service</span
         >
       </a>
-      <a routerLink="/offering/price-list" routerLinkActive="active" class="nav-item">
+      <a
+        routerLink="/offering/price-list"
+        routerLinkActive="active"
+        class="nav-item"
+      >
         <div class="icon-container">
           <mat-icon>list</mat-icon>
         </div>
@@ -169,7 +173,7 @@
       </a>
 
       @if (isAdmin$ | async) {
-      <a routerLink="/reports" routerLinkActive="active" class="nav-item">
+      <a routerLink="/user/reports" routerLinkActive="active" class="nav-item">
         <div class="icon-container">
           <mat-icon>report</mat-icon>
         </div>

@@ -12,6 +12,8 @@ import { RegisterSuccessDialogComponent } from './register-success-dialog/regist
 import { RegisterComponent } from './register/register.component';
 import { UserRoutingModule } from './user-routing.module';
 import { RegisterQuickComponent } from './register-quick/register-quick.component';
+import { AllReportedUsersComponent } from './all-reported-users/all-reported-users.component';
+import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { RegisterQuickComponent } from './register-quick/register-quick.componen
     RegisterSuccessDialogComponent,
     ActivateComponent,
     RegisterQuickComponent,
+    AllReportedUsersComponent,
+    AllBlockedUsersComponent,
   ],
   imports: [
     CommonModule,
