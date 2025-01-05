@@ -39,7 +39,7 @@ export class NotificationComponent implements OnInit {
     this.isLoading = true;
 
     this.notificationService
-      .getMyNotifications(this.currentUserId, this.currentPage)
+      .getMyNotifications(this.currentPage)
       .subscribe((response) => {
         this.notifications = [
           ...this.notifications,
@@ -103,7 +103,7 @@ export class NotificationComponent implements OnInit {
     }
     if (notification.id) {
       this.notificationService
-        .toggleViewed(this.currentUserId, notification.id, isViewed)
+        .toggleViewed(notification.id, isViewed)
         .subscribe({
           next: (response: Notification) => {
             this.notifications.forEach((notification) => {
