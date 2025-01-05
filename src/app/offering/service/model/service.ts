@@ -1,6 +1,6 @@
-import { EventType } from "./event-type";
+import { EventType } from '../../model/event-type';
 import { OfferingCategory } from "../../offering-category/model/offering-category";
-import { Offeringtype } from "./offering.type.enum";
+import { Offeringtype } from '../../model/offering.type.enum';
 import { ReservationType } from "./reservation.type.enum";
 
 export interface Service {
