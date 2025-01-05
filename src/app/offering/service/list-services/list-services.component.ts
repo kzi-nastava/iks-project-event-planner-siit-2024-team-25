@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { EventTypeService } from '../../../event/service/event-type.service';
 import { OfferingCategoryService } from '../../offering-category/offering-category.service';
-import { EventType } from '../model/event-type';
+import { EventType } from '../../model/event-type';
 import { OfferingCategory } from '../../offering-category/model/offering-category';
 
 @Component({

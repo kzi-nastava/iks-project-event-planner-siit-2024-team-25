@@ -1,4 +1,4 @@
-import { Offeringtype } from "./offering.type.enum";
+import { Offeringtype } from '../../model/offering.type.enum';
 import { ReservationType } from "./reservation.type.enum";
 
 export interface ServiceUpdateDTO{

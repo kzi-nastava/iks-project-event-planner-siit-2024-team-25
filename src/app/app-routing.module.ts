@@ -18,6 +18,11 @@ const routes: Routes = [
       import('./offering/service/service.module').then((m) => m.ServiceModule),
   },
   {
+    path: 'products',
+    loadChildren: () =>
+      import('./offering/product/product.module').then((m) => m.ProductModule),
+  },
+  {
     path: 'event',
     loadChildren: () =>
       import('./event/event.module').then((m) => m.EventModule),
@@ -25,18 +30,15 @@ const routes: Routes = [
   {
     path: 'offering-category',
     loadChildren: () =>
-      import('./offering/offering-category/offering-category.module').then((m) => m.OfferingCategoryModule),
-  },
-  {
-    path: 'products',
-    loadChildren: () =>
-      import('./offering/product/product.module').then((m) => m.ProductModule),
+      import('./offering/offering-category/offering-category.module').then(
+        (m) => m.OfferingCategoryModule,
+      ),
   },
   {
     path: 'offering',
     loadChildren: () =>
-      import('./offering/offering.module').then((m)=>m.OfferingModule),
-  }
+      import('./offering/offering.module').then((m) => m.OfferingModule),
+  },
 ];
 
 @NgModule({
