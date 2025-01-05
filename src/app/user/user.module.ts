@@ -14,6 +14,8 @@ import { UserRoutingModule } from './user-routing.module';
 import { RegisterQuickComponent } from './register-quick/register-quick.component';
 import { AllReportedUsersComponent } from './all-reported-users/all-reported-users.component';
 import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.component';
+import { SuspendUserDialogComponent } from './dialogs/suspend-user-dialog/suspend-user-dialog.component';
+import { DeleteReportDialogComponent } from './dialogs/delete-report-dialog/delete-report-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.
     RegisterQuickComponent,
     AllReportedUsersComponent,
     AllBlockedUsersComponent,
+    SuspendUserDialogComponent,
+    DeleteReportDialogComponent,
   ],
   imports: [
     CommonModule,

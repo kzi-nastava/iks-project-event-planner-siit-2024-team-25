@@ -7,4 +7,5 @@ export interface ReportUser {
   reportedUserName: string;
   isViewed: boolean;
   createdDate: Date;
+  id: number;
 }

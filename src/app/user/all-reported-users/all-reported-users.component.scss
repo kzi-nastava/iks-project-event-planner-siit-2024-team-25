@@ -26,17 +26,14 @@
   margin: 1rem auto;
   padding: 1rem;
   border-radius: 12px;
-  background-color: mat.get-theme-color(
-    theme.$light-theme,
-    surface
-  ); // Svetla pozadina
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); // Istaknut efekat
+  background-color: mat.get-theme-color(theme.$light-theme, surface);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 
   .mat-table {
     overflow: auto;
     max-height: 450px;
     border-radius: 8px;
-    border: 2px solid mat.get-theme-color(theme.$light-theme, primary); // Okvir tabele
+    border: 2px solid mat.get-theme-color(theme.$light-theme, primary);
   }
 }
 
@@ -45,10 +42,7 @@ mat-header-cell {
   text-transform: uppercase;
   font-size: 1rem;
   color: mat.get-theme-color(theme.$light-theme, primary);
-  background-color: mat.get-theme-color(
-    theme.$light-theme,
-    secondary
-  ); // Istaknuto zaglavlje
+  background-color: mat.get-theme-color(theme.$light-theme, secondary);
   padding: 0.75rem;
 }
 
@@ -56,11 +50,11 @@ mat-cell {
   font-size: 0.95rem;
   padding: 0.75rem;
   color: mat.get-theme-color(theme.$light-theme, on-surface);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1); // Linije između redova
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 mat-row:hover {
-  background-color: rgba(0, 0, 0, 0.05); // Efekat prelaska
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 h4 {
@@ -81,10 +75,7 @@ h4 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 
   &:hover {
-    background-color: mat.get-theme-color(
-      theme.$light-theme,
-      on-primary
-    ); // Promena boje pri prelasku
+    background-color: mat.get-theme-color(theme.$light-theme, on-primary);
   }
 }
 .pagination-controls {
@@ -95,10 +86,7 @@ h4 {
 
   button {
     background-color: mat.get-theme-color(theme.$light-theme, primary);
-    color: mat.get-theme-color(
-      theme.$light-theme,
-      on-primary
-    ); // Kontrastna boja za tekst
+    color: mat.get-theme-color(theme.$light-theme, on-primary);
     font-weight: 500;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -106,10 +94,7 @@ h4 {
 
     &:hover {
       background-color: mat.get-theme-color(theme.$light-theme, secondary);
-      color: mat.get-theme-color(
-        theme.$light-theme,
-        on-secondary
-      ); // Kontrastna boja na hover
+      color: mat.get-theme-color(theme.$light-theme, on-secondary);
     }
 
     &:disabled {
@@ -117,10 +102,7 @@ h4 {
         theme.$light-theme,
         surface-variant
       );
-      color: mat.get-theme-color(
-        theme.$light-theme,
-        on-surface-variant
-      ); // Kontrastna boja za disabled
+      color: mat.get-theme-color(theme.$light-theme, on-surface-variant);
       cursor: not-allowed;
     }
   }
@@ -130,14 +112,4 @@ h4 {
     font-weight: 400;
     color: mat.get-theme-color(theme.$light-theme, on-surface);
   }
-}
-
-.date-cell {
-  text-align: center; /* Centriranje teksta */
-  font-family: Arial, sans-serif; /* Izbor fonta za bolju čitljivost */
-  font-size: 0.95rem; /* Veličina fonta */
-  color: mat.get-theme-color(
-    theme.$light-theme,
-    on-surface
-  ); /* Tema za tekst */
 }

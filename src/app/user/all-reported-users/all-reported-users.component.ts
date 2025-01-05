@@ -1,17 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { switchMap } from 'rxjs';
-import { ApproveDialogComponent } from '../../offering/offering-category/dialogs/approve-dialog/approve-dialog.component';
-import { CreateDialogComponent } from '../../offering/offering-category/dialogs/create-dialog/create-dialog.component';
-import { DeleteDialogComponent } from '../../offering/offering-category/dialogs/delete-dialog/delete-dialog.component';
-import { EditDialogComponent } from '../../offering/offering-category/dialogs/edit-dialog/edit-dialog.component';
-import { OfferingCategoryType } from '../../offering/offering-category/model/offering-category-type.enum';
-import { SubmittedOffering } from '../../offering/offering-category/model/submitted-offering';
-import { OfferingCategoryService } from '../../offering/offering-category/offering-category.service';
-import { OfferingService } from '../../offering/services/offering.service';
-import { OfferingCategory } from '../../offering/offering-category/model/offering-category';
 import { ReportUser } from '../model/report-user.model';
 import { SuspendUserService } from '../service/suspend-user.service';
+import { SuspendUserDialogComponent } from '../dialogs/suspend-user-dialog/suspend-user-dialog.component';
 
 @Component({
   selector: 'app-all-reported-users',
@@ -42,42 +33,48 @@ export class AllReportedUsersComponent {
     this.getAllReports();
   }
 
-  updateReport(category: any) {}
+  updateReport(reportId: any) {}
 
-  onSuspend(id: number, name: String) {
-    // const dialogRef = this.dialog.open(DeleteDialogComponent, {
-    //   data: {
-    //     nameCategory: name,
-    //   },
-    //   width: '24rem',
-    // });
-    // dialogRef.afterClosed().subscribe({
-    //   next: (check) => {
-    //     if (check) {
-    //       this.offeringCategoryService.deleteOfferingCategory(id).subscribe({
-    //         next: () => {
-    //           this.getAllReports();
-    //         },
-    //         error: (_) => {
-    //           console.log('error');
-    //         },
-    //       });
-    //     }
-    //   },
-    //   error: (_) => {
-    //     console.log('error');
-    //   },
-    // });
+  onSuspend(
+    userId: number,
+    firstName: String,
+    lastName: String,
+    reportId: number
+  ) {
+    const dialogRef = this.dialog.open(SuspendUserDialogComponent, {
+      data: {
+        userName: firstName + ' ' + lastName,
+      },
+      width: '24rem',
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (check) => {
+        if (check) {
+          this.suspendUserService.suspendUser(userId, reportId).subscribe({
+            next: () => {
+              this.getAllReports();
+            },
+            error: (err: any) => {
+              console.log(err);
+            },
+          });
+        }
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+    });
   }
 
   getAllReports() {
     this.suspendUserService.getAllReports(this.currentPage).subscribe({
       next: (report) => {
+        console.log(report.content);
         this.currentReports = report.content;
         this.totalPages = report.totalPages;
       },
-      error: (_) => {
-        console.log('error');
+      error: (err: any) => {
+        console.log(err);
       },
     });
   }
