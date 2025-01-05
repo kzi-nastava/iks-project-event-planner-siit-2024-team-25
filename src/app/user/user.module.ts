@@ -16,6 +16,7 @@ import { AllReportedUsersComponent } from './all-reported-users/all-reported-use
 import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.component';
 import { SuspendUserDialogComponent } from './dialogs/suspend-user-dialog/suspend-user-dialog.component';
 import { DeleteReportDialogComponent } from './dialogs/delete-report-dialog/delete-report-dialog.component';
+import { SuspensionPageComponent } from './suspension-page/suspension-page.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DeleteReportDialogComponent } from './dialogs/delete-report-dialog/dele
     AllBlockedUsersComponent,
     SuspendUserDialogComponent,
     DeleteReportDialogComponent,
+    SuspensionPageComponent,
   ],
   imports: [
     CommonModule,

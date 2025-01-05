@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs';
 import { ErrorResponse } from '../../shared/model/error.response.model';
 import { LoginService } from '../service/login.service';
+import { AuthService } from '../../infrastructure/auth/service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -54,12 +56,17 @@ export class LoginComponent implements OnInit {
         .pipe(finalize(() => (this.waitingResponse = false)))
         .subscribe({
           next: () => {
-            this.toastr.success("You've successfully logged in!", 'Success');
-            this.router.navigateByUrl(this.redirectUrl).then((succeeded) => {
-              if (!succeeded) {
-                this.router.navigateByUrl('/');
-              }
-            });
+            if (this.authService.getUser()?.suspensionEndDateTime) {
+              console.log(this.authService.getUser()?.suspensionEndDateTime);
+              this.router.navigate(['/user/suspension']);
+            } else {
+              this.toastr.success("You've successfully logged in!", 'Success');
+              this.router.navigateByUrl(this.redirectUrl).then((succeeded) => {
+                if (!succeeded) {
+                  this.router.navigateByUrl('/');
+                }
+              });
+            }
           },
           error: (err: ErrorResponse) => {
             this.toastr.error(err.message, 'Oops!');

@@ -11,6 +11,7 @@ import { AllReportedUsersComponent } from './all-reported-users/all-reported-use
 import { UserRole } from '../infrastructure/auth/model/user-role.model';
 import { roleGuard } from '../infrastructure/auth/guard/role.guard';
 import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.component';
+import { SuspensionPageComponent } from './suspension-page/suspension-page.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
     component: AllBlockedUsersComponent,
     canActivate: [roleGuard],
     data: { roles: [UserRole.Admin] },
+  },
+  {
+    path: 'suspension',
+    component: SuspensionPageComponent,
   },
 ];
 
