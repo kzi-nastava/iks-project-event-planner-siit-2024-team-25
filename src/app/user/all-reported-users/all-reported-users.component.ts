@@ -36,7 +36,17 @@ export class AllReportedUsersComponent {
     this.getAllReports();
   }
 
-  updateReport(reportId: any) {}
+  updateReport(reportId: number) {
+    this.suspendUserService.updateReport(reportId, true).subscribe({
+      next: () => {
+        this.toastrService.success(`You marked report as viewed.`, 'Success');
+        this.getAllReports();
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+    });
+  }
 
   onSuspend(
     userId: number,

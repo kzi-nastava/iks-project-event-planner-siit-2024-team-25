@@ -6,6 +6,7 @@ import { Page } from '../../shared/model/page.mode';
 import { environment } from '../../../environment/environment';
 import { SuspendUserRequest } from '../model/suspend-user.request.mode';
 import { SuspendUserResponse } from '../model/suspend-user.response.model';
+import { ReportUserUpdateRequest } from '../model/report-user.update.request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -46,10 +47,20 @@ export class SuspendUserService {
       userId: userId,
       reportId: reportId,
     };
-    console.log(suspendUserRequest);
     return this.httpClient.post<SuspendUserResponse>(
       environment.apiHost + '/api/users/suspend',
       suspendUserRequest
+    );
+  }
+
+  updateReport(reportId: number, viewed: boolean): Observable<ReportUser> {
+    const request: ReportUserUpdateRequest = {
+      reportId: reportId,
+      isViewed: viewed,
+    };
+    return this.httpClient.put<ReportUser>(
+      environment.apiHost + '/api/users/report',
+      request
     );
   }
 }

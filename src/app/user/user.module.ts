@@ -15,7 +15,6 @@ import { RegisterQuickComponent } from './register-quick/register-quick.componen
 import { AllReportedUsersComponent } from './all-reported-users/all-reported-users.component';
 import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.component';
 import { SuspendUserDialogComponent } from './dialogs/suspend-user-dialog/suspend-user-dialog.component';
-import { DeleteReportDialogComponent } from './dialogs/delete-report-dialog/delete-report-dialog.component';
 import { SuspensionPageComponent } from './suspension-page/suspension-page.component';
 
 @NgModule({
@@ -28,7 +27,6 @@ import { SuspensionPageComponent } from './suspension-page/suspension-page.compo
     AllReportedUsersComponent,
     AllBlockedUsersComponent,
     SuspendUserDialogComponent,
-    DeleteReportDialogComponent,
     SuspensionPageComponent,
   ],
   imports: [
