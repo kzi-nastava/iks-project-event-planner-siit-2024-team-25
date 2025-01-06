@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ReportUser } from '../model/report-user.model';
 import { SuspendUserService } from '../service/suspend-user.service';
 import { SuspendUserDialogComponent } from '../dialogs/suspend-user-dialog/suspend-user-dialog.component';
+import { ToastrService } from 'ngx-toastr';
+import { SuspendUserResponse } from '../model/suspend-user.response.model';
 
 @Component({
   selector: 'app-all-reported-users',
@@ -26,7 +28,8 @@ export class AllReportedUsersComponent {
 
   constructor(
     private dialog: MatDialog,
-    private suspendUserService: SuspendUserService
+    private suspendUserService: SuspendUserService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +54,11 @@ export class AllReportedUsersComponent {
       next: (check) => {
         if (check) {
           this.suspendUserService.suspendUser(userId, reportId).subscribe({
-            next: () => {
+            next: (response: SuspendUserResponse) => {
+              this.toastrService.success(
+                `You suspended ${response.suspendedUserFirstName} ${response.suspendedUserLastName} for 3 days.`,
+                'Success'
+              );
               this.getAllReports();
             },
             error: (err: any) => {

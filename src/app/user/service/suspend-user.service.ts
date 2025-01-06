@@ -5,6 +5,7 @@ import { ReportUser } from '../model/report-user.model';
 import { Page } from '../../shared/model/page.mode';
 import { environment } from '../../../environment/environment';
 import { SuspendUserRequest } from '../model/suspend-user.request.mode';
+import { SuspendUserResponse } from '../model/suspend-user.response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,13 +26,28 @@ export class SuspendUserService {
     );
   }
 
-  suspendUser(userId: number, reportId: number): Observable<Response> {
+  getAllSuspendedUsers(page: number) {
+    let params = new HttpParams();
+    params = params.set('page', page);
+
+    return this.httpClient.get<Page<ReportUser>>(
+      environment.apiHost + '/api/users/suspended',
+      {
+        params,
+      }
+    );
+  }
+
+  suspendUser(
+    userId: number,
+    reportId: number
+  ): Observable<SuspendUserResponse> {
     const suspendUserRequest: SuspendUserRequest = {
       userId: userId,
       reportId: reportId,
     };
     console.log(suspendUserRequest);
-    return this.httpClient.post<Response>(
+    return this.httpClient.post<SuspendUserResponse>(
       environment.apiHost + '/api/users/suspend',
       suspendUserRequest
     );

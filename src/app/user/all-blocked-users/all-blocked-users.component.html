@@ -1,1 +1,49 @@
-<p>all-blocked-users works!</p>
+<div class="container">
+  <h3>Suspended users</h3>
+</div>
+<h4 *ngIf="currentUsers.length == 0">There are no suspended users.</h4>
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="currentUsers">
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index">
+        {{ currentPage * pageSize + i + 1 }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="expirationTime">
+      <mat-header-cell *matHeaderCellDef> Expiration date </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="date-cell">
+        {{ element.expirationTime | date : "yyyy-MM-dd HH:mm" }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="reportedUser">
+      <mat-header-cell *matHeaderCellDef> Reported </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{
+          element.suspendedUserFirstName + " " + element.suspendedUserLastName
+        }}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+
+  <div class="pagination-controls">
+    <button
+      mat-raised-button
+      (click)="previousPage()"
+      [disabled]="currentPage === 0"
+    >
+      Previous
+    </button>
+    <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+    <button
+      mat-raised-button
+      (click)="nextPage()"
+      [disabled]="currentPage >= totalPages - 1"
+    >
+      Next
+    </button>
+  </div>
+</div>
