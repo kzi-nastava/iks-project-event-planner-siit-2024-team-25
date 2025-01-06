@@ -1,0 +1,38 @@
+<div class="dialog">
+  <div class="header">
+    <h2>Report user</h2>
+  </div>
+  <div class="container">
+    <form [formGroup]="reportForm">
+      <label for="report-input">Reason for report user:</label>
+      <mat-form-field appearance="outline" class="primary">
+        <mat-label>Report message</mat-label>
+        <input
+          matInput
+          id="report-input"
+          formControlName="message"
+          type="text"
+          required
+        />
+        <mat-error *ngIf="reportForm.get('message')?.invalid">
+          Please enter a message
+        </mat-error>
+      </mat-form-field>
+      <div class="center">
+        <button
+          mat-flat-button
+          class="primary"
+          type="submit"
+          (click)="sendReport()"
+          [disabled]="reportForm.get('message')?.invalid"
+        >
+          Send report
+        </button>
+      </div>
+    </form>
+
+    <button mat-button class="secondary" type="button" mat-dialog-close>
+      Cancel
+    </button>
+  </div>
+</div>

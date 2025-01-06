@@ -1,0 +1,208 @@
+@use '@angular/material' as mat;
+@use '../../../../theme/m3-theme' as theme;
+
+$primary: mat.get-theme-color(theme.$light-theme, primary);
+
+.product-creation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 2rem;
+
+  .register-card {
+    width: 100%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 3rem;
+
+    .header {
+      background-color: $primary;
+      color: mat.get-theme-color(theme.$light-theme, on-primary);
+      padding: 1vh 2vw;
+      text-align: left;
+      border-radius: 8px 8px 0 0;
+
+      h1 {
+        font-family: REM, sans-serif;
+        font-size: 1.8rem;
+        margin-bottom: 0.25rem;
+      }
+
+      p {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin: 0;
+      }
+    }
+
+    .content {
+      padding: 2rem;
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+        }
+
+        .left-section,
+        .right-section {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+
+          .pricing-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+          }
+        }
+      }
+
+      .visibility-section {
+        mat-card {
+          padding: 1rem;
+          margin-bottom: 1rem;
+
+          h3 {
+            margin: 0 0 1rem 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
+
+          .toggle-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            mat-slide-toggle {
+              display: flex;
+              align-items: center;
+
+              .mat-icon {
+                margin-left: 0.5rem;
+                font-size: 18px;
+                height: 18px;
+                width: 18px;
+                cursor: help;
+              }
+            }
+          }
+        }
+      }
+
+      .images-section {
+        .existing-images {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 16px;
+          margin-bottom: 20px;
+
+          .file-card {
+            .thumbnail {
+              width: 100%;
+              height: 150px;
+              object-fit: cover;
+              border-radius: 4px;
+            }
+          }
+        }
+
+        mat-card {
+          padding: 1rem;
+
+          h3 {
+            margin: 0 0 1rem 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+          }
+
+          .selected-files {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            .file-card {
+              background-color: #f8f8f8;
+
+              mat-card-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem;
+
+                .file-info {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+
+                  mat-icon {
+                    color: $primary;
+                  }
+
+                  span {
+                    font-size: 0.9rem;
+                  }
+                }
+              }
+            }
+          }
+
+          mat-error {
+            display: block;
+            margin-top: 1rem;
+          }
+        }
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+
+        button {
+          min-width: 150px;
+          padding: 0.5rem 2rem;
+        }
+      }
+    }
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+}
+
+// Utility classes
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 100%;
+}
+
+// Material override styles
+::ng-deep {
+  .mat-mdc-form-field {
+    width: 100%;
+  }
+
+  .mat-mdc-card {
+    border-radius: 8px;
+  }
+
+  .mat-mdc-slide-toggle {
+    margin: 8px 0;
+  }
+}

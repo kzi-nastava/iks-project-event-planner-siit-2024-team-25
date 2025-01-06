@@ -1,23 +1,29 @@
-<div class="offering-container">
+@if (!product) {
+  <div class="loading-container">
+    <mat-spinner diameter="48"></mat-spinner>
+    <h2 class="loading-text">Loading product details...</h2>
+  </div>
+} @else {
+  <div class="offering-container">
     <div class="offering-header">
       <h1 class="offering-name">{{ product.name }}</h1>
       <div *ngIf="showPurchaseProductButton">
-        <button class="book-button" (click)="purchaseProduct()">Buy the product</button>
+        <button (click)="purchaseProduct()" class="book-button">Buy the product</button>
       </div>
     </div>
     <p class="offering-description">{{ product.description }}</p>
-  
+
     <div class="offering-content">
       <div class="image-slider">
-        <div class="slider-wrapper" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
-          <div class="slider-item" *ngFor="let image of product.images">
-            <img [src]="image" alt="Offering Image" />
+        <div [style.transform]="'translateX(-' + currentSlide * 100 + '%)'" class="slider-wrapper">
+          <div *ngFor="let image of product.images" class="slider-item">
+            <img [src]="image" alt="Offering Image"/>
           </div>
         </div>
-        <button class="prev-btn" (click)="prevSlide()">‹</button>
-        <button class="next-btn" (click)="nextSlide()">›</button>
+        <button (click)="prevSlide()" class="prev-btn">‹</button>
+        <button (click)="nextSlide()" class="next-btn">›</button>
       </div>
-  
+
       <div class="offering-details">
         <div class="detail-item">
           <strong>Price:</strong> <span>${{ product.price }}</span>
@@ -27,22 +33,22 @@
         </div>
         <div class="detail-item">
           <strong>Offering category:</strong> <span>{{ product.offeringCategory.name }}</span>
-        </div> 
-        
+        </div>
+
       </div>
     </div>
-  
+
     <div class="owner-details">
       <h3>Owner</h3>
       <div class="owner-info">
-        <p>{{ product.ownerInfo.firstName }} {{ product.ownerInfo.lastName }}</p>
+        <p>{{ product.ownerInfo.name }}</p>
         <div class="buttons">
-          <button class="chat-button" (click)="chatWithOwner()">Chat with Owner</button>
-          <button class="view-button" (click)="viewOwnerCompany()">View Owner Company</button>
+          <button (click)="chatWithOwner()" class="chat-button">Chat with Owner</button>
+          <button (click)="viewOwnerCompany()" class="view-button">View Owner Company</button>
         </div>
       </div>
     </div>
-  
+
     <div class="event-types">
       <h3>Event Types</h3>
       <ul>
@@ -50,6 +56,4 @@
       </ul>
     </div>
   </div>
-  
-  
-  
+}

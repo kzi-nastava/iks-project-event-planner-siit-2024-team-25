@@ -74,12 +74,12 @@
       </a>
 
       @if (isOwner$ | async) {
-      <a routerLink="/my-offerings" routerLinkActive="active" class="nav-item">
+        <a routerLink="/products" routerLinkActive="active" class="nav-item">
         <div class="icon-container">
           <mat-icon>shopping_bag</mat-icon>
         </div>
         <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-          My Products/Services
+          My Products
         </span>
       </a>
       <a
@@ -88,7 +88,7 @@
         class="nav-item"
       >
         <div class="icon-container">
-          <mat-icon>Service</mat-icon>
+          <mat-icon>shopping_basket</mat-icon>
         </div>
         <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)"
           >Service</span

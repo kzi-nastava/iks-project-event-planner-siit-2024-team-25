@@ -1,19 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Service } from './model/service';
-import { Offeringtype } from './model/offering.type.enum';
-import { ReservationType } from './model/reservation.type.enum';
-import { forkJoin, map, Observable, of, switchMap, throwError } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '../../../environment/environment';
-import { Page } from '../../shared/model/page.mode';
-import { ServiceCreateDTO } from './model/serviceCreateDTO';
-import { OfferingCategoryType } from '../offering-category/model/offering-category-type.enum';
-import { ServiceUpdateDTO } from './model/serviceUpdateDTO';
-import { OfferingCategoryService } from '../offering-category/offering-category.service';
-import { OfferingCategory } from '../offering-category/model/offering-category';
-import { EventTypeService } from '../../event/service/event-type.service';
-import { PurchaseRequest } from '../model/purchase.request.model';
 import { DatePipe } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { environment } from '../../../environment/environment';
+import { EventTypeService } from '../../event/service/event-type.service';
+import { Page } from '../../shared/model/page.mode';
+import { PurchaseRequest } from '../model/purchase.request.model';
+import { OfferingCategoryService } from '../offering-category/offering-category.service';
+import { Service } from './model/service';
+import { ServiceCreateDTO } from './model/serviceCreateDTO';
+import { ServiceUpdateDTO } from './model/serviceUpdateDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +19,7 @@ export class OfferingServiceService {
     private httpClinet: HttpClient,
     private offeringCategoryService: OfferingCategoryService,
     private eventTypesService: EventTypeService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {}
 
   getAll(properties: any): Observable<Service[]> {
@@ -44,7 +40,7 @@ export class OfferingServiceService {
       if (properties.offeringCategoryTypeId != -1) {
         params = params.set(
           'offeringCategoryId',
-          properties.offeringCategoryTypeId
+          properties.offeringCategoryTypeId,
         );
       }
     }
@@ -60,7 +56,7 @@ export class OfferingServiceService {
       .get<any>(`http://localhost:8080/api/services/${id}`)
       .pipe(
         switchMap((response) => {
-          console.log(response)
+          console.log(response);
           return forkJoin([
             this.offeringCategoryService.getById(response.offeringCategoryID),
             this.eventTypesService.getEventTypesByIds(response.eventTypesIDs),
@@ -69,38 +65,38 @@ export class OfferingServiceService {
               ...response,
               offeringCategory: category,
               eventTypes: eventTypes,
-            }))
+            })),
           );
-        })
+        }),
       );
   }
 
   addService(s: ServiceCreateDTO): Observable<Service> {
     return this.httpClinet.post<Service>(
       'http://localhost:8080/api/services',
-      s
+      s,
     );
   }
 
   updateService(
     updatedService: ServiceUpdateDTO,
-    id: number
+    id: number,
   ): Observable<Service> {
     return this.httpClinet.put<Service>(
       'http://localhost:8080/api/services/' + id,
-      updatedService
+      updatedService,
     );
   }
   deleteService(id: number): Observable<void> {
     return this.httpClinet.delete<void>(
-      'http://localhost:8080/api/services/' + id
+      'http://localhost:8080/api/services/' + id,
     );
   }
 
   isServiceAvailable(
     eventId: number,
     serviceId: number,
-    purchase: PurchaseRequest
+    purchase: PurchaseRequest,
   ): Observable<boolean> {
     let params = new HttpParams();
 
@@ -108,13 +104,13 @@ export class OfferingServiceService {
       if (purchase.startDate) {
         params = params.set(
           'startDate',
-          this.datePipe.transform(purchase.startDate, 'yyyy-MM-dd')!
+          this.datePipe.transform(purchase.startDate, 'yyyy-MM-dd')!,
         );
       }
       if (purchase.endDate) {
         params = params.set(
           'endDate',
-          this.datePipe.transform(purchase.endDate, 'yyyy-MM-dd')!
+          this.datePipe.transform(purchase.endDate, 'yyyy-MM-dd')!,
         );
       }
       if (purchase.startTime) {
@@ -127,18 +123,18 @@ export class OfferingServiceService {
 
     return this.httpClinet.get<boolean>(
       `${environment.apiHost}/api/purchase/service/${serviceId}/available`,
-      { params: params }
+      { params: params },
     );
   }
 
   bookService(
     eventId: number,
     serviceId: number,
-    purchase: PurchaseRequest
+    purchase: PurchaseRequest,
   ): Observable<boolean> {
     return this.httpClinet.post<boolean>(
       `${environment.apiHost}/api/purchase/event/${eventId}/service/${serviceId}`,
-      purchase
+      purchase,
     );
   }
 }

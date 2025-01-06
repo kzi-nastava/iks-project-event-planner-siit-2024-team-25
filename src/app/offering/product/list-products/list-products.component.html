@@ -1,0 +1,65 @@
+<mat-form-field appearance="outline" class="example-search-bar" style="margin-top: 5rem;">
+  <mat-label>Search product</mat-label>
+  <input [formControl]="filterForm.controls['name']" matInput placeholder="Product name" (input)="onSearch($event)">
+  <button mat-icon-button matSuffix>
+    <mat-icon>search</mat-icon>
+  </button>
+  <button (click)="clickFilter()" *ngIf="!isFilter" mat-icon-button matSuffix>
+    <mat-icon>filter_list</mat-icon>
+  </button>
+  <button (click)="clickFilter(); cancelFilter()" *ngIf="isFilter" mat-icon-button matSuffix>
+    <mat-icon>cancel</mat-icon>
+  </button>
+</mat-form-field>
+
+<div *ngIf="isFilter" class="form-container">
+  <mat-form-field appearance="fill">
+    <mat-select (selectionChange)="onEventTypeSelected($event)"
+                [formControl]="filterForm.controls['eventTypeId']"
+                placeholder="Event type">
+      <mat-option *ngFor="let entry of eventTypes | keyvalue" [value]="entry.key">
+        {{ entry.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select (selectionChange)="onCategorySelected($event)"
+                [formControl]="filterForm.controls['categoryId']"
+                placeholder="Category type">
+      <mat-option *ngFor="let entry of offeringCategories | keyvalue" [value]="entry.key">
+        {{ entry.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div *ngIf="isFilter" class="form-container">
+  <mat-form-field style="width: 35%; margin-right: 16px;">
+    <input [formControl]="filterForm.controls['minPrice']" matInput placeholder="Min Price" type="number">
+    <span matPrefix>$&nbsp;</span>
+    <span matSuffix>.00</span>
+  </mat-form-field>
+
+  <mat-form-field style="width: 35%;">
+    <input [formControl]="filterForm.controls['maxPrice']" matInput placeholder="Max Price" type="number">
+    <span matPrefix>$&nbsp;</span>
+    <span matSuffix>.00</span>
+  </mat-form-field>
+</div>
+
+<div *ngIf="isFilter" class="form-container">
+  <mat-slide-toggle [formControl]="filterForm.controls['available']" class="form-container" style="margin: 20px;">
+    Is available
+  </mat-slide-toggle>
+</div>
+
+<div class="product-container">
+  <div *ngFor="let product of products" class="product-card">
+    <app-product-card (refresh)="getProducts()" [product]="product"></app-product-card>
+  </div>
+</div>
+
+<a class="fab-button primary" mat-fab routerLink="/products/new">
+  <mat-icon>add</mat-icon>
+</a>
