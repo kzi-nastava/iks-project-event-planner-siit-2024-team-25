@@ -33,7 +33,9 @@ export class LoginService {
             city: 'Novi Sad',
             suspensionEndDateTime: response.suspensionEndDateTime,
           };
-          this.authService.setToken(response.jwt);
+          if (!user.suspensionEndDateTime) {
+            this.authService.setToken(response.jwt);
+          }
           this.authService.setUser(user);
         }),
         catchError(this.handleError),

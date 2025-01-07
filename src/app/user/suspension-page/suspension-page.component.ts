@@ -15,14 +15,12 @@ export class SuspensionPageComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    // Pretpostavljam da getUser() vraća objekat sa ISO 8601 stringom
     const suspensionEndDateTime =
       this.authService.getUser()?.suspensionEndDateTime;
 
     if (suspensionEndDateTime) {
-      // Pretvori ISO 8601 string u Date objekat
       this.suspendUntil = new Date(suspensionEndDateTime);
-
+      this.authService.setUser(null);
       if (!isNaN(this.suspendUntil.getTime())) {
         this.updateTimer();
       } else {
@@ -50,11 +48,10 @@ export class SuspensionPageComponent implements OnInit, OnDestroy {
         .toString()
         .padStart(2, '0')}s`;
 
-      // Kada preostalo vreme postane 0, rutiraj na login stranicu
       if (remainingSeconds === 0) {
         clearInterval(this.timerInterval);
-        this.authService.setUser(null); // Očisti podatke o korisniku
-        this.router.navigate(['/user/login']); // Rutiraj na login stranicu
+        this.authService.setUser(null);
+        this.router.navigate(['/user/login']);
       }
     }, 1000);
   }

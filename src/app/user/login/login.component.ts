@@ -56,8 +56,7 @@ export class LoginComponent implements OnInit {
         .pipe(finalize(() => (this.waitingResponse = false)))
         .subscribe({
           next: () => {
-            if (this.authService.getUser()?.suspensionEndDateTime) {
-              console.log(this.authService.getUser()?.suspensionEndDateTime);
+            if (!this.authService.getToken()) {
               this.router.navigate(['/user/suspension']);
             } else {
               this.toastr.success("You've successfully logged in!", 'Success');
