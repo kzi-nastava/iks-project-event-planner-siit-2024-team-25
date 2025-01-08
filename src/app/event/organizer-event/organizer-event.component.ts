@@ -1,7 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ErrorResponse } from '../../shared/model/error.response.model';
 import { HomeEvent } from '../model/home-event.model';
 import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
-import { DatePipe, Time } from '@angular/common';
 import { EventService } from '../service/event.service';
 
 @Component({
@@ -16,7 +17,10 @@ export class OrganizerEventComponent implements OnInit {
   totalPages: number = 1;
   filterParams?: HomeEventFilterParams;
 
-  constructor(private datePipe: DatePipe, private eventService: EventService) {}
+  constructor(
+    private datePipe: DatePipe,
+    private eventService: EventService,
+  ) {}
 
   ngOnInit(): void {
     this.getMyEvents();
@@ -43,7 +47,25 @@ export class OrganizerEventComponent implements OnInit {
   }
 
   toggleFavouriteEvent(event: HomeEvent): void {
-    event.isLiked = !event.isLiked;
+    if (event.isFavorite) {
+      this.eventService.removeFromFavorites(event.id).subscribe({
+        next: () => {
+          event.isFavorite = false;
+        },
+        error: (err: ErrorResponse) => {
+          console.error('Error adding event to favorites:', err);
+        },
+      });
+    } else {
+      this.eventService.addToFavorites(event.id).subscribe({
+        next: () => {
+          event.isFavorite = true;
+        },
+        error: (err: ErrorResponse) => {
+          console.error('Error removing event from favorites:', err);
+        },
+      });
+    }
   }
 
   getPreviousPage(): void {

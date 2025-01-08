@@ -182,6 +182,25 @@ export class EventService {
       .pipe(catchError(this.handleError));
   }
 
+  addToFavorites(eventId: number): Observable<any> {
+    const userId = this.authService.getUser()?.userId;
+    return this.httpClient
+      .post(environment.apiHost + `/api/users/${userId}/favorite-events`, {
+        userId,
+        eventId,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  removeFromFavorites(eventId: number): Observable<void> {
+    const userId = this.authService.getUser()?.userId;
+    return this.httpClient
+      .delete<void>(
+        environment.apiHost + `/api/users/${userId}/favorite-events/${eventId}`,
+      )
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorResponse: ErrorResponse | null = null;
 

@@ -2,8 +2,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
+import { ErrorResponse } from '../../shared/model/error.response.model';
 import { EventInvitationsComponent } from '../event-invitations/event-invitations.component';
 import { Event } from '../model/event.model';
 import { EventService } from '../service/event.service';
@@ -28,6 +30,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private breakpointObserver: BreakpointObserver,
     private dialog: MatDialog,
+    private toastService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -77,10 +80,38 @@ export class EventPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  addToFavorites(): void {
-    // this.eventService.addToFavorites(this.eventId)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe();
+  toggleFavorite(): void {
+    if (this.event.isFavorite) {
+      this.eventService
+        .removeFromFavorites(this.eventId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.event.isFavorite = false;
+          },
+          error: (err: ErrorResponse) => {
+            this.toastService.error(
+              err.message,
+              'Failed to remove event from favorites',
+            );
+          },
+        });
+    } else {
+      this.eventService
+        .addToFavorites(this.eventId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.event.isFavorite = true;
+          },
+          error: (err: ErrorResponse) => {
+            this.toastService.error(
+              err.message,
+              'Failed to add event to favorites',
+            );
+          },
+        });
+    }
   }
 
   openEmailDialog(): void {
