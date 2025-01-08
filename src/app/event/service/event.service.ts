@@ -201,6 +201,15 @@ export class EventService {
       .pipe(catchError(this.handleError));
   }
 
+  getFavoriteEvents(): Observable<HomeEvent[]> {
+    const userId = this.authService.getUser()?.userId;
+    return this.httpClient
+      .get<
+        HomeEvent[]
+      >(environment.apiHost + `/api/users/${userId}/favorite-events`)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorResponse: ErrorResponse | null = null;
 
