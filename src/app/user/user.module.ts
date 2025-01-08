@@ -12,6 +12,10 @@ import { RegisterSuccessDialogComponent } from './register-success-dialog/regist
 import { RegisterComponent } from './register/register.component';
 import { UserRoutingModule } from './user-routing.module';
 import { RegisterQuickComponent } from './register-quick/register-quick.component';
+import { AllReportedUsersComponent } from './all-reported-users/all-reported-users.component';
+import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.component';
+import { SuspendUserDialogComponent } from './dialogs/suspend-user-dialog/suspend-user-dialog.component';
+import { SuspensionPageComponent } from './suspension-page/suspension-page.component';
 import { ReportUserComponent } from './report-user/report-user.component';
 
 @NgModule({
@@ -21,6 +25,10 @@ import { ReportUserComponent } from './report-user/report-user.component';
     RegisterSuccessDialogComponent,
     ActivateComponent,
     RegisterQuickComponent,
+    AllReportedUsersComponent,
+    AllBlockedUsersComponent,
+    SuspendUserDialogComponent,
+    SuspensionPageComponent,
     ReportUserComponent,
   ],
   imports: [

@@ -6,4 +6,5 @@ export interface LoginResponse {
   fullName: string;
   role: UserRole;
   jwt: string;
+  suspensionEndDateTime: Date;
 }

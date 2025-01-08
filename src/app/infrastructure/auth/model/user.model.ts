@@ -7,4 +7,5 @@ export interface User {
   role: UserRole;
   country: string;
   city: string;
+  suspensionEndDateTime: Date;
 }

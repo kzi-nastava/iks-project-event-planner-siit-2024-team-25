@@ -13,7 +13,7 @@ import { LoginResponse } from '../model/login.response.model';
 export class LoginService {
   constructor(
     private authService: AuthService,
-    private httpClient: HttpClient,
+    private httpClient: HttpClient
   ) {}
 
   login(email: string, password: string): Observable<void> {
@@ -31,12 +31,15 @@ export class LoginService {
             role: response.role,
             country: 'Serbia',
             city: 'Novi Sad',
+            suspensionEndDateTime: response.suspensionEndDateTime,
           };
-          this.authService.setToken(response.jwt);
+          if (!user.suspensionEndDateTime) {
+            this.authService.setToken(response.jwt);
+          }
           this.authService.setUser(user);
         }),
         catchError(this.handleError),
-        map(() => void 0),
+        map(() => void 0)
       );
   }
 
@@ -53,7 +56,7 @@ export class LoginService {
           code: error.status,
           message: errorResponse?.message ?? error.message,
           errors: errorResponse?.errors,
-        }) as ErrorResponse,
+        } as ErrorResponse)
     );
   }
 }

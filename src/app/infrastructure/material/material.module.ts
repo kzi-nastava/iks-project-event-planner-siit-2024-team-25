@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -29,7 +30,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltip } from '@angular/material/tooltip';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-
 
 const components = [
   CommonModule,
@@ -68,6 +68,7 @@ const components = [
   ReactiveFormsModule,
   MatTooltip,
   MatExpansionModule,
+  MatPaginator,
 ];
 
 @NgModule({
