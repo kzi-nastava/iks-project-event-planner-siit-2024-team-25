@@ -3,10 +3,10 @@
     <div class="title">{{ event.name }}</div>
     <mat-icon
       class="heart"
-      [ngClass]="{ liked: event.isLiked }"
+      [ngClass]="{ liked: event.isFavorite }"
       (click)="changeFavouriteEvent($event)"
     >
-      {{ event.isLiked ? "favorite" : "favorite_border" }}
+      {{ event.isFavorite ? "favorite" : "favorite_border" }}
     </mat-icon>
   </div>
   <div class="info">

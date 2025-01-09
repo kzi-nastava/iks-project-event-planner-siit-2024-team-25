@@ -17,6 +17,8 @@ import { EventPageComponent } from './event-page/event-page.component';
 import { EventRoutingModule } from './event-routing.module';
 import { EventTypeListComponent } from './event-type-list/event-type-list.component';
 import { EventTypeComponent } from './event-type/event-type.component';
+import { FavoriteEventCardComponent } from './favorite-event-card/favorite-event-card.component';
+import { FavoriteEventsComponent } from './favorite-events/favorite-events.component';
 import { HomeAllEventsComponent } from './home-all-events/home-all-events.component';
 import { HomeEventCardComponent } from './home-event-card/home-event-card.component';
 import { HomeEventFilterComponent } from './home-event-filter/home-event-filter.component';
@@ -48,6 +50,8 @@ import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-
     OrganizerEventPurchaseComponent,
     ProductToBuyCardComponent,
     EventAgendaComponent,
+    FavoriteEventsComponent,
+    FavoriteEventCardComponent,
   ],
   imports: [
     CommonModule,

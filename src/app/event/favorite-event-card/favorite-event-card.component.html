@@ -1,12 +1,8 @@
 <div class="event-card">
   <div class="header">
     <div class="title">{{ event.name }}</div>
-    <mat-icon
-      class="heart"
-      [ngClass]="{ liked: event.isFavorite }"
-      (click)="changeFavouriteEvent()"
-    >
-      {{ event.isFavorite ? "favorite" : "favorite_border" }}
+    <mat-icon class="liked heart" (click)="removeFavorite()">
+      favorite
     </mat-icon>
   </div>
   <div class="info">

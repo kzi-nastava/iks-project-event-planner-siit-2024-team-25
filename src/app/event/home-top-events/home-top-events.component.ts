@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { EventService } from '../service/event.service';
+import { Component, OnInit } from '@angular/core';
+import { ErrorResponse } from '../../shared/model/error.response.model';
 import { HomeEvent } from '../model/home-event.model';
+import { EventService } from '../service/event.service';
 
 @Component({
   selector: 'app-home-top-events',
@@ -12,7 +13,10 @@ import { HomeEvent } from '../model/home-event.model';
 export class HomeTopEventsComponent implements OnInit {
   topEvents: HomeEvent[] = [];
 
-  constructor(private eventService: EventService, private datePipe: DatePipe) {}
+  constructor(
+    private eventService: EventService,
+    private datePipe: DatePipe,
+  ) {}
 
   ngOnInit(): void {
     this.eventService.getTopEvents().subscribe({
@@ -31,6 +35,24 @@ export class HomeTopEventsComponent implements OnInit {
   }
 
   toggleFavouriteEvent(event: HomeEvent): void {
-    event.isLiked = !event.isLiked;
+    if (event.isFavorite) {
+      this.eventService.removeFromFavorites(event.id).subscribe({
+        next: () => {
+          event.isFavorite = false;
+        },
+        error: (err: ErrorResponse) => {
+          console.error('Error adding event to favorites:', err);
+        },
+      });
+    } else {
+      this.eventService.addToFavorites(event.id).subscribe({
+        next: () => {
+          event.isFavorite = true;
+        },
+        error: (err: ErrorResponse) => {
+          console.error('Error removing event from favorites:', err);
+        },
+      });
+    }
   }
 }

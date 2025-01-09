@@ -4,13 +4,16 @@
       <div class="header-content">
         <div class="title-section">
           <mat-card-title class="event-title">{{ event.name }}</mat-card-title>
-          <mat-card-subtitle *ngIf="!!event.eventType" class="event-type">{{ event.eventType?.name }}
+          <mat-card-subtitle *ngIf="!!event.eventType" class="event-type">{{ event.eventType.name }}
           </mat-card-subtitle>
         </div>
-        <button mat-icon-button color="warn" class="favorite-button" (click)="addToFavorites()"
-                [matTooltip]="'Add to favorites'"
-                aria-label="Add to favorites">
-          <mat-icon>favorite_border</mat-icon>
+        <button mat-icon-button color="warn" class="favorite-button" (click)="toggleFavorite()"
+                [matTooltip]="event.isFavorite ? 'Remove from favorites' : 'Add to favorites'">
+          @if (event.isFavorite) {
+            <mat-icon>favorite</mat-icon>
+          } @else {
+            <mat-icon>favorite_border</mat-icon>
+          }
         </button>
       </div>
 

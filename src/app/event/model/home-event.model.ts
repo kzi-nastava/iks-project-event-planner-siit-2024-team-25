@@ -6,5 +6,5 @@ export interface HomeEvent {
   startDateTime: string;
   country: string;
   city: string;
-  isLiked: boolean;
+  isFavorite: boolean;
 }

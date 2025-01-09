@@ -1,8 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { HomeEvent } from '../model/home-event.model';
-import { DatePipe } from '@angular/common';
-import { EventService } from '../service/event.service';
 import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
+import { EventService } from '../service/event.service';
 
 @Component({
   selector: 'app-home-all-events',
@@ -16,7 +16,10 @@ export class HomeAllEventsComponent implements OnInit {
   totalPages: number = 1;
   filterParams?: HomeEventFilterParams;
 
-  constructor(private datePipe: DatePipe, private eventService: EventService) {}
+  constructor(
+    private datePipe: DatePipe,
+    private eventService: EventService,
+  ) {}
 
   ngOnInit(): void {
     this.getEvents();
@@ -43,7 +46,7 @@ export class HomeAllEventsComponent implements OnInit {
   }
 
   toggleFavouriteEvent(event: HomeEvent): void {
-    event.isLiked = !event.isLiked;
+    event.isFavorite = !event.isFavorite;
   }
 
   getPreviousPage(): void {
