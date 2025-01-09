@@ -4,12 +4,12 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of, throwError } from 'rxjs';
-import { EventType } from '../model/event.type.model';
+import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { ErrorResponse } from '../../shared/model/error.response.model';
-import { OfferingCategory } from '../model/offering-category.model';
+import { EventType } from '../model/event.type.model';
 import { EventTypePreviewModel } from '../model/event.type.preview.model';
+import { OfferingCategory } from '../model/offering-category.model';
 
 @Injectable({
   providedIn: 'root',
@@ -31,11 +31,16 @@ export class EventTypeService {
       .pipe(catchError(this.handleError));
   }
 
-
-  getCategoriesByEventType(eventTypeId: number) : Observable<OfferingCategory[]>{
-    return this.httpClient.get<OfferingCategory[]>(environment.apiHost + "/api/event-types/"+eventTypeId+"/offering-categories")
+  getCategoriesByEventType(
+    eventTypeId: number
+  ): Observable<OfferingCategory[]> {
+    return this.httpClient.get<OfferingCategory[]>(
+      environment.apiHost +
+        '/api/event-types/' +
+        eventTypeId +
+        '/offering-categories'
+    );
   }
-
 
   getEventTypeByEvent(eventId: number): Observable<EventType> {
     return this.httpClient
@@ -44,7 +49,6 @@ export class EventTypeService {
   }
 
   getEventTypesByIds(ids: number[]) {
-
     let params = new HttpParams();
     ids.forEach((id) => {
       params = params.append('ids', id);
@@ -86,15 +90,9 @@ export class EventTypeService {
   }
 
   getOfferingCategories(): Observable<OfferingCategory[]> {
-    const mockCategories: OfferingCategory[] = [
-      { id: 1, name: 'Training' },
-      { id: 2, name: 'Consultation' },
-      { id: 3, name: 'Product Demo' },
-      { id: 4, name: 'Mentorship' },
-      { id: 5, name: 'Certification' },
-    ];
-
-    return of(mockCategories);
+    return this.httpClient.get<OfferingCategory[]>(
+      environment.apiHost + '/api/offering-categories/all'
+    );
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
