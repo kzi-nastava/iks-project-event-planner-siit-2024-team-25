@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import SockJS from 'sockjs-client';
 import * as Stomp from '@stomp/stompjs';
 import { environment } from '../../../../environment/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { AuthService } from '../../../infrastructure/auth/service/auth.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ChatMessage } from '../model/chat-message';
+import { Page } from '../../../shared/model/page.mode';
 
 @Injectable({
   providedIn: 'root'
@@ -65,8 +66,23 @@ export class ChatService {
     console.log(currentMessages)
   }
 
-  getChatMessages(senderId:number, receiverId:number) : Observable<ChatMessage[]>{
-    return this.httpClient.get<ChatMessage[]>(environment.apiHost + `/api/messages/${senderId}/${receiverId}`)
+  getChatMessages(senderId:number, receiverId:number, page: number) : Observable<
+  
+  {
+      currentMessages: ChatMessage[];
+      totalMessages: number;
+      totalPages: number;
+    }>{
+          let params = new HttpParams();
+          params = params.set('page', page);
+    return this.httpClient.get<Page<ChatMessage>>(environment.apiHost + `/api/messages/${senderId}/${receiverId}`)
+    .pipe(
+            map((page) => ({
+              currentMessages: page.content,
+              totalMessages: page.totalElements,
+              totalPages: page.totalPages,
+            }))
+          );
   }
 
   disconnect() {

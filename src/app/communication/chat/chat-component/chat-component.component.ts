@@ -28,9 +28,10 @@ export class ChatComponentComponent implements OnInit {
   // 1 for senderId
   // 2 for receiverId
   getChat(){
-    this.chatService.getChatMessages(1,2).subscribe({
+    this.chatService.getChatMessages(1,2,0).subscribe({
       next:(res) =>{
-        res.forEach(elem => {
+        console.log(res)
+        res.currentMessages.forEach(elem => {
           if(elem.sender.id == 1){
             this.addMessageDiv('sent', elem.content)
           }else{
