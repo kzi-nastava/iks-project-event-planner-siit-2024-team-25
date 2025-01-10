@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import SockJS from 'sockjs-client';
 import * as Stomp from '@stomp/stompjs';
 import { environment } from '../../../../environment/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from '../../../infrastructure/auth/service/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { ChatMessage } from '../model/chat-message';
 
 @Injectable({
   providedIn: 'root'
@@ -57,11 +58,17 @@ export class ChatService {
   sendMessage(chatMessage: { chatId: string, senderId:number, receiverId:number, content: String }) {
     this.stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
   }
+  
   private addMessage(message: string) {
     const currentMessages = this.messageSubject.value;
     this.messageSubject.next([...currentMessages, message]);
     console.log(currentMessages)
   }
+
+  getChatMessages(senderId:number, receiverId:number) : Observable<ChatMessage[]>{
+    return this.httpClient.get<ChatMessage[]>(environment.apiHost + `/api/messages/${senderId}/${receiverId}`)
+  }
+
   disconnect() {
     if (this.stompClient) {
       this.stompClient.deactivate();

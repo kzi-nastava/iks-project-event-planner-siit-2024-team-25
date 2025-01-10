@@ -5,6 +5,6 @@ export interface ChatMessage{
     chatId: String,
     sender: {id:number, firstName:String, lastName:String,profilePictureUrl:String, userRole:UserRole},
     receiver: {id:number, firstName:String, lastName:String,profilePictureUrl:String, userRole:UserRole},
-    content: String,
+    content: string,
     timestamp: Date
 }
