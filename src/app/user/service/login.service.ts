@@ -29,8 +29,6 @@ export class LoginService {
             email: response.email,
             fullName: response.fullName,
             role: response.role,
-            country: 'Serbia',
-            city: 'Novi Sad',
             suspensionEndDateTime: response.suspensionEndDateTime,
           };
           if (!user.suspensionEndDateTime) {

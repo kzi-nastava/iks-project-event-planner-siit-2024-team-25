@@ -5,7 +5,5 @@ export interface User {
   email: string;
   fullName: string;
   role: UserRole;
-  country: string;
-  city: string;
   suspensionEndDateTime: Date;
 }

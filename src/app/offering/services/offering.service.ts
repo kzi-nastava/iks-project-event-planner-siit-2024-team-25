@@ -44,17 +44,8 @@ export class OfferingService {
   getTopOfferings(): Observable<HomeOffering[]> {
     const user = this.authService.getUser();
 
-    let params = new HttpParams();
-
-    if (user) {
-      params = params.set('country', user.country ?? '');
-      params = params.set('city', user.city ?? '');
-    }
-
     return this.httpClient
-      .get<Page<HomeOffering>>(`${environment.apiHost}/api/offerings/top`, {
-        params,
-      })
+      .get<Page<HomeOffering>>(`${environment.apiHost}/api/offerings/top`)
       .pipe(map((page) => page.content));
   }
 
@@ -73,16 +64,22 @@ export class OfferingService {
     return this.getAllOfferings(page, filterParams);
   }
 
-  getProductsPurchase(page:number, filterParams? : OfferingFilterParams): 
-  Observable<{currentProducts : ProductPurchase[], totalPages: number}>{
-    let params = this.getHttpParams(filterParams)
-    params = params.set("page", page)
-    return this.httpClient.get<Page<ProductPurchase>>(environment.apiHost + "/api/products/all", {params}).pipe(
-      map((page) =>({
-        currentProducts: page.content,
-        totalPages: page.totalPages,
-      }))
-    )
+  getProductsPurchase(
+    page: number,
+    filterParams?: OfferingFilterParams
+  ): Observable<{ currentProducts: ProductPurchase[]; totalPages: number }> {
+    let params = this.getHttpParams(filterParams);
+    params = params.set('page', page);
+    return this.httpClient
+      .get<Page<ProductPurchase>>(environment.apiHost + '/api/products/all', {
+        params,
+      })
+      .pipe(
+        map((page) => ({
+          currentProducts: page.content,
+          totalPages: page.totalPages,
+        }))
+      );
   }
 
   getAllProducts(
