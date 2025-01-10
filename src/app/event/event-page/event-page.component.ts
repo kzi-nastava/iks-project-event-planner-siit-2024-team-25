@@ -132,4 +132,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
       state: { event: this.event.id },
     });
   }
+  openChat(){
+    this.router.navigate([`/chat`]);
+  }
 }
