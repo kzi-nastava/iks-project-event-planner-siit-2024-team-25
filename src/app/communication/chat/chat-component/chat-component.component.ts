@@ -8,11 +8,20 @@ import { ChatService } from '../services/chat.service';
 })
 export class ChatComponentComponent implements OnInit {
 
+  senderId: number = -1;
+  message: String = "";
+
   constructor(private chatService: ChatService){
 
   }
   ngOnInit(): void {
     
+  }
+
+  sendMessage(){
+    if(this.message.length > 0){
+      this.chatService.sendMessage({chatId: "", senderId: 1, receiverId:2, content:this.message})
+    }
   }
 
 }

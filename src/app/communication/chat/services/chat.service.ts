@@ -47,22 +47,20 @@ export class ChatService {
     });
   }
   private subscribeToChat(userId: number) {
-    this.stompClient.subscribe('/chat/user/${userId}', (message :{ body: string }) => {
-      console.log(message)
+    this.stompClient.subscribe(`/chat/user/${userId}`, (message :{ body: string }) => {
+      console.log("works")
       const msgBody = JSON.parse(message.body);
       this.addMessage(msgBody.content);
     });
   }
 
-  sendMessage(chatMessage: { sender: string; content: string }) {
-    this.stompClient.publish({
-      destination: '/app/user',
-      body: JSON.stringify(chatMessage),
-    });
+  sendMessage(chatMessage: { chatId: string, senderId:number, receiverId:number, content: String }) {
+    this.stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
   }
   private addMessage(message: string) {
     const currentMessages = this.messageSubject.value;
     this.messageSubject.next([...currentMessages, message]);
+    console.log(currentMessages)
   }
   disconnect() {
     if (this.stompClient) {
