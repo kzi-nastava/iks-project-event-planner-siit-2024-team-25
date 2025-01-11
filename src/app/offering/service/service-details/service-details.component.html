@@ -62,7 +62,7 @@
     <div class="owner-info">
       <p>{{ service.ownerInfo.firstName }} {{ service.ownerInfo.lastName }}</p>
       <div class="buttons">
-        <button class="chat-button" (click)="chatWithOwner()">Chat with Owner</button>
+        <button [routerLink]="['/chat', service.ownerInfo.id, service.ownerInfo.firstName]" class="chat-button">Chat with Owner</button>
         <button class="view-button" (click)="viewOwnerCompany()">View Owner Company</button>
       </div>
     </div>
