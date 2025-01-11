@@ -9,6 +9,8 @@ import { ErrorResponse } from '../../shared/model/error.response.model';
 import { EventInvitationsComponent } from '../event-invitations/event-invitations.component';
 import { Event } from '../model/event.model';
 import { EventService } from '../service/event.service';
+import { UserRole } from '../../infrastructure/auth/model/user-role.model';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-event-page',
@@ -20,6 +22,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
   invitationCode!: string;
   event!: Event;
   isOrganizer$ = new BehaviorSubject<boolean>(false);
+  isAdmin$ = new BehaviorSubject<boolean>(false);
   isMobile$ = new BehaviorSubject<boolean>(false);
   private destroy$ = new Subject<void>();
 
@@ -30,7 +33,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private breakpointObserver: BreakpointObserver,
     private dialog: MatDialog,
-    private toastService: ToastrService,
+    private toastService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +59,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
       if (this.event) {
         this.isOrganizer$.next(user?.userId === this.event.organizer.id);
       }
+      this.isAdmin$.next(user?.role === UserRole.Admin);
     });
   }
 
@@ -80,6 +84,11 @@ export class EventPageComponent implements OnInit, OnDestroy {
       });
   }
 
+  get reportDownloadUrl(): string | null {
+    if (!this.eventId) return null;
+    return environment.apiHost + `/api/events/${this.eventId}/report`;
+  }
+
   toggleFavorite(): void {
     if (this.event.isFavorite) {
       this.eventService
@@ -92,7 +101,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
           error: (err: ErrorResponse) => {
             this.toastService.error(
               err.message,
-              'Failed to remove event from favorites',
+              'Failed to remove event from favorites'
             );
           },
         });
@@ -107,7 +116,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
           error: (err: ErrorResponse) => {
             this.toastService.error(
               err.message,
-              'Failed to add event to favorites',
+              'Failed to add event to favorites'
             );
           },
         });
