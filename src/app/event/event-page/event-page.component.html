@@ -38,6 +38,17 @@
           <mat-icon>receipt</mat-icon>
           View Purchases
         </button>
+        <a mat-raised-button class="primary" [href]="reportDownloadUrl">
+          <mat-icon>download</mat-icon>
+          Save as PDF
+        </a>
+      </mat-card-actions>
+
+      <mat-card-actions *ngIf="isAdmin$ | async">
+        <a mat-raised-button class="primary" [href]="reportDownloadUrl">
+          <mat-icon>description</mat-icon>
+          Save as PDF
+        </a>
       </mat-card-actions>
     </mat-card>
 
