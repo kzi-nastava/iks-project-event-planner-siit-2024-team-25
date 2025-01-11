@@ -1,12 +1,27 @@
 <body>
-<div class="chat-container">
-    <div class="chat-header">Chat</div>
-    <div class="chat-messages" #chatMessages>
+    <div class="chat-container">
+        <div class="chat-header">
+            <span class="chat-title">{{receiverName}}`s chat</span>
+            <div class="chat-buttons">
+                <button (click)="scrollUp()" class="scroll-button">
+                    <mat-icon>arrow_upward</mat-icon>
+                </button>
+                <button (click)="scrollDown()" class="scroll-button">
+                    <mat-icon>arrow_downward</mat-icon>
+                </button>
+            </div>
+        </div>
         
+        <div class="chat-messages" #chatMessages>
+        </div>
+        <div class="chat-input">
+            <input type="text" placeholder="Type a message..." [(ngModel)]="message">
+            <button (click)="sendMessage()"><mat-icon>send</mat-icon></button>
+        </div>
+        <div *ngIf="isLoading" class="loading-overlay">
+            <mat-spinner diameter="50"></mat-spinner>
+        </div>
     </div>
-    <div class="chat-input">
-        <input type="text" placeholder="Type a message..." [(ngModel)]="message">
-        <button (click)="sendMessage()"><mat-icon>send</mat-icon></button>
-    </div>
-</div>
+    
+    
 </body>

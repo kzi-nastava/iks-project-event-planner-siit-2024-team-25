@@ -56,8 +56,19 @@ export class ChatService {
     });
   }
 
-  sendMessage(chatMessage: { chatId: string, senderId:number, receiverId:number, content: String }) {
-    this.stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
+  sendMessage(chatMessage: {senderId:number, receiverId:number, content: String }):Observable<any> {
+    return new Observable(observer => {
+      this.stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
+      
+      observer.next(true);
+      observer.complete();
+      /*
+      // Subscribe to the acknowledgment topic
+      this.stompClient.subscribe('/topic/acknowledge', (message) => {
+        observer.next(message.body);  // Handle the response from the server
+        observer.complete();
+      });*/
+    });
   }
   
   private addMessage(message: string) {
@@ -75,7 +86,8 @@ export class ChatService {
     }>{
           let params = new HttpParams();
           params = params.set('page', page);
-    return this.httpClient.get<Page<ChatMessage>>(environment.apiHost + `/api/messages/${senderId}/${receiverId}`)
+          params = params.set('size', 7);
+    return this.httpClient.get<Page<ChatMessage>>(environment.apiHost + `/api/messages/${senderId}/${receiverId}`, {params:params})
     .pipe(
             map((page) => ({
               currentMessages: page.content,
