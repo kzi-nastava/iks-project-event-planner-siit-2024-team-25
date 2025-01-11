@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/co
 import { ChatService } from '../services/chat.service';
 import { concatMapTo, Observable, of } from 'rxjs';
 import { AuthService } from '../../../infrastructure/auth/service/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat-component',
@@ -18,12 +19,17 @@ export class ChatComponentComponent implements OnInit {
   totalPages: number = 0;
   totalMessages: number = 0;
 
-  senderId: number = 1;
-  receiverId: number = 2;
-  receiverName: string = "Milos"
+  senderId: number = -1;
+  receiverId: number = -1;
+  receiverName: string = ""
 
-  constructor(private chatService: ChatService, private renderer: Renderer2, private authService: AuthService) {
-
+  constructor(private chatService: ChatService, private renderer: Renderer2, private authService: AuthService,private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      this.receiverId = params['userId'];
+      this.receiverName = params['userName'];
+    });
+    this.senderId = this.authService.getUser()?.userId || -1;
+    console.log(this.senderId,this.receiverId)
   }
   ngOnInit(): void {
     this.getChat('');
@@ -60,10 +66,7 @@ export class ChatComponentComponent implements OnInit {
               this.addMessageDiv('received', elem.content, new Date(elem.timestamp))
             }
           });
-          // manualy add becase sent message is not saved to db
-          if (message.length > 0) {
-            this.addMessageDiv('sent', message, new Date()) // a few seconds?
-          }
+          
           this.totalMessages = res.totalMessages;
           this.totalPages = res.totalPages;
           this.isLoading = false;

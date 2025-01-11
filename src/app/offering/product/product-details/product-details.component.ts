@@ -95,7 +95,5 @@ export class ProductDetailsComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  chatWithOwner() {
-    throw new Error('Method not implemented.');
-  }
+
 }
