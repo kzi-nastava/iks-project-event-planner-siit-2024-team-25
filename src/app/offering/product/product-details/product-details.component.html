@@ -43,7 +43,7 @@
       <div class="owner-info">
         <p>{{ product.ownerInfo.name }}</p>
         <div class="buttons">
-          <button (click)="chatWithOwner()" class="chat-button">Chat with Owner</button>
+          <button [routerLink]="['/chat', product.ownerInfo.id, product.ownerInfo.name]" class="chat-button">Chat with Owner</button>
           <button (click)="viewOwnerCompany()" class="view-button">View Owner Company</button>
         </div>
       </div>
