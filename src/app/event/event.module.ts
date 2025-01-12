@@ -62,7 +62,11 @@ import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-
     ReactiveFormsModule,
     SharedModule,
   ],
-  exports: [HomeTopEventsComponent, HomeAllEventsComponent],
+  exports: [
+    HomeTopEventsComponent,
+    HomeAllEventsComponent,
+    FavoriteEventsComponent,
+  ],
   providers: [DatePipe],
 })
 export class EventModule {}

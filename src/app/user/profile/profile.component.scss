@@ -1,0 +1,118 @@
+@use '@angular/material' as mat;
+@use '../../../theme/m3-theme.scss' as theme;
+
+$primary: mat.get-theme-color(theme.$light-theme, primary);
+
+.profile-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.profile-card {
+  .profile-header {
+    display: flex;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  .profile-avatar {
+    img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid $primary;
+    }
+  }
+
+  .profile-info {
+    h2 {
+      margin: 0;
+      color: $primary;
+      font-size: 1.8rem;
+      font-weight: 500;
+    }
+
+    p {
+      margin: 0.5rem 0;
+      color: rgba(0, 0, 0, 0.7);
+
+      &.email {
+        color: $primary;
+        font-weight: 500;
+        font-size: 1.3rem;
+      }
+    }
+
+    .info-line {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+      color: rgba(0, 0, 0, 0.7);
+
+      mat-icon {
+        color: $primary;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      &.email {
+        color: $primary;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.profile-tabs {
+  ::ng-deep {
+    .mat-mdc-tab-header {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.danger-zone {
+  margin-top: 2rem;
+
+  ::ng-deep .mat-mdc-card-header {
+    padding: 1rem;
+    background-color: #ffedea;
+
+    .mat-mdc-card-title {
+      color: #7e0007;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  }
+
+  .danger-actions {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+
+    button {
+      flex: 1;
+      background-color: #ffedea;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .profile-card {
+    .profile-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  }
+}
