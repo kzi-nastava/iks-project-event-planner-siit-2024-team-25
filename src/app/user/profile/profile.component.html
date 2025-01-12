@@ -34,7 +34,7 @@
       <!-- Calendar component will go here -->
     </mat-tab>
     <mat-tab label="Edit Profile">
-      <!-- Edit profile component will go here -->
+      <app-edit-profile [user]="user" (userUpdate)="onUserUpdate($event)"/>
     </mat-tab>
     <mat-tab label="Favorite Events">
       <app-favorite-events/>

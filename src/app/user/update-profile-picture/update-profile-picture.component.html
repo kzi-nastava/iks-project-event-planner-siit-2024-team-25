@@ -1,0 +1,49 @@
+<div class="profile-picture-container">
+  <div
+    class="picture-area"
+    [class.has-picture]="oldUrl || previewUrl"
+    (mouseenter)="isHovered = true"
+    (mouseleave)="isHovered = false"
+  >
+    <!-- Picture Preview -->
+    <img
+      [src]="previewUrl || oldUrl || 'placeholder-avatar.png'"
+      (error)="setToDefault()"
+      alt="Profile picture"
+      class="profile-picture"
+    />
+
+    <!-- Upload Overlay -->
+    <div class="overlay" [class.visible]="isHovered">
+      <input
+        type="file"
+        #fileInput
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        hidden
+      />
+      <button
+        type="button"
+        mat-mini-fab
+        color="primary"
+        (click)="fileInput.click()"
+        class="upload-button"
+      >
+        <mat-icon>photo_camera</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Remove Button -->
+  <button
+    type="button"
+    mat-button
+    color="warn"
+    class="remove-button"
+    (click)="removePicture()"
+    *ngIf="currentPictureUrl || previewUrl"
+  >
+    <mat-icon>delete</mat-icon>
+    Remove Picture
+  </button>
+</div>
