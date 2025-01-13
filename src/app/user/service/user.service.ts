@@ -199,6 +199,10 @@ export class UserService {
       for (const file of user.ownerFields.companyPictures ?? []) {
         formData.append('ownerFields.companyPictures', file, file.name);
       }
+
+      for (const picId of user.ownerFields.picturesToRemove ?? []) {
+        formData.append('ownerFields.picturesToRemove', picId);
+      }
     }
 
     if (user.userRole === 'EVENT_ORGANIZER' && user.eventOrganizerFields) {
@@ -237,6 +241,17 @@ export class UserService {
       ownerFields: companyInfo,
     };
     return this.updateUser(owner.id, userRequest);
+  }
+
+  public getCompanyPicture(
+    userId: number,
+    pictureId: string,
+  ): Observable<Blob> {
+    return this.httpClient
+      .get(environment.apiHost + `/api/users/${userId}/pictures/${pictureId}`, {
+        responseType: 'blob',
+      })
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

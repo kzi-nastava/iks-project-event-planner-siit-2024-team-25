@@ -11,6 +11,7 @@ import { ActivateComponent } from './activate/activate.component';
 import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.component';
 import { AllReportedUsersComponent } from './all-reported-users/all-reported-users.component';
 import { SuspendUserDialogComponent } from './dialogs/suspend-user-dialog/suspend-user-dialog.component';
+import { EditCompanyInfoComponent } from './edit-company-info/edit-company-info.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -37,6 +38,7 @@ import { UserRoutingModule } from './user-routing.module';
     ProfileComponent,
     EditProfileComponent,
     UpdateProfilePictureComponent,
+    EditCompanyInfoComponent,
   ],
   imports: [
     CommonModule,

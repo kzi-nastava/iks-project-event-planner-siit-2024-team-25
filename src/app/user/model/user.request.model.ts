@@ -23,6 +23,7 @@ export interface OwnerFields {
   contactPhone: string;
   description: string;
   companyPictures?: File[];
+  picturesToRemove?: string[];
 }
 
 export interface EventOrganizerFields {
