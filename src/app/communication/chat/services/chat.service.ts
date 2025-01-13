@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import SockJS from 'sockjs-client';
 import * as Stomp from '@stomp/stompjs';
 import { environment } from '../../../../environment/environment';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { AuthService } from '../../../infrastructure/auth/service/auth.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ChatMessage } from '../model/chat-message';
@@ -50,26 +50,31 @@ export class ChatService {
   }
   private subscribeToChat(userId: number) {
     this.stompClient.subscribe(`/chat/user/${userId}`, (message :{ body: string }) => {
-      console.log("works")
+      console.log(message)
       const msgBody = JSON.parse(message.body);
       this.addMessage(msgBody.content);
     });
   }
+  getIncomingMessages(): Observable<any> {
+    return this.messageSubject.asObservable();  
+  }
 
-  sendMessage(chatMessage: {senderId:number, receiverId:number, content: String }):Observable<any> {
+  sendMessage(chatMessage: {senderId: number, receiverId: number, content: string }): Observable<any> {
     return new Observable(observer => {
-      this.stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
+      /*this.stompClient.subscribe('/user/' + chatMessage.receiverId +'/queue/messages', (message: any) => {
+        const messageBody = JSON.parse(message.body);
+        this.addMessage(messageBody)
+        observer.next(messageBody);
+        observer.complete();
+        
       
+      });*/
+      this.stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
       observer.next(true);
       observer.complete();
-      /*
-      // Subscribe to the acknowledgment topic
-      this.stompClient.subscribe('/topic/acknowledge', (message) => {
-        observer.next(message.body);  // Handle the response from the server
-        observer.complete();
-      });*/
     });
   }
+  
   
   private addMessage(message: string) {
     const currentMessages = this.messageSubject.value;

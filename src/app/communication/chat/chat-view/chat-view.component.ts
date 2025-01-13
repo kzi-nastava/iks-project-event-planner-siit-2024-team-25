@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class ChatViewComponent {
 
+   selectedChat : any;
+
+   onChatSelected(chat: { receiverId: number, receiverName: string }) {
+    this.selectedChat = null;  
+    setTimeout(() => {
+      this.selectedChat = chat;  
+    }, 1);
+  }
 }

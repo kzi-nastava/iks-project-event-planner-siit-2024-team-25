@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { concatMapTo, Observable, of } from 'rxjs';
 import { AuthService } from '../../../infrastructure/auth/service/auth.service';
@@ -10,6 +10,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './chat-component.component.scss'
 })
 export class ChatComponentComponent implements OnInit {
+
+  @Input() selectedChat: any;
 
   message: string = "";
   @ViewChild('chatMessages') chatMessages: ElementRef | undefined;
@@ -29,37 +31,41 @@ export class ChatComponentComponent implements OnInit {
       this.receiverName = params['userName'];
     });
     this.senderId = this.authService.getUser()?.userId || -1;
-    console.log(this.senderId,this.receiverId)
   }
   ngOnInit(): void {
-    this.getChat('');
+    if(this.selectedChat){
+      this.receiverId = this.selectedChat.receiverId;
+      this.receiverName = this.selectedChat.receiverName;
+    }
+    this.getChat();
   }
 
   sendMessage() {
     if (this.message.length > 0) {
-      this.chatService.sendMessage({ senderId: this.senderId, receiverId: this.receiverId, content: this.message }).subscribe({
-        next: (res) => {
-          this.getChat(this.message);
+      this.chatService.sendMessage({ senderId: this.senderId, receiverId: this.receiverId, content: this.message })
+      .subscribe({
+        next: (response) => {
+          
+          this.getChat();
           this.currentPage = 0;
-          this.message = "";
+          this.message = '';
         },
-        error: (_) => {
-          console.log("error")
+        error: (err) => {
+          console.error('Greška prilikom slanja poruke:', err);
         }
-      })
+      });
+    
     }
   }
 
-  getChat(message: string) {
+  getChat() {
     if (this.isLoading) return;
     this.isLoading = true;
     this.clearMessages().subscribe(() => {
 
       this.chatService.getChatMessages(this.senderId, this.receiverId, this.currentPage).subscribe({
         next: (res) => {
-          console.log(res)
           res.currentMessages.reverse().forEach(elem => {
-            console.log(elem.timestamp)
             if (elem.sender.id == this.senderId) {
               this.addMessageDiv('sent', elem.content, new Date(elem.timestamp))
             } else {
@@ -79,17 +85,18 @@ export class ChatComponentComponent implements OnInit {
 
   }
 
+
   scrollDown() {
     if (this.currentPage > 0) {
       this.currentPage--;
-      this.getChat('');
+      this.getChat();
 
     }
   }
   scrollUp() {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
-      this.getChat('');
+      this.getChat();
 
     }
 
@@ -98,18 +105,15 @@ export class ChatComponentComponent implements OnInit {
   addMessageDiv(typeMessage: string, content: string, date: Date) {
     const messageDiv = this.renderer.createElement('div');
 
-    // Dodavanje klasa za stilizaciju
     this.renderer.addClass(messageDiv, 'message');
     this.renderer.addClass(messageDiv, typeMessage);
 
-    // Kreiranje i dodavanje teksta poruke
     const messageContent = this.renderer.createElement('div');
     this.renderer.addClass(messageContent, 'message-content');
     const text = this.renderer.createText(content);
     this.renderer.appendChild(messageContent, text);
     this.renderer.appendChild(messageDiv, messageContent);
 
-    // Kreiranje i dodavanje datuma
     const dateDiv = this.renderer.createElement('div');
     this.renderer.addClass(dateDiv, 'message-date');
     const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
@@ -117,14 +121,13 @@ export class ChatComponentComponent implements OnInit {
     this.renderer.appendChild(dateDiv, dateText);
     this.renderer.appendChild(messageDiv, dateDiv);
 
-    // Dodavanje poruke u chatMessages
     this.renderer.appendChild(this.chatMessages?.nativeElement, messageDiv);
   }
 
   clearMessages(): Observable<boolean> {
     const chatContainer = this.chatMessages?.nativeElement;
     if (chatContainer) {
-      chatContainer.innerHTML = '';  // Briše sve unutrašnje elemente
+      chatContainer.innerHTML = '';  
     }
     return of(true);
   }
