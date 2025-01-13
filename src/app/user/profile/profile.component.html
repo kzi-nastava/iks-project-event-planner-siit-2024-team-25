@@ -30,14 +30,14 @@
 
   <!-- Tabbed Content -->
   <mat-tab-group class="profile-tabs" [(selectedIndex)]="selectedTab">
-    <mat-tab label="Calendar">
-      <!-- TODO: Add Calendar component -->
-    </mat-tab>
     <mat-tab label="Edit Profile">
       <app-edit-profile [user]="user" (userUpdate)="onUserUpdate($event)"/>
     </mat-tab>
     <mat-tab *ngIf="isOwner(user)" label="Company Info">
       <app-edit-company-info [owner]="user" (userUpdate)="onUserUpdate($event)"/>
+    </mat-tab>
+    <mat-tab label="Calendar">
+      <!-- TODO: Add Calendar component -->
     </mat-tab>
     <mat-tab label="Favorite Events">
       <app-favorite-events/>

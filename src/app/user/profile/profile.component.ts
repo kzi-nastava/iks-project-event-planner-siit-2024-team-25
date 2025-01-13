@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { EMPTY, Subscription, switchMap } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
@@ -36,30 +36,28 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private toastr: ToastrService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
-    this.subscription = this.authService.user$
-      .pipe(
-        switchMap((user) => {
-          if (!user) {
-            this.email = undefined;
-            this.user = undefined;
-            return EMPTY;
-          }
-          this.email = user?.email;
-          return this.userService.getUser(user!.userId);
-        }),
-      )
-      .subscribe({
-        next: (user: User | EventOrganizer | Owner) => {
-          this.user = user;
-          this.profilePicture = this.getProfilePictureUrl(user);
-        },
-        error: (err: ErrorResponse) => {
-          console.error(err);
-        },
+    this.subscription = combineLatest([
+      this.authService.user$,
+      this.route.queryParamMap,
+    ]).subscribe(([user, queryParams]) => {
+      if (!user) {
+        this.email = undefined;
+        this.user = undefined;
+        this.selectedTab = 0;
+        return;
+      }
+
+      this.email = user.email;
+      this.userService.getUser(user.userId).subscribe((userData) => {
+        this.user = userData;
+        this.profilePicture = this.getProfilePictureUrl(userData);
+        this.setInitialTab(queryParams);
       });
+    });
 
     this.accountService.canDeactivateAccount().subscribe({
       next: (canDeactivate) => {
@@ -74,6 +72,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+  }
+
+  setInitialTab(queryParams: ParamMap): void {
+    const openTab = queryParams.get('open-tab');
+    const isOwner = this.isOwner(this.user!);
+
+    const tabIndexMap: Record<string, number> = {
+      calendar: isOwner ? 2 : 1,
+      'favorite-events': isOwner ? 3 : 2,
+      'favorite-offerings': isOwner ? 4 : 3,
+    };
+
+    if (openTab && tabIndexMap.hasOwnProperty(openTab)) {
+      this.selectedTab = tabIndexMap[openTab];
+    } else {
+      this.selectedTab = 0;
     }
   }
 
