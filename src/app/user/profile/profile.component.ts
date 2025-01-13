@@ -1,12 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { ErrorResponse } from '../../shared/model/error.response.model';
+import { DeactivateConfirmDialogComponent } from '../deactivate-confirm-dialog/deactivate-confirm-dialog.component';
 import { EventOrganizer, Owner, User } from '../model/user.model';
 import { PasswordResetDialogComponent } from '../password-reset-dialog/password-reset-dialog.component';
+import { AccountService } from '../service/account.service';
 import { UserService } from '../service/user.service';
 
 @Component({
@@ -23,10 +27,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   profilePicture?: string;
 
+  private canDeactivate: boolean = false;
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    private accountService: AccountService,
     private dialog: MatDialog,
+    private toastr: ToastrService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -51,6 +60,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
           console.error(err);
         },
       });
+
+    this.accountService.canDeactivateAccount().subscribe({
+      next: (canDeactivate) => {
+        this.canDeactivate = canDeactivate;
+      },
+      error: (err: ErrorResponse) => {
+        console.error(err);
+      },
+    });
   }
 
   ngOnDestroy(): void {
@@ -96,5 +114,34 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.dialog.open(PasswordResetDialogComponent, {
       width: '500px',
     });
+  }
+
+  openDeactivateAccountDialog() {
+    if (this.canDeactivate) {
+      const dialogRef = this.dialog.open(DeactivateConfirmDialogComponent, {
+        width: '500px',
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.accountService.deactivateAccount().subscribe({
+            next: () => {
+              this.toastr.success(
+                'Your account has been permanently deactivated.',
+              );
+              this.authService.logOut();
+              this.router.navigate(['/']);
+            },
+            error: (err: ErrorResponse) => {
+              this.toastr.error(err.message, 'Failed to deactivate account');
+            },
+          });
+        }
+      });
+    } else {
+      this.toastr.warning(
+        'Cannot deactivate account because there are pending purchases!',
+      );
+    }
   }
 }

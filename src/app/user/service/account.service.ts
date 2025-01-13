@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { ErrorResponse } from '../../shared/model/error.response.model';
 
@@ -22,6 +22,23 @@ export class AccountService {
       .pipe(catchError(this.handleError));
   }
 
+  public canDeactivateAccount(): Observable<boolean> {
+    return this.httpClient
+      .get<CanDeactivateResponse>(
+        environment.apiHost + '/api/auth/can-deactivate',
+      )
+      .pipe(
+        map((dto) => dto.canDeactivate),
+        catchError(this.handleError),
+      );
+  }
+
+  public deactivateAccount(): Observable<void> {
+    return this.httpClient
+      .delete<void>(environment.apiHost + '/api/auth/deactivate')
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorResponse: ErrorResponse | null = null;
 
@@ -38,4 +55,8 @@ export class AccountService {
         }) as ErrorResponse,
     );
   }
+}
+
+interface CanDeactivateResponse {
+  canDeactivate: boolean;
 }

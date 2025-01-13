@@ -10,6 +10,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ActivateComponent } from './activate/activate.component';
 import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.component';
 import { AllReportedUsersComponent } from './all-reported-users/all-reported-users.component';
+import { DeactivateConfirmDialogComponent } from './deactivate-confirm-dialog/deactivate-confirm-dialog.component';
 import { SuspendUserDialogComponent } from './dialogs/suspend-user-dialog/suspend-user-dialog.component';
 import { EditCompanyInfoComponent } from './edit-company-info/edit-company-info.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
@@ -41,6 +42,7 @@ import { UserRoutingModule } from './user-routing.module';
     UpdateProfilePictureComponent,
     EditCompanyInfoComponent,
     PasswordResetDialogComponent,
+    DeactivateConfirmDialogComponent,
   ],
   imports: [
     CommonModule,
