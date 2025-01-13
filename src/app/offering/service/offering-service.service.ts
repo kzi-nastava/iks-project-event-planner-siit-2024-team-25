@@ -19,7 +19,7 @@ export class OfferingServiceService {
     private httpClinet: HttpClient,
     private offeringCategoryService: OfferingCategoryService,
     private eventTypesService: EventTypeService,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe
   ) {}
 
   getAll(properties: any): Observable<Service[]> {
@@ -40,7 +40,7 @@ export class OfferingServiceService {
       if (properties.offeringCategoryTypeId != -1) {
         params = params.set(
           'offeringCategoryId',
-          properties.offeringCategoryTypeId,
+          properties.offeringCategoryTypeId
         );
       }
     }
@@ -52,51 +52,35 @@ export class OfferingServiceService {
   }
 
   getServiceById(id: number): Observable<Service> {
-    return this.httpClinet
-      .get<any>(`http://localhost:8080/api/services/${id}`)
-      .pipe(
-        switchMap((response) => {
-          console.log(response);
-          return forkJoin([
-            this.offeringCategoryService.getById(response.offeringCategoryID),
-            this.eventTypesService.getEventTypesByIds(response.eventTypesIDs),
-          ]).pipe(
-            map(([category, eventTypes]) => ({
-              ...response,
-              offeringCategory: category,
-              eventTypes: eventTypes,
-            })),
-          );
-        }),
-      );
+    return this.httpClinet.get<any>(`http://localhost:8080/api/services/${id}`);
   }
 
   addService(s: ServiceCreateDTO): Observable<Service> {
     return this.httpClinet.post<Service>(
       'http://localhost:8080/api/services',
-      s,
+      s
     );
   }
 
   updateService(
     updatedService: ServiceUpdateDTO,
-    id: number,
+    id: number
   ): Observable<Service> {
     return this.httpClinet.put<Service>(
       'http://localhost:8080/api/services/' + id,
-      updatedService,
+      updatedService
     );
   }
   deleteService(id: number): Observable<void> {
     return this.httpClinet.delete<void>(
-      'http://localhost:8080/api/services/' + id,
+      'http://localhost:8080/api/services/' + id
     );
   }
 
   isServiceAvailable(
     eventId: number,
     serviceId: number,
-    purchase: PurchaseRequest,
+    purchase: PurchaseRequest
   ): Observable<boolean> {
     let params = new HttpParams();
 
@@ -104,13 +88,13 @@ export class OfferingServiceService {
       if (purchase.startDate) {
         params = params.set(
           'startDate',
-          this.datePipe.transform(purchase.startDate, 'yyyy-MM-dd')!,
+          this.datePipe.transform(purchase.startDate, 'yyyy-MM-dd')!
         );
       }
       if (purchase.endDate) {
         params = params.set(
           'endDate',
-          this.datePipe.transform(purchase.endDate, 'yyyy-MM-dd')!,
+          this.datePipe.transform(purchase.endDate, 'yyyy-MM-dd')!
         );
       }
       if (purchase.startTime) {
@@ -123,18 +107,18 @@ export class OfferingServiceService {
 
     return this.httpClinet.get<boolean>(
       `${environment.apiHost}/api/purchase/service/${serviceId}/available`,
-      { params: params },
+      { params: params }
     );
   }
 
   bookService(
     eventId: number,
     serviceId: number,
-    purchase: PurchaseRequest,
+    purchase: PurchaseRequest
   ): Observable<boolean> {
     return this.httpClinet.post<boolean>(
       `${environment.apiHost}/api/purchase/event/${eventId}/service/${serviceId}`,
-      purchase,
+      purchase
     );
   }
 }
