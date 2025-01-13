@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { ErrorResponse } from '../../shared/model/error.response.model';
 import { EventOrganizer, Owner, User } from '../model/user.model';
+import { PasswordResetDialogComponent } from '../password-reset-dialog/password-reset-dialog.component';
 import { UserService } from '../service/user.service';
 
 @Component({
@@ -24,6 +26,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -87,5 +90,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   onUserUpdate(user: User) {
     this.user = user;
     this.refetchProfilePicture();
+  }
+
+  openPasswordResetDialog() {
+    this.dialog.open(PasswordResetDialogComponent, {
+      width: '500px',
+    });
   }
 }
