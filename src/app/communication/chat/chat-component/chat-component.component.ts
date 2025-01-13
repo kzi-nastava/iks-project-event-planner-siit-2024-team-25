@@ -1,17 +1,24 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { concatMapTo, Observable, of } from 'rxjs';
 import { AuthService } from '../../../infrastructure/auth/service/auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { BlockService } from '../../services/block.service';
 
 @Component({
   selector: 'app-chat-component',
   templateUrl: './chat-component.component.html',
-  styleUrl: './chat-component.component.scss'
+  styleUrl: './chat-component.component.scss',
 })
 export class ChatComponentComponent implements OnInit {
-
-  message: string = "";
+  message: string = '';
   @ViewChild('chatMessages') chatMessages: ElementRef | undefined;
 
   isLoading: boolean = false;
@@ -21,32 +28,58 @@ export class ChatComponentComponent implements OnInit {
 
   senderId: number = -1;
   receiverId: number = -1;
-  receiverName: string = ""
+  receiverName: string = '';
+  isBlocked: boolean = false;
 
-  constructor(private chatService: ChatService, private renderer: Renderer2, private authService: AuthService,private route: ActivatedRoute) {
-    this.route.params.subscribe(params => {
+  constructor(
+    private chatService: ChatService,
+    private renderer: Renderer2,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private blockService: BlockService,
+    private toastrService: ToastrService
+  ) {
+    this.route.params.subscribe((params) => {
       this.receiverId = params['userId'];
       this.receiverName = params['userName'];
     });
     this.senderId = this.authService.getUser()?.userId || -1;
-    console.log(this.senderId,this.receiverId)
+    console.log(this.senderId, this.receiverId);
   }
   ngOnInit(): void {
-    this.getChat('');
+    this.isChatBlocked();
+  }
+
+  isChatBlocked() {
+    this.blockService.isBlocked(this.receiverId).subscribe({
+      next: (isBlocked: boolean) => {
+        if (isBlocked == false) {
+          this.getChat('');
+        } else {
+          this.isBlocked = isBlocked;
+        }
+      },
+    });
   }
 
   sendMessage() {
     if (this.message.length > 0) {
-      this.chatService.sendMessage({ senderId: this.senderId, receiverId: this.receiverId, content: this.message }).subscribe({
-        next: (res) => {
-          this.getChat(this.message);
-          this.currentPage = 0;
-          this.message = "";
-        },
-        error: (_) => {
-          console.log("error")
-        }
-      })
+      this.chatService
+        .sendMessage({
+          senderId: this.senderId,
+          receiverId: this.receiverId,
+          content: this.message,
+        })
+        .subscribe({
+          next: (res) => {
+            this.getChat(this.message);
+            this.currentPage = 0;
+            this.message = '';
+          },
+          error: (_) => {
+            console.log('error');
+          },
+        });
     }
   }
 
@@ -54,45 +87,50 @@ export class ChatComponentComponent implements OnInit {
     if (this.isLoading) return;
     this.isLoading = true;
     this.clearMessages().subscribe(() => {
+      this.chatService
+        .getChatMessages(this.senderId, this.receiverId, this.currentPage)
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            res.currentMessages.reverse().forEach((elem) => {
+              console.log(elem.timestamp);
+              if (elem.sender.id == this.senderId) {
+                this.addMessageDiv(
+                  'sent',
+                  elem.content,
+                  new Date(elem.timestamp)
+                );
+              } else {
+                this.addMessageDiv(
+                  'received',
+                  elem.content,
+                  new Date(elem.timestamp)
+                );
+              }
+            });
 
-      this.chatService.getChatMessages(this.senderId, this.receiverId, this.currentPage).subscribe({
-        next: (res) => {
-          console.log(res)
-          res.currentMessages.reverse().forEach(elem => {
-            console.log(elem.timestamp)
-            if (elem.sender.id == this.senderId) {
-              this.addMessageDiv('sent', elem.content, new Date(elem.timestamp))
-            } else {
-              this.addMessageDiv('received', elem.content, new Date(elem.timestamp))
-            }
-          });
-          
-          this.totalMessages = res.totalMessages;
-          this.totalPages = res.totalPages;
-          this.isLoading = false;
-        },
-        error: (_) => {
-          console.log("error")
-        }
-      })
-    })
-
+            this.totalMessages = res.totalMessages;
+            this.totalPages = res.totalPages;
+            this.isLoading = false;
+          },
+          error: (_) => {
+            console.log('error');
+          },
+        });
+    });
   }
 
   scrollDown() {
     if (this.currentPage > 0) {
       this.currentPage--;
       this.getChat('');
-
     }
   }
   scrollUp() {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
       this.getChat('');
-
     }
-
   }
 
   addMessageDiv(typeMessage: string, content: string, date: Date) {
@@ -124,9 +162,21 @@ export class ChatComponentComponent implements OnInit {
   clearMessages(): Observable<boolean> {
     const chatContainer = this.chatMessages?.nativeElement;
     if (chatContainer) {
-      chatContainer.innerHTML = '';  // Briše sve unutrašnje elemente
+      chatContainer.innerHTML = ''; // Briše sve unutrašnje elemente
     }
     return of(true);
   }
 
+  blockUser() {
+    this.blockService.blockUser(this.senderId, this.receiverId).subscribe({
+      next: () => {
+        this.toastrService.success(
+          'You block ' + this.receiverName + ' successfully',
+          'Block'
+        );
+        this.isBlocked = true;
+      },
+      error: (err: any) => {},
+    });
+  }
 }
