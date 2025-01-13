@@ -40,11 +40,12 @@ $primary: mat.get-theme-color(theme.$light-theme, primary);
     p {
       margin: 0.5rem 0;
       color: rgba(0, 0, 0, 0.7);
+      font-size: 1.3rem;
 
       &.email {
         color: $primary;
         font-weight: 500;
-        font-size: 1.3rem;
+        font-size: 1.5rem;
       }
     }
 
