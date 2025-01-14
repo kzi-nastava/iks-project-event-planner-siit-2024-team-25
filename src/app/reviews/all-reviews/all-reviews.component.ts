@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Review } from '../models/review.model';
 import { ReviewService } from '../services/review.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SuspendUserDialogComponent } from '../../user/dialogs/suspend-user-dialog/suspend-user-dialog.component';
 
 @Component({
   selector: 'app-all-reviews',
@@ -17,13 +19,17 @@ export class AllReviewsComponent {
     'event',
     'offering',
     'createdDate',
+    'actions',
   ];
 
   currentPage: number = 0;
   totalPages: number = 1;
   pageSize: number = 10;
 
-  constructor(private reviewService: ReviewService) {}
+  constructor(
+    private reviewService: ReviewService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.getAllSuspendedUsers();
@@ -43,5 +49,14 @@ export class AllReviewsComponent {
       this.currentPage--;
       this.getAllSuspendedUsers();
     }
+  }
+
+  onApprove(reviewId: number) {
+    const dialogRef = this.dialog.open(SuspendUserDialogComponent, {
+      data: {
+        reviewId: reviewId,
+      },
+      width: '24rem',
+    });
   }
 }
