@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../model/product.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../infrastructure/auth/service/auth.service';
-import { UserRole } from '../../../infrastructure/auth/model/user-role.model';
-import { ServiceDialogInformationComponent } from '../../service/service-dialog/service-dialog-information.component';
-import { ErrorDialogComponent } from '../../../shared/error-dialog/error-dialog.component';
 import { PurchaseService } from '../../../event/service/purchase.service';
+import { UserRole } from '../../../infrastructure/auth/model/user-role.model';
+import { AuthService } from '../../../infrastructure/auth/service/auth.service';
+import { ErrorDialogComponent } from '../../../shared/error-dialog/error-dialog.component';
 import { ErrorResponse } from '../../../shared/model/error.response.model';
+import { ServiceDialogInformationComponent } from '../../service/service-dialog/service-dialog-information.component';
+import { Product } from '../model/product.model';
 import { ProductService } from '../service/product.service';
 
 @Component({
@@ -91,9 +91,6 @@ export class ProductDetailsComponent implements OnInit {
 
   viewOwnerCompany() {
     console.log(this.product.ownerInfo.id);
-    this.router.navigate(['/user', this.product.ownerInfo.id, 'information']);
-    throw new Error('Method not implemented.');
+    this.router.navigate(['/user', this.product.ownerInfo.id]);
   }
-
-
 }
