@@ -29,7 +29,7 @@
   </mat-card>
 
   <!-- Tabbed Content -->
-  <mat-tab-group class="profile-tabs" [(selectedIndex)]="selectedTab">
+  <mat-tab-group class="profile-tabs primary" [(selectedIndex)]="selectedTab">
     <mat-tab label="Edit Profile">
       <app-edit-profile [user]="user" (userUpdate)="onUserUpdate($event)"/>
     </mat-tab>
@@ -37,7 +37,7 @@
       <app-edit-company-info [owner]="user" (userUpdate)="onUserUpdate($event)"/>
     </mat-tab>
     <mat-tab label="Calendar">
-      <!-- TODO: Add Calendar component -->
+      <app-calendar [user]="user"/>
     </mat-tab>
     <mat-tab label="Favorite Events">
       <app-favorite-events/>

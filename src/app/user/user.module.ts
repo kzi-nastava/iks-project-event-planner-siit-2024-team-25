@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FullCalendarModule } from '@fullcalendar/angular';
 import { NgxMatInputTelComponent } from 'ngx-mat-input-tel';
 import { EventModule } from '../event/event.module';
 
@@ -10,6 +11,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ActivateComponent } from './activate/activate.component';
 import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.component';
 import { AllReportedUsersComponent } from './all-reported-users/all-reported-users.component';
+import { CalendarComponent } from './calendar/calendar.component';
 import { DeactivateConfirmDialogComponent } from './deactivate-confirm-dialog/deactivate-confirm-dialog.component';
 import { SuspendUserDialogComponent } from './dialogs/suspend-user-dialog/suspend-user-dialog.component';
 import { EditCompanyInfoComponent } from './edit-company-info/edit-company-info.component';
@@ -43,6 +45,7 @@ import { UserRoutingModule } from './user-routing.module';
     EditCompanyInfoComponent,
     PasswordResetDialogComponent,
     DeactivateConfirmDialogComponent,
+    CalendarComponent,
   ],
   imports: [
     CommonModule,
@@ -54,6 +57,7 @@ import { UserRoutingModule } from './user-routing.module';
     NgxMatInputTelComponent,
     SharedModule,
     EventModule,
+    FullCalendarModule,
   ],
 })
 export class UserModule {}

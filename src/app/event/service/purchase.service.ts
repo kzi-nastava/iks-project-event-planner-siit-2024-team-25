@@ -1,21 +1,47 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProductPurchaseResponseDTO } from '../model/product-purchase-response';
 import { environment } from '../../../environment/environment';
+import { AuthService } from '../../infrastructure/auth/service/auth.service';
+import { ProductPurchaseResponseDTO } from '../model/product-purchase-response';
+import { ServicePurchaseCard } from '../model/service-purchase-card.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PurchaseService {
-
   constructor(
-    private httpClient: HttpClient
-  ) { }
+    private httpClient: HttpClient,
+    private authService: AuthService,
+    private datePipe: DatePipe,
+  ) {}
 
-  purchaseProduct(eventId:number, productId:number) : Observable<ProductPurchaseResponseDTO>{
-    const dto = {productId : productId}
-    return this.httpClient.post<ProductPurchaseResponseDTO>(environment.apiHost + "/api/purchase/events/"+eventId+"/products", dto);
+  purchaseProduct(
+    eventId: number,
+    productId: number,
+  ): Observable<ProductPurchaseResponseDTO> {
+    const dto = { productId: productId };
+    return this.httpClient.post<ProductPurchaseResponseDTO>(
+      environment.apiHost + '/api/purchase/events/' + eventId + '/products',
+      dto,
+    );
   }
 
+  getOwnerPurchases(
+    startDate: Date,
+    endDate: Date,
+  ): Observable<ServicePurchaseCard[]> {
+    const userId = this.authService.getUser()!.userId;
+    return this.httpClient.get<ServicePurchaseCard[]>(
+      environment.apiHost + `/api/purchase/`,
+      {
+        params: {
+          ownerId: userId,
+          startDate: this.datePipe.transform(startDate, 'yyyy-MM-dd')!,
+          endDate: this.datePipe.transform(endDate, 'yyyy-MM-dd')!,
+        },
+      },
+    );
+  }
 }
