@@ -1,7 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, shareReplay, switchMap, take } from 'rxjs';
+import { combineLatest, map, shareReplay, switchMap, take } from 'rxjs';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { NotificationServiceService } from '../../communication/notification/service/notification-service.service';
@@ -94,6 +94,9 @@ export class NavComponent implements OnInit {
 
   isAdmin$ = this.authService.userRole$.pipe(
     map((role) => role == UserRole.Admin)
+  );
+  isVisibleChat$ = combineLatest([this.isAdmin$, this.isOrganizer$, this.isOwner$]).pipe(
+    map(([isAdmin, isOrganizer, isOwner]) => !isAdmin && !isOrganizer && !isOwner)
   );
 
   isHandset$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(

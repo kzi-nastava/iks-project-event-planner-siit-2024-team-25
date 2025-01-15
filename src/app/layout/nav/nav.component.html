@@ -64,15 +64,6 @@
         </span>
       </a>
 
-      <a routerLink="/messages" routerLinkActive="active" class="nav-item">
-        <div class="icon-container">
-          <mat-icon>chat</mat-icon>
-        </div>
-        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
-          Messages
-        </span>
-      </a>
-
       @if (isOwner$ | async) {
       <a routerLink="/products" routerLinkActive="active" class="nav-item">
         <div class="icon-container">
@@ -106,6 +97,14 @@
           My price list
         </span>
       </a>
+      <a routerLink="/chat" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>chat</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          My chats
+        </span>
+      </a>
       } @else if (isOrganizer$ | async) {
       <a
         routerLink="/event/my-events"
@@ -129,6 +128,14 @@
         </div>
         <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
           Budget plan
+        </span>
+      </a>
+      <a routerLink="/chat" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>chat</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          My chats
         </span>
       </a>
       } @else if (isAdmin$ | async) {
@@ -195,6 +202,15 @@
         </div>
         <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
           Reviews
+        </span>
+      </a>
+      } @if (isVisibleChat$ |async) {
+      <a routerLink="/chat" routerLinkActive="active" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>chat</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          My chats
         </span>
       </a>
       }

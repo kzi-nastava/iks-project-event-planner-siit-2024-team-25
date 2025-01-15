@@ -1,0 +1,8 @@
+<div class="chat-main">
+    <div class="chat-room">
+        <app-chat-room (chatSelected)="onChatSelected($event)"></app-chat-room>
+    </div>
+    <div class="chat-message" *ngIf="selectedChat">
+        <app-chat-component  [selectedChat]="selectedChat"></app-chat-component>
+    </div>
+</div>
