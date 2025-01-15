@@ -22,6 +22,8 @@ export interface Owner extends User {
     country: string;
     city: string;
     address: string;
+    latitude: number;
+    longitude: number;
   };
   contactPhone: string;
   description: string;

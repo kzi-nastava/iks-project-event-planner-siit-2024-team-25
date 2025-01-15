@@ -11,6 +11,7 @@ import { AllBlockedUsersComponent } from './all-blocked-users/all-blocked-users.
 import { AllReportedUsersComponent } from './all-reported-users/all-reported-users.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PublicProfileComponent } from './public-profile/public-profile.component';
 import { RegisterQuickComponent } from './register-quick/register-quick.component';
 import { RegisterComponent } from './register/register.component';
 import { SuspensionPageComponent } from './suspension-page/suspension-page.component';
@@ -44,6 +45,11 @@ const routes: Routes = [
   {
     path: 'suspension',
     component: SuspensionPageComponent,
+  },
+  {
+    path: ':id',
+    component: PublicProfileComponent,
+    canActivate: [authGuard],
   },
 ];
 

@@ -1,0 +1,87 @@
+<div class="public-profile-container" *ngIf="user">
+  <!-- Profile Overview -->
+  <mat-card class="profile-card">
+    <mat-card-content class="profile-header">
+      <div class="profile-avatar">
+        <img [src]="profilePicture" (error)="setDefaultAvatar($event)" alt="Profile picture">
+      </div>
+      <div class="profile-info">
+        <div class="name-and-actions">
+          <h2>{{ getFullName(user) }}</h2>
+          <button mat-stroked-button color="warn" (click)="openReportDialog()">
+            <mat-icon>flag</mat-icon>
+            Report User
+          </button>
+        </div>
+
+        <div class="role-badge">
+          <mat-icon>badge</mat-icon>
+          <span>{{ getUserRoleDisplay(user.userRole) }}</span>
+        </div>
+
+        <ng-container *ngIf="isEventOrganizer(user)">
+          <p class="info-line">
+            <mat-icon>phone</mat-icon>
+            <span>{{ user.phoneNumber }}</span>
+          </p>
+          <p class="info-line">
+            <mat-icon>location_on</mat-icon>
+            <span>{{ user.livingAddress.address }}, {{ user.livingAddress.city }}
+              , {{ user.livingAddress.country }}</span>
+          </p>
+        </ng-container>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Company Information (for Owners) -->
+  <mat-card class="company-card" *ngIf="isOwner(user)">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>business</mat-icon>
+        Company Information
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="company-info">
+        <h3>{{ user.companyName }}</h3>
+
+        <p class="info-line">
+          <mat-icon>phone</mat-icon>
+          <span>{{ user.contactPhone }}</span>
+        </p>
+
+        <p class="info-line">
+          <mat-icon>location_on</mat-icon>
+          <span>{{ user.companyAddress.address }}, {{ user.companyAddress.city }}
+            , {{ user.companyAddress.country }}</span>
+        </p>
+
+        <p class="company-description">{{ user.description }}</p>
+
+        <div class="company-location" *ngIf="user.companyAddress">
+          <h4>
+            <mat-icon>map</mat-icon>
+            Company Location
+          </h4>
+          <app-map
+            [latitude]="user.companyAddress.latitude"
+            [longitude]="user.companyAddress.longitude"
+            height="400px"
+            [zoom]="15">
+          </app-map>
+        </div>
+
+        <div class="company-gallery" *ngIf="user.companyPictures.length > 0">
+          <h4>Company Gallery</h4>
+          <div class="gallery-grid">
+            <img *ngFor="let url of companyPictureUrls"
+                 [src]="url"
+                 alt="Company picture"
+                 class="company-picture">
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

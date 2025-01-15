@@ -19,6 +19,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { LoginComponent } from './login/login.component';
 import { PasswordResetDialogComponent } from './password-reset-dialog/password-reset-dialog.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PublicProfileComponent } from './public-profile/public-profile.component';
 import { RegisterQuickComponent } from './register-quick/register-quick.component';
 import { RegisterSuccessDialogComponent } from './register-success-dialog/register-success-dialog.component';
 import { RegisterComponent } from './register/register.component';
@@ -46,6 +47,7 @@ import { UserRoutingModule } from './user-routing.module';
     PasswordResetDialogComponent,
     DeactivateConfirmDialogComponent,
     CalendarComponent,
+    PublicProfileComponent,
   ],
   imports: [
     CommonModule,
