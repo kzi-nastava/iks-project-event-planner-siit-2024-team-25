@@ -2,12 +2,14 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+
 import { ToastrService } from 'ngx-toastr';
-import { map, shareReplay } from 'rxjs';
+import { combineLatest, map, shareReplay } from 'rxjs';
 import { NotificationCategory } from '../../communication/notification/model/notification-category.model';
 import { Notification } from '../../communication/notification/model/notification.model';
 import { NotificationComponent } from '../../communication/notification/notification.component';
 import { NotificationServiceService } from '../../communication/notification/service/notification-service.service';
+
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 
@@ -93,6 +95,16 @@ export class NavComponent implements OnInit {
 
   isAdmin$ = this.authService.userRole$.pipe(
     map((role) => role == UserRole.Admin),
+  );
+
+  isVisibleChat$ = combineLatest([
+    this.isAdmin$,
+    this.isOrganizer$,
+    this.isOwner$,
+  ]).pipe(
+    map(
+      ([isAdmin, isOrganizer, isOwner]) => !isAdmin && !isOrganizer && !isOwner,
+    ),
   );
 
   isHandset$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
