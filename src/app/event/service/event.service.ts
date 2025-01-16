@@ -252,6 +252,23 @@ export class EventService {
       .pipe(catchError(this.handleError));
   }
 
+  isAttending(eventId: number, userId: number): Observable<boolean> {
+    return this.httpClient
+      .get<boolean>(
+        environment.apiHost + `/api/events/${eventId}/attending/${userId}`,
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  joinEvent(eventId: number): Observable<HomeEvent> {
+    const userId = this.authService.getUser()?.userId;
+    return this.httpClient
+      .post<HomeEvent>(environment.apiHost + `/api/events/${eventId}/join`, {
+        userId,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorResponse: ErrorResponse | null = null;
 
