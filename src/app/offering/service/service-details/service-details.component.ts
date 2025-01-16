@@ -35,7 +35,7 @@ export class ServiceDetailsComponent {
     private authService: AuthService,
     private serviceService: OfferingServiceService,
     private router: Router,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +48,7 @@ export class ServiceDetailsComponent {
 
       this.serviceService.getServiceById(+params['id']).subscribe({
         next: (service: Service) => {
+          console.log(service);
           this.service = service;
         },
       });
@@ -74,7 +75,8 @@ export class ServiceDetailsComponent {
   }
 
   viewOwnerCompany() {
-    this.router.navigate(['/user', this.service.ownerInfo.id]);
+    console.log(this.service.owner.id);
+    this.router.navigate(['/user', this.service.owner.id]);
   }
   chatWithOwner() {
     throw new Error('Method not implemented.');
