@@ -3,13 +3,15 @@
     <mat-spinner diameter="48"></mat-spinner>
     <h2 class="loading-text">Loading favorite events...</h2>
   </div>
-} @else if (!events) {
-  <div>
-    <p>No events to show...</p>
+} @else if (!events || events.length == 0) {
+  <div class="empty-placeholder">
+    <h2>No favorite events yet</h2>
+    <p>
+      You haven't added any events to your favorites. Start exploring and add events to easily access them here.
+    </p>
   </div>
 } @else {
   <div class="container">
-    <h3>Top 5 events</h3>
     <div class="top-events-container">
       <div *ngFor="let event of events">
         <app-favorite-event-card [event]="event" (clicked)="removeFromFavorites(event)"/>
