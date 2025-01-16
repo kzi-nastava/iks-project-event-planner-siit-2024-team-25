@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { ErrorResponse } from '../../shared/model/error.response.model';
 import { Activity } from '../model/activity.model';
 import { EventService } from '../service/event.service';
@@ -11,7 +11,7 @@ import { EventService } from '../service/event.service';
   styleUrl: './event-agenda.component.scss',
 })
 export class EventAgendaComponent implements OnInit, OnDestroy {
-  @Input() eventId!: number;
+  @Input() eventId$!: Observable<number | null>;
   activities: Activity[] = [];
   private destroy$ = new Subject<void>();
 
@@ -21,18 +21,17 @@ export class EventAgendaComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.loadAgenda();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  private loadAgenda(): void {
-    this.eventService
-      .getAgenda(this.eventId)
-      .pipe(takeUntil(this.destroy$))
+    this.eventId$
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap((eventId) => {
+          if (eventId) {
+            return this.eventService.getAgenda(eventId);
+          } else {
+            return of([]);
+          }
+        }),
+      )
       .subscribe({
         next: (activities: Activity[]) => {
           this.activities = activities;
@@ -41,5 +40,10 @@ export class EventAgendaComponent implements OnInit, OnDestroy {
           this.toastService.error(err.message, 'Failed to load event agenda');
         },
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

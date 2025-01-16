@@ -1,0 +1,65 @@
+<div class="profile-container" *ngIf="user">
+  <!-- Profile Card -->
+  <mat-card class="profile-card">
+    <mat-card-content class="profile-header">
+      <div class="profile-avatar">
+        <img [src]="profilePicture" (error)="setDefaultAvatar($event)" alt="Profile picture">
+      </div>
+      <div class="profile-info">
+        <h2>{{ getFullName(user) }}</h2>
+
+        <p class="email info-line">
+          <mat-icon>email</mat-icon>
+          <span>{{ email }}</span>
+        </p>
+
+        <ng-container *ngIf="isEventOrganizer(user)">
+          <p class="phone info-line">
+            <mat-icon>phone</mat-icon>
+            <span>{{ user.phoneNumber }}</span>
+          </p>
+          <p class="address info-line">
+            <mat-icon>location_on</mat-icon>
+            <span>{{ user.livingAddress.address }}, {{ user.livingAddress.city }}
+              , {{ user.livingAddress.country }}</span>
+          </p>
+        </ng-container>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tabbed Content -->
+  <mat-tab-group class="profile-tabs primary" [(selectedIndex)]="selectedTab">
+    <mat-tab label="Edit Profile">
+      <app-edit-profile [user]="user" (userUpdate)="onUserUpdate($event)"/>
+    </mat-tab>
+    <mat-tab *ngIf="isOwner(user)" label="Company Info">
+      <app-edit-company-info [owner]="user" (userUpdate)="onUserUpdate($event)"/>
+    </mat-tab>
+    <mat-tab label="Calendar">
+      <app-calendar [user]="user"/>
+    </mat-tab>
+    <mat-tab label="Favorite Events">
+      <app-favorite-events/>
+    </mat-tab>
+    <mat-tab label="Favorite Products/Services">
+      <!-- TODO: Add Favorite Offerings component -->
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- Danger Zone -->
+  <mat-card class="danger-zone">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>warning_amber</mat-icon>
+        <span>Danger Zone</span>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="danger-actions">
+        <button mat-stroked-button color="warn" (click)="openPasswordResetDialog()">Reset Password</button>
+        <button mat-stroked-button color="warn" (click)="openDeactivateAccountDialog()">Deactivate Account</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
