@@ -22,7 +22,7 @@ export class UserService {
   constructor(private httpClient: HttpClient) {}
 
   quickRegister(
-    registerRequest: RegisterQuickRequest,
+    registerRequest: RegisterQuickRequest
   ): Observable<RegisterQuickResponse> {
     const formData = new FormData();
 
@@ -41,13 +41,13 @@ export class UserService {
     return this.httpClient
       .post<RegisterQuickResponse>(
         environment.apiHost + '/api/auth/register/quick',
-        formData,
+        formData
       )
       .pipe(catchError(this.handleError));
   }
 
-  public register(
-    registerRequest: RegisterRequest,
+  upgradeProfile(
+    registerRequest: RegisterRequest
   ): Observable<RegisterResponse> {
     const formData = new FormData();
 
@@ -60,27 +60,27 @@ export class UserService {
     if (registerRequest.userRole === 'OWNER' && registerRequest.ownerFields) {
       formData.append(
         'ownerFields.companyName',
-        registerRequest.ownerFields.companyName,
+        registerRequest.ownerFields.companyName
       );
       formData.append(
         'ownerFields.companyAddress.country',
-        registerRequest.ownerFields.companyAddress.country,
+        registerRequest.ownerFields.companyAddress.country
       );
       formData.append(
         'ownerFields.companyAddress.city',
-        registerRequest.ownerFields.companyAddress.city,
+        registerRequest.ownerFields.companyAddress.city
       );
       formData.append(
         'ownerFields.companyAddress.address',
-        registerRequest.ownerFields.companyAddress.address,
+        registerRequest.ownerFields.companyAddress.address
       );
       formData.append(
         'ownerFields.contactPhone',
-        registerRequest.ownerFields!.contactPhone,
+        registerRequest.ownerFields!.contactPhone
       );
       formData.append(
         'ownerFields.description',
-        registerRequest.ownerFields.description || '',
+        registerRequest.ownerFields.description || ''
       );
 
       for (let file of registerRequest.ownerFields!.companyPictures ?? []) {
@@ -94,19 +94,19 @@ export class UserService {
     ) {
       formData.append(
         'eventOrganizerFields.livingAddress.country',
-        registerRequest.eventOrganizerFields.livingAddress.country,
+        registerRequest.eventOrganizerFields.livingAddress.country
       );
       formData.append(
         'eventOrganizerFields.livingAddress.city',
-        registerRequest.eventOrganizerFields.livingAddress.city,
+        registerRequest.eventOrganizerFields.livingAddress.city
       );
       formData.append(
         'eventOrganizerFields.livingAddress.address',
-        registerRequest.eventOrganizerFields.livingAddress.address,
+        registerRequest.eventOrganizerFields.livingAddress.address
       );
       formData.append(
         'eventOrganizerFields.phoneNumber',
-        registerRequest.eventOrganizerFields.phoneNumber,
+        registerRequest.eventOrganizerFields.phoneNumber
       );
     }
 
@@ -114,14 +114,94 @@ export class UserService {
       formData.append(
         'profilePicture',
         registerRequest.profilePicture,
-        registerRequest.profilePicture.name,
+        registerRequest.profilePicture.name
+      );
+    }
+
+    return this.httpClient
+      .post<RegisterResponse>(
+        environment.apiHost + '/api/auth/upgrade',
+        formData
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  public register(
+    registerRequest: RegisterRequest
+  ): Observable<RegisterResponse> {
+    const formData = new FormData();
+
+    formData.append('email', registerRequest.email);
+    formData.append('password', registerRequest.password);
+    formData.append('firstName', registerRequest.firstName);
+    formData.append('lastName', registerRequest.lastName);
+    formData.append('userRole', registerRequest.userRole);
+
+    if (registerRequest.userRole === 'OWNER' && registerRequest.ownerFields) {
+      formData.append(
+        'ownerFields.companyName',
+        registerRequest.ownerFields.companyName
+      );
+      formData.append(
+        'ownerFields.companyAddress.country',
+        registerRequest.ownerFields.companyAddress.country
+      );
+      formData.append(
+        'ownerFields.companyAddress.city',
+        registerRequest.ownerFields.companyAddress.city
+      );
+      formData.append(
+        'ownerFields.companyAddress.address',
+        registerRequest.ownerFields.companyAddress.address
+      );
+      formData.append(
+        'ownerFields.contactPhone',
+        registerRequest.ownerFields!.contactPhone
+      );
+      formData.append(
+        'ownerFields.description',
+        registerRequest.ownerFields.description || ''
+      );
+
+      for (let file of registerRequest.ownerFields!.companyPictures ?? []) {
+        formData.append('ownerFields.companyPictures', file, file.name);
+      }
+    }
+
+    if (
+      registerRequest.userRole === 'EVENT_ORGANIZER' &&
+      registerRequest.eventOrganizerFields
+    ) {
+      formData.append(
+        'eventOrganizerFields.livingAddress.country',
+        registerRequest.eventOrganizerFields.livingAddress.country
+      );
+      formData.append(
+        'eventOrganizerFields.livingAddress.city',
+        registerRequest.eventOrganizerFields.livingAddress.city
+      );
+      formData.append(
+        'eventOrganizerFields.livingAddress.address',
+        registerRequest.eventOrganizerFields.livingAddress.address
+      );
+      formData.append(
+        'eventOrganizerFields.phoneNumber',
+        registerRequest.eventOrganizerFields.phoneNumber
+      );
+    }
+
+    if (registerRequest.profilePicture) {
+      formData.append(
+        'profilePicture',
+        registerRequest.profilePicture,
+        registerRequest.profilePicture.name
       );
     }
 
     return this.httpClient
       .post<RegisterResponse>(
         environment.apiHost + '/api/auth/register',
-        formData,
+        formData
       )
       .pipe(catchError(this.handleError));
   }
@@ -136,9 +216,9 @@ export class UserService {
 
   public getUser(userId: number): Observable<User | EventOrganizer | Owner> {
     return this.httpClient
-      .get<
-        User | EventOrganizer | Owner
-      >(environment.apiHost + `/api/users/${userId}`)
+      .get<User | EventOrganizer | Owner>(
+        environment.apiHost + `/api/users/${userId}`
+      )
       .pipe(
         map((user) => {
           if (user.userRole === UserRole.Owner) {
@@ -148,7 +228,7 @@ export class UserService {
           }
           return user;
         }),
-        catchError(this.handleError),
+        catchError(this.handleError)
       );
   }
 
@@ -162,13 +242,13 @@ export class UserService {
       formData.append(
         'profilePicture',
         user.profilePicture,
-        user.profilePicture.name,
+        user.profilePicture.name
       );
     }
 
     formData.append(
       'removeProfilePicture',
-      !!user.removeProfilePicture ? 'true' : 'false',
+      !!user.removeProfilePicture ? 'true' : 'false'
     );
 
     formData.append('userRole', user.userRole);
@@ -177,23 +257,23 @@ export class UserService {
       formData.append('ownerFields.companyName', user.ownerFields.companyName);
       formData.append(
         'ownerFields.companyAddress.country',
-        user.ownerFields.companyAddress.country,
+        user.ownerFields.companyAddress.country
       );
       formData.append(
         'ownerFields.companyAddress.city',
-        user.ownerFields.companyAddress.city,
+        user.ownerFields.companyAddress.city
       );
       formData.append(
         'ownerFields.companyAddress.address',
-        user.ownerFields.companyAddress.address,
+        user.ownerFields.companyAddress.address
       );
       formData.append(
         'ownerFields.contactPhone',
-        user.ownerFields.contactPhone,
+        user.ownerFields.contactPhone
       );
       formData.append(
         'ownerFields.description',
-        user.ownerFields.description || '',
+        user.ownerFields.description || ''
       );
 
       for (const file of user.ownerFields.companyPictures ?? []) {
@@ -208,19 +288,19 @@ export class UserService {
     if (user.userRole === 'EVENT_ORGANIZER' && user.eventOrganizerFields) {
       formData.append(
         'eventOrganizerFields.livingAddress.country',
-        user.eventOrganizerFields.livingAddress.country,
+        user.eventOrganizerFields.livingAddress.country
       );
       formData.append(
         'eventOrganizerFields.livingAddress.city',
-        user.eventOrganizerFields.livingAddress.city,
+        user.eventOrganizerFields.livingAddress.city
       );
       formData.append(
         'eventOrganizerFields.livingAddress.address',
-        user.eventOrganizerFields.livingAddress.address,
+        user.eventOrganizerFields.livingAddress.address
       );
       formData.append(
         'eventOrganizerFields.phoneNumber',
-        user.eventOrganizerFields.phoneNumber,
+        user.eventOrganizerFields.phoneNumber
       );
     }
 
@@ -231,7 +311,7 @@ export class UserService {
 
   public updateCompanyInfo(
     owner: Owner,
-    companyInfo: OwnerFields,
+    companyInfo: OwnerFields
   ): Observable<User> {
     const userRequest: UserRequest = {
       firstName: owner.firstName,
@@ -245,7 +325,7 @@ export class UserService {
 
   public getCompanyPicture(
     userId: number,
-    pictureId: string,
+    pictureId: string
   ): Observable<Blob> {
     return this.httpClient
       .get(environment.apiHost + `/api/users/${userId}/pictures/${pictureId}`, {
@@ -267,7 +347,7 @@ export class UserService {
           code: error.status,
           message: errorResponse?.message ?? error.message,
           errors: errorResponse?.errors,
-        }) as ErrorResponse,
+        } as ErrorResponse)
     );
   }
 }

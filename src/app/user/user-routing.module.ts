@@ -25,7 +25,6 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
-    canActivate: [unauthenticatedGuard],
   },
   { path: 'activate', component: ActivateComponent },
   { path: 'register/quick', component: RegisterQuickComponent },
