@@ -5,8 +5,9 @@ import { MaterialModule } from '../infrastructure/material/material.module';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { MapComponent } from './map/map.component';
+import { EmptyStateComponent } from './empty-state/empty-state.component';
 
-const components = [ImageUploadComponent, MapComponent];
+const components = [ImageUploadComponent, MapComponent, EmptyStateComponent];
 
 @NgModule({
   declarations: [...components, ErrorDialogComponent],

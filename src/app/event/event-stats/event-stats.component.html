@@ -1,0 +1,70 @@
+<div class="stats-container">
+  <mat-card class="stats-card">
+    <mat-card-header>
+      <mat-card-title>Event Statistics</mat-card-title>
+      <mat-card-subtitle *ngIf="event">{{event.name}}</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="stats-grid">
+        <mat-card class="metric-card">
+          <div class="metric-value">{{totalAttendees}}</div>
+          <div class="metric-label">Attendees</div>
+        </mat-card>
+        
+        <mat-card class="metric-card" *ngIf="reviewStats">
+          <div class="metric-value">{{reviewStats.reviewCount}}</div>
+          <div class="metric-label">Reviews</div>
+        </mat-card>
+        
+        <mat-card class="metric-card" *ngIf="reviewStats">
+          <div class="metric-value">{{reviewStats.averageRating | number:'1.1-2'}}⭐</div>
+          <div class="metric-label">Average Rating</div>
+        </mat-card>
+      </div>
+
+      <div class="chart-container" *ngIf="reviewStats">
+        <h3>Rating Distribution</h3>
+        <canvas baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [type]="'bar'">
+        </canvas>
+      </div>
+
+      <div class="attendees-list">
+        <h3>Attendees</h3>
+        
+        <ng-container *ngIf="totalAttendees > 0; else emptyState">
+          <div class="attendees-grid">
+            <mat-card 
+              *ngFor="let attendee of attendeesDataSource.data" 
+              class="attendee-card"
+              [routerLink]="['/user', attendee.userId]">
+              <div class="attendee-avatar">
+                <img 
+                  [src]="getProfilePictureUrl(attendee.userId)"
+                  [alt]="attendee.fullName"
+                  (error)="setDefaultAvatar($event)"
+                />
+              </div>
+              <mat-card-content>
+                <h4>{{attendee.fullName}}</h4>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          
+          <div class="load-more-container" *ngIf="attendeesDataSource.data.length < totalAttendees">
+            <button mat-button color="primary" (click)="loadMore()">
+              Load More Attendees
+            </button>
+          </div>
+        </ng-container>
+        
+        <ng-template #emptyState>
+          <app-empty-state></app-empty-state>
+        </ng-template>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
