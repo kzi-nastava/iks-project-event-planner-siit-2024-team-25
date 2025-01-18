@@ -2,7 +2,12 @@ import { Component } from '@angular/core';
 import { Review } from '../models/review.model';
 import { ReviewService } from '../services/review.service';
 import { MatDialog } from '@angular/material/dialog';
-import { SuspendUserDialogComponent } from '../../user/dialogs/suspend-user-dialog/suspend-user-dialog.component';
+import { ReviewStatus } from '../models/review-status.model';
+import { Page } from '../../shared/model/page.mode';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { ToastrService } from 'ngx-toastr';
+import { ApproveDialogComponent } from '../../offering/offering-category/dialogs/approve-dialog/approve-dialog.component';
+import { ApproveReviewDialogComponent } from '../approve-review-dialog/approve-review-dialog.component';
 
 @Component({
   selector: 'app-all-reviews',
@@ -10,14 +15,11 @@ import { SuspendUserDialogComponent } from '../../user/dialogs/suspend-user-dial
   styleUrl: './all-reviews.component.scss',
 })
 export class AllReviewsComponent {
-  currentComments: Review[] = [];
+  currentReviews: Review[] = [];
   displayedColumns = [
     'position',
-    'user',
     'comment',
     'rating',
-    'event',
-    'offering',
     'createdDate',
     'actions',
   ];
@@ -28,35 +30,71 @@ export class AllReviewsComponent {
 
   constructor(
     private reviewService: ReviewService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.getAllSuspendedUsers();
+    this.getAllReviews();
   }
 
-  getAllSuspendedUsers() {}
+  getAllReviews() {
+    this.reviewService
+      .getAllReviews(this.currentPage, ReviewStatus.PENDING)
+      .subscribe({
+        next: (response: Page<Review>) => {
+          this.totalPages = response.totalPages;
+          this.currentReviews = response.content;
+        },
+        error: (err: ErrorResponse) => {
+          this.toastrService.error(err.message, 'Error');
+        },
+      });
+  }
 
   nextPage() {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
-      this.getAllSuspendedUsers();
+      this.getAllReviews();
     }
   }
 
   previousPage() {
     if (this.currentPage > 0) {
       this.currentPage--;
-      this.getAllSuspendedUsers();
+      this.getAllReviews();
     }
   }
 
   onApprove(reviewId: number) {
-    const dialogRef = this.dialog.open(SuspendUserDialogComponent, {
+    const dialogRef = this.dialog.open(ApproveReviewDialogComponent, {
       data: {
         reviewId: reviewId,
       },
       width: '24rem',
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (check) => {
+        let status = ReviewStatus.APPROVED;
+        if (!check) {
+          status = ReviewStatus.DENIED;
+        }
+        this.reviewService.updateReview(reviewId, status).subscribe({
+          next: () => {
+            this.toastrService.success(
+              `You successfully updated review`,
+              'Success'
+            );
+            this.getAllReviews();
+          },
+          error: (err: ErrorResponse) => {
+            this.toastrService.error(err.message, 'Error');
+          },
+        });
+      },
+      error: (err: ErrorResponse) => {
+        this.toastrService.error(err.message, 'Error');
+      },
     });
   }
 }

@@ -1,19 +1,13 @@
 <div class="container">
   <h3>Reviews</h3>
 </div>
-<h4 *ngIf="currentComments.length == 0">There are no new reviews.</h4>
+<h4 *ngIf="currentReviews.length == 0">There are no new reviews.</h4>
 <div class="example-container mat-elevation-z8">
-  <mat-table #table [dataSource]="currentComments">
+  <mat-table #table [dataSource]="currentReviews">
     <ng-container matColumnDef="position">
       <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
       <mat-cell *matCellDef="let element; let i = index">
         {{ currentPage * pageSize + i + 1 }}
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="user">
-      <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.user.firstName + " " + element.user.lastName }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="comment">
@@ -26,18 +20,6 @@
       <mat-header-cell *matHeaderCellDef> Rating </mat-header-cell>
       <mat-cell *matCellDef="let element">
         {{ element.rating }}
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="event">
-      <mat-header-cell *matHeaderCellDef> Event </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.event.name }}
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="offering">
-      <mat-header-cell *matHeaderCellDef> Offering </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.offering.name }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="createdDate">

@@ -4,11 +4,12 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close="cancel" (click)="onCancel()">
-    Cancel
+    Reject
   </button>
   <button
-    mat-raised-button
-    color="warn"
+    mat-flat-button
+    class="primary"
+    type="submit"
     [mat-dialog-close]="'confirm'"
     (click)="onApprove()"
   >

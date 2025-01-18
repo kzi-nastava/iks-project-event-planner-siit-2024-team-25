@@ -1,10 +1,12 @@
+import { ReviewStatus } from './review-status.model';
+import { ReviewType } from './review-type.model';
+
 export interface Review {
   id: number;
   comment: string;
   rating: number;
-  status: number;
-  user: { id: number; firstName: string; lastName: string };
-  event: { id: number; name: string };
-  offering: { id: number; name: string };
+  reviewType: ReviewType;
+  reviewStatus: ReviewStatus;
   createdDate: Date;
+  purchaseId: number;
 }
