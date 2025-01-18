@@ -16,8 +16,14 @@
             </mat-chip>
           </div>
         </div>
-        <button mat-icon-button color="warn" class="favorite-button" (click)="toggleFavorite()"
-                [matTooltip]="event.isFavorite ? 'Remove from favorites' : 'Add to favorites'">
+        <button 
+          *ngIf="isLoggedIn$ | async"
+          mat-icon-button
+          color="warn"
+          class="favorite-button"
+          (click)="toggleFavorite()"
+          [matTooltip]="event.isFavorite ? 'Remove from favorites' : 'Add to favorites'"
+        >
           @if (event.isFavorite) {
             <mat-icon>favorite</mat-icon>
           } @else {
@@ -26,7 +32,7 @@
         </button>
       </div>
 
-      <mat-card-actions class="action-buttons">
+      <mat-card-actions class="action-buttons" *ngIf="isLoggedIn$ | async">
         @if((isAttending$ | async) && !(isOrganizer$ | async)) {
           <a
             mat-raised-button
