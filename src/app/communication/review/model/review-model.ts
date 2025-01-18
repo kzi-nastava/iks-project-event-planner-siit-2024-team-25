@@ -1,3 +1,4 @@
+import { UserRole } from "../../../infrastructure/auth/model/user-role.model";
 import { ReviewStatus } from "./review-status";
 import { ReviewType } from "./review-type";
 
@@ -9,4 +10,5 @@ export interface Review{
     reviewStatus: ReviewStatus,
     createdDate: Date,
     purchaseId: number,
+    user: {id:number, firstName:String, lastName:String,profilePictureUrl:String, userRole:UserRole},
 }
