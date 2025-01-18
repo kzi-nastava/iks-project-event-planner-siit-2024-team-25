@@ -28,6 +28,7 @@ import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/orga
 
 import { OrganizerEventComponent } from './organizer-event/organizer-event.component';
 import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-card.component';
+import { PurchaseListComponent } from './purchase-list/purchase-list.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-
     EventAgendaComponent,
     FavoriteEventsComponent,
     FavoriteEventCardComponent,
+    PurchaseListComponent,
   ],
   imports: [
     CommonModule,

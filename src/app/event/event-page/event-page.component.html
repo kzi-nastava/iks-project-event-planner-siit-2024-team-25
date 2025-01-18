@@ -43,7 +43,7 @@
           <mat-icon>shopping_cart</mat-icon>
           Buy Products
         </button>
-        <button mat-raised-button class="primary" [routerLink]="['/events', event.id, 'purchases']">
+        <button mat-raised-button class="primary" (click)="openPurchaseList()">
           <mat-icon>receipt</mat-icon>
           View Purchases
         </button>

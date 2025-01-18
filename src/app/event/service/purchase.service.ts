@@ -6,6 +6,7 @@ import { environment } from '../../../environment/environment';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { ProductPurchaseResponseDTO } from '../model/product-purchase-response';
 import { ServicePurchaseCard } from '../model/service-purchase-card.model';
+import { PurchasePreview } from '../model/purchase-preview.mode';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,10 @@ export class PurchaseService {
       environment.apiHost + '/api/purchase/events/' + eventId + '/products',
       dto,
     );
+  }
+
+  getPurchaseByEvent(eventId:number): Observable<PurchasePreview[]>{
+    return this.httpClient.get<PurchasePreview[]>(environment.apiHost + "/api/purchase/" + eventId);
   }
 
   getOwnerPurchases(

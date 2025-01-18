@@ -165,6 +165,11 @@ export class EventPageComponent implements OnInit, OnDestroy {
       state: { event: this.event.id },
     });
   }
+  openPurchaseList(){
+    this.router.navigate([`event/${this.event.id}/purchases`],{
+      state: {eventId:this.event.id}
+    });
+  }
 
   joinEvent() {
     this.eventService.joinEvent(this.event.id).subscribe({

@@ -14,6 +14,7 @@ import { EventTypeListComponent } from './event-type-list/event-type-list.compon
 import { EventTypeComponent } from './event-type/event-type.component';
 import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/organizer-event-purchase.component';
 import { OrganizerEventComponent } from './organizer-event/organizer-event.component';
+import { PurchaseListComponent } from './purchase-list/purchase-list.component';
 
 const routes: Routes = [
   {
@@ -61,6 +62,10 @@ const routes: Routes = [
     path: ':id',
     component: EventPageComponent,
   },
+  {
+    path: ':id/purchases',
+    component: PurchaseListComponent
+  }
 ];
 
 @NgModule({

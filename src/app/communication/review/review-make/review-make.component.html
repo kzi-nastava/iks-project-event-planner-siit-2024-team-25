@@ -1,1 +1,17 @@
-<p>review-make works!</p>
+<h1 mat-dialog-title>Submit Review</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Comment</mat-label>
+    <textarea matInput [(ngModel)]="comment" required></textarea>
+  </mat-form-field>
+  
+  <div class="rating">
+    <span *ngFor="let star of stars; let i = index" (click)="setRating(i + 1)">
+      <mat-icon [class.selected]="i < rating">star</mat-icon>
+    </span>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [disabled]="!isFormValid()" (click)="submit()">Submit</button>
+</div>
