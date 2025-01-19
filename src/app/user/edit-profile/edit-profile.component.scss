@@ -1,0 +1,81 @@
+@use '@angular/material' as mat;
+@use '../../../theme/m3-theme.scss' as theme;
+
+.edit-profile-form {
+  max-width: 800px;
+  margin: 0 auto;
+
+  mat-card {
+    padding: 0;
+
+    .header {
+      background-color: mat.get-theme-color(theme.$light-theme, primary);
+      color: mat.get-theme-color(theme.$light-theme, on-primary);
+      padding: 2vh 2vw 2vh 2vw;
+      text-align: left;
+      border-radius: 8px;
+      display: block;
+
+      h1, h2 {
+        font-family: REM, sans-serif;
+        font-size: 1.8rem;
+      }
+    }
+
+    .card-content {
+      padding: 1.5rem;
+
+      .picture-container {
+        margin: 0 auto 2rem auto;
+      }
+    }
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    mat-form-field {
+      flex: 1;
+    }
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .address-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+  }
+
+  mat-card-actions {
+    padding: 1rem !important;
+    gap: 1rem;
+
+    button {
+      min-width: 120px;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 600px) {
+  .edit-profile-form {
+    .form-row {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .address-group {
+      grid-template-columns: 1fr;
+    }
+  }
+}

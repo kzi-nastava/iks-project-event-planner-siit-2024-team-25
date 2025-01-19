@@ -13,10 +13,12 @@ import { ToastrService } from 'ngx-toastr';
 import { confirmPasswordValidator } from '../../infrastructure/validators/confirmPasswordValidator';
 import { passwordValidator } from '../../infrastructure/validators/passwordValidator';
 import { ErrorResponse } from '../../shared/model/error.response.model';
-import { RegisterRequest } from '../model/register.request.model';
 import { RegisterResponse } from '../model/register.response.model';
+import { RegisterRequest } from '../model/user.request.model';
 import { RegisterSuccessDialogComponent } from '../register-success-dialog/register-success-dialog.component';
 import { UserService } from '../service/user.service';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../infrastructure/auth/service/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -31,13 +33,31 @@ export class RegisterComponent implements OnInit {
   profilePicture: File | null = null;
   companyPictures: File[] = [];
   waitingResponse = false;
+  isUpgrade: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
     private userService: UserService,
     private toastService: ToastrService,
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
+
+  getQueryParams() {
+    this.route.queryParams.subscribe((params) => {
+      const userParams = ['firstName', 'lastName'];
+      userParams.forEach((param) => {
+        if (params[param]) {
+          this.form.get(param)?.setValue(params[param]);
+          this.isUpgrade = true;
+        } else {
+          this.isUpgrade = false;
+        }
+      });
+    });
+    this.form.get('email')?.setValue(this.authService.getUser()?.email);
+  }
 
   ngOnInit() {
     this.form = this.fb.group(
@@ -69,8 +89,10 @@ export class RegisterComponent implements OnInit {
       },
       {
         validators: [confirmPasswordValidator('password', 'confirmPassword')],
-      },
+      }
     );
+    this.getQueryParams();
+    console.log(this.isUpgrade);
   }
 
   private requiredForRole(role: 'EVENT_ORGANIZER' | 'OWNER'): ValidatorFn {
@@ -146,32 +168,61 @@ export class RegisterComponent implements OnInit {
           },
         }),
       };
-
-      this.userService.register(registerRequest).subscribe({
-        next: (registerResponse: RegisterResponse) => {
-          this.waitingResponse = false;
-          this.form.reset();
-          this.dialog.open(RegisterSuccessDialogComponent, {
-            width: '480px',
-            data: registerResponse,
-          });
-        },
-        error: (error: ErrorResponse) => {
-          this.waitingResponse = false;
-          this.toastService.error(error.message, 'Failed to register');
-
-          console.log(error);
-
-          if (error.errors) {
-            Object.keys(error.errors).forEach((fieldName) => {
-              const control = this.form.get(fieldName);
-              if (control) {
-                control.setErrors({ serverError: error.errors[fieldName] });
-              }
+      if (this.isUpgrade) {
+        this.userService.upgradeProfile(registerRequest).subscribe({
+          next: (registerResponse: RegisterResponse) => {
+            this.waitingResponse = false;
+            this.form.reset();
+            this.dialog.open(RegisterSuccessDialogComponent, {
+              width: '480px',
+              data: {
+                registerResponse: registerResponse,
+                isUpgrade: this.isUpgrade,
+              },
             });
-          }
-        },
-      });
+            this.authService.logOut();
+          },
+          error: (error: ErrorResponse) => {
+            this.waitingResponse = false;
+            this.toastService.error(error.message, 'Failed to upgrade profile');
+
+            if (error.errors) {
+              Object.keys(error.errors).forEach((fieldName) => {
+                const control = this.form.get(fieldName);
+                if (control) {
+                  control.setErrors({ serverError: error.errors[fieldName] });
+                }
+              });
+            }
+          },
+        });
+      } else {
+        this.userService.register(registerRequest).subscribe({
+          next: (registerResponse: RegisterResponse) => {
+            this.waitingResponse = false;
+            this.form.reset();
+            this.dialog.open(RegisterSuccessDialogComponent, {
+              width: '480px',
+              data: registerResponse,
+            });
+          },
+          error: (error: ErrorResponse) => {
+            this.waitingResponse = false;
+            this.toastService.error(error.message, 'Failed to register');
+
+            console.log(error);
+
+            if (error.errors) {
+              Object.keys(error.errors).forEach((fieldName) => {
+                const control = this.form.get(fieldName);
+                if (control) {
+                  control.setErrors({ serverError: error.errors[fieldName] });
+                }
+              });
+            }
+          },
+        });
+      }
     }
   }
 }

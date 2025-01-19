@@ -1,0 +1,36 @@
+<div class="dialog-container">
+  <div class="card deactivate-card">
+    <div class="header">
+      <h1>Deactivate Account</h1>
+    </div>
+
+    <div class="content">
+      <div class="warning-message">
+        <mat-icon class="warning-icon">warning</mat-icon>
+        <p>This action cannot be undone.</p>
+      </div>
+
+      <p class="description">
+        Your account will be permanently deactivated. You will lose access to all your data and settings.
+        This action is irreversible.
+      </p>
+
+      <div class="confirmation-text">
+        Are you sure you want to proceed with account deactivation?
+      </div>
+
+      <div class="actions">
+        <button mat-stroked-button
+                class="danger"
+                (click)="onConfirm()">
+          Deactivate Account
+        </button>
+        <button mat-button
+                class="secondary"
+                (click)="onCancel()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

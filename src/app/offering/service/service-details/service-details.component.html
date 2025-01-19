@@ -1,8 +1,11 @@
+@if (service) {
 <div class="offering-container">
   <div class="offering-header">
     <h1 class="offering-name">{{ service.name }}</h1>
     <div *ngIf="showBookServiceButton">
-      <button class="book-button" (click)="openBookServiceForm()">Book a Service</button>
+      <button class="book-button" (click)="openBookServiceForm()">
+        Book a Service
+      </button>
     </div>
   </div>
   <p class="offering-description">{{ service.description }}</p>
@@ -10,7 +13,10 @@
   <div class="offering-content">
     <!-- Slider for Images -->
     <div class="image-slider">
-      <div class="slider-wrapper" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
+      <div
+        class="slider-wrapper"
+        [style.transform]="'translateX(-' + currentSlide * 100 + '%)'"
+      >
         <div class="slider-item" *ngFor="let image of service.images">
           <img [src]="image" alt="Offering Image" />
         </div>
@@ -34,40 +40,46 @@
         <strong>Reservation Type:</strong> {{ service.reservationType }}
       </div>
       <div class="detail-item">
-        <strong>Reservation Deadline:</strong> {{ service.reservationDeadline }} days
+        <strong>Reservation Deadline:</strong>
+        {{ service.reservationDeadline }} days
       </div>
       <div class="detail-item">
-        <strong>Cancellation Deadline:</strong> {{ service.cancellationDeadline }} days
+        <strong>Cancellation Deadline:</strong>
+        {{ service.cancellationDeadline }} days
       </div>
       @if (durationShow) {
-        <div class="detail-item">
-          <strong>Duration:</strong> {{ service.duration }} hours
-        </div>
-        <div class="detatil-item"></div>
+      <div class="detail-item">
+        <strong>Duration:</strong> {{ service.duration }} hours
+      </div>
+      <div class="detatil-item"></div>
       }@else {
-        <div class="detail-item">
-          <strong>Min Arrangement:</strong> {{ service.minimumArrangement }}
-        </div>
-        <div class="detail-item">
-          <strong>Max Arrangement:</strong> {{ service.maximumArrangement }}
-        </div>
+      <div class="detail-item">
+        <strong>Min Arrangement:</strong> {{ service.minimumArrangement }}
+      </div>
+      <div class="detail-item">
+        <strong>Max Arrangement:</strong> {{ service.maximumArrangement }}
+      </div>
       }
-      
-      
     </div>
   </div>
 
   <div class="owner-details">
     <h3>Owner</h3>
     <div class="owner-info">
-      <p>{{ service.ownerInfo.firstName }} {{ service.ownerInfo.lastName }}</p>
+      <p>{{ service.owner.name }}</p>
       <div class="buttons">
-        <button [routerLink]="['/chat', service.ownerInfo.id, service.ownerInfo.firstName]" class="chat-button">Chat with Owner</button>
-        <button class="view-button" (click)="viewOwnerCompany()">View Owner Company</button>
+        <button
+          [routerLink]="['/chat', service.owner.id, service.owner.name]"
+          class="chat-button"
+        >
+          Chat with Owner
+        </button>
+        <button class="view-button" (click)="viewOwnerCompany()">
+          View Owner Company
+        </button>
       </div>
     </div>
   </div>
-  
 
   <div class="offering-specifics">
     <h3>Specifics</h3>
@@ -81,5 +93,4 @@
     </ul>
   </div>
 </div>
-
-
+}

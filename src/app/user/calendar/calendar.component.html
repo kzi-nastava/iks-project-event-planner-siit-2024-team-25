@@ -1,0 +1,108 @@
+<div class="calendar-container">
+  <div class="calendar-grid">
+    <!-- Calendar Section -->
+    <div class="calendar-section">
+      <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
+
+    <!-- Events Section -->
+    <div class="events-section">
+      <mat-card class="events-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ (selectedDate | date:'fullDate') || 'Select a date' }}
+          </mat-card-title>
+
+          <!-- View Selector for Event Organizers and Owners -->
+          <mat-form-field *ngIf="isEventOrganizer || isOwner" appearance="fill" class="view-selector">
+            <mat-select [(ngModel)]="currentView" (selectionChange)="onViewChange()">
+              <mat-option value="attending">Attending Events</mat-option>
+              <mat-option *ngIf="isEventOrganizer" value="organized">Organized Events</mat-option>
+              <mat-option *ngIf="isOwner" value="reservations">Service Reservations</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- Loading State -->
+          <div class="loading-state" *ngIf="loading">
+            <mat-spinner diameter="40"></mat-spinner>
+          </div>
+
+          <!-- Attending Events -->
+          <div class="events-list" *ngIf="!loading && currentView === 'attending' && attendingEvents.length > 0">
+            <mat-card class="event-card" *ngFor="let event of attendingEvents">
+              <div class="card-content" (click)="navigateToEvent(event.id)">
+                <div class="event-header">
+                  <h3>{{ event.name }}</h3>
+                  <span class="time">{{ event.startDateTime | date:'shortTime' }}</span>
+                </div>
+                <div class="event-details">
+                  <p class="organizer">By {{ event.organizerName }}</p>
+                  <p class="location">
+                    <mat-icon>location_on</mat-icon>
+                    {{ event.city }}, {{ event.country }}
+                  </p>
+                  <p class="description">{{ event.description }}</p>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+
+          <!-- Organized Events -->
+          <div class="events-list" *ngIf="!loading && currentView === 'organized' && organizedEvents.length > 0">
+            <mat-card class="event-card" *ngFor="let event of organizedEvents" (click)="navigateToEvent(event.id)">
+              <div class="card-content">
+                <div class="event-header">
+                  <h3>{{ event.name }}</h3>
+                  <span class="time">{{ event.startDateTime | date:'shortTime' }}</span>
+                </div>
+                <div class="event-details">
+                  <p class="location">
+                    <mat-icon>location_on</mat-icon>
+                    {{ event.city }}, {{ event.country }}
+                  </p>
+                  <p class="description">{{ event.description }}</p>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+
+          <!-- Service Reservations -->
+          <div class="events-list" *ngIf="!loading && currentView === 'reservations' && servicePurchases.length > 0">
+            <mat-card class="event-card" *ngFor="let purchase of servicePurchases"
+                      (click)="navigateToReservation(purchase.id)">
+              <div class="card-content">
+                <div class="event-header">
+                  <h3>{{ purchase.serviceName }}</h3>
+                  <span class="price">{{ purchase.price | currency }}</span>
+                </div>
+                <div class="event-details">
+                  <p class="event-name">{{ purchase.eventName }}</p>
+                  <p class="time-slot">
+                    <mat-icon>schedule</mat-icon>
+                    {{ purchase.startTime }} - {{ purchase.endTime }}
+                  </p>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state" *ngIf="!loading && selectedDate && getCurrentItems().length === 0">
+            <mat-icon>event_busy</mat-icon>
+            <h3>No {{ getEmptyStateMessage() }}</h3>
+            <p>There are no {{ getEmptyStateMessage().toLowerCase() }} for this day.</p>
+          </div>
+
+          <!-- Initial State -->
+          <div class="empty-state" *ngIf="!loading && !selectedDate">
+            <mat-icon>calendar_today</mat-icon>
+            <h3>Select a Date</h3>
+            <p>Click on a date to view details.</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<ul class="card-list" >
+    <li class="card" (click)="openChat()">
+        <img src={{chat?.receiver?.profilePictureUrl}} alt="Profile Picture">
+        <div class="card-info">
+            <div class="name">{{chat?.receiver?.firstName}} {{chat?.receiver?.lastName}}</div>
+            <div class="role">{{chat?.receiver?.userRole}}</div>
+        </div>
+    </li>
+</ul>

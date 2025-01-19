@@ -183,6 +183,33 @@
   }
 }
 
+.event-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .event-type {
+    margin: 0;
+  }
+
+  .privacy-chip {
+    height: 24px;
+    font-size: 0.9rem;
+
+    .wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .privacy-icon {
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
+      margin-right: 4px;
+    }
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

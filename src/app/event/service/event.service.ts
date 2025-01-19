@@ -5,22 +5,21 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 import { environment } from '../../../environment/environment';
-
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { ErrorResponse } from '../../shared/model/error.response.model';
 import { Page } from '../../shared/model/page.mode';
 import { Activity } from '../model/activity.model';
+import { Attendee } from '../model/attendee.model';
+import { CalendarEvent } from '../model/calendar-event.model';
 import { EventInvitation } from '../model/event.invitation.model';
-
 import { Event } from '../model/event.model';
-
 import { EventRequest } from '../model/event.request.model';
 import { HomeEvent } from '../model/home-event.model';
 import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
+import { ReviewStats } from '../model/review-stats.model';
 
 @Injectable({
   providedIn: 'root',
@@ -189,7 +188,7 @@ export class EventService {
     const userId = this.authService.getUser()?.userId;
     return this.httpClient
       .delete<void>(
-        environment.apiHost + `/api/users/${userId}/favorite-events/${eventId}`,
+        environment.apiHost + `/api/users/${userId}/favorite-events/${eventId}`
       )
       .pipe(catchError(this.handleError));
   }
@@ -197,9 +196,101 @@ export class EventService {
   getFavoriteEvents(): Observable<HomeEvent[]> {
     const userId = this.authService.getUser()?.userId;
     return this.httpClient
-      .get<
-        HomeEvent[]
-      >(environment.apiHost + `/api/users/${userId}/favorite-events`)
+      .get<HomeEvent[]>(
+        environment.apiHost + `/api/users/${userId}/favorite-events`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getCalendarEvents(
+    startDate: Date,
+    endDate: Date
+  ): Observable<CalendarEvent[]> {
+    const userId = this.authService.getUser()?.userId;
+    return this.httpClient
+      .get<CalendarEvent[]>(
+        environment.apiHost + `/api/users/${userId}/calendar`,
+        {
+          params: {
+            startDate: this.datePipe.transform(startDate, 'yyyy-MM-dd')!,
+            endDate: this.datePipe.transform(endDate, 'yyyy-MM-dd')!,
+          },
+        }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getAttendingEvents(startDate: Date, endDate: Date): Observable<HomeEvent[]> {
+    const userId = this.authService.getUser()?.userId;
+    return this.httpClient
+      .get<HomeEvent[]>(
+        environment.apiHost + `/api/events/attending/${userId}`,
+        {
+          params: {
+            startDate: this.datePipe.transform(startDate, 'yyyy-MM-dd')!,
+            endDate: this.datePipe.transform(endDate, 'yyyy-MM-dd')!,
+          },
+        }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getOrganizerEvents(startDate: Date, endDate: Date): Observable<HomeEvent[]> {
+    const organizerId = this.authService.getUser()?.userId;
+    return this.httpClient
+      .get<HomeEvent[]>(
+        environment.apiHost + `/api/events/organizer/${organizerId}`,
+        {
+          params: {
+            startDate: this.datePipe.transform(startDate, 'yyyy-MM-dd')!,
+            endDate: this.datePipe.transform(endDate, 'yyyy-MM-dd')!,
+          },
+        }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  isAttending(eventId: number, userId: number): Observable<boolean> {
+    return this.httpClient
+      .get<boolean>(
+        environment.apiHost + `/api/events/${eventId}/attending/${userId}`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  joinEvent(eventId: number): Observable<HomeEvent> {
+    const userId = this.authService.getUser()?.userId;
+    return this.httpClient
+      .post<HomeEvent>(environment.apiHost + `/api/events/${eventId}/join`, {
+        userId,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  getAttendees(eventId: number, page: number): Observable<{ attendees: Attendee[]; totalAttendees: number }> {
+    return this.httpClient
+      .get<Page<Attendee>>(
+        environment.apiHost + `/api/events/${eventId}/attendees`,
+        {
+          params: {
+            page,
+          },
+        }
+      )
+      .pipe(
+        map(page => ({
+          attendees: page.content,
+          totalAttendees: page.totalElements
+        })),
+        catchError(this.handleError)
+      );
+  }
+
+  getReviewStats(eventId: number): Observable<ReviewStats> {
+    return this.httpClient
+      .get<ReviewStats>(
+        environment.apiHost + `/api/reviews/event/${eventId}/stats`
+      )
       .pipe(catchError(this.handleError));
   }
 

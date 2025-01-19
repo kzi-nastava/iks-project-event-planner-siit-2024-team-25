@@ -28,6 +28,8 @@ import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/orga
 
 import { OrganizerEventComponent } from './organizer-event/organizer-event.component';
 import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-card.component';
+import { EventStatsComponent } from './event-stats/event-stats.component';
+import { BaseChartDirective } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-
     EventAgendaComponent,
     FavoriteEventsComponent,
     FavoriteEventCardComponent,
+    EventStatsComponent,
   ],
   imports: [
     CommonModule,
@@ -61,8 +64,13 @@ import { ProductToBuyCardComponent } from './product-to-buy-card/product-to-buy-
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    BaseChartDirective,
   ],
-  exports: [HomeTopEventsComponent, HomeAllEventsComponent],
+  exports: [
+    HomeTopEventsComponent,
+    HomeAllEventsComponent,
+    FavoriteEventsComponent,
+  ],
   providers: [DatePipe],
 })
 export class EventModule {}

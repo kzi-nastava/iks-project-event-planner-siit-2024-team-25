@@ -1,0 +1,8 @@
+.chat-main{
+    display: flex;
+    justify-content: space-between;
+}
+.chat-room, .chat-message {
+    flex: 1;
+    height: 100%;
+}

@@ -1,16 +1,17 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { map, shareReplay, switchMap, take } from 'rxjs';
+
+import { ToastrService } from 'ngx-toastr';
+import { combineLatest, map, shareReplay } from 'rxjs';
+import { NotificationCategory } from '../../communication/notification/model/notification-category.model';
+import { Notification } from '../../communication/notification/model/notification.model';
+import { NotificationComponent } from '../../communication/notification/notification.component';
+import { NotificationServiceService } from '../../communication/notification/service/notification-service.service';
+
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
-import { NotificationServiceService } from '../../communication/notification/service/notification-service.service';
-import { ToastrService } from 'ngx-toastr';
-import { Notification } from '../../communication/notification/model/notification.model';
-import { NotificationCategory } from '../../communication/notification/model/notification-category.model';
-import { MatDialog } from '@angular/material/dialog';
-import { NotificationComponent } from '../../communication/notification/notification.component';
-import { User } from '../../infrastructure/auth/model/user.model';
 
 @Component({
   selector: 'app-nav',
@@ -27,7 +28,7 @@ export class NavComponent implements OnInit {
     private router: Router,
     private notificationService: NotificationServiceService,
     private toastrService: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -39,7 +40,7 @@ export class NavComponent implements OnInit {
           {
             closeButton: true,
             tapToDismiss: false,
-          }
+          },
         );
 
         toast.onTap.subscribe(() => {
@@ -78,27 +79,37 @@ export class NavComponent implements OnInit {
         });
 
         this.notifications.push(notification);
-      }
+      },
     );
   }
 
   loggedIn$ = this.authService.loggedIn$;
 
   isOwner$ = this.authService.userRole$.pipe(
-    map((role) => role == UserRole.Owner)
+    map((role) => role == UserRole.Owner),
   );
 
   isOrganizer$ = this.authService.userRole$.pipe(
-    map((role) => role == UserRole.EventOrganizer)
+    map((role) => role == UserRole.EventOrganizer),
   );
 
   isAdmin$ = this.authService.userRole$.pipe(
-    map((role) => role == UserRole.Admin)
+    map((role) => role == UserRole.Admin),
+  );
+
+  isVisibleChat$ = combineLatest([
+    this.isAdmin$,
+    this.isOrganizer$,
+    this.isOwner$,
+  ]).pipe(
+    map(
+      ([isAdmin, isOrganizer, isOwner]) => !isAdmin && !isOrganizer && !isOwner,
+    ),
   );
 
   isHandset$ = this.breakpointObserver.observe([Breakpoints.Handset]).pipe(
     map((result) => result.matches),
-    shareReplay()
+    shareReplay(),
   );
 
   toggleExpanded(): void {
