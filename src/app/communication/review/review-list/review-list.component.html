@@ -1,1 +1,48 @@
-<p>review-list works!</p>
+<div class="container">
+    <h3>Reviews </h3>
+      
+  </div>
+  <div class="example-container mat-elevation-z8">
+
+      <mat-table #table [dataSource]="reviews">
+    
+        
+        <ng-container matColumnDef="position">
+          <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index"> {{i+1}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="userName">
+          <mat-header-cell *matHeaderCellDef> User name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.user.firstName}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="eventName">
+          <mat-header-cell *matHeaderCellDef> Event name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.eventOfferingName}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="comment">
+            <mat-header-cell *matHeaderCellDef> Comment </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.comment}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="rating">
+            <mat-header-cell *matHeaderCellDef> Rating </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.rating}} </mat-cell>
+          </ng-container>
+    
+        
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      @if (reviews.length==0) {
+        <h5>There is no reviews</h5>
+    }
+    <div class="pagination-controls">
+      <button mat-button (click)="scrollDown()" [disabled]="currentPage === 0">Previous</button>
+      <span>Page {{currentPage+1}} of {{totalPages}}</span>
+      <button mat-button (click)="scrollUp()" [disabled]="currentPage === totalPages-1">Next</button>
+    </div>
+    </div>
+    
+  

@@ -11,4 +11,5 @@ export interface Review{
     createdDate: Date,
     purchaseId: number,
     user: {id:number, firstName:String, lastName:String,profilePictureUrl:String, userRole:UserRole},
+    eventOfferingName: string
 }
