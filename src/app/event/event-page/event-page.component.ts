@@ -111,8 +111,10 @@ export class EventPageComponent implements OnInit, OnDestroy {
   }
 
   get reportDownloadUrl(): string | null {
-    if (!this.eventId$) return null;
-    return environment.apiHost + `/api/events/${this.eventId$}/report`;
+    if (!this.eventId$.getValue()) return null;
+    return (
+      environment.apiHost + `/api/events/${this.eventId$.getValue()}/report`
+    );
   }
 
   toggleFavorite(): void {
