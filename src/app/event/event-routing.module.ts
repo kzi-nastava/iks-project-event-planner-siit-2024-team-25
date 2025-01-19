@@ -14,7 +14,11 @@ import { EventTypeListComponent } from './event-type-list/event-type-list.compon
 import { EventTypeComponent } from './event-type/event-type.component';
 import { OrganizerEventPurchaseComponent } from './organizer-event-purchase/organizer-event-purchase.component';
 import { OrganizerEventComponent } from './organizer-event/organizer-event.component';
+
 import { PurchaseListComponent } from './purchase-list/purchase-list.component';
+
+import { EventStatsComponent } from './event-stats/event-stats.component';
+
 
 const routes: Routes = [
   {
@@ -28,6 +32,12 @@ const routes: Routes = [
     component: AgendaComponent,
     canActivate: [roleGuard],
     data: { roles: [UserRole.EventOrganizer] },
+  },
+  {
+    path: ':id/stats',
+    component: EventStatsComponent,
+    canActivate: [roleGuard],
+    data: { roles: [UserRole.EventOrganizer, UserRole.Admin] },
   },
   {
     path: 'types',

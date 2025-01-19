@@ -31,6 +31,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
   eventId$ = new BehaviorSubject<number | null>(null);
   invitationCode!: string;
   event!: Event;
+  isLoggedIn$ = new BehaviorSubject<boolean>(false);
   isOrganizer$ = new BehaviorSubject<boolean>(false);
   isAdmin$ = new BehaviorSubject<boolean>(false);
   isAttending$!: Observable<boolean>;
@@ -45,7 +46,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private breakpointObserver: BreakpointObserver,
     private dialog: MatDialog,
-    private toastService: ToastrService,
+    private toastService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +69,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
     });
 
     this.authService.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      this.isLoggedIn$.next(!!user);
       if (this.event) {
         this.isOrganizer$.next(user?.userId === this.event.organizer.id);
       }
@@ -84,7 +86,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
           return this.eventService.isAttending(eventId, user.userId);
         }
         return of(false);
-      }),
+      })
     );
   }
 
@@ -126,7 +128,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
           error: (err: ErrorResponse) => {
             this.toastService.error(
               err.message,
-              'Failed to remove event from favorites',
+              'Failed to remove event from favorites'
             );
           },
         });
@@ -141,7 +143,7 @@ export class EventPageComponent implements OnInit, OnDestroy {
           error: (err: ErrorResponse) => {
             this.toastService.error(
               err.message,
-              'Failed to add event to favorites',
+              'Failed to add event to favorites'
             );
           },
         });

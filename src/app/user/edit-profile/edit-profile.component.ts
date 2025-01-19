@@ -8,6 +8,7 @@ import { ErrorResponse } from '../../shared/model/error.response.model';
 import { EventOrganizer, Owner, User } from '../model/user.model';
 import { UserRequest } from '../model/user.request.model';
 import { UserService } from '../service/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-profile',
@@ -30,6 +31,7 @@ export class EditProfileComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -131,5 +133,14 @@ export class EditProfileComponent implements OnInit {
   onReset() {
     this.initializeForm();
     this.resetSubject.next();
+  }
+
+  upgradeProfile() {
+    const queryParams = {
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+    };
+
+    this.router.navigate(['/user/register'], { queryParams });
   }
 }

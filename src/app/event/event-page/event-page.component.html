@@ -16,8 +16,14 @@
             </mat-chip>
           </div>
         </div>
-        <button mat-icon-button color="warn" class="favorite-button" (click)="toggleFavorite()"
-                [matTooltip]="event.isFavorite ? 'Remove from favorites' : 'Add to favorites'">
+        <button 
+          *ngIf="isLoggedIn$ | async"
+          mat-icon-button
+          color="warn"
+          class="favorite-button"
+          (click)="toggleFavorite()"
+          [matTooltip]="event.isFavorite ? 'Remove from favorites' : 'Add to favorites'"
+        >
           @if (event.isFavorite) {
             <mat-icon>favorite</mat-icon>
           } @else {
@@ -25,6 +31,7 @@
           }
         </button>
       </div>
+
 
       <mat-card-actions class="action-buttons" *ngIf="isOrganizer$ | async">
         <button mat-raised-button class="primary" [routerLink]="['/event', event.id, 'agenda']">
@@ -53,33 +60,63 @@
         </a>
       </mat-card-actions>
 
-      <mat-card-actions *ngIf="isAdmin$ | async">
-        <a mat-raised-button class="primary" [href]="reportDownloadUrl">
-          <mat-icon>description</mat-icon>
-          Save as PDF
-        </a>
-      </mat-card-actions>
+      <mat-card-actions class="action-buttons" *ngIf="isLoggedIn$ | async">
+        @if((isAttending$ | async) && !(isOrganizer$ | async)) {
+          <a
+            mat-raised-button
+            class="primary"
+            [routerLink]="['/chat', event.organizer.id, event.organizer.name]"
+          >
+            <mat-icon>messages</mat-icon>
+            Chat with organizer
+          </a>
+        }
 
-      <mat-card-actions *ngIf="(isAttending$ | async) && !(isOrganizer$ | async)">
-        <a
-          mat-raised-button
-          class="primary"
-          [routerLink]="['/chat', event.organizer.id, event.organizer.name]"
-        >
-          <mat-icon>messages</mat-icon>
-          Chat with organizer
-        </a>
-      </mat-card-actions>
 
-      <mat-card-actions *ngIf="event.privacyType == 'PUBLIC' && !(isAttending$ | async) && !(isOrganizer$ | async)">
-        <button
-          mat-raised-button
-          class="primary"
-          (click)="joinEvent()"
-        >
-          <mat-icon>event</mat-icon>
-          Join Event!
-        </button>
+        @if(event.privacyType == 'PUBLIC' && !(isAttending$ | async) && !(isOrganizer$ | async)) {
+          <button
+            mat-raised-button
+            class="primary"
+            (click)="joinEvent()"
+          >
+            <mat-icon>event</mat-icon>
+            Join Event!
+          </button>
+        }
+
+        @if(isOrganizer$ | async) {
+          <button mat-raised-button class="primary" [routerLink]="['/event', event.id, 'agenda']">
+            <mat-icon>edit</mat-icon>
+            Edit Agenda
+          </button>
+          <button mat-raised-button class="primary" (click)="openEmailDialog()" *ngIf="event.privacyType == 'PRIVATE'">
+            <mat-icon>person_add</mat-icon>
+            Invite People
+          </button>
+          <button mat-raised-button class="primary" (click)="openBudgetPlan()">
+            <mat-icon>account_balance_wallet</mat-icon>
+            Budget Plan
+          </button>
+          <button mat-raised-button class="primary" (click)="openPurchase()">
+            <mat-icon>shopping_cart</mat-icon>
+            Buy Products
+          </button>
+          <button mat-raised-button class="primary" [routerLink]="['/events', event.id, 'purchases']">
+            <mat-icon>receipt</mat-icon>
+            View Purchases
+          </button>
+        }
+
+        @if((isOrganizer$ | async) || (isAdmin$ | async)) {
+          <button mat-raised-button class="primary" [routerLink]="['/event', event.id, 'stats']">
+            <mat-icon>timeline</mat-icon>
+            View Stats
+          </button>
+          <a mat-raised-button class="primary" [href]="reportDownloadUrl">
+            <mat-icon>download</mat-icon>
+            Save as PDF
+          </a>
+        }
       </mat-card-actions>
     </mat-card>
 

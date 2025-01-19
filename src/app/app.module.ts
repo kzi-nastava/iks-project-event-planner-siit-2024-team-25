@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideToastr } from 'ngx-toastr';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,6 +31,7 @@ import { CommunicationModule } from './communication/communication.module';
     provideAnimationsAsync(),
     provideToastr(),
     provideHttpClient(withInterceptors([jwtInterceptor])),
+    provideCharts(withDefaultRegisterables()),
   ],
 
   bootstrap: [AppComponent],

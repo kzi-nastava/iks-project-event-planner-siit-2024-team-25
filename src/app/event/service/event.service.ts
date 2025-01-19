@@ -5,23 +5,21 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 import { environment } from '../../../environment/environment';
-
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { ErrorResponse } from '../../shared/model/error.response.model';
 import { Page } from '../../shared/model/page.mode';
 import { Activity } from '../model/activity.model';
+import { Attendee } from '../model/attendee.model';
 import { CalendarEvent } from '../model/calendar-event.model';
 import { EventInvitation } from '../model/event.invitation.model';
-
 import { Event } from '../model/event.model';
-
 import { EventRequest } from '../model/event.request.model';
 import { HomeEvent } from '../model/home-event.model';
 import { HomeEventFilterParams } from '../model/home.event.filter.param.model';
+import { ReviewStats } from '../model/review-stats.model';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +28,7 @@ export class EventService {
   constructor(
     private httpClient: HttpClient,
     private authService: AuthService,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe
   ) {}
 
   getEvent(eventId: number, invitationCode?: string): Observable<Event> {
@@ -58,7 +56,7 @@ export class EventService {
 
   getMyEvents(
     page: number,
-    filterParams?: HomeEventFilterParams,
+    filterParams?: HomeEventFilterParams
   ): Observable<{ currentEvents: HomeEvent[]; totalPages: number }> {
     let params = this.getHttpParams(filterParams);
     params = params.set('page', page);
@@ -69,7 +67,7 @@ export class EventService {
         map((page) => ({
           currentEvents: page.content,
           totalPages: page.totalPages,
-        })),
+        }))
       );
   }
 
@@ -94,14 +92,14 @@ export class EventService {
       if (filterParams.startDate) {
         params = params.set(
           'startDate',
-          this.datePipe.transform(filterParams.startDate, 'yyyy-MM-dd')!,
+          this.datePipe.transform(filterParams.startDate, 'yyyy-MM-dd')!
         );
       }
 
       if (filterParams.endDate) {
         params = params.set(
           'endDate',
-          this.datePipe.transform(filterParams.endDate, 'yyyy-MM-dd')!,
+          this.datePipe.transform(filterParams.endDate, 'yyyy-MM-dd')!
         );
       }
     }
@@ -111,7 +109,7 @@ export class EventService {
 
   getEvents(
     page: number,
-    filterParams?: HomeEventFilterParams,
+    filterParams?: HomeEventFilterParams
   ): Observable<{ currentEvents: HomeEvent[]; totalPages: number }> {
     let params = this.getHttpParams(filterParams);
 
@@ -128,7 +126,7 @@ export class EventService {
         map((page) => ({
           currentEvents: page.content,
           totalPages: page.totalPages,
-        })),
+        }))
       );
   }
 
@@ -136,7 +134,7 @@ export class EventService {
     this.httpClient
       .post(
         `${environment.apiHost}/api/events/${eventId}/send-invitations`,
-        invitations,
+        invitations
       )
       .subscribe({
         next: () => console.log('Invitations sent successfully.'),
@@ -171,7 +169,7 @@ export class EventService {
   removeActivity(eventId: number, activityId: number) {
     return this.httpClient
       .delete(
-        environment.apiHost + `/api/events/${eventId}/agenda/${activityId}`,
+        environment.apiHost + `/api/events/${eventId}/agenda/${activityId}`
       )
       .pipe(catchError(this.handleError));
   }
@@ -190,7 +188,7 @@ export class EventService {
     const userId = this.authService.getUser()?.userId;
     return this.httpClient
       .delete<void>(
-        environment.apiHost + `/api/users/${userId}/favorite-events/${eventId}`,
+        environment.apiHost + `/api/users/${userId}/favorite-events/${eventId}`
       )
       .pipe(catchError(this.handleError));
   }
@@ -198,15 +196,15 @@ export class EventService {
   getFavoriteEvents(): Observable<HomeEvent[]> {
     const userId = this.authService.getUser()?.userId;
     return this.httpClient
-      .get<
-        HomeEvent[]
-      >(environment.apiHost + `/api/users/${userId}/favorite-events`)
+      .get<HomeEvent[]>(
+        environment.apiHost + `/api/users/${userId}/favorite-events`
+      )
       .pipe(catchError(this.handleError));
   }
 
   getCalendarEvents(
     startDate: Date,
-    endDate: Date,
+    endDate: Date
   ): Observable<CalendarEvent[]> {
     const userId = this.authService.getUser()?.userId;
     return this.httpClient
@@ -217,7 +215,7 @@ export class EventService {
             startDate: this.datePipe.transform(startDate, 'yyyy-MM-dd')!,
             endDate: this.datePipe.transform(endDate, 'yyyy-MM-dd')!,
           },
-        },
+        }
       )
       .pipe(catchError(this.handleError));
   }
@@ -232,7 +230,7 @@ export class EventService {
             startDate: this.datePipe.transform(startDate, 'yyyy-MM-dd')!,
             endDate: this.datePipe.transform(endDate, 'yyyy-MM-dd')!,
           },
-        },
+        }
       )
       .pipe(catchError(this.handleError));
   }
@@ -247,7 +245,7 @@ export class EventService {
             startDate: this.datePipe.transform(startDate, 'yyyy-MM-dd')!,
             endDate: this.datePipe.transform(endDate, 'yyyy-MM-dd')!,
           },
-        },
+        }
       )
       .pipe(catchError(this.handleError));
   }
@@ -255,7 +253,7 @@ export class EventService {
   isAttending(eventId: number, userId: number): Observable<boolean> {
     return this.httpClient
       .get<boolean>(
-        environment.apiHost + `/api/events/${eventId}/attending/${userId}`,
+        environment.apiHost + `/api/events/${eventId}/attending/${userId}`
       )
       .pipe(catchError(this.handleError));
   }
@@ -266,6 +264,33 @@ export class EventService {
       .post<HomeEvent>(environment.apiHost + `/api/events/${eventId}/join`, {
         userId,
       })
+      .pipe(catchError(this.handleError));
+  }
+
+  getAttendees(eventId: number, page: number): Observable<{ attendees: Attendee[]; totalAttendees: number }> {
+    return this.httpClient
+      .get<Page<Attendee>>(
+        environment.apiHost + `/api/events/${eventId}/attendees`,
+        {
+          params: {
+            page,
+          },
+        }
+      )
+      .pipe(
+        map(page => ({
+          attendees: page.content,
+          totalAttendees: page.totalElements
+        })),
+        catchError(this.handleError)
+      );
+  }
+
+  getReviewStats(eventId: number): Observable<ReviewStats> {
+    return this.httpClient
+      .get<ReviewStats>(
+        environment.apiHost + `/api/reviews/event/${eventId}/stats`
+      )
       .pipe(catchError(this.handleError));
   }
 
@@ -282,7 +307,7 @@ export class EventService {
           code: error.status,
           message: errorResponse?.message ?? error.message,
           errors: errorResponse?.errors,
-        }) as ErrorResponse,
+        } as ErrorResponse)
     );
   }
 }
