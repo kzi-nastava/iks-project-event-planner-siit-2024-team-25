@@ -46,11 +46,6 @@ const routes: Routes = [
         (m) => m.CommunicationModule
       ),
   },
-  {
-    path: 'reviews',
-    loadChildren: () =>
-      import('./reviews/reviews.module').then((m) => m.ReviewsModule),
-  },
 ];
 
 @NgModule({

@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { Review } from '../models/review.model';
 import { ReviewService } from '../services/review.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ReviewStatus } from '../models/review-status.model';
-import { Page } from '../../shared/model/page.mode';
-import { ErrorResponse } from '../../shared/model/error.response.model';
-import { ToastrService } from 'ngx-toastr';
-import { ApproveDialogComponent } from '../../offering/offering-category/dialogs/approve-dialog/approve-dialog.component';
 import { ApproveReviewDialogComponent } from '../approve-review-dialog/approve-review-dialog.component';
+import { ToastrService } from 'ngx-toastr';
+import { ErrorResponse } from '../../../shared/model/error.response.model';
+import { Page } from '../../../shared/model/page.mode';
+import { ReviewStatus } from '../model/review-status.model';
+import { Review } from '../model/review.model';
 
 @Component({
   selector: 'app-all-reviews',
