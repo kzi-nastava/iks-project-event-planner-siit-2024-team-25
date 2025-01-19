@@ -10,7 +10,7 @@
       <mat-card class="events-card">
         <mat-card-header>
           <mat-card-title>
-            {{ selectedDate | date:'fullDate' || 'Select a date' }}
+            {{ (selectedDate | date:'fullDate') || 'Select a date' }}
           </mat-card-title>
 
           <!-- View Selector for Event Organizers and Owners -->
@@ -45,13 +45,6 @@
                   </p>
                   <p class="description">{{ event.description }}</p>
                 </div>
-              </div>
-              <mat-divider></mat-divider>
-              <div class="card-actions">
-                <button mat-button class="primary" (click)="chatWithOrganizer(event, $event)">
-                  <mat-icon>chat</mat-icon>
-                  Chat with organizer
-                </button>
               </div>
             </mat-card>
           </div>

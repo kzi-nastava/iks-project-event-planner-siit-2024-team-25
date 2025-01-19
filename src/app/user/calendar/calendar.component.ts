@@ -179,11 +179,6 @@ export class CalendarComponent {
     // TODO: navigate
   }
 
-  chatWithOrganizer(event: HomeEvent, $event: Event) {
-    $event.stopPropagation();
-    this.router.navigate(['/chat', event.organizerName, event.organizerName]);
-  }
-
   get isEventOrganizer(): boolean {
     return this.user.userRole === UserRole.EventOrganizer;
   }
