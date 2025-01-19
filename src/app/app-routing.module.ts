@@ -31,7 +31,7 @@ const routes: Routes = [
     path: 'offering-category',
     loadChildren: () =>
       import('./offering/offering-category/offering-category.module').then(
-        (m) => m.OfferingCategoryModule,
+        (m) => m.OfferingCategoryModule
       ),
   },
   {
@@ -42,7 +42,9 @@ const routes: Routes = [
   {
     path: 'chat',
     loadChildren: () =>
-      import('./communication/communication.module').then((m) => m.CommunicationModule), 
+      import('./communication/communication.module').then(
+        (m) => m.CommunicationModule
+      ),
   },
 ];
 
