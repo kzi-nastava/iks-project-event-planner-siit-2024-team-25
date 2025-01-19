@@ -1,0 +1,115 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "../../../../theme/m3-theme.scss" as theme;
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  color: mat.get-theme-color(theme.$light-theme, primary);
+
+  h3 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin: 0;
+    color: mat.get-theme-color(theme.$light-theme, primary);
+  }
+}
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-height: 500px;
+  min-width: 300px;
+  margin: 1rem auto;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: mat.get-theme-color(theme.$light-theme, surface);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+  .mat-table {
+    overflow: auto;
+    max-height: 450px;
+    border-radius: 8px;
+    border: 2px solid mat.get-theme-color(theme.$light-theme, primary);
+  }
+}
+
+mat-header-cell {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1rem;
+  color: mat.get-theme-color(theme.$light-theme, primary);
+  background-color: mat.get-theme-color(theme.$light-theme, secondary);
+  padding: 0.75rem;
+}
+
+mat-cell {
+  font-size: 0.95rem;
+  padding: 0.75rem;
+  color: mat.get-theme-color(theme.$light-theme, on-surface);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+mat-row:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+h4 {
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: mat.get-theme-color(theme.$light-theme, primary);
+}
+
+.fab-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: mat.get-theme-color(theme.$light-theme, primary);
+  color: mat.get-theme-color(theme.$light-theme, on-primary);
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background-color: mat.get-theme-color(theme.$light-theme, on-primary);
+  }
+}
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 1rem;
+
+  button {
+    background-color: mat.get-theme-color(theme.$light-theme, primary);
+    color: mat.get-theme-color(theme.$light-theme, on-primary);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+
+    &:hover {
+      background-color: mat.get-theme-color(theme.$light-theme, secondary);
+      color: mat.get-theme-color(theme.$light-theme, on-secondary);
+    }
+
+    &:disabled {
+      background-color: mat.get-theme-color(
+        theme.$light-theme,
+        surface-variant
+      );
+      color: mat.get-theme-color(theme.$light-theme, on-surface-variant);
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: mat.get-theme-color(theme.$light-theme, on-surface);
+  }
+}
