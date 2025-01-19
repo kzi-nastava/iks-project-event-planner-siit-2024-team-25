@@ -1,22 +1,58 @@
-import {
-  HttpClient,
-  HttpParams,
-  HttpErrorResponse,
-} from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { AuthService } from '../../../infrastructure/auth/service/auth.service';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { Review } from '../model/review-model';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from '../../../../environment/environment';
-import { ErrorResponse } from '../../../shared/model/error.response.model';
 import { Page } from '../../../shared/model/page.mode';
-import { ReviewStatus } from '../model/review-status.model';
-import { Review } from '../model/review.model';
+import { ReviewStatus } from '../model/review-status';
+import { ErrorResponse } from '../../../shared/model/error.response.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ReviewService {
-  constructor(private httpClient: HttpClient) {}
 
+  constructor(
+        private httpClient: HttpClient) { }
+
+  postReview(review:Review):Observable<Review>{
+    return this.httpClient.post<Review>(environment.apiHost + `/api/reviews`, review);
+  }
+
+  getEventReviewsByOrganizer(currentPage:number):Observable<{
+    reviews:Review[],
+    totalReviews:number,
+    totalPages:number 
+  }>{
+    let param = new HttpParams();
+    param = param.set("eventsReviews", true);
+    param = param.set('page', currentPage);
+    return this.httpClient.get<Page<Review>>(environment.apiHost+`/api/reviews`, {params:param}).pipe(
+      map((page)=>({
+        reviews:page.content,
+        totalReviews:page.totalElements,
+        totalPages:page.totalPages
+      }))
+    );
+  }
+  getOfferingReviewsByOwner(currentPage:number):Observable<{
+    reviews:Review[],
+  totalReviews:number,
+  totalPages:number  
+  }>{
+    let param = new HttpParams();
+    param = param.set("offeringsReviews", true);
+    param = param.set('page', currentPage);
+    return this.httpClient.get<Page<Review>>(environment.apiHost+`/api/reviews`, {params:param}).pipe(
+      map((page)=>({
+        reviews:page.content,
+        totalReviews:page.totalElements,
+        totalPages:page.totalPages
+      }))
+    );
+  }
   getAllReviews(
     page: number,
     reviewStatus: ReviewStatus
@@ -31,7 +67,6 @@ export class ReviewService {
       })
       .pipe(catchError(this.handleError));
   }
-
   updateReview(reviewId: number, status: ReviewStatus) {
     const reviewRequest = {
       reviewStatus: status,
@@ -44,7 +79,6 @@ export class ReviewService {
       )
       .pipe(catchError(this.handleError));
   }
-
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorResponse: ErrorResponse | null = null;
 
@@ -59,6 +93,7 @@ export class ReviewService {
           message: errorResponse?.message ?? error.message,
           errors: errorResponse?.errors,
         } as ErrorResponse)
+
     );
   }
 }

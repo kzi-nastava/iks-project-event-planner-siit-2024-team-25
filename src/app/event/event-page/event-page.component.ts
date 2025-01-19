@@ -20,6 +20,7 @@ import { ErrorResponse } from '../../shared/model/error.response.model';
 import { EventInvitationsComponent } from '../event-invitations/event-invitations.component';
 import { Event } from '../model/event.model';
 import { EventService } from '../service/event.service';
+import { ReviewType } from '../../communication/review/model/review-type';
 
 @Component({
   selector: 'app-event-page',
@@ -166,6 +167,11 @@ export class EventPageComponent implements OnInit, OnDestroy {
     this.router.navigate([`/event/my-events/${this.event.id}`], {
       state: { event: this.event.id },
     });
+  }
+  openPurchaseList(){
+      this.router.navigate([`event/${this.event.id}/purchases`],{
+        state: {eventId:this.event.id, reviewType:ReviewType.OFFERING_REVIEW}
+      });
   }
 
   joinEvent() {

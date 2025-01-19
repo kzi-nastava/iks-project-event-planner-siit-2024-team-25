@@ -6,6 +6,7 @@ import { AuthService } from '../../../infrastructure/auth/service/auth.service';
 import { ErrorDialogComponent } from '../../../shared/error-dialog/error-dialog.component';
 import { Service } from '../model/service';
 import { OfferingServiceService } from '../offering-service.service';
+import { ReviewType } from '../../../communication/review/model/review-type';
 
 @Component({
   selector: 'app-service-details',
@@ -60,6 +61,11 @@ export class ServiceDetailsComponent {
     });
   }
 
+  openPurchaseList(){
+    this.router.navigate([`event/${this.serviceId}/purchases`],{
+          state: {offeringId:this.serviceId, reviewType:ReviewType.EVENT_REVIEW}
+    });
+  }
   openBookServiceForm() {
     if (this.service.available) {
       this.router.navigate(['/services/' + this.service.id + '/purchase/'], {

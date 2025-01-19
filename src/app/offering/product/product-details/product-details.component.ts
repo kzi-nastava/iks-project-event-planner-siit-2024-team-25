@@ -9,6 +9,7 @@ import { ErrorResponse } from '../../../shared/model/error.response.model';
 import { ServiceDialogInformationComponent } from '../../service/service-dialog/service-dialog-information.component';
 import { Product } from '../model/product.model';
 import { ProductService } from '../service/product.service';
+import { ReviewType } from '../../../communication/review/model/review-type';
 
 @Component({
   selector: 'app-product-details',
@@ -92,5 +93,10 @@ export class ProductDetailsComponent implements OnInit {
   viewOwnerCompany() {
     console.log(this.product.ownerInfo.id);
     this.router.navigate(['/user', this.product.ownerInfo.id]);
+  }
+  openPurchaseList(){
+    this.router.navigate([`event/${this.productId}/purchases`],{
+              state: {offeringId:this.productId, reviewType:ReviewType.EVENT_REVIEW}
+        });
   }
 }
