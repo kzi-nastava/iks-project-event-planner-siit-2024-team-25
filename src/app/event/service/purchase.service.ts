@@ -30,7 +30,10 @@ export class PurchaseService {
   }
 
   getPurchaseByEvent(eventId:number): Observable<PurchasePreview[]>{
-    return this.httpClient.get<PurchasePreview[]>(environment.apiHost + "/api/purchase/" + eventId);
+    return this.httpClient.get<PurchasePreview[]>(environment.apiHost + "/api/purchase/events/" + eventId);
+  }
+  getPurchaseByOffering(offeringId:number): Observable<PurchasePreview[]>{
+    return this.httpClient.get<PurchasePreview[]>(environment.apiHost + "/api/purchase/offerings/"+offeringId);
   }
 
   getOwnerPurchases(

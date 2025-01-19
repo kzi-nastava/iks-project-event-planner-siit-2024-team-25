@@ -16,9 +16,12 @@ import { ReviewType } from '../../communication/review/model/review-type';
 export class PurchaseListComponent implements OnInit{
   displayedColumns = ['position', 'name', 'price', 'review'];
   purchaseList: PurchasePreview[] = [];
+
   eventId: number | any = null;
-  userId: number;
+  offeringId:number | any = null;
   reviewType: ReviewType = ReviewType.OFFERING_REVIEW;
+
+  userId: number;
   purchaseId: number | any;
 
   constructor(private purchaseService: PurchaseService, private dialog: MatDialog,
@@ -31,9 +34,16 @@ export class PurchaseListComponent implements OnInit{
       this.eventId = eventFromState;
     }else{
       console.log("event id not found")
+      const offeringFromState = window.history.state['offeringId'];
+      if(offeringFromState){
+        this.offeringId = offeringFromState;
+      }else{
+        console.log("offering id not found")
+      }
     }
+    
     const reviewTypeFromState = window.history.state['reviewType'];
-    if (eventFromState) {
+    if (reviewTypeFromState) {
       this.reviewType = reviewTypeFromState;
     }else{
       console.log("review type id not found")
@@ -42,14 +52,26 @@ export class PurchaseListComponent implements OnInit{
   }
 
   getPurchaseList(){
-    this.purchaseService.getPurchaseByEvent(this.eventId).subscribe({
-      next:(res)=>{
-        this.purchaseList = res;
-      },
-      error:()=>{
-        console.log("error")
-      }
-    })
+    if(this.eventId== null){
+      this.purchaseService.getPurchaseByOffering(this.offeringId).subscribe({
+        next:(res)=>{
+          this.purchaseList = res;
+        },
+        error:()=>{
+          console.log("error")
+        }
+      })
+    }else{
+      this.purchaseService.getPurchaseByEvent(this.eventId).subscribe({
+        next:(res)=>{
+          this.purchaseList = res;
+        },
+        error:()=>{
+          console.log("error")
+        }
+      })
+    }
+    
   }
   makeReview(purchase: PurchasePreview){
     const dialogRef = this.dialog.open(ReviewMakeComponent);

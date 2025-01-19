@@ -45,6 +45,9 @@
         <div class="buttons">
           <button [routerLink]="['/chat', product.ownerInfo.id, product.ownerInfo.name]" class="chat-button">Chat with Owner</button>
           <button (click)="viewOwnerCompany()" class="view-button">View Owner Company</button>
+          <div class="detail-item">
+            <button class="chat-button" (click)="openPurchaseList()"> View purchase list</button>
+          </div>
         </div>
       </div>
     </div>

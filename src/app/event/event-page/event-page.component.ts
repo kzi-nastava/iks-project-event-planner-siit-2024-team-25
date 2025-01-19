@@ -167,9 +167,9 @@ export class EventPageComponent implements OnInit, OnDestroy {
     });
   }
   openPurchaseList(){
-    this.router.navigate([`event/${this.event.id}/purchases`],{
-      state: {eventId:this.event.id, reviewType:ReviewType.OFFERING_REVIEW}
-    });
+      this.router.navigate([`event/${this.event.id}/purchases`],{
+        state: {eventId:this.event.id, reviewType:ReviewType.OFFERING_REVIEW}
+      });
   }
 
   joinEvent() {
