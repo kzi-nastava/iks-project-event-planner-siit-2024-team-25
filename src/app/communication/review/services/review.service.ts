@@ -20,6 +20,37 @@ export class ReviewService {
   postReview(review:Review):Observable<Review>{
     return this.httpClient.post<Review>(environment.apiHost + `/api/reviews`, review);
   }
+  getReviewsByEvent(eventId:number, page:number):Observable<{
+    reviews:Review[],
+    totalReviews: number,
+    totalPages: number,
+  }>{
+    let param = new HttpParams();
+    param = param.set('page', page)
+    return this.httpClient.get<Page<Review>>(environment.apiHost+'/api/reviews/events/'+eventId, {params:param}).pipe(
+      map((page)=>({
+        reviews:page.content,
+        totalReviews:page.totalElements,
+        totalPages:page.totalPages
+      }))
+    )
+  }
+
+  getReviewsByOffering(offeringId: number, page:number):Observable<{
+    reviews:Review[],
+    totalReviews: number,
+    totalPages: number,
+  }>{
+    let param = new HttpParams();
+    param = param.set('page', page)
+    return this.httpClient.get<Page<Review>>(environment.apiHost+'/api/reviews/offerings/'+offeringId, {params:param}).pipe(
+      map((page)=>({
+        reviews:page.content,
+        totalReviews:page.totalElements,
+        totalPages:page.totalPages
+      }))
+    )
+  }
 
   getEventReviewsByOrganizer(currentPage:number):Observable<{
     reviews:Review[],

@@ -175,6 +175,12 @@ export class EventPageComponent implements OnInit, OnDestroy {
         state: {eventId:this.event.id, reviewType:ReviewType.OFFERING_REVIEW}
       });
   }
+  openReviews(){
+    this.router.navigate([`/chat/offering-event`],{
+      state: {eventId:this.event.id, eventOfferingName:this.event.name}
+    });
+    
+  }
 
   joinEvent() {
     this.eventService.joinEvent(this.event.id).subscribe({

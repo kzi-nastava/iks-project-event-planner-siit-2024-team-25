@@ -33,32 +33,7 @@
       </div>
 
 
-      <mat-card-actions class="action-buttons" *ngIf="isOrganizer$ | async">
-        <button mat-raised-button class="primary" [routerLink]="['/event', event.id, 'agenda']">
-          <mat-icon>edit</mat-icon>
-          Edit Agenda
-        </button>
-        <button mat-raised-button class="primary" (click)="openEmailDialog()" *ngIf="event.privacyType == 'PRIVATE'">
-          <mat-icon>person_add</mat-icon>
-          Invite People
-        </button>
-        <button mat-raised-button class="primary" (click)="openBudgetPlan()">
-          <mat-icon>account_balance_wallet</mat-icon>
-          Budget Plan
-        </button>
-        <button mat-raised-button class="primary" (click)="openPurchase()">
-          <mat-icon>shopping_cart</mat-icon>
-          Buy Products
-        </button>
-        <button mat-raised-button class="primary" (click)="openPurchaseList()">
-          <mat-icon>receipt</mat-icon>
-          View Purchases
-        </button>
-        <a mat-raised-button class="primary" [href]="reportDownloadUrl">
-          <mat-icon>download</mat-icon>
-          Save as PDF
-        </a>
-      </mat-card-actions>
+      
 
       <mat-card-actions class="action-buttons" *ngIf="isLoggedIn$ | async">
         @if((isAttending$ | async) && !(isOrganizer$ | async)) {
@@ -85,26 +60,36 @@
         }
 
         @if(isOrganizer$ | async) {
-          <button mat-raised-button class="primary" [routerLink]="['/event', event.id, 'agenda']">
-            <mat-icon>edit</mat-icon>
-            Edit Agenda
-          </button>
-          <button mat-raised-button class="primary" (click)="openEmailDialog()" *ngIf="event.privacyType == 'PRIVATE'">
-            <mat-icon>person_add</mat-icon>
-            Invite People
-          </button>
-          <button mat-raised-button class="primary" (click)="openBudgetPlan()">
-            <mat-icon>account_balance_wallet</mat-icon>
-            Budget Plan
-          </button>
-          <button mat-raised-button class="primary" (click)="openPurchase()">
-            <mat-icon>shopping_cart</mat-icon>
-            Buy Products
-          </button>
-          <button mat-raised-button class="primary" [routerLink]="['/events', event.id, 'purchases']">
-            <mat-icon>receipt</mat-icon>
-            View Purchases
-          </button>
+          <mat-card-actions class="action-buttons" *ngIf="isOrganizer$ | async">
+            <button mat-raised-button class="primary" [routerLink]="['/event', event.id, 'agenda']">
+              <mat-icon>edit</mat-icon>
+              Edit Agenda
+            </button>
+            <button mat-raised-button class="primary" (click)="openEmailDialog()" *ngIf="event.privacyType == 'PRIVATE'">
+              <mat-icon>person_add</mat-icon>
+              Invite People
+            </button>
+            <button mat-raised-button class="primary" (click)="openBudgetPlan()">
+              <mat-icon>account_balance_wallet</mat-icon>
+              Budget Plan
+            </button>
+            <button mat-raised-button class="primary" (click)="openPurchase()">
+              <mat-icon>shopping_cart</mat-icon>
+              Buy Products
+            </button>
+            <button mat-raised-button class="primary" (click)="openPurchaseList()">
+              <mat-icon>receipt</mat-icon>
+              View Purchases
+            </button>
+            <button mat-raised-button class="primary" (click)="openReviews()">
+              <mat-icon>reviews</mat-icon>
+              View Reviews
+            </button>
+            <a mat-raised-button class="primary" [href]="reportDownloadUrl">
+              <mat-icon>download</mat-icon>
+              Save as PDF
+            </a>
+          </mat-card-actions>
         }
 
         @if((isOrganizer$ | async) || (isAdmin$ | async)) {

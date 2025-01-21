@@ -11,6 +11,7 @@ import { ChatViewComponent } from './chat/chat-view/chat-view.component';
 import { ChatCardComponent } from './chat/chat-card/chat-card.component';
 import { ReviewListComponent } from './review/review-list/review-list.component';
 import { ReviewMakeComponent } from './review/review-make/review-make.component';
+import { EventOfferingReviewListComponent } from './review/event-offering-review-list/event-offering-review-list.component';
 
 @NgModule({
 
@@ -23,7 +24,8 @@ import { ReviewMakeComponent } from './review/review-make/review-make.component'
     ChatViewComponent,
     ChatCardComponent,
     ReviewListComponent,
-    ReviewMakeComponent
+    ReviewMakeComponent,
+    EventOfferingReviewListComponent
   ],
   imports: [CommonModule, MaterialModule, CommunicationRoutingModule],
 })
