@@ -91,6 +91,14 @@ export class EventStatsComponent implements OnInit, OnDestroy {
       });
   }
 
+  get reportDownloadUrl(): string | null {
+    if (!this.eventId$.getValue()) return null;
+    return (
+      environment.apiHost +
+      `/api/events/${this.eventId$.getValue()}/stats/report`
+    );
+  }
+
   getProfilePictureUrl(userId: number): string {
     if (!userId) return 'placeholder-avatar.png';
     return environment.apiHost + `/api/users/${userId}/profile-picture`;

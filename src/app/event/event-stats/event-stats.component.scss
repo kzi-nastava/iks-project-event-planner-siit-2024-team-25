@@ -161,3 +161,17 @@ $primary: mat.get-theme-color(theme.$light-theme, primary);
   justify-content: center;
   padding: 16px 0;
 }
+
+.mat-mdc-card-header {
+  display: flex;
+  align-items: flex-start;
+  
+  .download-button {
+    margin-left: auto;
+    color: white;
+    
+    &[disabled] {
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
