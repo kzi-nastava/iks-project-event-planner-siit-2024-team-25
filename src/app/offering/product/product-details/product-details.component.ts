@@ -99,4 +99,9 @@ export class ProductDetailsComponent implements OnInit {
               state: {offeringId:this.productId, reviewType:ReviewType.EVENT_REVIEW}
         });
   }
+  openReviews(){
+    this.router.navigate([`/chat/offering-event`],{
+      state: {offeringId:this.product.id, eventOfferingName:this.product.name}
+    });
+  }
 }

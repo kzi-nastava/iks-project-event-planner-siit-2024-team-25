@@ -66,6 +66,11 @@ export class ServiceDetailsComponent {
           state: {offeringId:this.serviceId, reviewType:ReviewType.EVENT_REVIEW}
     });
   }
+  openReviews(){
+    this.router.navigate([`/chat/offering-event`],{
+      state: {offeringId:this.service.id, eventOfferingName:this.service.name}
+    });
+  }
   openBookServiceForm() {
     if (this.service.available) {
       this.router.navigate(['/services/' + this.service.id + '/purchase/'], {
