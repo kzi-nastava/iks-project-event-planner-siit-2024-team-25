@@ -156,7 +156,7 @@ export class AgendaComponent implements OnInit, OnDestroy {
   openBudgetPlan() {
     if (!!this.event?.id) {
       this.router.navigate([`/event/budget-plan`], {
-        state: { eventId: this.event.id },
+        state: { eventId: this.event.id, from: 'agenda' },
       });
     }
   }

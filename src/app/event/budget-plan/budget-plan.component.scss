@@ -6,6 +6,8 @@
     display: flex;
     justify-content:space-around;
     align-items: center;
+    gap: 20px;
+    margin: 20px 0;
   }
   h3 {
     color: mat.get-theme-color(theme.$light-theme, primary);
