@@ -20,6 +20,8 @@ export class BudgetPlanComponent implements OnInit {
   eventId: number | any = null;
   event: Event | undefined;
 
+  cameFromAgenda = false;
+
   budgetItems: BudgetItem[] = [];
   overallBudget: number = 0;
   displayedColumns = ['offeringCategory', 'budget', 'edit', 'delete'];
@@ -31,15 +33,18 @@ export class BudgetPlanComponent implements OnInit {
     private eventService: EventService,
     private budgetItemService: BudgetPlanService,
     public dialog: MatDialog,
-  ) {
-    
-  }
+    private router: Router
+  ) {}
   ngOnInit(): void {
     const eventFromState = window.history.state['eventId'];
     if (eventFromState) {
       this.eventId = eventFromState;
-    }else{
-      console.log("event id not found")
+    } else {
+      console.log('event id not found');
+    }
+    const cameFrom = window.history.state['from'];
+    if (cameFrom == 'agenda') {
+      this.cameFromAgenda = true;
     }
     this.getBudgetItems();
   }
@@ -47,7 +52,7 @@ export class BudgetPlanComponent implements OnInit {
   getBudgetItems() {
     this.eventService.getEvent(this.eventId).subscribe({
       next: (e: Event) => {
-        console.log(e)
+        console.log(e);
         this.event = e;
         this.budgetItemService.getBudgetItemsByEvent(e.id).subscribe({
           next: (res) => {
@@ -160,5 +165,21 @@ export class BudgetPlanComponent implements OnInit {
         });
       }
     });
+  }
+
+  finishBudgetPlan() {
+    if (this.event) {
+      this.router.navigate(['/event', this.event.id]);
+    }
+  }
+
+  goBack() {
+    if (this.event) {
+      if (this.cameFromAgenda) {
+        this.router.navigate(['/event', this.event.id, 'agenda']);
+      } else {
+        this.router.navigate(['/event', this.event.id]);
+      }
+    }
   }
 }
