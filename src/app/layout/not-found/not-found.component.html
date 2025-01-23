@@ -1,0 +1,21 @@
+<div class="not-found-container">
+  <div class="error-content">
+    <div class="error-code">
+      <span>4</span>
+      <mat-icon class="zero-icon">sentiment_very_dissatisfied</mat-icon>
+      <span>4</span>
+    </div>
+    <h1>{{ title }}</h1>
+    <p>{{ message }}</p>
+    <div class="actions">
+      <button mat-raised-button class="primary" routerLink="/">
+        <mat-icon>home</mat-icon> 
+        Back to Home
+      </button>
+      <button mat-stroked-button color="accent" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Go Back
+      </button>
+    </div>
+  </div>
+</div>

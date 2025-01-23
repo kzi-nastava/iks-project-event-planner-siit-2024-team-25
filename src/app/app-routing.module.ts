@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
+import { NotFoundComponent } from './layout/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,10 @@ const routes: Routes = [
       import('./communication/communication.module').then(
         (m) => m.CommunicationModule
       ),
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
 
