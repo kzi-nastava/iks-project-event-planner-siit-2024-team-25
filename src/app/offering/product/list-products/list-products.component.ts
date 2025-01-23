@@ -95,7 +95,7 @@ export class ListProductsComponent implements OnInit {
       categoryId: this.filterForm.controls.categoryId.value || undefined,
     };
 
-    this.productService.getAll(filters).subscribe({
+    this.productService.getOwnerProducts(filters).subscribe({
       next: (products: Product[]) => {
         this.products = products;
       },
