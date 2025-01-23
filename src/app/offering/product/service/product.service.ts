@@ -11,12 +11,16 @@ import { Page } from '../../../shared/model/page.mode';
 import { ProductFilterProperties } from '../model/product-filter-properties.model';
 import { Product } from '../model/product.model';
 import { ProductRequest } from '../model/product.request.model';
+import { AuthService } from '../../../infrastructure/auth/service/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {}
 
   getProductById(productId: number): Observable<Product> {
     return this.httpClient
@@ -52,7 +56,46 @@ export class ProductService {
       })
       .pipe(
         map((page) => page.content),
-        catchError(this.handleError),
+        catchError(this.handleError)
+      );
+  }
+
+  getOwnerProducts(
+    properties?: ProductFilterProperties
+  ): Observable<Product[]> {
+    const ownerId = this.authService.getUser()?.userId;
+
+    let params = new HttpParams();
+    if (properties) {
+      if (!!properties.name) {
+        params = params.set('name', properties.name);
+      }
+      if (!!properties.minPrice) {
+        params = params.set('minPrice', properties.minPrice);
+      }
+      if (!!properties.maxPrice) {
+        params = params.set('maxPrice', properties.maxPrice);
+      }
+      if (properties.available) {
+        params = params.set('available', properties.available);
+      }
+      if (!!properties.eventTypeId) {
+        params = params.set('eventTypeId', properties.eventTypeId);
+      }
+      if (!!properties.categoryId) {
+        params = params.set('categoryId', properties.categoryId);
+      }
+    }
+    return this.httpClient
+      .get<Page<Product>>(
+        environment.apiHost + `/api/products/owner/${ownerId}`,
+        {
+          params: params,
+        }
+      )
+      .pipe(
+        map((page) => page.content),
+        catchError(this.handleError)
       );
   }
 
@@ -60,26 +103,26 @@ export class ProductService {
     return this.httpClient
       .post<Product>(
         environment.apiHost + '/api/products',
-        this.buildFormData(productRequest),
+        this.buildFormData(productRequest)
       )
       .pipe(map(this.mapImages), catchError(this.handleError));
   }
 
   updateProduct(
     productId: number,
-    productRequest: ProductRequest,
+    productRequest: ProductRequest
   ): Observable<Product> {
     return this.httpClient
       .put<Product>(
         environment.apiHost + `/api/products/${productId}`,
-        this.buildFormData(productRequest),
+        this.buildFormData(productRequest)
       )
       .pipe(map(this.mapImages), catchError(this.handleError));
   }
 
   deleteProduct(productId: number): Observable<any> {
     return this.httpClient.delete(
-      environment.apiHost + `/api/products/${productId}`,
+      environment.apiHost + `/api/products/${productId}`
     );
   }
 
@@ -94,12 +137,12 @@ export class ProductService {
     if (!!productRequest.offeringCategoryId) {
       formData.append(
         'offeringCategoryId',
-        productRequest.offeringCategoryId.toString(),
+        productRequest.offeringCategoryId.toString()
       );
     } else if (!!productRequest.offeringCategoryName) {
       formData.append(
         'offeringCategoryName',
-        productRequest.offeringCategoryName,
+        productRequest.offeringCategoryName
       );
     }
     formData.append('ownerId', productRequest.ownerId.toString());
@@ -135,14 +178,14 @@ export class ProductService {
           code: error.status,
           message: errorResponse?.message ?? error.message,
           errors: errorResponse?.errors,
-        }) as ErrorResponse,
+        } as ErrorResponse)
     );
   }
 
   private mapImages(product: Product): Product {
     product.images = product.images.map(
       (image) =>
-        environment.apiHost + `/api/products/${product.id}/images/${image}`,
+        environment.apiHost + `/api/products/${product.id}/images/${image}`
     );
     return product;
   }
