@@ -1,7 +1,8 @@
 export interface HomeEvent {
   id: number;
   name: string;
-  organizerName: string;
+  organizerFirstName: string;
+  organizerLastName: string;
   description: string;
   startDateTime: string;
   country: string;
