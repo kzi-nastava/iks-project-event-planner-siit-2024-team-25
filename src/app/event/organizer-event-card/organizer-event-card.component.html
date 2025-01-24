@@ -11,7 +11,7 @@
   </div>
   <div class="info">
     <div class="organizer">
-      <p>{{ event.organizerName }}</p>
+      <p>{{ event.organizerFirstName + " " + event.organizerLastName }}</p>
     </div>
     <div class="date">
       <mat-icon>date_range</mat-icon>
@@ -27,7 +27,8 @@
       <mat-icon>location_on</mat-icon>
       <p>{{ formatLocation(event.country, event.city) }}</p>
     </div>
-    <button mat-button (click)="openBudgetPlan($event)">Budget plan
+    <button mat-button (click)="openBudgetPlan($event)">
+      Budget plan
       <mat-icon>money</mat-icon>
     </button>
   </div>
