@@ -21,6 +21,7 @@ export class NotificationComponent implements OnInit {
   currentUserId: number = -1;
   totalNotifications: number = 0;
   notificationsEnabled: boolean = true;
+  notificationsEnabledText: string = 'Notifications enabled';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { userId: number },
@@ -119,6 +120,14 @@ export class NotificationComponent implements OnInit {
   }
 
   toggleNotifications($event: MatSlideToggleChange) {
-    throw new Error('Method not implemented.');
+    if ($event.checked) {
+      this.notificationsEnabled = true;
+      this.notificationService.connect();
+      this.notificationsEnabledText = 'Notifications enabled';
+    } else {
+      this.notificationsEnabled = false;
+      this.notificationService.disconnect();
+      this.notificationsEnabledText = 'Notifications disabled';
+    }
   }
 }

@@ -25,7 +25,7 @@ export class NotificationServiceService {
     this.connect();
   }
 
-  private connect() {
+  connect() {
     this.authService.user$.subscribe({
       next: (user) => {
         if (user) {
@@ -58,6 +58,11 @@ export class NotificationServiceService {
       }
     );
   }
+
+  disconnect() {
+    this.stompClient.disconnect();
+  }
+
   handleResult(message: { body: string }) {
     if (message.body) {
       const notification: Notification = JSON.parse(message.body);
