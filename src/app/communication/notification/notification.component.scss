@@ -10,11 +10,28 @@
     right: 20px;
   }
 }
-h1 {
-  font-size: 2.1rem;
-  justify-self: center;
-  color: white;
+
+.header {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+
+  h1 {
+    font-size: 2.1rem;
+    color: mat.get-theme-color(theme.$light-theme, primary);
+    margin: 0;
+  }
+
+  mat-slide-toggle {
+    display: flex;
+    align-items: center;
+  }
 }
+
 .notification-container {
   position: fixed;
   top: 60px;
@@ -22,15 +39,18 @@ h1 {
   width: 300px;
   z-index: 1000;
 
-  background-color: #3339;
+  background-color: white;
   overflow-y: auto;
   max-height: 55rem;
 
-  -ms-overflow-style: none; /* For Internet Explorer 10+ */
-  scrollbar-width: none; /* For Firefox */
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   .notification-container::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and newer Edge */
+    display: none;
   }
 }
 
@@ -38,7 +58,7 @@ h1 {
   margin: 1rem;
   padding: 0.5rem;
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 1);
   animation: slide-in 0.5s ease-out;
   background-color: white;
   cursor: pointer;

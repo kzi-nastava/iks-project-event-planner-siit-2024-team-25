@@ -7,6 +7,7 @@ import { NotificationCategory } from './model/notification-category.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-notification',
@@ -19,6 +20,7 @@ export class NotificationComponent implements OnInit {
   currentPage: number = 0;
   currentUserId: number = -1;
   totalNotifications: number = 0;
+  notificationsEnabled: boolean = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { userId: number },
@@ -114,5 +116,9 @@ export class NotificationComponent implements OnInit {
           },
         });
     }
+  }
+
+  toggleNotifications($event: MatSlideToggleChange) {
+    throw new Error('Method not implemented.');
   }
 }
