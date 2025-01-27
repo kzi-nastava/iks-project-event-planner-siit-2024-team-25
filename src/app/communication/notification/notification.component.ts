@@ -7,6 +7,7 @@ import { NotificationCategory } from './model/notification-category.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-notification',
@@ -19,6 +20,8 @@ export class NotificationComponent implements OnInit {
   currentPage: number = 0;
   currentUserId: number = -1;
   totalNotifications: number = 0;
+  notificationsEnabled: boolean = true;
+  notificationsEnabledText: string = 'Notifications enabled';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { userId: number },
@@ -113,6 +116,18 @@ export class NotificationComponent implements OnInit {
             });
           },
         });
+    }
+  }
+
+  toggleNotifications($event: MatSlideToggleChange) {
+    if ($event.checked) {
+      this.notificationsEnabled = true;
+      this.notificationService.connect();
+      this.notificationsEnabledText = 'Notifications enabled';
+    } else {
+      this.notificationsEnabled = false;
+      this.notificationService.disconnect();
+      this.notificationsEnabledText = 'Notifications disabled';
     }
   }
 }
