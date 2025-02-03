@@ -104,4 +104,25 @@ export class PriceListComponent implements OnInit {
       }
     });
   }
+  downloadPDF(isProductList:boolean){
+    if(this.priceListItems.length <= 0){
+      const dialogRef = this.dialog.open(ErrorDialogComponent, {
+        width: '40rem',
+        data: { message:"There is no offering items" },
+      });
+      return;
+    }
+    this.priceListService.downloadPriceList(this.ownerId ?? 0, isProductList).subscribe((response) => {
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+
+      //download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'price-list.pdf';
+      link.click();
+
+      window.URL.revokeObjectURL(url);
+    });
+  }
 }

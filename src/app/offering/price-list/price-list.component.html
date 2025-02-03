@@ -49,7 +49,7 @@
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
             <div class="button-container">
-                <button mat-raised-button class="download-btn">
+                <button mat-raised-button class="download-btn" (click)="downloadPDF(true)">
                   Download PDF
                 </button>
               </div>
@@ -94,9 +94,9 @@
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
+            </mat-table>    
             <div class="button-container">
-                <button mat-raised-button class="download-btn">
+                <button mat-raised-button class="download-btn" (click)="downloadPDF(false)">
                   Download PDF
                 </button>
               </div>
