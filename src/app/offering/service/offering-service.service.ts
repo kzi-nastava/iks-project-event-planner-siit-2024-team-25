@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { EventTypeService } from '../../event/service/event-type.service';
 import { Page } from '../../shared/model/page.mode';
@@ -10,6 +10,7 @@ import { OfferingCategoryService } from '../offering-category/offering-category.
 import { Service } from './model/service';
 import { ServiceCreateDTO } from './model/serviceCreateDTO';
 import { ServiceUpdateDTO } from './model/serviceUpdateDTO';
+import { ErrorResponse } from '../../shared/model/error.response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class OfferingServiceService {
     private offeringCategoryService: OfferingCategoryService,
     private eventTypesService: EventTypeService,
     private datePipe: DatePipe
-  ) {}
+  ) { }
 
   getAll(properties: any): Observable<Service[]> {
     let params = new HttpParams();
@@ -57,9 +58,36 @@ export class OfferingServiceService {
 
   addService(s: ServiceCreateDTO): Observable<Service> {
     return this.httpClinet.post<Service>(
-      'http://localhost:8080/api/services',
-      s
-    );
+      'http://localhost:8080/api/services',this.buildFormData(s))
+    .pipe(map(this.mapImages), catchError(this.handleError));
+  }
+
+  buildFormData(service : ServiceCreateDTO): FormData{
+    let formData = new FormData();
+    formData.append('name', service.name ?? "");
+    formData.append('description', service.description??"");
+    formData.append('price', service.price?.toString() ?? "");
+    formData.append('discount', service.discount.toString()??"");
+    for (const image of service.images) {
+      formData.append('images', image, image.name);
+    }
+    formData.append('visible', service.visible?.toString()??"");
+    formData.append('available', service.available?.toString()??"");
+    formData.append('specifics', service.specifics??"");
+    formData.append('reservationType', service.reservationType.toString()??"");
+    formData.append('duration', service.duration.toString());
+    formData.append('reservationDeadline', service.reservationDeadline.toString());
+    formData.append('cancellationDeadline', service.cancellationDeadline.toString());
+    formData.append('minimumArrangement', service.minimumArrangement.toString());
+    formData.append('maximumArrangement', service.maximumArrangement.toString());
+    for(const eventTypeId of service.eventTypesIDs?? []){
+      formData.append('eventTypesIDs', eventTypeId.toString());
+    }
+    formData.append('offeringCategoryID', service.offeringCategoryID?.toString()??"");
+    formData.append('offeringCategoryName', service.offeringCategoryName?.toString()??"");
+    formData.append('ownerId', service.ownerId?.toString()??"");
+
+    return formData;
   }
 
   updateService(
@@ -119,6 +147,29 @@ export class OfferingServiceService {
     return this.httpClinet.post<boolean>(
       `${environment.apiHost}/api/purchase/event/${eventId}/service/${serviceId}`,
       purchase
+    );
+  }
+  private mapImages(service: Service): Service {
+    service.images = service.images.map(
+      (image) =>
+        environment.apiHost + `/api/services/${service.id}/images/${image}`
+    );
+    return service;
+  }
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorResponse: ErrorResponse | null = null;
+
+    if (error.error && typeof error.error === 'object') {
+      errorResponse = error.error as ErrorResponse;
+    }
+
+    return throwError(
+      () =>
+      ({
+        code: error.status,
+        message: errorResponse?.message ?? error.message,
+        errors: errorResponse?.errors,
+      } as ErrorResponse)
     );
   }
 }

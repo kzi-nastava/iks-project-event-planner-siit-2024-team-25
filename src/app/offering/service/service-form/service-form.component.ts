@@ -23,6 +23,9 @@ import { AuthService } from '../../../infrastructure/auth/service/auth.service';
   styleUrl: './service-form.component.scss',
 })
 export class ServiceFormComponent {
+  imagesToDelete: string[] = [];
+  existingImages: string[] = [];
+  selectedFiles: File[] = [];
   //attr
   firstFormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -131,8 +134,10 @@ export class ServiceFormComponent {
           });
       } else {
         const service = this.createService();
+        console.log(service)
         this.serviceMenager.addService(service).subscribe({
           next: (s: Service) => {
+            console.log(s)
             this.router.navigate(['/service/services']);
             this.openSaveDialog();
           },
@@ -148,7 +153,7 @@ export class ServiceFormComponent {
       name: this.firstFormGroup.value.name,
       description: this.firstFormGroup.value.description,
       price: this.firstFormGroup.value.price,
-      images: this.imagesService, // TODO
+      images: this.selectedFiles, 
       discount: this.discountFront,
       visible: this.secondFormGroup.value.isVisible,
       available: this.secondFormGroup.value.isAvailable,
@@ -175,7 +180,7 @@ export class ServiceFormComponent {
       name: this.firstFormGroup.value.name,
       description: this.firstFormGroup.value.description,
       price: this.firstFormGroup.value.price,
-      images: this.imagesService, // TODO
+      images: this.selectedFiles,
       discount: this.discountFront,
       visible: this.secondFormGroup.value.isVisible,
       available: this.secondFormGroup.value.isAvailable,
@@ -188,17 +193,21 @@ export class ServiceFormComponent {
       minimumArrangement: this.minArrangementFront,
       maximumArrangement: this.maxArrangementFront,
       status: Offeringtype.ACCEPTED,
+      imagesToDelete: this.imagesToDelete,
     };
     return service;
   }
 
-  addImage() {
-    const newImage =
-      'https://static.vecteezy.com/system/resources/previews/009/875/161/non_2x/3d-like-hand-with-blue-speech-bubble-free-png.png';
-    this.imagesService.push(newImage);
+
+  removeExistingImage(imageUrl: string) {
+    this.imagesToDelete.push(imageUrl);
+    this.existingImages = this.existingImages.filter((img) => img !== imageUrl);
+    console.log(imageUrl)
   }
-  deleteImage(index: number): void {
-    this.imagesService.splice(index, 1);
+
+  onFileSelected(files: File[]) {
+    this.selectedFiles = [...Array.from(files)];
+    console.log(this.selectedFiles.length)
   }
   backToHome() {
     this.router.navigate(['/service/services']);

@@ -2,10 +2,12 @@
 @use '@angular/material' as mat;
 @use '../../../../theme/m3-theme.scss' as theme;
 
+$primary: mat.get-theme-color(theme.$light-theme, primary);
+
 .border-class{
   border: 2px solid; 
   color: #5b79b0;
-  padding: 3rem;         /* Dodaj malo unutrašnjeg razmaka */
+  padding: 3rem;        
   border-radius: 5px; 
   display: inline-block;
 }
@@ -72,4 +74,68 @@
   
   .image-table td button:hover {
     background-color: darkred;
+  }
+  .images-section {
+    .existing-images {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+
+      .file-card {
+        .thumbnail {
+          width: 100%;
+          height: 150px;
+          object-fit: cover;
+          border-radius: 4px;
+        }
+      }
+    }
+
+    mat-card {
+      padding: 1rem;
+
+      h3 {
+        margin: 0 0 1rem 0;
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+
+      .selected-files {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .file-card {
+          background-color: #f8f8f8;
+
+          mat-card-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+
+            .file-info {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+
+              mat-icon {
+                color: $primary;
+              }
+
+              span {
+                font-size: 0.9rem;
+              }
+            }
+          }
+        }
+      }
+
+      mat-error {
+        display: block;
+        margin-top: 1rem;
+      }
+    }
   }
