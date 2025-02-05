@@ -280,7 +280,7 @@
         <mat-icon>arrow_back</mat-icon>
       </button>
       <button mat-button (click)="stepper.reset()">Reset</button>
-      <button mat-fab color="primary" *ngIf="saveButtonShow" (click)="saveService()" class="fab-save-button" [disabled]="selectedFiles.length==0">
+      <button mat-fab color="primary" *ngIf="saveButtonShow" (click)="saveService()" class="fab-save-button" [disabled]="selectedFiles.length==0 && existingImages.length==0">
         <mat-icon>save</mat-icon>
       </button>
     </div>

@@ -53,7 +53,8 @@ export class OfferingServiceService {
   }
 
   getServiceById(id: number): Observable<Service> {
-    return this.httpClinet.get<any>(`http://localhost:8080/api/services/${id}`);
+    return this.httpClinet.get<any>(`http://localhost:8080/api/services/${id}`)
+    .pipe(map(this.mapImages), catchError(this.handleError));
   }
 
   addService(s: ServiceCreateDTO): Observable<Service> {
@@ -62,13 +63,13 @@ export class OfferingServiceService {
     .pipe(map(this.mapImages), catchError(this.handleError));
   }
 
-  buildFormData(service : ServiceCreateDTO): FormData{
+  buildFormData(service : ServiceCreateDTO | ServiceUpdateDTO): FormData{
     let formData = new FormData();
-    formData.append('name', service.name ?? "");
-    formData.append('description', service.description??"");
+    formData.append('name', service.name?.toString() ?? "");
+    formData.append('description', service.description?.toString()??"");
     formData.append('price', service.price?.toString() ?? "");
-    formData.append('discount', service.discount.toString()??"");
-    for (const image of service.images) {
+    formData.append('discount', service.discount?.toString()??"");
+    for (const image of service.images ?? []) {
       formData.append('images', image, image.name);
     }
     formData.append('visible', service.visible?.toString()??"");
@@ -83,21 +84,33 @@ export class OfferingServiceService {
     for(const eventTypeId of service.eventTypesIDs?? []){
       formData.append('eventTypesIDs', eventTypeId.toString());
     }
-    formData.append('offeringCategoryID', service.offeringCategoryID?.toString()??"");
-    formData.append('offeringCategoryName', service.offeringCategoryName?.toString()??"");
-    formData.append('ownerId', service.ownerId?.toString()??"");
-
+    if(this.isServiceCreateDTO(service)){
+      formData.append('offeringCategoryID', service.offeringCategoryID?.toString()??"");
+      formData.append('offeringCategoryName', service.offeringCategoryName?.toString()??"");
+      formData.append('ownerId', service.ownerId?.toString()??"");
+    }else{
+      formData.append('status', service.status.toString());
+      if (!!service.imagesToDelete) {
+        for (const imageUrl of service.imagesToDelete) {
+          formData.append('imagesToDelete', this.extractImageIdFromUrl(imageUrl));
+        }
+      }
+    }
+    
     return formData;
   }
+
+  isServiceCreateDTO(obj: any): obj is ServiceCreateDTO {
+    return obj && obj.offeringCategoryID
+}
 
   updateService(
     updatedService: ServiceUpdateDTO,
     id: number
   ): Observable<Service> {
     return this.httpClinet.put<Service>(
-      'http://localhost:8080/api/services/' + id,
-      updatedService
-    );
+      'http://localhost:8080/api/services/' + id,this.buildFormData(updatedService))
+      .pipe(map(this.mapImages), catchError(this.handleError));
   }
   deleteService(id: number): Observable<void> {
     return this.httpClinet.delete<void>(
@@ -148,6 +161,10 @@ export class OfferingServiceService {
       `${environment.apiHost}/api/purchase/event/${eventId}/service/${serviceId}`,
       purchase
     );
+  }
+  private extractImageIdFromUrl(imageUrl: String): string {
+    const parts = imageUrl.split('/');
+    return parts[parts.length - 1];
   }
   private mapImages(service: Service): Service {
     service.images = service.images.map(

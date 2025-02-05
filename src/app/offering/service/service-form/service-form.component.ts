@@ -200,14 +200,16 @@ export class ServiceFormComponent {
 
 
   removeExistingImage(imageUrl: string) {
-    this.imagesToDelete.push(imageUrl);
-    this.existingImages = this.existingImages.filter((img) => img !== imageUrl);
-    console.log(imageUrl)
+    if(this.isEditMode){
+      this.imagesToDelete.push(imageUrl);
+      this.existingImages = this.existingImages.filter((img) => img !== imageUrl);
+      console.log(this.existingImages)
+    }
+    
   }
 
   onFileSelected(files: File[]) {
     this.selectedFiles = [...Array.from(files)];
-    console.log(this.selectedFiles.length)
   }
   backToHome() {
     this.router.navigate(['/service/services']);
@@ -372,7 +374,7 @@ export class ServiceFormComponent {
           eventTypes: s.eventTypes.map((e) => e.id),
         });
         this.onSelectionChange();
-        this.imagesService = s.images;
+        this.existingImages = s.images;
         this.isDisabledCategory = true;
         if (s.reservationType == ReservationType.AUTOMATIC.toString()) {
           this.reservationTypeString = 'Automatic';
