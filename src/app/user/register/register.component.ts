@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
         }
       });
     });
-    this.form.get('email')?.setValue(this.authService.getUser()?.email);
+    this.form.get('email')?.setValue(this.authService.getUser()?.email ?? '');
   }
 
   ngOnInit() {
@@ -92,21 +92,33 @@ export class RegisterComponent implements OnInit {
       }
     );
     this.getQueryParams();
-    console.log(this.isUpgrade);
   }
 
   private requiredForRole(role: 'EVENT_ORGANIZER' | 'OWNER'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
 
-      if (!value) {
-        return null;
-      }
-
       const isValid = this.selectedRole !== role || value;
 
       return isValid ? null : { required: true };
     };
+  }
+
+  updateRoleSpecificValidators() {
+    const eventOrganizerFields = this.form.get('eventOrganizerFields');
+    const ownerFields = this.form.get('ownerFields');
+
+    if (eventOrganizerFields && ownerFields) {
+      Object.keys((eventOrganizerFields as FormGroup).controls).forEach(
+        (key) => {
+          eventOrganizerFields.get(key)?.updateValueAndValidity();
+        }
+      );
+
+      Object.keys((ownerFields as FormGroup).controls).forEach((key) => {
+        ownerFields.get(key)?.updateValueAndValidity();
+      });
+    }
   }
 
   onProfilePictureSelected(files: File[]) {
@@ -209,8 +221,6 @@ export class RegisterComponent implements OnInit {
           error: (error: ErrorResponse) => {
             this.waitingResponse = false;
             this.toastService.error(error.message, 'Failed to register');
-
-            console.log(error);
 
             if (error.errors) {
               Object.keys(error.errors).forEach((fieldName) => {
