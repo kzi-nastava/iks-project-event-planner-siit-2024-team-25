@@ -4,7 +4,7 @@ export interface ServiceCreateDTO {
   name?: string | null;
   description?: string | null;
   price?: number | null;
-  images: string[];
+  images: File[];
   discount: number;
   visible?: boolean | null;
   available?: boolean | null;

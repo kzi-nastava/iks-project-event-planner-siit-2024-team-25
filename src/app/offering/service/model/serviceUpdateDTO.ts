@@ -6,7 +6,7 @@ export interface ServiceUpdateDTO{
     description? :String | null,
     price? : number | null,
     discount?:number,
-    images?:String[],
+    images?:File[],
     visible?: Boolean | null,
     available?: Boolean | null,
     specifics: string,
@@ -17,5 +17,6 @@ export interface ServiceUpdateDTO{
     reservationDeadline: number,
     minimumArrangement:number,
     maximumArrangement: number,
-    eventTypesIDs?:Number[]|null
+    eventTypesIDs?:Number[]|null,
+    imagesToDelete: String[]
 }

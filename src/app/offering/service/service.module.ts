@@ -10,6 +10,7 @@ import { ServiceDialogComponent } from './service-dialog/service-dialog.componen
 import { ServiceFormComponent } from './service-form/service-form.component';
 import { ServiceRoutingModule } from './service-routing.module';
 import { BookServiceDialogComponent } from './book-service-dialog/book-service-dialog.component';
+import { SharedModule } from "../../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { BookServiceDialogComponent } from './book-service-dialog/book-service-d
     CommonModule,
     ServiceRoutingModule,
     ReactiveFormsModule,
-  ],
+    SharedModule
+],
 })
 export class ServiceModule {}
