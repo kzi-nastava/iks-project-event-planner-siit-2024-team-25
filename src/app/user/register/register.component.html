@@ -10,6 +10,7 @@
         [(ngModel)]="selectedRole"
         [hideSingleSelectionIndicator]="true"
         name="roleSelector"
+        (change)="updateRoleSpecificValidators()"
       >
         <mat-button-toggle value="EVENT_ORGANIZER">
           <mat-icon>event</mat-icon>
