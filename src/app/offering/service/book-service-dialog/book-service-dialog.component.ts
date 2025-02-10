@@ -147,7 +147,7 @@ export class BookServiceDialogComponent implements OnInit {
   }
   isServiceAvailable() {
     this.serviceService
-      .isServiceAvailable(this.event.id, this.service.id, this.purchase)
+      .isServiceAvailable(this.service.id, this.purchase)
       .subscribe({
         next: (available: boolean) => {
           this.isAvailable = available;
@@ -181,10 +181,7 @@ export class BookServiceDialogComponent implements OnInit {
         },
         error: (err: ErrorResponse) => {
           if (this.isAvailable) {
-            this.toastr.error(
-              "Sorry, you haven't enough money to book this service",
-              'Oops!'
-            );
+            this.toastr.error(err.message, 'Oops!');
           } else {
             this.toastr.error(this.errorMessage, 'Oops!');
           }

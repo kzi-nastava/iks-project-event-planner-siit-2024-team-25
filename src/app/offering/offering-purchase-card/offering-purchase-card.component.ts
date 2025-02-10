@@ -33,7 +33,7 @@ export class OfferingPurchaseCardComponent {
   }
 
   openServiceBookDialog(): void {
-    this.router.navigate(['/services/' + this.offering.id], {
+    this.router.navigate(['/service/services/' + this.offering.id], {
       queryParams: { eventId: this.eventId },
     });
   }

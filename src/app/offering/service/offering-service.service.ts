@@ -1,7 +1,18 @@
 import { DatePipe } from '@angular/common';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, forkJoin, map, Observable, switchMap, throwError } from 'rxjs';
+import {
+  catchError,
+  forkJoin,
+  map,
+  Observable,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { EventTypeService } from '../../event/service/event-type.service';
 import { Page } from '../../shared/model/page.mode';
@@ -21,7 +32,7 @@ export class OfferingServiceService {
     private offeringCategoryService: OfferingCategoryService,
     private eventTypesService: EventTypeService,
     private datePipe: DatePipe
-  ) { }
+  ) {}
 
   getAll(properties: any): Observable<Service[]> {
     let params = new HttpParams();
@@ -53,63 +64,94 @@ export class OfferingServiceService {
   }
 
   getServiceById(id: number): Observable<Service> {
-    return this.httpClinet.get<any>(`http://localhost:8080/api/services/${id}`)
-    .pipe(map(this.mapImages), catchError(this.handleError));
+    return this.httpClinet
+      .get<any>(`http://localhost:8080/api/services/${id}`)
+      .pipe(map(this.mapImages), catchError(this.handleError));
   }
 
   addService(s: ServiceCreateDTO): Observable<Service> {
-    return this.httpClinet.post<Service>(
-      'http://localhost:8080/api/services',this.buildFormData(s))
-    .pipe(map(this.mapImages), catchError(this.handleError));
+    return this.httpClinet
+      .post<Service>(
+        'http://localhost:8080/api/services',
+        this.buildFormData(s)
+      )
+      .pipe(map(this.mapImages), catchError(this.handleError));
   }
 
-  buildFormData(service : ServiceCreateDTO | ServiceUpdateDTO): FormData{
+  buildFormData(service: ServiceCreateDTO | ServiceUpdateDTO): FormData {
     let formData = new FormData();
-    formData.append('name', service.name?.toString() ?? "");
-    formData.append('description', service.description?.toString()??"");
-    formData.append('price', service.price?.toString() ?? "");
-    formData.append('discount', service.discount?.toString()??"");
+    formData.append('name', service.name?.toString() ?? '');
+    formData.append('description', service.description?.toString() ?? '');
+    formData.append('price', service.price?.toString() ?? '');
+    formData.append('discount', service.discount?.toString() ?? '');
     for (const image of service.images ?? []) {
       formData.append('images', image, image.name);
     }
-    formData.append('visible', service.visible?.toString()??"");
-    formData.append('available', service.available?.toString()??"");
-    formData.append('specifics', service.specifics??"");
-    formData.append('reservationType', service.reservationType.toString()??"");
+    formData.append('visible', service.visible?.toString() ?? '');
+    formData.append('available', service.available?.toString() ?? '');
+    formData.append('specifics', service.specifics ?? '');
+    formData.append(
+      'reservationType',
+      service.reservationType.toString() ?? ''
+    );
     formData.append('duration', service.duration.toString());
-    formData.append('reservationDeadline', service.reservationDeadline.toString());
-    formData.append('cancellationDeadline', service.cancellationDeadline.toString());
-    formData.append('minimumArrangement', service.minimumArrangement.toString());
-    formData.append('maximumArrangement', service.maximumArrangement.toString());
-    for(const eventTypeId of service.eventTypesIDs?? []){
+    formData.append(
+      'reservationDeadline',
+      service.reservationDeadline.toString()
+    );
+    formData.append(
+      'cancellationDeadline',
+      service.cancellationDeadline.toString()
+    );
+    formData.append(
+      'minimumArrangement',
+      service.minimumArrangement.toString()
+    );
+    formData.append(
+      'maximumArrangement',
+      service.maximumArrangement.toString()
+    );
+    for (const eventTypeId of service.eventTypesIDs ?? []) {
       formData.append('eventTypesIDs', eventTypeId.toString());
     }
-    if(this.isServiceCreateDTO(service)){
-      formData.append('offeringCategoryID', service.offeringCategoryID?.toString()??"");
-      formData.append('offeringCategoryName', service.offeringCategoryName?.toString()??"");
-      formData.append('ownerId', service.ownerId?.toString()??"");
-    }else{
+    if (this.isServiceCreateDTO(service)) {
+      formData.append(
+        'offeringCategoryID',
+        service.offeringCategoryID?.toString() ?? ''
+      );
+      formData.append(
+        'offeringCategoryName',
+        service.offeringCategoryName?.toString() ?? ''
+      );
+      formData.append('ownerId', service.ownerId?.toString() ?? '');
+    } else {
       formData.append('status', service.status.toString());
       if (!!service.imagesToDelete) {
         for (const imageUrl of service.imagesToDelete) {
-          formData.append('imagesToDelete', this.extractImageIdFromUrl(imageUrl));
+          formData.append(
+            'imagesToDelete',
+            this.extractImageIdFromUrl(imageUrl)
+          );
         }
       }
     }
-    
+
     return formData;
   }
 
   isServiceCreateDTO(obj: any): obj is ServiceCreateDTO {
-    return obj && obj.offeringCategoryID
-}
+    return obj && obj.offeringCategoryID;
+  }
 
   updateService(
     updatedService: ServiceUpdateDTO,
     id: number
   ): Observable<Service> {
-    return this.httpClinet.put<Service>(
-      'http://localhost:8080/api/services/' + id,this.buildFormData(updatedService))
+    return this.httpClinet
+      .put<Service>(
+        'http://localhost:8080/api/services/' + id,
+        this.buildFormData(updatedService)
+      )
       .pipe(map(this.mapImages), catchError(this.handleError));
   }
   deleteService(id: number): Observable<void> {
@@ -119,7 +161,6 @@ export class OfferingServiceService {
   }
 
   isServiceAvailable(
-    eventId: number,
     serviceId: number,
     purchase: PurchaseRequest
   ): Observable<boolean> {
@@ -157,10 +198,17 @@ export class OfferingServiceService {
     serviceId: number,
     purchase: PurchaseRequest
   ): Observable<boolean> {
-    return this.httpClinet.post<boolean>(
-      `${environment.apiHost}/api/purchase/event/${eventId}/service/${serviceId}`,
-      purchase
-    );
+    return this.httpClinet
+      .post<boolean>(
+        `${environment.apiHost}/api/purchase/event/${eventId}/service/${serviceId}`,
+        purchase
+      )
+      .pipe(
+        map((value) => {
+          return value;
+        }),
+        catchError(this.handleError)
+      );
   }
   private extractImageIdFromUrl(imageUrl: String): string {
     const parts = imageUrl.split('/');
@@ -182,11 +230,11 @@ export class OfferingServiceService {
 
     return throwError(
       () =>
-      ({
-        code: error.status,
-        message: errorResponse?.message ?? error.message,
-        errors: errorResponse?.errors,
-      } as ErrorResponse)
+        ({
+          code: error.status,
+          message: errorResponse?.message ?? error.message,
+          errors: errorResponse?.errors,
+        } as ErrorResponse)
     );
   }
 }
