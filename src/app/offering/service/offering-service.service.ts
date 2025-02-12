@@ -27,12 +27,7 @@ import { ErrorResponse } from '../../shared/model/error.response.model';
   providedIn: 'root',
 })
 export class OfferingServiceService {
-  constructor(
-    private httpClinet: HttpClient,
-    private offeringCategoryService: OfferingCategoryService,
-    private eventTypesService: EventTypeService,
-    private datePipe: DatePipe
-  ) {}
+  constructor(private httpClinet: HttpClient, private datePipe: DatePipe) {}
 
   getAll(properties: any): Observable<Service[]> {
     let params = new HttpParams();
