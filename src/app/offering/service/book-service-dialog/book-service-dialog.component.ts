@@ -58,8 +58,6 @@ export class BookServiceDialogComponent implements OnInit {
   }
 
   onStartTimeChange(): void {
-    if (this.purchase.startDate && this.purchase.startTime) {
-    }
     if (
       this.purchase.startDate &&
       this.purchase.startTime &&
@@ -124,7 +122,7 @@ export class BookServiceDialogComponent implements OnInit {
         .split(':')
         .map(Number);
       const endDateTime = new Date(this.purchase.endDate);
-      startDateTime.setHours(endHours, endMinutes, 0, 0);
+      endDateTime.setHours(endHours, endMinutes, 0, 0);
 
       const differenceInMinutes =
         (endDateTime.getTime() - startDateTime.getTime()) / 60000;
@@ -139,8 +137,8 @@ export class BookServiceDialogComponent implements OnInit {
         this.errorMessage = `The selected duration is outside the allowed range of ${this.service.minimumArrangement} to ${this.service.maximumArrangement} hours.`;
       } else {
         this.errorMessage = undefined;
+        this.isServiceAvailable();
       }
-      this.isServiceAvailable();
     }
   }
   isServiceAvailable() {
@@ -178,11 +176,7 @@ export class BookServiceDialogComponent implements OnInit {
           }
         },
         error: (err: ErrorResponse) => {
-          if (this.isAvailable) {
-            this.toastr.error(err.message, 'Oops!');
-          } else {
-            this.toastr.error(this.errorMessage, 'Oops!');
-          }
+          this.toastr.error(err.message, 'Oops!');
         },
       });
   }
