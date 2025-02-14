@@ -129,7 +129,7 @@ describe('OffeirngServiceService', () => {
       const serviceId = 1;
       const mockPurchaseRequest: PurchaseRequest = {
         startDate: new Date(2025, 1, 10),
-        endDate: new Date(2025, 1, 15),
+        endDate: new Date(2025, 1, 10),
         startTime: '10:00',
         endTime: '12:00',
         price: 100,
@@ -162,7 +162,7 @@ describe('OffeirngServiceService', () => {
       expect(sentParams).not.toContain('price');
 
       expect(req.request.params.get('startDate')).toBe('2025-02-10');
-      expect(req.request.params.get('endDate')).toBe('2025-02-15');
+      expect(req.request.params.get('endDate')).toBe('2025-02-10');
       expect(req.request.params.get('startTime')).toBe('10:00');
       expect(req.request.params.get('endTime')).toBe('12:00');
 
@@ -173,7 +173,7 @@ describe('OffeirngServiceService', () => {
       const serviceId = 1;
       const mockPurchaseRequest: PurchaseRequest = {
         startDate: new Date(2025, 1, 10),
-        endDate: new Date(2025, 1, 15),
+        endDate: new Date(2025, 1, 10),
         startTime: '10:00',
         endTime: '12:00',
         price: 100,
@@ -206,7 +206,7 @@ describe('OffeirngServiceService', () => {
       expect(sentParams).not.toContain('price');
 
       expect(req.request.params.get('startDate')).toBe('2025-02-10');
-      expect(req.request.params.get('endDate')).toBe('2025-02-15');
+      expect(req.request.params.get('endDate')).toBe('2025-02-10');
       expect(req.request.params.get('startTime')).toBe('10:00');
       expect(req.request.params.get('endTime')).toBe('12:00');
 
@@ -220,7 +220,7 @@ describe('OffeirngServiceService', () => {
       const serviceId = 2;
       const mockPurchaseRequest: PurchaseRequest = {
         startDate: new Date(2025, 1, 10),
-        endDate: new Date(2025, 1, 15),
+        endDate: new Date(2025, 1, 10),
         startTime: '10:00',
         endTime: '12:00',
         price: 100,
@@ -248,7 +248,7 @@ describe('OffeirngServiceService', () => {
         const serviceId = 25;
         const mockPurchaseRequest: PurchaseRequest = {
           startDate: new Date(2025, 1, 10),
-          endDate: new Date(2025, 1, 15),
+          endDate: new Date(2025, 1, 10),
           startTime: '10:00',
           endTime: '12:00',
           price: 100,
@@ -283,7 +283,7 @@ describe('OffeirngServiceService', () => {
         const serviceId = 1;
         const mockPurchaseRequest: PurchaseRequest = {
           startDate: new Date(2025, 1, 10),
-          endDate: new Date(2025, 1, 15),
+          endDate: new Date(2025, 1, 10),
           startTime: '10:00',
           endTime: '12:00',
           price: 100,
@@ -319,7 +319,7 @@ describe('OffeirngServiceService', () => {
       const serviceId = 2;
       const mockPurchaseRequest: PurchaseRequest = {
         startDate: new Date(2025, 1, 10),
-        endDate: new Date(2025, 1, 15),
+        endDate: new Date(2025, 1, 10),
         startTime: '10:00',
         endTime: '12:00',
         price: 100,
@@ -354,7 +354,7 @@ describe('OffeirngServiceService', () => {
       const serviceId = 2;
       const mockPurchaseRequest: PurchaseRequest = {
         startDate: new Date(2025, 1, 10),
-        endDate: new Date(2025, 1, 15),
+        endDate: new Date(2025, 1, 10),
         startTime: '10:00',
         endTime: '12:00',
         price: 100,
@@ -380,7 +380,7 @@ describe('OffeirngServiceService', () => {
       const serviceId = 2;
       const mockPurchaseRequest: PurchaseRequest = {
         startDate: new Date(2025, 1, 10),
-        endDate: new Date(2025, 1, 15),
+        endDate: new Date(2025, 1, 10),
         startTime: '10:00',
         endTime: '12:00',
         price: 100,
@@ -395,7 +395,7 @@ describe('OffeirngServiceService', () => {
       service.bookService(eventId, serviceId, mockPurchaseRequest).subscribe({
         next: () => fail('Expected 500 error, but got a response'),
         error: (error: ErrorResponse) => {
-          expect(error.code).toBe(500);
+          expect(error.code).toBe(400);
           expect(error.message).toBe('Bad request');
           expect(error.errors).toEqual({
             purcahse: 'Service is not available in this period.',
@@ -410,7 +410,7 @@ describe('OffeirngServiceService', () => {
       expect(req.request.method).toBe('POST');
 
       req.flush(mockErrorResponse, {
-        status: 500,
+        status: 400,
         statusText: 'Internal Server Error',
       });
     });
