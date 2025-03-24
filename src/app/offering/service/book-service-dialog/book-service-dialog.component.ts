@@ -36,7 +36,6 @@ export class BookServiceDialogComponent implements OnInit {
         this.serviceService.getServiceById(+params['id']).subscribe({
           next: (service: Service) => {
             this.service = service;
-            console.log(service);
             this.purchase.price =
               (service.price * (100 - service.discount)) / 100;
           },
@@ -48,7 +47,6 @@ export class BookServiceDialogComponent implements OnInit {
       if (+queryParams['eventId']) {
         this.eventService.getEvent(+queryParams['eventId']).subscribe({
           next: (event: Event) => {
-            console.log(event);
             this.event = event;
             this.purchase.startDate = event.startDate;
             this.purchase.endDate = event.startDate;
@@ -60,8 +58,6 @@ export class BookServiceDialogComponent implements OnInit {
   }
 
   onStartTimeChange(): void {
-    if (this.purchase.startDate && this.purchase.startTime) {
-    }
     if (
       this.purchase.startDate &&
       this.purchase.startTime &&
@@ -126,7 +122,7 @@ export class BookServiceDialogComponent implements OnInit {
         .split(':')
         .map(Number);
       const endDateTime = new Date(this.purchase.endDate);
-      startDateTime.setHours(endHours, endMinutes, 0, 0);
+      endDateTime.setHours(endHours, endMinutes, 0, 0);
 
       const differenceInMinutes =
         (endDateTime.getTime() - startDateTime.getTime()) / 60000;
@@ -141,13 +137,13 @@ export class BookServiceDialogComponent implements OnInit {
         this.errorMessage = `The selected duration is outside the allowed range of ${this.service.minimumArrangement} to ${this.service.maximumArrangement} hours.`;
       } else {
         this.errorMessage = undefined;
+        this.isServiceAvailable();
       }
-      this.isServiceAvailable();
     }
   }
   isServiceAvailable() {
     this.serviceService
-      .isServiceAvailable(this.event.id, this.service.id, this.purchase)
+      .isServiceAvailable(this.service.id, this.purchase)
       .subscribe({
         next: (available: boolean) => {
           this.isAvailable = available;
@@ -180,14 +176,7 @@ export class BookServiceDialogComponent implements OnInit {
           }
         },
         error: (err: ErrorResponse) => {
-          if (this.isAvailable) {
-            this.toastr.error(
-              "Sorry, you haven't enough money to book this service",
-              'Oops!'
-            );
-          } else {
-            this.toastr.error(this.errorMessage, 'Oops!');
-          }
+          this.toastr.error(err.message, 'Oops!');
         },
       });
   }

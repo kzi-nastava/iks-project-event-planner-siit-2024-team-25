@@ -61,21 +61,30 @@ export class ServiceDetailsComponent {
     });
   }
 
-  openPurchaseList(){
-    this.router.navigate([`event/${this.serviceId}/purchases`],{
-          state: {offeringId:this.serviceId, reviewType:ReviewType.EVENT_REVIEW}
+  openPurchaseList() {
+    this.router.navigate([`event/${this.serviceId}/purchases`], {
+      state: {
+        offeringId: this.serviceId,
+        reviewType: ReviewType.EVENT_REVIEW,
+      },
     });
   }
-  openReviews(){
-    this.router.navigate([`/chat/offering-event`],{
-      state: {offeringId:this.service.id, eventOfferingName:this.service.name}
+  openReviews() {
+    this.router.navigate([`/chat/offering-event`], {
+      state: {
+        offeringId: this.service.id,
+        eventOfferingName: this.service.name,
+      },
     });
   }
   openBookServiceForm() {
     if (this.service.available) {
-      this.router.navigate(['/services/' + this.service.id + '/purchase/'], {
-        queryParams: { eventId: this.eventId },
-      });
+      this.router.navigate(
+        ['/service/services/' + this.service.id + '/purchase/'],
+        {
+          queryParams: { eventId: this.eventId },
+        }
+      );
     } else {
       this.dialog.open(ErrorDialogComponent, {
         data: {
