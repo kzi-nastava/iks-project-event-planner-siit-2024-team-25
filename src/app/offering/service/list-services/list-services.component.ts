@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Service } from '../model/service';
 import { ServiceDialogComponent } from '../service-dialog/service-dialog.component';
 import { ServiceDialogInformationComponent } from '../service-dialog/service-dialog-information.component';
@@ -45,7 +45,7 @@ export class ListServicesComponent implements OnInit {
   }
 
   constructor(private serviceManage: OfferingServiceService, private router: Router, private eventTypeService: EventTypeService,
-    private offeringCategoryTypeService: OfferingCategoryService
+    private offeringCategoryTypeService: OfferingCategoryService, private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -141,6 +141,9 @@ export class ListServicesComponent implements OnInit {
 
   clickFilter() {
     this.isFilter = !this.isFilter;
+    setTimeout(() => {
+    this.cd.detectChanges();
+  });
   }
 
   goToCreateService() {

@@ -40,9 +40,9 @@
   </div>
   <div class="form-container" *ngIf="isFilter">
     <mat-form-field style="width: 35%;">
-      <input matInput placeholder="Price" type="number" [(ngModel)]="priceFIlter">
-      <span matPrefix>$&nbsp;</span>
-      <span matSuffix>.00</span>
+      <input matInput placeholder="Price" type="number" [(ngModel)]="priceFIlter" >
+      <span matPrefix style="margin-left: 1.5rem;">$&nbsp;</span>
+      <span matSuffix style="margin-right:2rem">.00</span>
     </mat-form-field>
   </div>
   <div class="form-container" *ngIf="isFilter">
