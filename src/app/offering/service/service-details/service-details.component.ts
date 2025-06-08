@@ -51,6 +51,7 @@ export class ServiceDetailsComponent {
         next: (service: Service) => {
           console.log(service);
           this.service = service;
+          this.durationShow = service.duration > 0 ? true : false
         },
       });
     });

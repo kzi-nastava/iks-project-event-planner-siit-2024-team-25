@@ -120,6 +120,7 @@ export class OfferingServiceService {
       );
       formData.append('ownerId', service.ownerId?.toString() ?? '');
     } else {
+      console.log("adsads")
       formData.append('status', service.status.toString());
       if (!!service.imagesToDelete) {
         for (const imageUrl of service.imagesToDelete) {
@@ -135,7 +136,7 @@ export class OfferingServiceService {
   }
 
   isServiceCreateDTO(obj: any): obj is ServiceCreateDTO {
-    return obj && obj.offeringCategoryID;
+    return obj && !obj.status;
   }
 
   updateService(
