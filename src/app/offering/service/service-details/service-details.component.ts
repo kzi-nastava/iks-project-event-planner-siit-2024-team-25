@@ -30,6 +30,7 @@ export class ServiceDetailsComponent {
   showBookServiceButton: boolean = false;
   service!: Service;
   eventId!: number;
+  showChatButton! : boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +44,7 @@ export class ServiceDetailsComponent {
     if (this.authService.getUser()?.role == UserRole.EventOrganizer) {
       this.showBookServiceButton = true;
     }
+    
     // Getting 'id' from URL-a
     this.route.params.subscribe((params) => {
       this.serviceId = +params['id'];
@@ -52,6 +54,8 @@ export class ServiceDetailsComponent {
           console.log(service);
           this.service = service;
           this.durationShow = service.duration > 0 ? true : false
+          this.showChatButton = this.authService.getUser()?.userId == this.service.owner.id ? false : true;
+          
         },
       });
     });

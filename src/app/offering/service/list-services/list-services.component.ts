@@ -16,7 +16,8 @@ import { OfferingCategory } from '../../offering-category/model/offering-categor
   styleUrl: './list-services.component.scss'
 })
 export class ListServicesComponent implements OnInit {
-
+  totalPages:number = 1;
+  currentPage:number = 0;
   pageProperties = {
     name: "",
     price: 0,
@@ -49,15 +50,16 @@ export class ListServicesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getAll();
+    this.getAll(0);
     this.getEventTypes()
     this.getOfferingCategoryTypes()
   }
 
-  getAll(): void {
-    this.serviceManage.getAll(this.pageProperties).subscribe({
-      next: (services: Service[]) => {
-        this.services = services;
+  getAll(page:number): void {
+    this.serviceManage.getAll(page,this.pageProperties).subscribe({
+      next: (page) => {
+        this.services = page.content;
+        this.totalPages = page.totalPages;
         this.refreshProperites()
       },
       error: (_) => {
@@ -112,14 +114,14 @@ export class ListServicesComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     const query = input.value || '';
     this.pageProperties.name = query
-    this.getAll();
+    this.getAll(0);
   }
 
   searchAndFilter(){
     this.pageProperties.name = this.nameFilter;
     this.pageProperties.price = this.priceFIlter;
     this.pageProperties.available = this.availableFilter;
-    this.getAll();
+    this.getAll(0);
   }
 
   refreshProperites(){
@@ -136,7 +138,7 @@ export class ListServicesComponent implements OnInit {
     this.nameFilter = "";
     this.availableFilter = false;
     this.refreshProperites();
-    this.getAll()
+    this.getAll(0)
   }
 
   clickFilter() {
@@ -148,6 +150,19 @@ export class ListServicesComponent implements OnInit {
 
   goToCreateService() {
     this.router.navigate(['/service/serviceForm'])
+  }
+  getPreviousPage(){
+  if (this.currentPage > 0) {
+        this.currentPage--;
+        this.getAll(this.currentPage);
+      }
+  }
+  getNextPage(){
+  
+      if (this.currentPage < this.totalPages-1) {
+        this.currentPage++;
+        this.getAll(this.currentPage);
+      }
   }
 }
 

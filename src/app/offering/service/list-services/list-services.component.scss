@@ -10,6 +10,29 @@
   justify-content: center;  
   gap: 20px;  
 }
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-left: 40%;
+  margin-right: 40%;
+  margin-bottom: 0.5rem;
+
+  button {
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+    background-color: mat.get-theme-color(theme.$light-theme, primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:active {
+      background-color: mat.get-theme-color(theme.$light-theme, primary, 70);
+    }
+  }
+}
   
 .example-search-bar {
     display: block;
