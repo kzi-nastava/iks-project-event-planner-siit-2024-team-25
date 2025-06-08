@@ -76,13 +76,13 @@
         >
           Chat with Owner
         </button>
-        <button class="view-button" (click)="viewOwnerCompany()">
+        <button class="view-button" (click)="viewOwnerCompany()" *ngIf="showOwnerCompanyButton">
           View Owner Company
         </button>
-        <div class="detail-item">
+        <div class="detail-item" *ngIf="showPurchaseListButton">
           <button class="chat-button" (click)="openPurchaseList()"> View purchase list</button>
         </div>
-        <div class="detail-item">
+        <div class="detail-item" *ngIf="showReviewsButton">
           <button class="chat-button" (click)="openReviews()"> View reviews</button>
         </div>
       </div>

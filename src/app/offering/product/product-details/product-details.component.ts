@@ -40,9 +40,13 @@ export class ProductDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private purchaseService: PurchaseService,
-    private productService: ProductService,
+    private productService: ProductService
   ) {}
 
+  showChatButton: boolean = true;
+  showOwnerCompanyButton: boolean = true;
+  showPurchaseListButton: boolean = true;
+  showReviewsButton: boolean = true;
   ngOnInit(): void {
     if (this.authService.getUser()?.role == UserRole.EventOrganizer) {
       this.showPurchaseProductButton = true;
@@ -64,6 +68,24 @@ export class ProductDetailsComponent implements OnInit {
     this.route.queryParams.subscribe((queryParams) => {
       this.eventId = queryParams['eventId'];
     });
+    if (this.authService.getUser()) {
+      if (this.authService.getUser()?.role == UserRole.Regular) {
+        this.showChatButton = false;
+        this.showPurchaseListButton = false;
+      } else if (this.authService.getUser()?.role == UserRole.EventOrganizer) {
+      } else if (this.authService.getUser()?.role == UserRole.Owner) {
+        this.showChatButton = false;
+      } else if (this.authService.getUser()?.role == UserRole.Admin) {
+        this.showChatButton = false;
+        this.showPurchaseListButton = false;
+      } else {
+        this.showChatButton = false;
+        this.showPurchaseListButton = false;
+      }
+    } else {
+      this.showChatButton = false;
+      this.showPurchaseListButton = false;
+    }
   }
 
   purchaseProduct() {
@@ -94,14 +116,20 @@ export class ProductDetailsComponent implements OnInit {
     console.log(this.product.ownerInfo.id);
     this.router.navigate(['/user', this.product.ownerInfo.id]);
   }
-  openPurchaseList(){
-    this.router.navigate([`event/${this.productId}/purchases`],{
-              state: {offeringId:this.productId, reviewType:ReviewType.EVENT_REVIEW}
-        });
+  openPurchaseList() {
+    this.router.navigate([`event/${this.productId}/purchases`], {
+      state: {
+        offeringId: this.productId,
+        reviewType: ReviewType.EVENT_REVIEW,
+      },
+    });
   }
-  openReviews(){
-    this.router.navigate([`/chat/offering-event`],{
-      state: {offeringId:this.product.id, eventOfferingName:this.product.name}
+  openReviews() {
+    this.router.navigate([`/chat/offering-event`], {
+      state: {
+        offeringId: this.product.id,
+        eventOfferingName: this.product.name,
+      },
     });
   }
 }

@@ -43,12 +43,12 @@
       <div class="owner-info">
         <p>{{ product.ownerInfo.name }}</p>
         <div class="buttons">
-          <button [routerLink]="['/chat', product.ownerInfo.id, product.ownerInfo.name]" class="chat-button">Chat with Owner</button>
-          <button (click)="viewOwnerCompany()" class="view-button">View Owner Company</button>
-          <div class="detail-item">
+          <button [routerLink]="['/chat', product.ownerInfo.id, product.ownerInfo.name]" class="chat-button" *ngIf="showChatButton">Chat with Owner</button>
+          <button (click)="viewOwnerCompany()" class="view-button" *ngIf="showOwnerCompanyButton">View Owner Company</button>
+          <div class="detail-item" *ngIf="showPurchaseListButton">
             <button class="chat-button" (click)="openPurchaseList()"> View purchase list</button>
           </div>
-          <div class="detail-item">
+          <div class="detail-item" *ngIf="showReviewsButton">
             <button class="chat-button" (click)="openReviews()"> View reviews</button>
           </div>
         </div>

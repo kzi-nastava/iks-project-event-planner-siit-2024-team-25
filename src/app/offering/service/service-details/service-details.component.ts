@@ -30,7 +30,10 @@ export class ServiceDetailsComponent {
   showBookServiceButton: boolean = false;
   service!: Service;
   eventId!: number;
-  showChatButton! : boolean;
+  showChatButton : boolean = true;
+  showOwnerCompanyButton:boolean = true;
+  showPurchaseListButton: boolean = true;
+  showReviewsButton: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,7 +57,26 @@ export class ServiceDetailsComponent {
           console.log(service);
           this.service = service;
           this.durationShow = service.duration > 0 ? true : false
-          this.showChatButton = this.authService.getUser()?.userId == this.service.owner.id ? false : true;
+          if(this.authService.getUser()){
+            if(this.authService.getUser()?.role == UserRole.Regular){
+              this.showChatButton = false;
+              this.showPurchaseListButton = false;
+            }else if(this.authService.getUser()?.role == UserRole.EventOrganizer){
+
+            }else if(this.authService.getUser()?.role == UserRole.Owner){
+              this.showChatButton = false;
+            }
+            else if(this.authService.getUser()?.role == UserRole.Admin){
+              this.showChatButton = false;
+              this.showPurchaseListButton = false;
+            }else{
+              this.showChatButton = false;
+              this.showPurchaseListButton = false;
+            }
+          }else{
+            this.showChatButton = false;
+            this.showPurchaseListButton = false;
+          }
           
         },
       });
@@ -93,7 +115,7 @@ export class ServiceDetailsComponent {
     } else {
       this.dialog.open(ErrorDialogComponent, {
         data: {
-          message: this.service.name + 'currently is not available',
+          message: this.service.name + ' currently is not available',
         },
       });
     }
