@@ -89,6 +89,14 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   purchaseProduct() {
+    if(this.eventId == null){
+      this.dialog.open(ErrorDialogComponent, {
+            data: {
+              message: "You must buy product for some event",
+            },
+          });
+      return;
+    }
     this.purchaseService
       .purchaseProduct(this.eventId, this.productId)
       .subscribe({
