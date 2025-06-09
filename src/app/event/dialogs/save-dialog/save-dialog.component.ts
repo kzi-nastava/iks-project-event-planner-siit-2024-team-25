@@ -24,7 +24,7 @@ export class SaveDialogComponent implements OnInit{
 
     constructor(public dialogRef: MatDialogRef<any>,
       @Inject(MAT_DIALOG_DATA) public data: { budget:any, eventTypeId: number, isEdit: boolean, eventId: number }, 
-      private budgetPlanService:BudgetPlanService, private eventTypeService: EventTypeService
+      private budgetPlanService:BudgetPlanService, private eventTypeService: EventTypeService, private offeringCategoryService: OfferingCategoryService
     ) {}
     
   ngOnInit(): void {
@@ -36,15 +36,27 @@ export class SaveDialogComponent implements OnInit{
   }
 
   getAllOption(){
-    this.eventTypeService.getCategoriesByEventType(this.data.eventTypeId).subscribe({
-      next:(res)=>{
+    if(this.data.eventTypeId == null){
+      this.offeringCategoryService.getAll().subscribe({
+        next:(res)=>{
         console.log(res)
         this.offeringCategoryOption = res
       },
       error:(_)=>{
         console.log("error")
       }
-    })
+      })
+    }else{
+      this.eventTypeService.getCategoriesByEventType(this.data.eventTypeId).subscribe({
+        next:(res)=>{
+          this.offeringCategoryOption = res
+        },
+        error:(_)=>{
+          console.log("error")
+        }
+      })
+    }
+    
   }
 
   onApprove(){

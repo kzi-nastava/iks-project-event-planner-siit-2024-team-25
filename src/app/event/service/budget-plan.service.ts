@@ -1,10 +1,11 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, switchMap, throwError } from 'rxjs';
 import { BudgetItem } from '../model/budget-item.model';
 import { environment } from '../../../environment/environment';
 import { OfferingCategoryService } from '../../offering/offering-category/offering-category.service';
 import { BudgetItemRequestDTO } from '../model/budget-item-request.dto';
+import { ErrorResponse } from '../../shared/model/error.response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -61,13 +62,31 @@ export class BudgetPlanService {
     return this.httpClient.put<BudgetItem>(
       environment.apiHost + '/api/budget-items/' + id,
       request
-    );
+    ).pipe(
+    catchError((error: HttpErrorResponse) => {
+      const customError: ErrorResponse = {
+        code: error.status,
+        message: error.error?.message || 'Unknown error',
+        errors: error.error?.errors || {}
+      };
+      return throwError(() => customError);
+    })
+  );
   }
-  deleteBudgetItem(id: number): Observable<void> {
-    return this.httpClient.delete<void>(
-      environment.apiHost + '/api/budget-items/' + id
-    );
-  }
+deleteBudgetItem(id: number): Observable<void> {
+  return this.httpClient.delete<void>(
+    environment.apiHost + '/api/budget-items/' + id
+  ).pipe(
+    catchError((error: HttpErrorResponse) => {
+      const customError: ErrorResponse = {
+        code: error.status,
+        message: error.error?.message || 'Unknown error',
+        errors: error.error?.errors || {}
+      };
+      return throwError(() => customError);
+    })
+  );
+}
 
   getLeftMoneyForBudgetItem(
     eventId: number,
