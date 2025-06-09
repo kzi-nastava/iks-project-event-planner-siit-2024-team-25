@@ -70,26 +70,32 @@ export class ChatComponentComponent implements OnInit {
     this.isChatBlocked();
   }
 
-  sendMessage() {
-    if (this.message.length > 0) {
-      this.chatService
-        .sendMessage({
-          senderId: this.senderId,
-          receiverId: this.receiverId,
-          content: this.message,
-        })
-        .subscribe({
-          next: (response) => {
-            this.getChat();
-            this.currentPage = 0;
-            this.message = '';
-          },
-          error: (err) => {
-            console.error('Greška prilikom slanja poruke:', err);
-          },
-        });
-    }
+sendMessage() {
+  if (this.message.length > 0) {
+    const newMessage = {
+      senderId: this.senderId,
+      receiverId: this.receiverId,
+      content: this.message,
+    };
+
+    this.chatService.sendMessage(newMessage).subscribe({
+      next: (response) => {
+        this.addMessageDiv(
+          'sent',
+          newMessage.content,
+          new Date()
+        );
+        this.message = '';
+        this.totalMessages += 1;
+        this.getChat();
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
+}
+
 
   getChat() {
     if (this.isLoading) return;

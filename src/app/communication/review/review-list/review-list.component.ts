@@ -15,11 +15,13 @@ export class ReviewListComponent implements OnInit{
   currentPage: number = 0;
   totalPages: number = 1;
   eventReview: boolean = true;
+  eventOfferingName: string = "";
   constructor(private reviewService:ReviewService, private authService: AuthService){}
   ngOnInit(): void {
     if(this.authService.getUser()?.role == UserRole.EventOrganizer){
       this.eventReview = true
-    }else{this.eventReview = false}
+      this.eventOfferingName = "Event name";
+    }else{this.eventReview = false; this.eventOfferingName = "Offering name"}
     this.getReviews();
   }
   getEventReviewsByOrganizer(){
