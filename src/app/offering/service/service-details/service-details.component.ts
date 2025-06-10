@@ -30,6 +30,10 @@ export class ServiceDetailsComponent {
   showBookServiceButton: boolean = false;
   service!: Service;
   eventId!: number;
+  showChatButton : boolean = true;
+  showOwnerCompanyButton:boolean = true;
+  showPurchaseListButton: boolean = true;
+  showReviewsButton: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +47,7 @@ export class ServiceDetailsComponent {
     if (this.authService.getUser()?.role == UserRole.EventOrganizer) {
       this.showBookServiceButton = true;
     }
+    
     // Getting 'id' from URL-a
     this.route.params.subscribe((params) => {
       this.serviceId = +params['id'];
@@ -51,6 +56,28 @@ export class ServiceDetailsComponent {
         next: (service: Service) => {
           console.log(service);
           this.service = service;
+          this.durationShow = service.duration > 0 ? true : false
+          if(this.authService.getUser()){
+            if(this.authService.getUser()?.role == UserRole.Regular){
+              this.showChatButton = false;
+              this.showPurchaseListButton = false;
+            }else if(this.authService.getUser()?.role == UserRole.EventOrganizer){
+
+            }else if(this.authService.getUser()?.role == UserRole.Owner){
+              this.showChatButton = false;
+            }
+            else if(this.authService.getUser()?.role == UserRole.Admin){
+              this.showChatButton = false;
+              this.showPurchaseListButton = false;
+            }else{
+              this.showChatButton = false;
+              this.showPurchaseListButton = false;
+            }
+          }else{
+            this.showChatButton = false;
+            this.showPurchaseListButton = false;
+          }
+          
         },
       });
     });
@@ -88,7 +115,7 @@ export class ServiceDetailsComponent {
     } else {
       this.dialog.open(ErrorDialogComponent, {
         data: {
-          message: this.service.name + 'currently is not available',
+          message: this.service.name + ' currently is not available',
         },
       });
     }

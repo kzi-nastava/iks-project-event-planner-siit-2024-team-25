@@ -11,6 +11,10 @@ import { SubmittedOffering } from '../model/submitted-offering';
 import { ApproveDialogComponent } from '../dialogs/approve-dialog/approve-dialog.component';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
 import { CreateDialogComponent } from '../dialogs/create-dialog/create-dialog.component';
+import { ErrorDialogComponent } from '../../../shared/error-dialog/error-dialog.component';
+import { ErrorResponse } from '../../../shared/model/error.response.model';
+import { ServiceDialogComponent } from '../../service/service-dialog/service-dialog.component';
+import { ServiceDialogInformationComponent } from '../../service/service-dialog/service-dialog-information.component';
 
 @Component({
   selector: 'app-offering-category-list',
@@ -108,9 +112,19 @@ export class OfferingCategoryListComponent implements OnInit {
           this.offeringCategoryService.deleteOfferingCategory(id).subscribe({
             next:()=>{
               this.getAll();
+              this.dialog.open(ServiceDialogInformationComponent, {
+                      data: {
+                        message: 'Succesfully deleted!',
+                      },
+                    });
             },
-            error:(_)=>{
-              console.log("error")
+            error:(err: ErrorResponse)=>{
+              console.log(err)
+              this.dialog.open(ErrorDialogComponent, {
+                      data: {
+                        message: err.message,
+                      },
+                    });
             }
           })
         }

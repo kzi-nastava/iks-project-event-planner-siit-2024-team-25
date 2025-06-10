@@ -40,19 +40,30 @@
   </div>
   <div class="form-container" *ngIf="isFilter">
     <mat-form-field style="width: 35%;">
-      <input matInput placeholder="Price" type="number" [(ngModel)]="priceFIlter">
-      <span matPrefix>$&nbsp;</span>
-      <span matSuffix>.00</span>
+      <input matInput placeholder="Price" type="number" [(ngModel)]="priceFIlter" >
+      <span matPrefix style="margin-left: 1.5rem;">$&nbsp;</span>
+      <span matSuffix style="margin-right:2rem">.00</span>
     </mat-form-field>
   </div>
   <div class="form-container" *ngIf="isFilter">
     <mat-slide-toggle style="width: 35%;" class="form-container" style="margin: 20px;" (change)="setAvailableFilter()" [(ngModel)]="availableFilter">Is available</mat-slide-toggle>
 
   </div>
+  <div class="pagination">
+    <button (click)="getPreviousPage()">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    @if (totalPages > 0) {
+      <p>{{ currentPage + 1 }}/{{ totalPages }}</p>
+    } @else {
+      <p>No results</p>
+      }
+    <button (click)="getNextPage()"><mat-icon>navigate_next</mat-icon></button>
+  </div>
 <div class="service-container">
   
   <div class="service-card" *ngFor="let service of services">
-    <app-service-card [service]="service" (refresh)="getAll()"></app-service-card>
+    <app-service-card [service]="service" (refresh)="getAll(0)"></app-service-card>
   </div>
 </div>
 

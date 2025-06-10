@@ -16,6 +16,7 @@ import { EventTypePreviewModel } from '../../../event/model/event.type.preview.m
 import { ServiceUpdateDTO } from '../model/serviceUpdateDTO';
 import { minArrayLength } from '../../../shared/model/Validators';
 import { AuthService } from '../../../infrastructure/auth/service/auth.service';
+import { ErrorDialogComponent } from '../../../shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-service-form',
@@ -97,7 +98,7 @@ export class ServiceFormComponent {
   openSaveDialog() {
     const dialogRef = this.dialog.open(ServiceDialogInformationComponent, {
       data: {
-        massage: this.firstFormGroup.value.name + ' is successfully created!',
+        message: this.firstFormGroup.value.name + ' is successfully created!',
       },
     });
 
@@ -106,9 +107,9 @@ export class ServiceFormComponent {
     });
   }
   openErrorDialog(s: String) {
-    const dialogRef = this.dialog.open(ServiceDialogInformationComponent, {
+    const dialogRef = this.dialog.open(ErrorDialogComponent, {
       data: {
-        massage: this.firstFormGroup.value.name + ' is successfully updated!',
+        message: this.firstFormGroup.value.name? this.firstFormGroup.value.name : ' Service' + s,
       },
     });
   }
@@ -142,6 +143,7 @@ export class ServiceFormComponent {
             this.openSaveDialog();
           },
           error: (err) => {
+            this.router.navigate(['/service/services']);
             this.openErrorDialog('not created, server error');
           },
         });
@@ -277,6 +279,7 @@ export class ServiceFormComponent {
 
   onInputCategory(event: Event): void {
     const input = (event.target as HTMLInputElement).value;
+    console.log(input)
     if (!Array.from(this.offeringCategoryTypeAll.values()).includes(input)) {
       this.firstFormGroup.patchValue({
         categoryTypeId: -1,

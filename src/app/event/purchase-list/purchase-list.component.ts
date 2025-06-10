@@ -7,6 +7,8 @@ import { ReviewService } from '../../communication/review/services/review.servic
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { Review } from '../../communication/review/model/review-model';
 import { ReviewType } from '../../communication/review/model/review-type';
+import { UserRole } from '../../infrastructure/auth/model/user-role.model';
+import { PurchasePreviewWithCount } from '../model/purchasePreviewWithCount.model';
 
 @Component({
   selector: 'app-purchase-list',
@@ -14,7 +16,7 @@ import { ReviewType } from '../../communication/review/model/review-type';
   styleUrl: './purchase-list.component.scss'
 })
 export class PurchaseListComponent implements OnInit{
-  displayedColumns = ['position', 'name', 'price', 'review'];
+  displayedColumns = ['position', 'Ename','name', 'price','count', 'review'];
   purchaseList: PurchasePreview[] = [];
 
   eventId: number | any = null;
@@ -41,12 +43,11 @@ export class PurchaseListComponent implements OnInit{
         console.log("offering id not found")
       }
     }
-    
-    const reviewTypeFromState = window.history.state['reviewType'];
-    if (reviewTypeFromState) {
-      this.reviewType = reviewTypeFromState;
-    }else{
-      console.log("review type id not found")
+    if(this.authService.getUser()?.role == UserRole.EventOrganizer){
+      this.reviewType = ReviewType.OFFERING_REVIEW;
+    }
+    else if(this.authService.getUser()?.role == UserRole.Owner){
+      this.reviewType = ReviewType.EVENT_REVIEW;
     }
     this.getPurchaseList();
   }
@@ -54,9 +55,19 @@ export class PurchaseListComponent implements OnInit{
   getPurchaseList(){
     if(this.eventId== null){
       this.purchaseService.getPurchaseByOffering(this.offeringId).subscribe({
-        next:(res)=>{
-          this.purchaseList = res;
-        },
+        next: (res) => {
+        const map = new Map<string, PurchasePreviewWithCount>();
+
+        res.forEach(item => {
+          if (map.has(item.offering.name)) {
+            map.get(item.offering.name)!.count += 1;
+          } else {
+            map.set(item.offering.name, { ...item, count: 1 });
+          }
+        });
+
+        this.purchaseList = Array.from(map.values());
+      } ,
         error:()=>{
           console.log("error")
         }
@@ -64,7 +75,17 @@ export class PurchaseListComponent implements OnInit{
     }else{
       this.purchaseService.getPurchaseByEvent(this.eventId).subscribe({
         next:(res)=>{
-          this.purchaseList = res;
+          const map = new Map<string, PurchasePreviewWithCount>();
+
+        res.forEach(item => {
+          if (map.has(item.offering.name)) {
+            map.get(item.offering.name)!.count += 1;
+          } else {
+            map.set(item.offering.name, { ...item, count: 1 });
+          }
+        });
+
+        this.purchaseList = Array.from(map.values());
         },
         error:()=>{
           console.log("error")

@@ -42,8 +42,7 @@ export class ServiceCardComponent{
             this.refresh.emit();
             const dialogTemp = this.dialog.open(ServiceDialogInformationComponent, {
               data: {
-                serviceName: result.serviceName,
-                action: "deleted"
+                message: result.serviceName + ' is deleted',
               }
             })
             

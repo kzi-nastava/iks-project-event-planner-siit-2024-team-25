@@ -121,6 +121,7 @@ export class ProductFormComponent implements OnInit {
 
       this.loadProduct(this.productId);
     }
+    
   }
 
   private loadCategories() {

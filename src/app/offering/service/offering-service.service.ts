@@ -29,8 +29,8 @@ import { ErrorResponse } from '../../shared/model/error.response.model';
 export class OfferingServiceService {
   constructor(private httpClinet: HttpClient, private datePipe: DatePipe) {}
 
-  getAll(properties: any): Observable<Service[]> {
-    let params = new HttpParams();
+  getAll(page: number,properties: any): Observable<Page<Service>> {
+    let params = new HttpParams().set('page', page);
     if (properties) {
       if (properties.name != '') {
         params = params.set('name', properties.name);
@@ -55,7 +55,7 @@ export class OfferingServiceService {
       .get<Page<Service>>('http://localhost:8080/api/services', {
         params: params,
       })
-      .pipe(map((page) => page.content));
+      ;
   }
 
   getServiceById(id: number): Observable<Service> {
@@ -120,6 +120,7 @@ export class OfferingServiceService {
       );
       formData.append('ownerId', service.ownerId?.toString() ?? '');
     } else {
+      console.log("adsads")
       formData.append('status', service.status.toString());
       if (!!service.imagesToDelete) {
         for (const imageUrl of service.imagesToDelete) {
@@ -135,7 +136,7 @@ export class OfferingServiceService {
   }
 
   isServiceCreateDTO(obj: any): obj is ServiceCreateDTO {
-    return obj && obj.offeringCategoryID;
+    return obj && !obj.status;
   }
 
   updateService(

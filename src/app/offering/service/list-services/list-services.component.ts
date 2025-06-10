@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Service } from '../model/service';
 import { ServiceDialogComponent } from '../service-dialog/service-dialog.component';
 import { ServiceDialogInformationComponent } from '../service-dialog/service-dialog-information.component';
@@ -16,7 +16,8 @@ import { OfferingCategory } from '../../offering-category/model/offering-categor
   styleUrl: './list-services.component.scss'
 })
 export class ListServicesComponent implements OnInit {
-
+  totalPages:number = 1;
+  currentPage:number = 0;
   pageProperties = {
     name: "",
     price: 0,
@@ -45,19 +46,20 @@ export class ListServicesComponent implements OnInit {
   }
 
   constructor(private serviceManage: OfferingServiceService, private router: Router, private eventTypeService: EventTypeService,
-    private offeringCategoryTypeService: OfferingCategoryService
+    private offeringCategoryTypeService: OfferingCategoryService, private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    this.getAll();
+    this.getAll(0);
     this.getEventTypes()
     this.getOfferingCategoryTypes()
   }
 
-  getAll(): void {
-    this.serviceManage.getAll(this.pageProperties).subscribe({
-      next: (services: Service[]) => {
-        this.services = services;
+  getAll(page:number): void {
+    this.serviceManage.getAll(page,this.pageProperties).subscribe({
+      next: (page) => {
+        this.services = page.content;
+        this.totalPages = page.totalPages;
         this.refreshProperites()
       },
       error: (_) => {
@@ -112,14 +114,14 @@ export class ListServicesComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     const query = input.value || '';
     this.pageProperties.name = query
-    this.getAll();
+    this.getAll(0);
   }
 
   searchAndFilter(){
     this.pageProperties.name = this.nameFilter;
     this.pageProperties.price = this.priceFIlter;
     this.pageProperties.available = this.availableFilter;
-    this.getAll();
+    this.getAll(0);
   }
 
   refreshProperites(){
@@ -136,15 +138,31 @@ export class ListServicesComponent implements OnInit {
     this.nameFilter = "";
     this.availableFilter = false;
     this.refreshProperites();
-    this.getAll()
+    this.getAll(0)
   }
 
   clickFilter() {
     this.isFilter = !this.isFilter;
+    setTimeout(() => {
+    this.cd.detectChanges();
+  });
   }
 
   goToCreateService() {
     this.router.navigate(['/service/serviceForm'])
+  }
+  getPreviousPage(){
+  if (this.currentPage > 0) {
+        this.currentPage--;
+        this.getAll(this.currentPage);
+      }
+  }
+  getNextPage(){
+  
+      if (this.currentPage < this.totalPages-1) {
+        this.currentPage++;
+        this.getAll(this.currentPage);
+      }
   }
 }
 

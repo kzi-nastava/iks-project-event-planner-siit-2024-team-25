@@ -10,6 +10,9 @@ import { SaveDialogComponent } from '../dialogs/save-dialog/save-dialog.componen
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../offering/offering-category/dialogs/delete-dialog/delete-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { ServiceDialogInformationComponent } from '../../offering/service/service-dialog/service-dialog-information.component';
+import { ErrorDialogComponent } from '../../shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-budget-plan',
@@ -77,7 +80,7 @@ export class BudgetPlanComponent implements OnInit {
     const dialogRef = this.dialog.open(SaveDialogComponent, {
       data: {
         budget: 0,
-        eventTypeId: this.event?.eventType.id,
+        eventTypeId: this.event?.eventType?.id,
         eventId: this.event?.id,
         isEdit: false,
       },
@@ -115,7 +118,7 @@ export class BudgetPlanComponent implements OnInit {
     const dialogRef = this.dialog.open(SaveDialogComponent, {
       data: {
         budget: budget,
-        eventTypeId: this.event?.eventType.id,
+        eventTypeId: this.event?.eventType?.id,
         eventId: this.event?.id,
         isEdit: true,
       },
@@ -134,8 +137,12 @@ export class BudgetPlanComponent implements OnInit {
       next: (res) => {
         this.getBudgetItems();
       },
-      error: (_) => {
-        console.log('error');
+      error: (err:ErrorResponse) => {
+        const dialogRef = this.dialog.open(ErrorDialogComponent, {
+              data: {
+                message: err.message,
+              },
+            });
       },
     });
   }
@@ -159,8 +166,12 @@ export class BudgetPlanComponent implements OnInit {
           next: () => {
             this.getBudgetItems();
           },
-          error: (_) => {
-            console.log('error');
+          error: (err:ErrorResponse) => {
+            const dialogRef = this.dialog.open(ErrorDialogComponent, {
+              data: {
+                message: err.message,
+              },
+            });
           },
         });
       }

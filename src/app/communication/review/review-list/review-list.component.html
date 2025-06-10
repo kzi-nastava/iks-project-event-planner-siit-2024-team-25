@@ -18,7 +18,7 @@
         </ng-container>
     
         <ng-container matColumnDef="eventName">
-          <mat-header-cell *matHeaderCellDef> Event name </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef> {{eventOfferingName}} </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.eventOfferingName}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="comment">

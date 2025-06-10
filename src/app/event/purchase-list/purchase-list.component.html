@@ -11,14 +11,22 @@
         <mat-cell *matCellDef="let element; let i = index"> {{i+1}} </mat-cell>
       </ng-container>
   
+      <ng-container matColumnDef="Ename">
+        <mat-header-cell *matHeaderCellDef>Event name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.event.name}} </mat-cell>
+      </ng-container>
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Offering name </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.offering.name}} </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="price">
         <mat-header-cell *matHeaderCellDef> Price ($) </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.price.amount}} </mat-cell>
+      </ng-container>
+       <ng-container matColumnDef="count">
+        <mat-header-cell *matHeaderCellDef> Count </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.count}} </mat-cell>
       </ng-container>
   
       <ng-container matColumnDef="review">
