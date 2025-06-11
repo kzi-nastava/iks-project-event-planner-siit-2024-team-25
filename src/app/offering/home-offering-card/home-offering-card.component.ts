@@ -13,10 +13,10 @@ export class HomeOfferingCardComponent {
   offering!: HomeOffering;
 
   @Output()
-  clicked: EventEmitter<HomeOffering> = new EventEmitter<HomeOffering>();
+  clickedFav: EventEmitter<HomeOffering> = new EventEmitter<HomeOffering>();
 
   changeFavouriteOffering(): void {
-    this.clicked.emit(this.offering);
+    this.clickedFav.emit(this.offering);
   }
 
   constructor(private decimalPipe: DecimalPipe, private router: Router) {}

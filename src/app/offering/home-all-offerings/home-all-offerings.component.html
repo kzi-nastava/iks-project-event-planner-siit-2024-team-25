@@ -15,7 +15,7 @@
   <div class="all-offerings-container">
     <div *ngFor="let offer of currentOfferings">
       <app-home-offering-card
-        (clicked)="toggleFavouriteOfferings($event)"
+        (clickedFav)="toggleFavouriteOfferings($event)"
         [offering]="offer"
       />
     </div>

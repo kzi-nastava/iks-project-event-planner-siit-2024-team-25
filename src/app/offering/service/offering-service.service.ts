@@ -153,7 +153,12 @@ export class OfferingServiceService {
   deleteService(id: number): Observable<void> {
     return this.httpClinet.delete<void>(
       'http://localhost:8080/api/services/' + id
-    );
+    ).pipe(
+        map((value) => {
+          return value;
+        }),
+        catchError(this.handleError)
+      );;
   }
 
   isServiceAvailable(

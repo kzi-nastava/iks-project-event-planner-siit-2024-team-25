@@ -12,6 +12,7 @@ import { PurchaseOfferingFilterComponent } from './purchase-offering-filter/purc
 import { PriceListComponent } from './price-list/price-list.component';
 import { OfferingRoutingModule } from './offering-routing.module';
 import { PriceListEditDialogComponent } from './price-list-edit-dialog/price-list-edit-dialog.component';
+import { FavouriteOfferingsComponent } from './favourite-offerings/favourite-offerings.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { PriceListEditDialogComponent } from './price-list-edit-dialog/price-lis
     PurchaseOfferingFilterComponent,
     PriceListComponent,
     PriceListEditDialogComponent,
+    FavouriteOfferingsComponent,
   ],
   imports: [CommonModule, FormsModule, ServiceModule, MaterialModule, OfferingRoutingModule],
   exports: [
@@ -30,6 +32,7 @@ import { PriceListEditDialogComponent } from './price-list-edit-dialog/price-lis
     HomeAllOfferingsComponent,
     OfferingPurchaseCardComponent,
     PurchaseOfferingFilterComponent,
+    FavouriteOfferingsComponent
   ],
 })
 export class OfferingModule {}

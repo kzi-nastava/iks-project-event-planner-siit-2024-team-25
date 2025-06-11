@@ -27,6 +27,7 @@ import { ReportUserComponent } from './report-user/report-user.component';
 import { SuspensionPageComponent } from './suspension-page/suspension-page.component';
 import { UpdateProfilePictureComponent } from './update-profile-picture/update-profile-picture.component';
 import { UserRoutingModule } from './user-routing.module';
+import { OfferingModule } from '../offering/offering.module';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { UserRoutingModule } from './user-routing.module';
     SharedModule,
     EventModule,
     FullCalendarModule,
+    OfferingModule
   ],
 })
 export class UserModule {}
