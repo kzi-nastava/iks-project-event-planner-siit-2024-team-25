@@ -1,33 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Stranica sa velikim marginama</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #f8f9fa;
-      font-family: Arial, sans-serif;
-    }
-
-    .container {
-      margin: 100px; /* OVO je "velika margina" */
-      padding: 40px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      margin-top: 0;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Dobrodošli!</h1>
-    <p>Ovo je primer stranice sa velikim marginama oko sadržaja.</p>
-  </div>
-</body>
-</html>
+<mat-tab-group class="homeDisplay" (selectedTabChange)="switchDisplay($event.tab.textLabel)">
+    <mat-tab label="PRODUCTS" ></mat-tab>
+    <mat-tab label="SERVICES"></mat-tab>
+</mat-tab-group>
+@if (currentContainer == "P") {
+    <app-favourite-product/>
+}
+@if (currentContainer == "S") {
+    <app-favourite-services/>
+}

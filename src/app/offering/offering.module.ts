@@ -13,6 +13,7 @@ import { PriceListComponent } from './price-list/price-list.component';
 import { OfferingRoutingModule } from './offering-routing.module';
 import { PriceListEditDialogComponent } from './price-list-edit-dialog/price-list-edit-dialog.component';
 import { FavouriteOfferingsComponent } from './favourite-offerings/favourite-offerings.component';
+import { ProductModule } from "./product/product.module";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { FavouriteOfferingsComponent } from './favourite-offerings/favourite-off
     PriceListEditDialogComponent,
     FavouriteOfferingsComponent,
   ],
-  imports: [CommonModule, FormsModule, ServiceModule, MaterialModule, OfferingRoutingModule],
+  imports: [CommonModule, FormsModule, ServiceModule, MaterialModule, OfferingRoutingModule, ProductModule],
   exports: [
     HomeTopOfferingsComponent,
     HomeAllOfferingsComponent,

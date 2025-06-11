@@ -11,6 +11,7 @@ import { ServiceFormComponent } from './service-form/service-form.component';
 import { ServiceRoutingModule } from './service-routing.module';
 import { BookServiceDialogComponent } from './book-service-dialog/book-service-dialog.component';
 import { SharedModule } from "../../shared/shared.module";
+import { FavouriteServicesComponent } from './favourite-services/favourite-services.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SharedModule } from "../../shared/shared.module";
     ServiceCardComponent,
     ServiceDetailsComponent,
     BookServiceDialogComponent,
+    FavouriteServicesComponent,
   ],
 
   imports: [
@@ -29,6 +31,8 @@ import { SharedModule } from "../../shared/shared.module";
     ServiceRoutingModule,
     ReactiveFormsModule,
     SharedModule
-],
+],exports:[
+  FavouriteServicesComponent
+]
 })
 export class ServiceModule {}

@@ -7,13 +7,15 @@ import { FavouriteOfferingsService } from '../services/favourite-offerings.servi
   styleUrl: './favourite-offerings.component.scss'
 })
 export class FavouriteOfferingsComponent implements OnInit{
-    
-    loading = true;
-    constructor(
-      private favouriteOfferingService: FavouriteOfferingsService,
-    ) {}
-  
-    ngOnInit(): void {
-      console.log("ads")
+  ngOnInit(): void {
+  }
+  currentContainer: String = "P";
+
+  switchDisplay(container: String): void {
+    if (container === 'PRODUCTS') {
+      this.currentContainer = 'P';
+    } else if (container === 'SERVICES') {
+      this.currentContainer = 'S';
     }
+  }
 }

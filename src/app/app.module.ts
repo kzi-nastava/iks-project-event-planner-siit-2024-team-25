@@ -25,7 +25,7 @@ import { CommunicationModule } from './communication/communication.module';
     EventModule,
     OfferingModule,
     CommunicationModule,
-    OfferingModule
+
   ],
 
   providers: [
