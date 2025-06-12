@@ -91,7 +91,11 @@ export class NotificationComponent implements OnInit {
       if (this.authService.getUser()?.role == UserRole.Admin) {
         this.router.navigate([`/offering-category/offering-categories`]);
       } else {
-        this.router.navigate([`/my-offerings`]);
+        if (notification.title?.includes('Service')) {
+          this.router.navigate([`/service/services`]);
+        } else {
+          this.router.navigate([`/products`]);
+        }
       }
     }
   }
