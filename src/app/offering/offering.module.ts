@@ -14,26 +14,27 @@ import { OfferingRoutingModule } from './offering-routing.module';
 import { PriceListEditDialogComponent } from './price-list-edit-dialog/price-list-edit-dialog.component';
 import { FavouriteOfferingsComponent } from './favourite-offerings/favourite-offerings.component';
 import { ProductModule } from "./product/product.module";
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
     HomeTopOfferingsComponent,
     HomeAllOfferingsComponent,
-    HomeOfferingCardComponent,
     HomeOfferingFilterComponent,
     OfferingPurchaseCardComponent,
     PurchaseOfferingFilterComponent,
     PriceListComponent,
     PriceListEditDialogComponent,
     FavouriteOfferingsComponent,
+    HomeOfferingCardComponent
   ],
-  imports: [CommonModule, FormsModule, ServiceModule, MaterialModule, OfferingRoutingModule, ProductModule],
+  imports: [CommonModule, FormsModule, MaterialModule, OfferingRoutingModule, ProductModule, ServiceModule, SharedModule],
   exports: [
     HomeTopOfferingsComponent,
     HomeAllOfferingsComponent,
     OfferingPurchaseCardComponent,
     PurchaseOfferingFilterComponent,
-    FavouriteOfferingsComponent
+    FavouriteOfferingsComponent,
   ],
 })
 export class OfferingModule {}

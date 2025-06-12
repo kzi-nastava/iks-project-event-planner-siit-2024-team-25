@@ -1,1 +1,21 @@
-<p>favourite-services works!</p>
+
+@if (loading) {
+  <div class="loading-container">
+    <mat-spinner diameter="48"></mat-spinner>
+    <h2 class="loading-text">Loading favorite services...</h2>
+  </div>
+} @else if (!services || services.length == 0) {
+  <div class="empty-placeholder">
+    <h2>No favorite services yet</h2>
+    <p>
+      You haven't added any services to your favorites. Start exploring and add services to easily access them here.
+    </p>
+  </div>
+} @else {
+<div class="service-container">
+  
+  <div class="service-card" *ngFor="let service of services">
+    <app-favorite-service-card [offering]="service"></app-favorite-service-card>
+  </div>
+</div>
+}
