@@ -279,7 +279,6 @@ export class ServiceFormComponent {
 
   onInputCategory(event: Event): void {
     const input = (event.target as HTMLInputElement).value;
-    console.log(input)
     if (!Array.from(this.offeringCategoryTypeAll.values()).includes(input)) {
       this.firstFormGroup.patchValue({
         categoryTypeId: -1,

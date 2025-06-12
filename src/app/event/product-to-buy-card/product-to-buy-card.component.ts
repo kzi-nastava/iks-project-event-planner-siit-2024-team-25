@@ -17,6 +17,7 @@ import { ErrorDialogComponent } from '../../shared/error-dialog/error-dialog.com
 export class ProductToBuyCardComponent {
 
 
+
   @Input()
     offering!: ProductPurchase;
   
@@ -39,5 +40,8 @@ export class ProductToBuyCardComponent {
     this.router.navigate(['/products/' + this.offering.id], {
       queryParams: { eventId: this.eventId },
     });
+  }
+  changeFavouriteOffering() {
+    
   }
 }

@@ -2,7 +2,7 @@
   <div class="offering-card">
     <div class="header">
       <h2 class="title">{{ offering.name }}</h2>
-      <mat-icon class="heart" (click)="changeFavouriteOffering()">
+      <mat-icon class="heart" *ngIf="showHeart" (click)="changeFavouriteOffering()">
         {{ offering.isFavourite ? "favorite" : "favorite_border" }}
       </mat-icon>
     </div>

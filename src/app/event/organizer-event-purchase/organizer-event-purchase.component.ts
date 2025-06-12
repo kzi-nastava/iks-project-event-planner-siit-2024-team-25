@@ -18,9 +18,9 @@ export class OrganizerEventPurchaseComponent implements OnInit {
 
   currentPage: number = 0;
   totalPages: number = 0;
-  filterParams: OfferingFilterParams = {};
+  filterParams: OfferingFilterParams = {criteria:"PRODUCTS"};
 
-  products:ProductPurchase[] = []
+  //products:ProductPurchase[] = []
   eventId!: number;
   eventTypeId! : number | undefined;
 
@@ -34,7 +34,7 @@ export class OrganizerEventPurchaseComponent implements OnInit {
     if (eventFromState) {
       this.eventId = eventFromState;
     }
-    this.getAllProducts()
+    this.getOfferings(this.currentPage)
   }
 
   filterOfferings(filterParams: OfferingFilterParams): void {
@@ -52,6 +52,7 @@ export class OrganizerEventPurchaseComponent implements OnInit {
   }
 
   getOfferings(page: number) {
+    console.log(this.filterParams.criteria)
     this.offeringService.getOfferings(page, this.filterParams).subscribe({
       next: ({ currentOfferings, totalPages }) => {
         this.currentOfferings = currentOfferings;
@@ -79,8 +80,10 @@ export class OrganizerEventPurchaseComponent implements OnInit {
 
   getCurrentOfferings(){
     if(this.currentContainer === "P"){
-      this.getAllProducts()
+      this.filterParams.criteria = "PRODUCTS"
+      this.getOfferings(this.currentPage)
     }else{
+      this.filterParams.criteria = "SERVICES"
       this.getOfferings(this.currentPage);
     }
   }
@@ -99,17 +102,6 @@ export class OrganizerEventPurchaseComponent implements OnInit {
     this.filterParams = filterParamss;
     console.log(filterParamss)
     this.eventTypeId = filterParamss.eventTypeId;
-    this.getAllProducts();
-  }
-  getAllProducts() {
-    this.offeringService.getProductsPurchase(this.currentPage, this.filterParams).subscribe({
-      next: (res) =>{
-        this.products = res.currentProducts;
-        this.totalPages = res.totalPages;
-      },
-      error:(_)=>{
-        console.log("error")
-      }
-    })
+    this.getOfferings(0);
   }
 }
