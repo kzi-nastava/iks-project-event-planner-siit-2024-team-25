@@ -1,21 +1,8 @@
 @use "sass:map";
 @use "@angular/material" as mat;
-@use "../../../theme/m3-theme.scss" as theme;
+@use "../../../../theme/m3-theme.scss" as theme;
 
-.options {
-    display: flex;
-    margin: 0.5rem;
-    justify-content: center;
-    gap: 0.5rem;
-  
-    button {
-      width: 40%;
-      background-color: mat.get-theme-color(theme.$light-theme, primary);
-      color: white;
-    }
-}
 .offering-card {
-  cursor: pointer;
   background-color: #303c6c29;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -36,7 +23,6 @@
     justify-content: space-between;
     gap: 0.1rem;
     height: 25%;
-    
   }
 
   .title {
@@ -72,6 +58,7 @@
     font-size: 1.45vh;
     color: black;
     padding-left: 1vw;
+    font-weight: bold;
   }
 
   .description {
@@ -132,3 +119,4 @@
     transform: scale(1.1);
   }
 }
+

@@ -23,4 +23,5 @@ export interface Service {
   minimumArrangement: number;
   maximumArrangement: number;
   owner: { id: number; name: String };
+  isFavorite: Boolean;
 }

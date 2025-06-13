@@ -7,6 +7,9 @@
         Book a Service
       </button>
     </div>
+      <mat-icon class="heart" (click)="changeFavouriteOffering()">
+        {{ service.isFavorite ? "favorite" : "favorite_border" }}
+      </mat-icon>
   </div>
   <p class="offering-description">{{ service.description }}</p>
 

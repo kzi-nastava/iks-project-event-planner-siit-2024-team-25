@@ -25,9 +25,13 @@
   </div>
 </div>
 <div class="all-offerings-container">
-  <div *ngFor="let product of products">
-    <app-product-to-buy-card [offering]="product" [eventId]="eventId" (refresh)="getAllProducts()"></app-product-to-buy-card>
-  </div>
+  <div *ngFor="let offer of currentOfferings">
+      <app-offering-purchase-card
+        (clicked)="toggleFavouriteOfferings($event)"
+        [offering]="offer"
+        [eventId]="eventId"
+      />
+    </div>
 </div>
 
 

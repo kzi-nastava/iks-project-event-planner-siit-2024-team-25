@@ -5,6 +5,8 @@ import { ServiceDialogComponent } from '../service-dialog/service-dialog.compone
 import { ServiceDialogInformationComponent } from '../service-dialog/service-dialog-information.component';
 import { OfferingServiceService } from '../offering-service.service';
 import { Router } from '@angular/router';
+import { ErrorDialogComponent } from '../../../shared/error-dialog/error-dialog.component';
+import { ErrorResponse } from '../../../shared/model/error.response.model';
 
 @Component({
   selector: 'app-service-card',
@@ -47,8 +49,12 @@ export class ServiceCardComponent{
             })
             
           },
-          error:(_)=>{
-            console.log("error")
+          error:(err : ErrorResponse)=>{
+            const dialogRef = this.dialog.open(ErrorDialogComponent, {
+              data: {
+                message: err.message
+              },
+            });
           }
         })
         

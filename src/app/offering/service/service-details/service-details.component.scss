@@ -1,225 +1,231 @@
-@use 'sass:map';
-@use '@angular/material' as mat;
-@use '../../../../theme/m3-theme.scss' as theme;
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "../../../../theme/m3-theme.scss" as theme;
 .offering-container {
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fdfdfd;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  
-    .offering-header {
-        display: flex;
-        justify-content:space-around;
-        align-items: center;
-        margin-bottom: 20px;
-      
-        .offering-name {
-          font-size: 24px;
-          font-weight: bold;
-          color: #333;
-          margin: 0;
-        }
-      
-        .book-button {
-          padding: 10px 20px;
-          font-size: 16px;
-          font-weight: bold;
-          color: #fff;
-          background-color: mat.get-theme-color(theme.$light-theme, primary);
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: background-color 0.3s;
-      
-          &:hover {
-            background-color: #001c3a;
-          }
-        }
-      }
-      
-  
-    .offering-description {
-      font-size: 1.5rem;
-      color: #555;
-      margin-bottom: 25px;
-      text-align: center;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fdfdfd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .offering-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .offering-name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin: 0;
     }
-  
-    .offering-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-  
-      .image-slider {
-        position: relative;
-        width: 100%;
-        overflow: hidden;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      
-        .slider-wrapper {
-          display: flex;
-          transition: transform 0.5s ease-in-out;
-        }
-      
-        .slider-item {
-          min-width: 100%;
-          img {
-            width: 100%;
-            height: auto;
-            display: block;
-          }
-        }
-      
-        .prev-btn,
-        .next-btn {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          background-color: rgba(0, 0, 0, 0.5);
-          color: white;
-          border: none;
-          padding: 10px;
-          cursor: pointer;
-          z-index: 10;
-          border-radius: 50%;
-        }
-      
-        .prev-btn {
-          left: 10px;
-        }
-      
-        .next-btn {
-          right: 10px;
-        }
+
+    .book-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      background-color: mat.get-theme-color(theme.$light-theme, primary);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #001c3a;
       }
-  
-      .offering-details {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-  
-        .detail-item {
-          font-size: 1rem;
-          color: #444;
-          background: #f7f7f7;
-          padding: 10px;
-          border-radius: 5px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
-          strong {
-            color: #222;
-          }
-        }
+    }
+    .heart {
+      cursor: pointer;
+      color: #ff4d4d;
+      transition: transform 0.2s;
+
+      &:hover {
+        transform: scale(1.1);
       }
     }
 
-    .owner-details {
-        margin-bottom: 20px;
-      
-        h3 {
-            font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 10px;
-          }
-      
-          .owner-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          
-            p {
-              flex: 1; /* Zauzima polovinu prostora */
-              font-size: 1rem;
-              color: #666;
-              background: #f7f7f7;
-              padding: 10px;
-              border-radius: 5px;
-              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-              margin-right: 20px; /* Razmak između paragrafa i dugmadi */
-            }
-          
-            .buttons {
-              display: flex;
-              gap: 10px; /* Razmak između dugmadi */
-              flex: 1; /* Zauzima drugu polovinu prostora */
-          
-              .chat-button {
-                background: none;
-                border: none;
-                color: mat.get-theme-color(theme.$light-theme, primary);
-                font-size: 16px;
-                cursor: pointer;
-                text-decoration: underline;
-          
-                &:hover {
-                  color: #0056b3;
-                }
-              }
-          
-              .view-button {
-                padding: 5px 10px;
-                font-size: 14px;
-                color: #fff;
-                background-color: mat.get-theme-color(theme.$light-theme, primary);
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-          
-                &:hover {
-                    background-color: #001c3a;
-                  }
-              }
-            }
-          }
-          
+    .heart.liked {
+      color: #ff0000;
+    }
+  }
+
+  .offering-description {
+    font-size: 1.5rem;
+    color: #555;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .offering-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    .image-slider {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+      .slider-wrapper {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
       }
-      
-  
-    .offering-specifics {
-      margin-top: 20px;
-  
-      h3 {
-        font-size: 1.5rem;
-        color: #333;
-        margin-bottom: 10px;
+
+      .slider-item {
+        min-width: 100%;
+        img {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
       }
-  
+
+      .prev-btn,
+      .next-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 10;
+        border-radius: 50%;
+      }
+
+      .prev-btn {
+        left: 10px;
+      }
+
+      .next-btn {
+        right: 10px;
+      }
+    }
+
+    .offering-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+
+      .detail-item {
+        font-size: 1rem;
+        color: #444;
+        background: #f7f7f7;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        strong {
+          color: #222;
+        }
+      }
+    }
+  }
+
+  .owner-details {
+    margin-bottom: 20px;
+
+    h3 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .owner-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
       p {
+        flex: 1; /* Zauzima polovinu prostora */
         font-size: 1rem;
         color: #666;
         background: #f7f7f7;
         padding: 10px;
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-right: 20px; /* Razmak između paragrafa i dugmadi */
       }
-    }
-  
-    .event-types {
-      margin-top: 20px;
-  
-      h3 {
-        font-size: 1.5rem;
-        color: #333;
-        margin-bottom: 10px;
-      }
-  
-      ul {
-        list-style: disc;
-        padding-left: 20px;
-  
-        li {
-          font-size: 1rem;
-          color: #555;
-          margin-bottom: 5px;
+
+      .buttons {
+        display: flex;
+        gap: 10px; /* Razmak između dugmadi */
+        flex: 1; /* Zauzima drugu polovinu prostora */
+
+        .chat-button {
+          background: none;
+          border: none;
+          color: mat.get-theme-color(theme.$light-theme, primary);
+          font-size: 16px;
+          cursor: pointer;
+          text-decoration: underline;
+
+          &:hover {
+            color: #0056b3;
+          }
+        }
+
+        .view-button {
+          padding: 5px 10px;
+          font-size: 14px;
+          color: #fff;
+          background-color: mat.get-theme-color(theme.$light-theme, primary);
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #001c3a;
+          }
         }
       }
     }
   }
 
-  
-  
-  
+  .offering-specifics {
+    margin-top: 20px;
+
+    h3 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #666;
+      background: #f7f7f7;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .event-types {
+    margin-top: 20px;
+
+    h3 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style: disc;
+      padding-left: 20px;
+
+      li {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}

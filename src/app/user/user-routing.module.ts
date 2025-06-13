@@ -15,6 +15,7 @@ import { PublicProfileComponent } from './public-profile/public-profile.componen
 import { RegisterQuickComponent } from './register-quick/register-quick.component';
 import { RegisterComponent } from './register/register.component';
 import { SuspensionPageComponent } from './suspension-page/suspension-page.component';
+import { FavouriteOfferingsComponent } from '../offering/favourite-offerings/favourite-offerings.component';
 
 const routes: Routes = [
   {

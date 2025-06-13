@@ -10,6 +10,8 @@ import { ServiceDialogInformationComponent } from '../../service/service-dialog/
 import { Product } from '../model/product.model';
 import { ProductService } from '../service/product.service';
 import { ReviewType } from '../../../communication/review/model/review-type';
+import { FavouriteOfferingsService } from '../../services/favourite-offerings.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-details',
@@ -17,6 +19,46 @@ import { ReviewType } from '../../../communication/review/model/review-type';
   styleUrl: './product-details.component.scss',
 })
 export class ProductDetailsComponent implements OnInit {
+  changeFavouriteOffering() {
+    const temp = this.authService.getUser()?.userId;
+    if (temp) {
+      if (this.product.isFavorite) {
+        this.favoriteService
+          .deleteFavoriteProduct(temp, this.product.id)
+          .subscribe({
+            next: () => {
+              this.product.isFavorite = false;
+              this.toastService.success(
+                `${this.product.name} successfully removed from favorites!`
+              );
+            },
+            error: () => {
+              this.toastService.error(
+                'Error',
+                `Failed to remove ${this.product.name} from favorite products...`
+              );
+            },
+          });
+      } else {
+        this.favoriteService
+          .addFavoriteProduct(temp, { offeringId: this.product.id })
+          .subscribe({
+            next: () => {
+              this.product.isFavorite = true;
+              this.toastService.success(
+                `${this.product.name} successfully added to favorites!`
+              );
+            },
+            error: () => {
+              this.toastService.error(
+                'Error',
+                `Failed to add ${this.product.name} from favorite products...`
+              );
+            },
+          });
+      }
+    }
+  }
   currentSlide = 0;
   errorResponse!: ErrorResponse;
 
@@ -40,7 +82,9 @@ export class ProductDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private purchaseService: PurchaseService,
-    private productService: ProductService
+    private productService: ProductService,
+    private favoriteService: FavouriteOfferingsService,
+    private toastService: ToastrService
   ) {}
 
   showChatButton: boolean = true;
@@ -89,12 +133,12 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   purchaseProduct() {
-    if(this.eventId == null){
+    if (this.eventId == null) {
       this.dialog.open(ErrorDialogComponent, {
-            data: {
-              message: "You must buy product for some event",
-            },
-          });
+        data: {
+          message: 'You must buy product for some event',
+        },
+      });
       return;
     }
     this.purchaseService

@@ -15,4 +15,5 @@ export interface Product {
   eventTypes: EventType[];
   offeringCategory: OfferingCategory;
   ownerInfo: { id: number; name: string };
+  isFavorite: Boolean;
 }

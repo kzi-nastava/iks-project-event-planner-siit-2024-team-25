@@ -38,6 +38,19 @@
         background-color: #001c3a;
       }
     }
+      .heart {
+    cursor: pointer;
+    color: #ff4d4d;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  .heart.liked {
+    color: #ff0000;
+  }
   }
 
 

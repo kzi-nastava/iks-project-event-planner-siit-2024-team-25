@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HomeOffering } from '../model/home-offering.model';
-import { DecimalPipe } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../infrastructure/auth/service/auth.service';
+import { AuthService } from '../../../infrastructure/auth/service/auth.service';
+import { HomeOffering } from '../../model/home-offering.model';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-home-offering-card',
-  templateUrl: './home-offering-card.component.html',
-  styleUrl: './home-offering-card.component.scss',
+  selector: 'app-favorite-service-card',
+  templateUrl: './favorite-service-card.component.html',
+  styleUrl: './favorite-service-card.component.scss',
+  providers: [DecimalPipe]
 })
-export class HomeOfferingCardComponent implements OnInit{
-  @Input()
+export class FavoriteServiceCardComponent {
+@Input()
   offering!: HomeOffering;
 
   @Output()
@@ -24,7 +25,6 @@ export class HomeOfferingCardComponent implements OnInit{
   constructor(private decimalPipe: DecimalPipe, private router: Router, private authService: AuthService) {}
   ngOnInit(): void {
     this.showHeart = this.authService.getUser() != null ? true : false;
-    console.log(this.offering)
   }
 
   formatRating(rating: number): string {
@@ -36,10 +36,7 @@ export class HomeOfferingCardComponent implements OnInit{
   }
 
   showMoreDetails() {
-    if (this.offering.isService) {
-      this.router.navigateByUrl('/service/services/' + this.offering.id);
-    } else {
-      this.router.navigateByUrl('/products/' + this.offering.id);
-    }
+    this.router.navigateByUrl('/service/services/' + this.offering.id);
+    
   }
 }

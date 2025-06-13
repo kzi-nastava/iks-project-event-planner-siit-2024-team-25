@@ -55,6 +55,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.userService.getUser(user.userId).subscribe((userData) => {
         this.user = userData;
         this.profilePicture = this.getProfilePictureUrl(userData);
+        console.log(queryParams)
+        console.log("adsasd")
         this.setInitialTab(queryParams);
       });
     });
@@ -87,8 +89,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     if (openTab && tabIndexMap.hasOwnProperty(openTab)) {
       this.selectedTab = tabIndexMap[openTab];
+      console.log(this.selectedTab)
     } else {
       this.selectedTab = 0;
+      console.log(this.selectedTab)
     }
   }
 

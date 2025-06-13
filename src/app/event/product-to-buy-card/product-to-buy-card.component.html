@@ -2,7 +2,9 @@
     <div class="offering-card">
       <div class="header">
         <h2 class="title">{{ offering.name }}</h2>
-        
+        <mat-icon class="heart" (click)="changeFavouriteOffering()">
+          favorite
+        </mat-icon>
       </div>
       <div class="info">
         <div class="owner">
