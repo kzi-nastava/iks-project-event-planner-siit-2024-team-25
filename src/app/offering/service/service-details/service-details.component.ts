@@ -7,6 +7,8 @@ import { ErrorDialogComponent } from '../../../shared/error-dialog/error-dialog.
 import { Service } from '../model/service';
 import { OfferingServiceService } from '../offering-service.service';
 import { ReviewType } from '../../../communication/review/model/review-type';
+import { FavouriteOfferingsService } from '../../services/favourite-offerings.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-service-details',
@@ -14,6 +16,46 @@ import { ReviewType } from '../../../communication/review/model/review-type';
   styleUrl: './service-details.component.scss',
 })
 export class ServiceDetailsComponent {
+  changeFavouriteOffering() {
+    const temp = this.authService.getUser()?.userId;
+    if (temp) {
+      if (this.service.isFavorite) {
+        this.favoriteService
+          .deleteFavoriteService(temp, this.service.id)
+          .subscribe({
+            next: () => {
+              this.service.isFavorite = false;
+              this.toastService.success(
+                `${this.service.name} successfully removed from favorites!`
+              );
+            },
+            error: () => {
+              this.toastService.error(
+                'Error',
+                `Failed to remove ${this.service.name} from favorite services...`
+              );
+            },
+          });
+      } else {
+        this.favoriteService
+          .addFavoriteService(temp, { offeringId: this.service.id })
+          .subscribe({
+            next: () => {
+              this.service.isFavorite = true;
+              this.toastService.success(
+                `${this.service.name} successfully added to favorites!`
+              );
+            },
+            error: () => {
+              this.toastService.error(
+                'Error',
+                `Failed to add ${this.service.name} from favorite services...`
+              );
+            },
+          });
+      }
+    }
+  }
   currentSlide = 0;
   durationShow = true;
 
@@ -30,8 +72,8 @@ export class ServiceDetailsComponent {
   showBookServiceButton: boolean = false;
   service!: Service;
   eventId!: number;
-  showChatButton : boolean = true;
-  showOwnerCompanyButton:boolean = true;
+  showChatButton: boolean = true;
+  showOwnerCompanyButton: boolean = true;
   showPurchaseListButton: boolean = true;
   showReviewsButton: boolean = true;
 
@@ -40,14 +82,16 @@ export class ServiceDetailsComponent {
     private authService: AuthService,
     private serviceService: OfferingServiceService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private favoriteService: FavouriteOfferingsService,
+    private toastService: ToastrService
   ) {}
 
   ngOnInit(): void {
     if (this.authService.getUser()?.role == UserRole.EventOrganizer) {
       this.showBookServiceButton = true;
     }
-    
+
     // Getting 'id' from URL-a
     this.route.params.subscribe((params) => {
       this.serviceId = +params['id'];
@@ -56,28 +100,27 @@ export class ServiceDetailsComponent {
         next: (service: Service) => {
           console.log(service);
           this.service = service;
-          this.durationShow = service.duration > 0 ? true : false
-          if(this.authService.getUser()){
-            if(this.authService.getUser()?.role == UserRole.Regular){
+          this.durationShow = service.duration > 0 ? true : false;
+          if (this.authService.getUser()) {
+            if (this.authService.getUser()?.role == UserRole.Regular) {
               this.showChatButton = false;
               this.showPurchaseListButton = false;
-            }else if(this.authService.getUser()?.role == UserRole.EventOrganizer){
-
-            }else if(this.authService.getUser()?.role == UserRole.Owner){
+            } else if (
+              this.authService.getUser()?.role == UserRole.EventOrganizer
+            ) {
+            } else if (this.authService.getUser()?.role == UserRole.Owner) {
               this.showChatButton = false;
+            } else if (this.authService.getUser()?.role == UserRole.Admin) {
+              this.showChatButton = false;
+              this.showPurchaseListButton = false;
+            } else {
+              this.showChatButton = false;
+              this.showPurchaseListButton = false;
             }
-            else if(this.authService.getUser()?.role == UserRole.Admin){
-              this.showChatButton = false;
-              this.showPurchaseListButton = false;
-            }else{
-              this.showChatButton = false;
-              this.showPurchaseListButton = false;
-            }
-          }else{
+          } else {
             this.showChatButton = false;
             this.showPurchaseListButton = false;
           }
-          
         },
       });
     });

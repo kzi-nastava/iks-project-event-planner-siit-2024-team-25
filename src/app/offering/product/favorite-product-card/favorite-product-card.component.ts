@@ -8,7 +8,7 @@ import { AuthService } from '../../../infrastructure/auth/service/auth.service';
   selector: 'app-favorite-product-card',
   templateUrl: './favorite-product-card.component.html',
   styleUrl: './favorite-product-card.component.scss',
-  providers: [DecimalPipe]
+  providers: [DecimalPipe],
 })
 export class FavoriteProductCardComponent {
   @Input()
@@ -21,11 +21,15 @@ export class FavoriteProductCardComponent {
   changeFavouriteOffering(): void {
     this.clickedFav.emit(this.offering);
   }
-    constructor(private decimalPipe: DecimalPipe, private router: Router, private authService: AuthService) {}
-    ngOnInit(): void {
-      this.showHeart = this.authService.getUser() != null ? true : false;
-    }
-      formatRating(rating: number): string {
+  constructor(
+    private decimalPipe: DecimalPipe,
+    private router: Router,
+    private authService: AuthService
+  ) {}
+  ngOnInit(): void {
+    this.showHeart = this.authService.getUser() != null ? true : false;
+  }
+  formatRating(rating: number): string {
     return this.decimalPipe.transform(rating, '1.1') || '';
   }
 
@@ -34,7 +38,6 @@ export class FavoriteProductCardComponent {
   }
 
   showMoreDetails() {
-    this.router.navigateByUrl('/service/services/' + this.offering.id);
-    
+    this.router.navigateByUrl('/products/' + this.offering.id);
   }
 }

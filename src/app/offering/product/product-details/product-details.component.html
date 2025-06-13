@@ -10,6 +10,9 @@
       <div *ngIf="showPurchaseProductButton">
         <button (click)="purchaseProduct()" class="book-button">Buy the product</button>
       </div>
+      <mat-icon class="heart" (click)="changeFavouriteOffering()">
+        {{ product.isFavorite ? "favorite" : "favorite_border" }}
+      </mat-icon>
     </div>
     <p class="offering-description">{{ product.description }}</p>
 

@@ -8,54 +8,53 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-favourite-product',
   templateUrl: './favourite-product.component.html',
-  styleUrl: './favourite-product.component.scss'
+  styleUrl: './favourite-product.component.scss',
 })
 export class FavouriteProductComponent {
-
   loading = true;
-  products: HomeOffering[] = []
+  products: HomeOffering[] = [];
   favoriteOffer: FavouriteOffering = {
-      offeringId: -1
-    }
-  constructor(private favoriteService: FavouriteOfferingsService, private authService: AuthService, private toastService:ToastrService){
-
-  }
+    offeringId: -1,
+  };
+  constructor(
+    private favoriteService: FavouriteOfferingsService,
+    private authService: AuthService,
+    private toastService: ToastrService
+  ) {}
   ngOnInit(): void {
     this.getProducts();
   }
-  getProducts(){
+  getProducts() {
     const temp = this.authService.getUser()?.userId;
-    if(temp){
+    if (temp) {
       this.favoriteService.getFavoriteProducts(temp).subscribe({
-        next:(res)=>{
+        next: (res) => {
           this.products = res;
-          this.loading= false;
-        }
-    })
+          this.loading = false;
+        },
+      });
     }
   }
 
-  removeFromFav(offer: HomeOffering){
-        const temp = this.authService.getUser()?.userId;
-    if(temp){
-        this.favoriteService.deleteFavoriteProduct(temp, offer.id).subscribe({
-            next: ()=>{
-              offer.isFavourite = false;
-              this.toastService.success(
-                `${offer.name} successfully removed from favorites!`,
-              );
-              
-              this.getProducts();
-            },
-            error:()=>{
-              this.toastService.error(
-              'Error',
-              `Failed to remove ${offer.name} from favorite products...`,
-            );
-            }
-          })
-    
-    
-  }
+  removeFromFav(offer: HomeOffering) {
+    const temp = this.authService.getUser()?.userId;
+    if (temp) {
+      this.favoriteService.deleteFavoriteProduct(temp, offer.id).subscribe({
+        next: () => {
+          offer.isFavourite = false;
+          this.toastService.success(
+            `${offer.name} successfully removed from favorites!`
+          );
+
+          this.getProducts();
+        },
+        error: () => {
+          this.toastService.error(
+            'Error',
+            `Failed to remove ${offer.name} from favorite products...`
+          );
+        },
+      });
+    }
   }
 }
