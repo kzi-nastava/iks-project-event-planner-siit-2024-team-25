@@ -1,0 +1,40 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use '../../../../theme/m3-theme.scss' as theme;
+.container {
+  border-color: mat.get-theme-color(theme.$light-theme, primary);
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+  display: block;
+  h3 {
+    color: mat.get-theme-color(theme.$light-theme, primary);
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}
+
+.top-offerings-container {
+  border: 2px solid mat.get-theme-color(theme.$light-theme, primary);
+  border-radius: 5vh;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  margin-left: 15rem;
+  margin-right: 15rem;
+
+  div {
+    height: 18rem;
+    width: 20rem;
+    margin: 2rem 1rem 2rem 1rem;
+
+    transition: 0.5s ease;
+  }
+}
+
+.top-offerings-container:hover > :not(:hover) {
+  opacity: 0.7;
+}

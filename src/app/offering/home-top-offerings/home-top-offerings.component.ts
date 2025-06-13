@@ -6,6 +6,7 @@ import { OfferingService } from '../services/offering.service';
 import { FavouriteOfferingsService } from '../services/favourite-offerings.service';
 import { AuthService } from '../../infrastructure/auth/service/auth.service';
 import { FavouriteOffering } from '../model/favorite-offering.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home-top-offerings',
@@ -20,7 +21,8 @@ export class HomeTopOfferingsComponent implements OnInit {
     offeringId: -1
   }
   constructor(private offeringService: OfferingService, private decimalPipe: DecimalPipe,
-    private favoriteService: FavouriteOfferingsService, private authService:AuthService
+    private favoriteService: FavouriteOfferingsService, private authService:AuthService,
+    private toastService:ToastrService
   ){}
 
   ngOnInit(): void {
@@ -37,19 +39,24 @@ export class HomeTopOfferingsComponent implements OnInit {
 
   changeFavouriteOffering(offer: HomeOffering): void{
     const temp = this.authService.getUser()?.userId;
-    console.log(offer.isService)
     if(temp){
       if(offer.isFavourite){
         if(offer.isService){
           this.favoriteService.deleteFavoriteService(temp, offer.id).subscribe({
             next: ()=>{
-              console.log();
+              offer.isFavourite = !offer.isFavourite;
+              this.toastService.success(
+                `${offer.name} successfully removed from favorites!`,
+              );
             }
           })
         }else{
           this.favoriteService.deleteFavoriteProduct(temp, offer.id).subscribe({
             next: ()=>{
-              console.log("succes");
+              offer.isFavourite = !offer.isFavourite;
+              this.toastService.success(
+                `${offer.name} successfully removed from favorites!`,
+              );
             }
           })
         }
@@ -59,19 +66,25 @@ export class HomeTopOfferingsComponent implements OnInit {
         if(offer.isService){
           this.favoriteService.addFavoriteService(temp, this.favoriteOffer).subscribe({
             next: () => {
-              console.log("succes")
+              offer.isFavourite = !offer.isFavourite;
+              this.toastService.success(
+                `${offer.name} successfully added to favorites!`,
+              );
             },
             
           })
         }else{
           this.favoriteService.addFavoriteProduct(temp, this.favoriteOffer).subscribe({
             next: ()=>{
-              console.log("success")
+              offer.isFavourite = !offer.isFavourite;
+              this.toastService.success(
+                `${offer.name} successfully added to favorites!`,
+              );
             }
           })
         }
       }
-      offer.isFavourite = !offer.isFavourite;
+      
     }
     
   }

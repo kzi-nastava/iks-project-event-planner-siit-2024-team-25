@@ -13,9 +13,12 @@
   </div>
 } @else {
 <div class="service-container">
-  
-  <div class="service-card" *ngFor="let service of services">
-    <app-favorite-service-card [offering]="service"></app-favorite-service-card>
+  <div class="top-offerings-container">
+    <div *ngFor="let service of services">
+    
+    <app-favorite-service-card [offering]="service" (clickedFav)="favoriteChanged($event)"></app-favorite-service-card>
   </div>
+  </div>
+  
 </div>
 }

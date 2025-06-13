@@ -1,17 +1,17 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { HomeOffering } from '../../model/home-offering.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../infrastructure/auth/service/auth.service';
-import { HomeOffering } from '../../model/home-offering.model';
-import { DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-favorite-service-card',
-  templateUrl: './favorite-service-card.component.html',
-  styleUrl: './favorite-service-card.component.scss',
+  selector: 'app-favorite-product-card',
+  templateUrl: './favorite-product-card.component.html',
+  styleUrl: './favorite-product-card.component.scss',
   providers: [DecimalPipe]
 })
-export class FavoriteServiceCardComponent {
-@Input()
+export class FavoriteProductCardComponent {
+  @Input()
   offering!: HomeOffering;
 
   @Output()
@@ -21,13 +21,11 @@ export class FavoriteServiceCardComponent {
   changeFavouriteOffering(): void {
     this.clickedFav.emit(this.offering);
   }
-
-  constructor(private decimalPipe: DecimalPipe, private router: Router, private authService: AuthService) {}
-  ngOnInit(): void {
-    this.showHeart = this.authService.getUser() != null ? true : false;
-  }
-
-  formatRating(rating: number): string {
+    constructor(private decimalPipe: DecimalPipe, private router: Router, private authService: AuthService) {}
+    ngOnInit(): void {
+      this.showHeart = this.authService.getUser() != null ? true : false;
+    }
+      formatRating(rating: number): string {
     return this.decimalPipe.transform(rating, '1.1') || '';
   }
 

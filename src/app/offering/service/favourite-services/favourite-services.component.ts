@@ -3,6 +3,9 @@ import { FavouriteOfferingsService } from '../../services/favourite-offerings.se
 import { Service } from '../model/service';
 import { AuthService } from '../../../infrastructure/auth/service/auth.service';
 import { HomeOffering } from '../../model/home-offering.model';
+import { of } from 'rxjs';
+import { FavouriteOffering } from '../../model/favorite-offering.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-favourite-services',
@@ -13,7 +16,10 @@ export class FavouriteServicesComponent implements OnInit{
 
   loading = true;
   services: HomeOffering[] = []
-  constructor(private favoriteService: FavouriteOfferingsService, private authService: AuthService){
+  favoriteOffer: FavouriteOffering = {
+      offeringId: -1
+    }
+  constructor(private favoriteService: FavouriteOfferingsService, private authService: AuthService, private toastService:ToastrService){
 
   }
   ngOnInit(): void {
@@ -32,4 +38,27 @@ export class FavouriteServicesComponent implements OnInit{
     }
     
   }
+  favoriteChanged(offer: HomeOffering){
+    const temp = this.authService.getUser()?.userId;
+    if(temp){
+        this.favoriteService.deleteFavoriteService(temp, offer.id).subscribe({
+            next: ()=>{
+              offer.isFavourite = false;
+              this.toastService.success(
+                `${offer.name} successfully removed from favorites!`,
+              );
+              
+              this.getServices();
+            },
+            error:()=>{
+              this.toastService.error(
+              'Error',
+              `Failed to remove ${offer.name} from favorite services...`,
+            );
+            }
+          })
+    
+    
+  }
+}
 }

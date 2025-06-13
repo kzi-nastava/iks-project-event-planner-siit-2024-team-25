@@ -1,1 +1,23 @@
-<p>favourite-product works!</p>
+@if (loading) {
+  <div class="loading-container">
+    <mat-spinner diameter="48"></mat-spinner>
+    <h2 class="loading-text">Loading favorite products...</h2>
+  </div>
+} @else if (!products || products.length == 0) {
+  <div class="empty-placeholder">
+    <h2>No favorite products yet</h2>
+    <p>
+      You haven't added any products to your favorites. Start exploring and add products to easily access them here.
+    </p>
+  </div>
+} @else {
+<div class="service-container">
+  <div class="top-offerings-container">
+    <div *ngFor="let product of products">
+    
+    <app-favorite-product-card [offering]="product" (clickedFav)="removeFromFav($event)"></app-favorite-product-card>
+  </div>
+  </div>
+  
+</div>
+}

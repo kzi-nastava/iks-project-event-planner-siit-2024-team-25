@@ -12,6 +12,7 @@ import { ProductDialogInformationComponent } from './product-information-dialog/
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductFormComponent } from './product-form/product-form.component';
 import { FavouriteProductComponent } from './favourite-product/favourite-product.component';
+import { FavoriteProductCardComponent } from './favorite-product-card/favorite-product-card.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { FavouriteProductComponent } from './favourite-product/favourite-product
     ProductDialogInformationComponent,
     ProductFormComponent,
     FavouriteProductComponent,
+    FavoriteProductCardComponent,
   ],
   imports: [
     CommonModule,
