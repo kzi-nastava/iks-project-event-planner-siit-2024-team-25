@@ -18,9 +18,9 @@ export class HomeAllOfferingsComponent implements OnInit {
   currentOfferings: HomeOffering[] = [];
   currentPage: number = 0;
   totalPages: number = 1;
-    favoriteOffer: FavouriteOffering = {
-      offeringId: -1
-    }
+  favoriteOffer: FavouriteOffering = {
+    offeringId: -1,
+  };
 
   @Input()
   filterParams?: OfferingFilterParams;
@@ -48,57 +48,56 @@ export class HomeAllOfferingsComponent implements OnInit {
 
   toggleFavouriteOfferings(offer: HomeOffering): void {
     const temp = this.authService.getUser()?.userId;
-    console.log(offer.isService)
-    if(temp){
-      if(offer.isFavourite){
-        if(offer.isService){
+    console.log(offer.isService);
+    if (temp) {
+      if (offer.isFavorite) {
+        if (offer.isService) {
           this.favoriteService.deleteFavoriteService(temp, offer.id).subscribe({
-            next: ()=>{
-              offer.isFavourite = !offer.isFavourite;
-              this.toastService.success(
-                `${offer.name} successfully removed from favorites!`,
-              );
-            }
-          })
-        }else{
-          this.favoriteService.deleteFavoriteProduct(temp, offer.id).subscribe({
-            next: ()=>{
-              offer.isFavourite = !offer.isFavourite;
-                this.toastService.success(
-                `${offer.name} successfully removed from favorites!`,
-              );
-            }
-          })
-        }
-
-      }else{
-        this.favoriteOffer.offeringId = offer.id;
-        if(offer.isService){
-          this.favoriteService.addFavoriteService(temp, this.favoriteOffer).subscribe({
             next: () => {
-              offer.isFavourite = !offer.isFavourite;
-                this.toastService.success(
-                `${offer.name} successfully added to favorites!`,
+              offer.isFavorite = !offer.isFavorite;
+              this.toastService.success(
+                `${offer.name} successfully removed from favorites!`
               );
             },
-            
-          })
-        }else{
-          this.favoriteService.addFavoriteProduct(temp, this.favoriteOffer).subscribe({
-            next: ()=>{
-              offer.isFavourite = !offer.isFavourite;
+          });
+        } else {
+          this.favoriteService.deleteFavoriteProduct(temp, offer.id).subscribe({
+            next: () => {
+              offer.isFavorite = !offer.isFavorite;
               this.toastService.success(
-                `${offer.name} successfully added to favorites!`,
+                `${offer.name} successfully removed from favorites!`
               );
-            }
-          })
+            },
+          });
+        }
+      } else {
+        this.favoriteOffer.offeringId = offer.id;
+        if (offer.isService) {
+          this.favoriteService
+            .addFavoriteService(temp, this.favoriteOffer)
+            .subscribe({
+              next: () => {
+                offer.isFavorite = !offer.isFavorite;
+                this.toastService.success(
+                  `${offer.name} successfully added to favorites!`
+                );
+              },
+            });
+        } else {
+          this.favoriteService
+            .addFavoriteProduct(temp, this.favoriteOffer)
+            .subscribe({
+              next: () => {
+                offer.isFavorite = !offer.isFavorite;
+                this.toastService.success(
+                  `${offer.name} successfully added to favorites!`
+                );
+              },
+            });
         }
       }
-      
     }
-    
   }
-  
 
   getOfferings(page: number) {
     this.offeringService.getOfferings(page, this.filterParams).subscribe({
@@ -113,7 +112,7 @@ export class HomeAllOfferingsComponent implements OnInit {
   }
 
   getNextPage() {
-    if (this.currentPage < this.totalPages-1) {
+    if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
       this.getOfferings(this.currentPage);
     }

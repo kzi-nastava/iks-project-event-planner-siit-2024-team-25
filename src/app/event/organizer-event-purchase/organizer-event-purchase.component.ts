@@ -12,17 +12,16 @@ import { ProductPurchase } from '../model/product-purchase.model';
   providers: [DecimalPipe],
 })
 export class OrganizerEventPurchaseComponent implements OnInit {
-
   currentContainer: string = 'P';
   currentOfferings: HomeOffering[] = [];
 
   currentPage: number = 0;
   totalPages: number = 0;
-  filterParams: OfferingFilterParams = {criteria:"PRODUCTS"};
+  filterParams: OfferingFilterParams = { criteria: 'PRODUCTS' };
 
   //products:ProductPurchase[] = []
   eventId!: number;
-  eventTypeId! : number | undefined;
+  eventTypeId!: number | undefined;
 
   constructor(
     private offeringService: OfferingService,
@@ -34,7 +33,7 @@ export class OrganizerEventPurchaseComponent implements OnInit {
     if (eventFromState) {
       this.eventId = eventFromState;
     }
-    this.getOfferings(this.currentPage)
+    this.getOfferings(this.currentPage);
   }
 
   filterOfferings(filterParams: OfferingFilterParams): void {
@@ -42,17 +41,16 @@ export class OrganizerEventPurchaseComponent implements OnInit {
     this.getOfferings(this.currentPage);
   }
 
-
   formatRating(rating: number): string {
     return this.decimalPipe.transform(rating, '1.1') || '';
   }
 
   toggleFavouriteOfferings(offering: HomeOffering): void {
-    offering.isFavourite = !offering.isFavourite;
+    offering.isFavorite = !offering.isFavorite;
   }
 
   getOfferings(page: number) {
-    console.log(this.filterParams.criteria)
+    console.log(this.filterParams.criteria);
     this.offeringService.getOfferings(page, this.filterParams).subscribe({
       next: ({ currentOfferings, totalPages }) => {
         this.currentOfferings = currentOfferings;
@@ -78,12 +76,12 @@ export class OrganizerEventPurchaseComponent implements OnInit {
     }
   }
 
-  getCurrentOfferings(){
-    if(this.currentContainer === "P"){
-      this.filterParams.criteria = "PRODUCTS"
-      this.getOfferings(this.currentPage)
-    }else{
-      this.filterParams.criteria = "SERVICES"
+  getCurrentOfferings() {
+    if (this.currentContainer === 'P') {
+      this.filterParams.criteria = 'PRODUCTS';
+      this.getOfferings(this.currentPage);
+    } else {
+      this.filterParams.criteria = 'SERVICES';
       this.getOfferings(this.currentPage);
     }
   }
@@ -94,13 +92,13 @@ export class OrganizerEventPurchaseComponent implements OnInit {
     } else if (container === 'SERVICES') {
       this.currentContainer = 'S';
     }
-    this.currentPage = 0
-    this.getCurrentOfferings()
+    this.currentPage = 0;
+    this.getCurrentOfferings();
   }
   // products
-  filterProducts(filterParamss: OfferingFilterParams):void{
+  filterProducts(filterParamss: OfferingFilterParams): void {
     this.filterParams = filterParamss;
-    console.log(filterParamss)
+    console.log(filterParamss);
     this.eventTypeId = filterParamss.eventTypeId;
     this.getOfferings(0);
   }

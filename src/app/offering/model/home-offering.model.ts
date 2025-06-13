@@ -5,7 +5,7 @@ export interface HomeOffering {
   city: string;
   country: string;
   ownerName: string;
-  isFavourite: boolean;
+  isFavorite: boolean;
   description: string;
   rating: number;
   isService: boolean;

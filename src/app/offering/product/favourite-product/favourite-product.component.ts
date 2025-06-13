@@ -41,7 +41,7 @@ export class FavouriteProductComponent {
     if (temp) {
       this.favoriteService.deleteFavoriteProduct(temp, offer.id).subscribe({
         next: () => {
-          offer.isFavourite = false;
+          offer.isFavorite = false;
           this.toastService.success(
             `${offer.name} successfully removed from favorites!`
           );
