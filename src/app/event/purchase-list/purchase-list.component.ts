@@ -9,111 +9,101 @@ import { Review } from '../../communication/review/model/review-model';
 import { ReviewType } from '../../communication/review/model/review-type';
 import { UserRole } from '../../infrastructure/auth/model/user-role.model';
 import { PurchasePreviewWithCount } from '../model/purchasePreviewWithCount.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-purchase-list',
   templateUrl: './purchase-list.component.html',
-  styleUrl: './purchase-list.component.scss'
+  styleUrl: './purchase-list.component.scss',
 })
-export class PurchaseListComponent implements OnInit{
-  displayedColumns = ['position', 'Ename','name', 'price','count', 'review'];
+export class PurchaseListComponent implements OnInit {
+  displayedColumns = ['position', 'Ename', 'name', 'price', 'review'];
   purchaseList: PurchasePreview[] = [];
 
   eventId: number | any = null;
-  offeringId:number | any = null;
+  offeringId: number | any = null;
   reviewType: ReviewType = ReviewType.OFFERING_REVIEW;
 
   userId: number;
   purchaseId: number | any;
 
-  constructor(private purchaseService: PurchaseService, private dialog: MatDialog,
-     private reviewService:ReviewService, private authService:AuthService){
-      this.userId = this.authService.getUser()?.userId || -1;
-     }
+  constructor(
+    private purchaseService: PurchaseService,
+    private dialog: MatDialog,
+    private reviewService: ReviewService,
+    private authService: AuthService,
+    private toastService: ToastrService
+  ) {
+    this.userId = this.authService.getUser()?.userId || -1;
+  }
   ngOnInit(): void {
     const eventFromState = window.history.state['eventId'];
     if (eventFromState) {
       this.eventId = eventFromState;
-    }else{
-      console.log("event id not found")
+    } else {
+      console.log('event id not found');
       const offeringFromState = window.history.state['offeringId'];
-      if(offeringFromState){
+      if (offeringFromState) {
         this.offeringId = offeringFromState;
-      }else{
-        console.log("offering id not found")
+      } else {
+        console.log('offering id not found');
       }
     }
-    if(this.authService.getUser()?.role == UserRole.EventOrganizer){
+    if (this.authService.getUser()?.role == UserRole.EventOrganizer) {
       this.reviewType = ReviewType.OFFERING_REVIEW;
-    }
-    else if(this.authService.getUser()?.role == UserRole.Owner){
+    } else if (this.authService.getUser()?.role == UserRole.Owner) {
       this.reviewType = ReviewType.EVENT_REVIEW;
     }
     this.getPurchaseList();
   }
 
-  getPurchaseList(){
-    if(this.eventId== null){
+  getPurchaseList() {
+    if (this.eventId == null) {
       this.purchaseService.getPurchaseByOffering(this.offeringId).subscribe({
         next: (res) => {
-        const map = new Map<string, PurchasePreviewWithCount>();
-
-        res.forEach(item => {
-          if (map.has(item.offering.name)) {
-            map.get(item.offering.name)!.count += 1;
-          } else {
-            map.set(item.offering.name, { ...item, count: 1 });
-          }
-        });
-
-        this.purchaseList = Array.from(map.values());
-      } ,
-        error:()=>{
-          console.log("error")
-        }
-      })
-    }else{
-      this.purchaseService.getPurchaseByEvent(this.eventId).subscribe({
-        next:(res)=>{
-          const map = new Map<string, PurchasePreviewWithCount>();
-
-        res.forEach(item => {
-          if (map.has(item.offering.name)) {
-            map.get(item.offering.name)!.count += 1;
-          } else {
-            map.set(item.offering.name, { ...item, count: 1 });
-          }
-        });
-
-        this.purchaseList = Array.from(map.values());
+          this.purchaseList = res;
         },
-        error:()=>{
-          console.log("error")
-        }
-      })
+        error: () => {
+          this.toastService.error('Error', 'Failed to load');
+        },
+      });
+    } else {
+      this.purchaseService.getPurchaseByEvent(this.eventId).subscribe({
+        next: (res) => {
+          this.purchaseList = res;
+        },
+        error: () => {
+          this.toastService.error('Error', 'Failed to load');
+        },
+      });
     }
-    
   }
-  makeReview(purchase: PurchasePreview){
+  makeReview(purchase: PurchasePreview) {
     const dialogRef = this.dialog.open(ReviewMakeComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        const reviewRequest = this.getReview(result,purchase.id)
-        console.log(reviewRequest)
+        const reviewRequest = this.getReview(result, purchase.id);
+        console.log(reviewRequest);
         this.reviewService.postReview(reviewRequest).subscribe({
-          next: (res)=>{
-            console.log(res)
+          next: (res) => {
+            console.log(res);
           },
-          error:()=>{
-            console.log("error")
-          }
-        })
+          error: () => {
+            console.log('error');
+          },
+        });
       }
     });
   }
 
-  getReview(res:any, purchaseId:number):any{
-    return {comment:res.comment, rating:res.rating, reviewType:this.reviewType, purchaseId:purchaseId, userId:this.userId}
+  getReview(res: any, purchaseId: number): any {
+    return {
+      comment: res.comment,
+      rating: res.rating,
+      reviewType: this.reviewType,
+      purchaseId: purchaseId,
+      userId: this.userId,
+    };
   }
 }
