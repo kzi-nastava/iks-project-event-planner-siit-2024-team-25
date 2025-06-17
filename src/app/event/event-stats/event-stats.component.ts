@@ -9,6 +9,8 @@ import { Attendee } from '../model/attendee.model';
 import { Event } from '../model/event.model';
 import { EventService } from '../service/event.service';
 import { environment } from '../../../environment/environment';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-event-stats',
@@ -52,7 +54,7 @@ export class EventStatsComponent implements OnInit, OnDestroy {
   constructor(
     private eventService: EventService,
     private route: ActivatedRoute,
-    private router: Router
+    private toastService: ToastrService
   ) {}
 
   ngOnInit() {
@@ -91,12 +93,27 @@ export class EventStatsComponent implements OnInit, OnDestroy {
       });
   }
 
-  get reportDownloadUrl(): string | null {
-    if (!this.eventId$.getValue()) return null;
-    return (
-      environment.apiHost +
-      `/api/events/${this.eventId$.getValue()}/stats/report`
-    );
+  downloadReport(): void {
+    const eventId = this.eventId$.getValue();
+    if (!eventId) return;
+
+    this.eventService
+      .downloadStatsReport(eventId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (blob: Blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `event-${eventId}-report.pdf`;
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: (err: ErrorResponse) => {
+          console.error('Download failed:', err);
+          this.toastService.error(err.message, 'Failed to generate a report');
+        },
+      });
   }
 
   getProfilePictureUrl(userId: number): string {

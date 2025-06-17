@@ -85,10 +85,6 @@
               <mat-icon>reviews</mat-icon>
               View Reviews
             </button>
-            <a mat-raised-button class="primary" [href]="reportDownloadUrl">
-              <mat-icon>download</mat-icon>
-              Save as PDF
-            </a>
           </mat-card-actions>
         }
 
@@ -97,10 +93,10 @@
             <mat-icon>timeline</mat-icon>
             View Stats
           </button>
-          <a mat-raised-button class="primary" [href]="reportDownloadUrl">
+          <button mat-raised-button class="primary" (click)="downloadReport()">
             <mat-icon>download</mat-icon>
             Save as PDF
-          </a>
+          </button>
         }
       </mat-card-actions>
     </mat-card>
