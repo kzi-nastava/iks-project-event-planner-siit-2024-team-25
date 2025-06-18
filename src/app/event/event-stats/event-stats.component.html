@@ -3,13 +3,13 @@
     <mat-card-header>
       <mat-card-title>Event Statistics</mat-card-title>
       <mat-card-subtitle *ngIf="event">{{event.name}}</mat-card-subtitle>
-      <a 
+      <button 
         mat-icon-button 
         class="download-button" 
-        [href]="reportDownloadUrl"
+        (click)="downloadReport()"
       >
         <mat-icon>picture_as_pdf</mat-icon>
-      </a>
+    </button>
     </mat-card-header>
     
     <mat-card-content>

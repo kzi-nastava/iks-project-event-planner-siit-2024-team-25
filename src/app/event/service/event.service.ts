@@ -267,7 +267,10 @@ export class EventService {
       .pipe(catchError(this.handleError));
   }
 
-  getAttendees(eventId: number, page: number): Observable<{ attendees: Attendee[]; totalAttendees: number }> {
+  getAttendees(
+    eventId: number,
+    page: number
+  ): Observable<{ attendees: Attendee[]; totalAttendees: number }> {
     return this.httpClient
       .get<Page<Attendee>>(
         environment.apiHost + `/api/events/${eventId}/attendees`,
@@ -278,9 +281,9 @@ export class EventService {
         }
       )
       .pipe(
-        map(page => ({
+        map((page) => ({
           attendees: page.content,
-          totalAttendees: page.totalElements
+          totalAttendees: page.totalElements,
         })),
         catchError(this.handleError)
       );
@@ -292,6 +295,30 @@ export class EventService {
         environment.apiHost + `/api/reviews/event/${eventId}/stats`
       )
       .pipe(catchError(this.handleError));
+  }
+
+  downloadReport(eventId: number): Observable<Blob> {
+    return this.httpClient
+      .get(`${environment.apiHost}/api/events/${eventId}/report`, {
+        responseType: 'blob',
+        observe: 'response',
+      })
+      .pipe(
+        map((response) => response.body!),
+        catchError(this.handleError)
+      );
+  }
+
+  downloadStatsReport(eventId: number): Observable<Blob> {
+    return this.httpClient
+      .get(`${environment.apiHost}/api/events/${eventId}/stats/report`, {
+        responseType: 'blob',
+        observe: 'response',
+      })
+      .pipe(
+        map((response) => response.body!),
+        catchError(this.handleError)
+      );
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

@@ -118,6 +118,29 @@ export class EventPageComponent implements OnInit, OnDestroy {
     );
   }
 
+  downloadReport(): void {
+    const eventId = this.eventId$.getValue();
+    if (!eventId) return;
+
+    this.eventService
+      .downloadReport(eventId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (blob: Blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `event-${eventId}-report.pdf`;
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: (err: ErrorResponse) => {
+          console.error('Download failed:', err);
+          this.toastService.error(err.message, 'Failed to generate a report');
+        },
+      });
+  }
+
   toggleFavorite(): void {
     if (this.event.isFavorite) {
       this.eventService
@@ -170,16 +193,15 @@ export class EventPageComponent implements OnInit, OnDestroy {
       state: { event: this.event.id },
     });
   }
-  openPurchaseList(){
-      this.router.navigate([`event/${this.event.id}/purchases`],{
-        state: {eventId:this.event.id, reviewType:ReviewType.OFFERING_REVIEW}
-      });
-  }
-  openReviews(){
-    this.router.navigate([`/chat/offering-event`],{
-      state: {eventId:this.event.id, eventOfferingName:this.event.name}
+  openPurchaseList() {
+    this.router.navigate([`event/${this.event.id}/purchases`], {
+      state: { eventId: this.event.id, reviewType: ReviewType.OFFERING_REVIEW },
     });
-    
+  }
+  openReviews() {
+    this.router.navigate([`/chat/offering-event`], {
+      state: { eventId: this.event.id, eventOfferingName: this.event.name },
+    });
   }
 
   joinEvent() {
