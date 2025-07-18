@@ -12,6 +12,7 @@ import { AuthService } from '../../../infrastructure/auth/service/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BlockService } from '../../services/block.service';
+import { ChatMessage } from '../model/chat-message';
 
 @Component({
   selector: 'app-chat-component',
@@ -34,6 +35,7 @@ export class ChatComponentComponent implements OnInit {
   receiverId: number = -1;
   receiverName: string = '';
   isBlocked: boolean = false;
+  chatId: string = '';
 
   constructor(
     private chatService: ChatService,
@@ -48,7 +50,7 @@ export class ChatComponentComponent implements OnInit {
       this.receiverName = params['userName'];
     });
     this.senderId = this.authService.getUser()?.userId || -1;
-    console.log(this.senderId, this.receiverId);
+    //console.log(this.senderId, this.receiverId);
   }
 
   isChatBlocked() {
@@ -68,34 +70,44 @@ export class ChatComponentComponent implements OnInit {
       this.receiverName = this.selectedChat.receiverName;
     }
     this.isChatBlocked();
-  }
-
-sendMessage() {
-  if (this.message.length > 0) {
-    const newMessage = {
-      senderId: this.senderId,
-      receiverId: this.receiverId,
-      content: this.message,
-    };
-
-    this.chatService.sendMessage(newMessage).subscribe({
-      next: (response) => {
-        this.addMessageDiv(
-          'sent',
-          newMessage.content,
-          new Date()
-        );
-        this.message = '';
-        this.totalMessages += 1;
-        this.getChat();
-      },
-      error: (err) => {
-        console.error(err);
-      },
+    this.chatService.messages$.subscribe((msgs) => {
+      this.updateUI(msgs);
     });
   }
-}
 
+  sendMessage() {
+    if (this.message.length > 0) {
+      const newMessage = {
+        senderId: this.senderId,
+        receiverId: this.receiverId,
+        content: this.message,
+        chatId: this.chatId,
+      };
+
+      this.chatService.sendMessage(newMessage).subscribe({
+        next: (response) => {
+          //this.addMessageDiv('sent', newMessage.content, new Date());
+          this.message = '';
+          //this.totalMessages += 1;
+          //this.getChat();
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+    }
+  }
+
+  updateUI(msgs: ChatMessage[]) {
+    this.clearMessages();
+    msgs.reverse().forEach((elem) => {
+      if (elem.sender.id == this.senderId) {
+        this.addMessageDiv('sent', elem.content, new Date(elem.timestamp));
+      } else {
+        this.addMessageDiv('received', elem.content, new Date(elem.timestamp));
+      }
+    });
+  }
 
   getChat() {
     if (this.isLoading) return;
@@ -105,6 +117,7 @@ sendMessage() {
         .getChatMessages(this.senderId, this.receiverId, this.currentPage)
         .subscribe({
           next: (res) => {
+            this.chatId = res.currentMessages[0].chatId;
             res.currentMessages.reverse().forEach((elem) => {
               if (elem.sender.id == this.senderId) {
                 this.addMessageDiv(
@@ -124,6 +137,8 @@ sendMessage() {
             this.totalMessages = res.totalMessages;
             this.totalPages = res.totalPages;
             this.isLoading = false;
+            this.chatService.setCurrentMessages(res.currentMessages);
+            this.chatService.connect(this.chatId);
           },
           error: (_) => {
             console.log('error');
