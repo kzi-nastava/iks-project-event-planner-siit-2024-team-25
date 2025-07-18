@@ -9,22 +9,22 @@ import { ChatMessage } from '../model/chat-message';
 import { Page } from '../../../shared/model/page.mode';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChatService {
   private stompClient: any;
-  private messageSubject = new BehaviorSubject<string[]>([]);
-  private serverUrl = environment.apiHost + '/socket';
+  private messageSubject = new BehaviorSubject<ChatMessage[]>([]);
+  private serverUrl = 'ws://localhost:8080/socket';
   isLoaded = false;
 
   messages$ = this.messageSubject.asObservable();
 
-  constructor(    private authService: AuthService,
-      private httpClient: HttpClient) {
-    this.connect();
-  }
+  constructor(
+    private authService: AuthService,
+    private httpClient: HttpClient
+  ) {}
 
-  private connect() {
+  connect(chatId: number | string) {
     this.authService.user$.subscribe({
       next: (user) => {
         if (user) {
@@ -33,7 +33,7 @@ export class ChatService {
 
           this.stompClient.connect({}, (frame: Stomp.Frame) => {
             that.isLoaded = true;
-            that.subscribeToChat(user.userId);
+            that.subscribeToChat(chatId);
           });
         } else {
           this.stompClient.disconnect(() => {
@@ -48,19 +48,28 @@ export class ChatService {
       },
     });
   }
-  private subscribeToChat(userId: number) {
-    this.stompClient.subscribe(`/chat/user/${userId}`, (message :{ body: string }) => {
-      console.log(message)
-      const msgBody = JSON.parse(message.body);
-      this.addMessage(msgBody.content);
-    });
+  private subscribeToChat(chatId: number | string) {
+    this.stompClient.subscribe(
+      `/topic/${chatId}`,
+      (message: { body: string }) => {
+        //console.log(message);
+        const msgBody = JSON.parse(message.body);
+        //console.log(msgBody);
+        this.addMessage(msgBody);
+      }
+    );
   }
   getIncomingMessages(): Observable<any> {
-    return this.messageSubject.asObservable();  
+    return this.messageSubject.asObservable();
   }
 
-  sendMessage(chatMessage: {senderId: number, receiverId: number, content: string }): Observable<any> {
-    return new Observable(observer => {
+  sendMessage(chatMessage: {
+    senderId: number;
+    receiverId: number;
+    content: string;
+    chatId: string;
+  }): Observable<any> {
+    return new Observable((observer) => {
       /*this.stompClient.subscribe('/user/' + chatMessage.receiverId +'/queue/messages', (message: any) => {
         const messageBody = JSON.parse(message.body);
         this.addMessage(messageBody)
@@ -74,32 +83,57 @@ export class ChatService {
       observer.complete();
     });
   }
-  
-  
-  private addMessage(message: string) {
+
+  private addMessage(message: ChatMessage) {
     const currentMessages = this.messageSubject.value;
-    this.messageSubject.next([...currentMessages, message]);
-    console.log(currentMessages)
+    const combinedMessages = [message, ...currentMessages];
+    const uniqueMessagesMap = new Map<number | string, ChatMessage>();
+    for (const msg of combinedMessages) {
+      uniqueMessagesMap.set(msg.id, msg);
+    }
+
+    const sortedMessages = Array.from(uniqueMessagesMap.values()).sort(
+      (a, b) =>
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    );
+    const limitedMessages = sortedMessages.slice(0, 7);
+
+    this.messageSubject.next(limitedMessages);
+
+    console.log(limitedMessages);
   }
 
-  getChatMessages(senderId:number, receiverId:number, page: number) : Observable<
-  
-  {
-      currentMessages: ChatMessage[];
-      totalMessages: number;
-      totalPages: number;
-    }>{
-          let params = new HttpParams();
-          params = params.set('page', page);
-          params = params.set('size', 7);
-    return this.httpClient.get<Page<ChatMessage>>(environment.apiHost + `/api/messages/${senderId}/${receiverId}`, {params:params})
-    .pipe(
-            map((page) => ({
-              currentMessages: page.content,
-              totalMessages: page.totalElements,
-              totalPages: page.totalPages,
-            }))
-          );
+  getCurrentMessages() {
+    return this.messageSubject.value;
+  }
+  setCurrentMessages(msg: ChatMessage[]) {
+    this.messageSubject.next(msg.reverse());
+  }
+
+  getChatMessages(
+    senderId: number,
+    receiverId: number,
+    page: number
+  ): Observable<{
+    currentMessages: ChatMessage[];
+    totalMessages: number;
+    totalPages: number;
+  }> {
+    let params = new HttpParams();
+    params = params.set('page', page);
+    params = params.set('size', 7);
+    return this.httpClient
+      .get<Page<ChatMessage>>(
+        environment.apiHost + `/api/messages/${senderId}/${receiverId}`,
+        { params: params }
+      )
+      .pipe(
+        map((page) => ({
+          currentMessages: page.content,
+          totalMessages: page.totalElements,
+          totalPages: page.totalPages,
+        }))
+      );
   }
 
   disconnect() {
