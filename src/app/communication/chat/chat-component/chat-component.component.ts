@@ -73,6 +73,11 @@ export class ChatComponentComponent implements OnInit {
     this.chatService.messages$.subscribe((msgs) => {
       this.updateUI(msgs);
     });
+    this.chatService.isFull$.subscribe((isFull) => {
+      if (isFull) {
+        this.totalPages += 1;
+      }
+    });
   }
 
   sendMessage() {

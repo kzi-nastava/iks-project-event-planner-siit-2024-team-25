@@ -16,6 +16,8 @@ export class ChatService {
   private messageSubject = new BehaviorSubject<ChatMessage[]>([]);
   private serverUrl = 'ws://localhost:8080/socket';
   isLoaded = false;
+  private isFullSubject = new BehaviorSubject<boolean>(false);
+  public isFull$ = this.isFullSubject.asObservable();
 
   messages$ = this.messageSubject.asObservable();
 
@@ -86,6 +88,7 @@ export class ChatService {
 
   private addMessage(message: ChatMessage) {
     const currentMessages = this.messageSubject.value;
+    this.isFullSubject.next(currentMessages.length >= 7);
     const combinedMessages = [message, ...currentMessages];
     const uniqueMessagesMap = new Map<number | string, ChatMessage>();
     for (const msg of combinedMessages) {
