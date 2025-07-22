@@ -18,7 +18,6 @@ export class BookServiceDialogComponent implements OnInit {
   service!: Service;
   event!: Event;
   errorMessage?: string;
-  maxEndTime!: string;
   minEndTime!: string;
   eventStartTime!: string;
   isAvailable!: boolean;
@@ -91,15 +90,6 @@ export class BookServiceDialogComponent implements OnInit {
       this.minEndTime = `${this.padZero(
         minEndDateTime.getHours()
       )}:${this.padZero(minEndDateTime.getMinutes())}`;
-
-      const maxEndDateTime = new Date(startDateTime);
-      maxEndDateTime.setHours(
-        maxEndDateTime.getHours() + this.service.maximumArrangement
-      );
-
-      this.maxEndTime = `${this.padZero(
-        maxEndDateTime.getHours()
-      )}:${this.padZero(maxEndDateTime.getMinutes())}`;
     }
   }
 
