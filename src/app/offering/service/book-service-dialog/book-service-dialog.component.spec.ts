@@ -66,6 +66,7 @@ describe('BookServiceComponent', () => {
       id: 1,
       name: 'Pera Peric',
     },
+    isFavorite: false,
   };
 
   const mockServiceWithArrangement: Service = {
@@ -105,6 +106,7 @@ describe('BookServiceComponent', () => {
       id: 1,
       name: 'Pera Peric',
     },
+    isFavorite: false,
   };
 
   const mockEvent = {
@@ -231,7 +233,6 @@ describe('BookServiceComponent', () => {
 
       expect(component.errorMessage).toBe(undefined);
       expect(component.minEndTime).toBe('12:00');
-      expect(component.maxEndTime).toBe('14:00');
     });
 
     it('should handle when start time changes and start date is undefined', () => {

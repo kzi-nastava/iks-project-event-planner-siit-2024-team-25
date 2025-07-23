@@ -56,6 +56,7 @@ describe('OffeirngServiceService', () => {
       id: 1,
       name: 'Pera Peric',
     },
+    isFavorite: false,
   });
 
   beforeEach(() => {
