@@ -1,6 +1,17 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { Component, EventEmitter, input, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  input,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ServiceDialogInformationComponent } from '../service-dialog/service-dialog-information.component';
 import { OfferingServiceService } from '../offering-service.service';
@@ -90,7 +101,7 @@ export class ServiceFormComponent {
     private serviceMenager: OfferingServiceService,
     private offeringCategoriesService: OfferingCategoryService,
     private eventTypeService: EventTypeService,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   @Output() toggle = new EventEmitter<void>();
@@ -109,7 +120,9 @@ export class ServiceFormComponent {
   openErrorDialog(s: String) {
     const dialogRef = this.dialog.open(ErrorDialogComponent, {
       data: {
-        message: this.firstFormGroup.value.name? this.firstFormGroup.value.name : ' Service' + s,
+        message: this.firstFormGroup.value.name
+          ? this.firstFormGroup.value.name
+          : ' Service' + s,
       },
     });
   }
@@ -135,10 +148,10 @@ export class ServiceFormComponent {
           });
       } else {
         const service = this.createService();
-        console.log(service)
+        console.log(service);
         this.serviceMenager.addService(service).subscribe({
           next: (s: Service) => {
-            console.log(s)
+            console.log(s);
             this.router.navigate(['/service/services']);
             this.openSaveDialog();
           },
@@ -155,7 +168,7 @@ export class ServiceFormComponent {
       name: this.firstFormGroup.value.name,
       description: this.firstFormGroup.value.description,
       price: this.firstFormGroup.value.price,
-      images: this.selectedFiles, 
+      images: this.selectedFiles,
       discount: this.discountFront,
       visible: this.secondFormGroup.value.isVisible,
       available: this.secondFormGroup.value.isAvailable,
@@ -200,14 +213,14 @@ export class ServiceFormComponent {
     return service;
   }
 
-
   removeExistingImage(imageUrl: string) {
-    if(this.isEditMode){
+    if (this.isEditMode) {
       this.imagesToDelete.push(imageUrl);
-      this.existingImages = this.existingImages.filter((img) => img !== imageUrl);
-      console.log(this.existingImages)
+      this.existingImages = this.existingImages.filter(
+        (img) => img !== imageUrl
+      );
+      console.log(this.existingImages);
     }
-    
   }
 
   onFileSelected(files: File[]) {
@@ -258,10 +271,13 @@ export class ServiceFormComponent {
   }
 
   getOfferingCategories() {
+    console.log('offeringCategoriesService:', this.offeringCategoriesService);
     this.offeringCategoriesService.getAll().subscribe({
       next: (res: OfferingCategory[]) => {
         res.forEach((element) => {
-          this.offeringCategoryTypeAll.set(element.id, element.name);
+          if (element == null)
+            this.offeringCategoryTypeAll = new Map<number, string>();
+          else this.offeringCategoryTypeAll.set(element.id, element.name);
         });
       },
     });
