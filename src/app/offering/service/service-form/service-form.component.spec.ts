@@ -84,7 +84,6 @@ describe('ServiceFormComponent', () => {
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
-
     await TestBed.configureTestingModule({
       declarations: [ServiceFormComponent],
       imports: [
@@ -125,181 +124,303 @@ describe('ServiceFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe("Form initialization", () => {
+  describe('Form initialization', () => {
     it('should initialize forms', () => {
       expect(component.firstFormGroup).toBeDefined();
       expect(component.secondFormGroup).toBeDefined();
     });
-  })
-  describe("First step done", () => {
+  });
+  describe('First step done', () => {
     it('should proceed to next step if first form valid', () => {
       component.firstFormGroup.get('name')?.setValue(mockService.name);
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).toHaveBeenCalled();
     });
     it('should proceed to next step if specifics is empty', () => {
       component.firstFormGroup.get('name')?.setValue(mockService.name);
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue('');
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup.get('specifics')?.setValue('');
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).toHaveBeenCalled();
     });
     it('should not proceed to next step if name is empty', () => {
       component.firstFormGroup.get('name')?.setValue('');
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).not.toHaveBeenCalled();
-    })
+    });
     it('should not proceed to next step if name has less than 3 characters', () => {
       component.firstFormGroup.get('name')?.setValue('aa');
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).not.toHaveBeenCalled();
-    })
+    });
     it('should not proceed to next step if description is empty', () => {
       component.firstFormGroup.get('name')?.setValue(mockService.name);
       component.firstFormGroup.get('description')?.setValue('');
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).not.toHaveBeenCalled();
-    })
+    });
     it('should not proceed to next step if description and name are empty', () => {
       component.firstFormGroup.get('name')?.setValue('');
       component.firstFormGroup.get('description')?.setValue('');
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).not.toHaveBeenCalled();
-    })
+    });
     it('should not proceed to next step if price is 0', () => {
       component.firstFormGroup.get('name')?.setValue(mockService.name);
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(0);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(0);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).not.toHaveBeenCalled();
-    })
+    });
     it('should not proceed to next step if price is less than 0', () => {
       component.firstFormGroup.get('name')?.setValue(mockService.name);
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(-2);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(-2);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).not.toHaveBeenCalled();
-    })
+    });
     it('should not proceed to next step if description and name are empty and price is less than equal to 0', () => {
       component.firstFormGroup.get('name')?.setValue('');
       component.firstFormGroup.get('description')?.setValue('');
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(0);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(0);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).not.toHaveBeenCalled();
-    })
+    });
     it('should not proceed to next step if event types does not exist', () => {
       component.firstFormGroup.get('name')?.setValue(mockService.name);
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue([]);
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup.get('eventTypes')?.setValue([]);
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).not.toHaveBeenCalled();
-    })
+    });
     it('should proceed to next step if service has one event type', () => {
       component.firstFormGroup.get('name')?.setValue(mockService.name);
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).toHaveBeenCalled();
-    })
+    });
     it('should proceed to next step if there are two or more event types', () => {
       component.firstFormGroup.get('name')?.setValue(mockService.name);
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue([1,2]);
-      component.firstFormGroup.get("categoryTypeId")?.setValue(mockService.offeringCategory.id);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup.get('eventTypes')?.setValue([1, 2]);
+      component.firstFormGroup
+        .get('categoryTypeId')
+        ?.setValue(mockService.offeringCategory.id);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).toHaveBeenCalled();
-    })
+    });
     it('should not proceed to next step if there is no offering category', () => {
       component.firstFormGroup.get('name')?.setValue(mockService.name);
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(-2);
-      component.firstFormGroup.get("categoryTypeName")?.setValue('');
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup.get('categoryTypeId')?.setValue(-2);
+      component.firstFormGroup.get('categoryTypeName')?.setValue('');
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).not.toHaveBeenCalled();
-    })
+    });
     it('should not proceed to next step if new offering category will be created', () => {
       component.firstFormGroup.get('name')?.setValue(mockService.name);
-      component.firstFormGroup.get('description')?.setValue(mockService.description);
-      component.firstFormGroup.get("specifics")?.setValue(mockService.specifics);
-      component.firstFormGroup.get("price")?.setValue(mockService.price);
-      component.firstFormGroup.get("eventTypes")?.setValue(mockService.eventTypes.map(x => x.id));
-      component.firstFormGroup.get("categoryTypeId")?.setValue(-1);
-      component.firstFormGroup.get("categoryTypeName")?.setValue(mockService.offeringCategory.name);
+      component.firstFormGroup
+        .get('description')
+        ?.setValue(mockService.description);
+      component.firstFormGroup
+        .get('specifics')
+        ?.setValue(mockService.specifics);
+      component.firstFormGroup.get('price')?.setValue(mockService.price);
+      component.firstFormGroup
+        .get('eventTypes')
+        ?.setValue(mockService.eventTypes.map((x) => x.id));
+      component.firstFormGroup.get('categoryTypeId')?.setValue(-1);
+      component.firstFormGroup
+        .get('categoryTypeName')
+        ?.setValue(mockService.offeringCategory.name);
       spyOn(component.stepper, 'next');
       component.onFirstStepDone();
       expect(component.stepper.next).toHaveBeenCalled();
-    })
+    });
     it('should fill offeringCategoryTypeAll map on getOfferingCategories', () => {
       const categories: OfferingCategory[] = [
         {
@@ -337,7 +458,9 @@ describe('ServiceFormComponent', () => {
 
       component.onInputCategory({ target: { value: 'NewCategory' } } as any);
       expect(component.firstFormGroup.value.categoryTypeId).toBe(-1);
-      expect(component.firstFormGroup.value.categoryTypeName).toBe('NewCategory');
+      expect(component.firstFormGroup.value.categoryTypeName).toBe(
+        'NewCategory'
+      );
     });
     it('should select right offering category', () => {
       component.offeringCategoryTypeAll.set(1, 'Cat1');
@@ -357,23 +480,18 @@ describe('ServiceFormComponent', () => {
     it('should update discountFront when slider value changes', () => {
       const fakeEvent = {
         target: {
-          value: '30'
-        }
+          value: '30',
+        },
       } as unknown as Event;
 
       component.setSliderDiscount(fakeEvent);
 
       expect(component.discountFront).toBe(30);
     });
+  });
 
-  })
-
-  describe("Second step done", () => {
-
-
-
-
-    describe("Duration and arrangement validator", () => {
+  describe('Second step done', () => {
+    describe('Duration and arrangement validator', () => {
       it('should reset arrangements if isDurationShow is true', () => {
         component.isDurationShow = true;
         component.minArrangementFront = 5;
@@ -414,7 +532,7 @@ describe('ServiceFormComponent', () => {
       });
       it('should set durationtFront from slider input', () => {
         const mockEvent = {
-          target: { value: '5' }
+          target: { value: '5' },
         } as unknown as Event;
 
         component.setSliderDuration(mockEvent);
@@ -423,7 +541,7 @@ describe('ServiceFormComponent', () => {
       });
       it('should set minArrangementFront from slider input', () => {
         const mockEvent = {
-          target: { value: '2' }
+          target: { value: '2' },
         } as unknown as Event;
 
         component.setSliderMinArrangement(mockEvent);
@@ -432,7 +550,7 @@ describe('ServiceFormComponent', () => {
       });
       it('should set maxArrangementFront from slider input', () => {
         const mockEvent = {
-          target: { value: '10' }
+          target: { value: '10' },
         } as unknown as Event;
 
         component.setSliderMaxArrangement(mockEvent);
@@ -440,9 +558,7 @@ describe('ServiceFormComponent', () => {
         expect(component.maxArrangementFront).toBe(10);
       });
 
-
       describe('validatorArrangement()', () => {
-
         it('should set arrangementValidator to false if min >= max', () => {
           component.minArrangementFront = 10;
           component.maxArrangementFront = 5;
@@ -468,9 +584,9 @@ describe('ServiceFormComponent', () => {
           expect(component.arrangementValidator).toBeTrue();
         });
       });
-    })
+    });
 
-    describe("Reservation type", () => {
+    describe('Reservation type', () => {
       it('should set reservationTypeService to MANUAL if reservationTypeString is Manual', () => {
         component.reservationTypeString = 'Manual';
         component.checkReservationType();
@@ -480,14 +596,16 @@ describe('ServiceFormComponent', () => {
       it('should set reservationTypeService to AUTOMATIC if reservationTypeString is Automatic', () => {
         component.reservationTypeString = 'Automatic';
         component.checkReservationType();
-        expect(component.reservationTypeService).toBe(ReservationType.AUTOMATIC);
+        expect(component.reservationTypeService).toBe(
+          ReservationType.AUTOMATIC
+        );
       });
-    })
+    });
 
-    describe("Reservation and cancellation deadline", () => {
+    describe('Reservation and cancellation deadline', () => {
       it('should set cancellationDeadlinfront from slider input', () => {
         const mockEvent = {
-          target: { value: '15' }
+          target: { value: '15' },
         } as unknown as Event;
 
         component.setSliderCancellationDeadline(mockEvent);
@@ -496,17 +614,16 @@ describe('ServiceFormComponent', () => {
       });
       it('should set reservationDeadlineFront from slider input', () => {
         const mockEvent = {
-          target: { value: '7' }
+          target: { value: '7' },
         } as unknown as Event;
 
         component.setSliderReservationDeadline(mockEvent);
 
         expect(component.reservationDeadlineFront).toBe(7);
       });
+    });
 
-    })
-
-    describe("Visible and available", ()=>{
+    describe('Visible and available', () => {
       it('should initialize secondFormGroup with false values', () => {
         expect(component.secondFormGroup.get('isAvailable')?.value).toBeFalse();
         expect(component.secondFormGroup.get('isVisible')?.value).toBeFalse();
@@ -519,16 +636,16 @@ describe('ServiceFormComponent', () => {
         expect(component.secondFormGroup.get('isVisible')?.value).toBeTrue();
       });
       it('should be valid when both controls are set', () => {
-        component.secondFormGroup.setValue({ isAvailable: true, isVisible: false });
+        component.secondFormGroup.setValue({
+          isAvailable: true,
+          isVisible: false,
+        });
 
         expect(component.secondFormGroup.valid).toBeTrue();
       });
-
-    })
-
+    });
   });
-  describe("THird step done", () => {
-
+  describe('Third step done', () => {
     it('should remove image from existingImages and add to imagesToDelete in edit mode', () => {
       component.isEditMode = true;
       component.existingImages = ['img1.png', 'img2.png'];
@@ -552,133 +669,172 @@ describe('ServiceFormComponent', () => {
       component.onFileSelected(files);
       expect(component.selectedFiles.length).toBe(2);
     });
-  })
-
-  // --- openSaveDialog ---
-
-  it('should open ServiceDialogInformationComponent dialog and call backToHome after close', fakeAsync(() => {
-    const dialogRefSpyObj = jasmine.createSpyObj({
-      afterClosed: of(true),
-      close: null,
-    });
-    dialogSpy.open.and.returnValue(dialogRefSpyObj);
-    spyOn(component, 'backToHome');
-
-    component.firstFormGroup.patchValue({ name: 'Test Service' });
-    component.openSaveDialog();
-    tick();
-
-    expect(dialogSpy.open).toHaveBeenCalledWith(
-      ServiceDialogInformationComponent,
-      jasmine.any(Object)
-    );
-    expect(component.backToHome).toHaveBeenCalled();
-  }));
-
-  // --- openErrorDialog ---
-
-  // --- saveService ---
-
-  it('should not save service if first form invalid', () => {
-    component.firstFormGroup.get('name')?.setValue('');
-    spyOn(component, 'setupModels');
-    component.saveService();
-    expect(component.setupModels).not.toHaveBeenCalled();
   });
 
-  it('should call addService if not in edit mode and valid form', () => {
-    component.isEditMode = false;
-    component.firstFormGroup.patchValue({
-      name: 'ServiceName',
-      description: 'Desc',
-      price: 10,
-      categoryTypeId: 1,
-      categoryTypeName: 'Cat',
-      eventTypes: [1],
-    });
-    component.secondFormGroup.patchValue({
-      isVisible: true,
-      isAvailable: true,
-    });
-    offeringServiceSpy.addService.and.returnValue(of(mockService));
-    spyOn(component, 'setupModels').and.callThrough();
-    spyOn(component, 'openSaveDialog');
-    component.saveService();
+  describe('Save service', () => {
+    describe('Dialog interaction', () => {
+      // --- openSaveDialog ---
+      it('should navigate and open save dialog when service is created successfully', fakeAsync(() => {
+        component.firstFormGroup.patchValue({
+          name: 'Test Service',
+          description: 'Test Description',
+          price: 100,
+          categoryTypeId: 2,
+          categoryTypeName: 'Category',
+          eventTypes: [1, 2],
+        });
+        component.secondFormGroup.patchValue({
+          isVisible: true,
+          isAvailable: true,
+        });
 
-    expect(component.setupModels).toHaveBeenCalled();
-    expect(offeringServiceSpy.addService).toHaveBeenCalled();
-    expect(component.openSaveDialog).toHaveBeenCalled();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/service/services']);
+        component.isEditMode = false;
+        offeringServiceSpy.addService.and.returnValue(of(mockService));
+        spyOn(component, 'openSaveDialog');
+        component.saveService();
+
+        tick();
+
+        expect(offeringServiceSpy.addService).toHaveBeenCalled();
+        expect(component.openSaveDialog).toHaveBeenCalled();
+      }));
+
+      // --- openErrorDialog ---
+      it('should open error dialog on addService error', fakeAsync(() => {
+        component.isEditMode = false;
+        component.firstFormGroup.patchValue({
+          name: 'ServiceName',
+          description: 'Desc',
+          price: 10,
+          categoryTypeId: 1,
+          categoryTypeName: 'Cat',
+          eventTypes: [1],
+        });
+        component.secondFormGroup.patchValue({
+          isVisible: true,
+          isAvailable: true,
+        });
+        offeringServiceSpy.addService.and.returnValue(
+          throwError(() => new Error('fail'))
+        );
+        spyOn(component, 'openErrorDialog');
+        component.saveService();
+        tick();
+        expect(component.openErrorDialog).toHaveBeenCalledWith(
+          'not created, server error'
+        );
+      }));
+    });
+    it('Should go to srvice page after successful save', fakeAsync(() => {
+      component.firstFormGroup.patchValue({
+        name: 'Test Service',
+        description: 'Test Description',
+        price: 100,
+        categoryTypeId: 2,
+        categoryTypeName: 'Category',
+        eventTypes: [1, 2],
+      });
+      component.secondFormGroup.patchValue({
+        isVisible: true,
+        isAvailable: true,
+      });
+
+      component.isEditMode = false;
+      offeringServiceSpy.addService.and.returnValue(of(mockService));
+      dialogSpy.open.and.returnValue({ afterClosed: () => of(true) } as any);
+
+      component.saveService();
+
+      tick();
+
+      expect(offeringServiceSpy.addService).toHaveBeenCalled();
+      expect(routerSpy.navigate).toHaveBeenCalledWith(['/service/services']);
+    }));
+    it('createService should set offeringCategoryID to null if categoryTypeId is -1', () => {
+      component.firstFormGroup.patchValue({
+        categoryTypeId: -1,
+        categoryTypeName: 'NewCat',
+      });
+      const dto = component.createService();
+      expect(dto.offeringCategoryID).toBeNull();
+    });
+
+    it('should not save service if first form invalid', () => {
+      component.firstFormGroup.get('name')?.setValue('');
+      spyOn(component, 'setupModels');
+      component.saveService();
+      expect(component.setupModels).not.toHaveBeenCalled();
+    });
+
+    it('should call addService if not in edit mode and valid form', () => {
+      component.isEditMode = false;
+      component.firstFormGroup.patchValue({
+        name: 'ServiceName',
+        description: 'Desc',
+        price: 10,
+        categoryTypeId: 1,
+        categoryTypeName: 'Cat',
+        eventTypes: [1],
+      });
+      component.secondFormGroup.patchValue({
+        isVisible: true,
+        isAvailable: true,
+      });
+      offeringServiceSpy.addService.and.returnValue(of(mockService));
+      spyOn(component, 'setupModels').and.callThrough();
+      spyOn(component, 'openSaveDialog');
+      component.saveService();
+
+      expect(component.setupModels).toHaveBeenCalled();
+      expect(offeringServiceSpy.addService).toHaveBeenCalled();
+    });
+
+    it('createService should build ServiceCreateDTO correctly', () => {
+      component.firstFormGroup.patchValue({
+        name: 'Test',
+        description: 'Desc',
+        price: 10,
+        specifics: 'Specs',
+        eventTypes: [1, 2],
+        categoryTypeId: 5,
+        categoryTypeName: 'CatName',
+      });
+      component.secondFormGroup.patchValue({
+        isVisible: true,
+        isAvailable: false,
+      });
+      component.selectedFiles = [new File([], 'file.png')];
+      component.discountFront = 5;
+      component.durationtFront = 10;
+      component.cancellationDeadlinfront = 2;
+      component.reservationDeadlineFront = 3;
+      component.reservationTypeService = ReservationType.AUTOMATIC;
+      component.loggedOwner = 42;
+      component.minArrangementFront = 4;
+      component.maxArrangementFront = 10;
+
+      const dto = component.createService();
+
+      expect(dto.name).toBe('Test');
+      expect(dto.description).toBe('Desc');
+      expect(dto.price).toBe(10);
+      expect(dto.images.length).toBe(1);
+      expect(dto.discount).toBe(5);
+      expect(dto.visible).toBeTrue();
+      expect(dto.available).toBeFalse();
+      expect(dto.specifics).toBe('Specs');
+      expect(dto.duration).toBe(10);
+      expect(dto.cancellationDeadline).toBe(2);
+      expect(dto.reservationDeadline).toBe(3);
+      expect(dto.reservationType).toBe(ReservationType.AUTOMATIC);
+      expect(dto.ownerId).toBe(42);
+      expect(dto.eventTypesIDs).toEqual([1, 2]);
+      expect(dto.minimumArrangement).toBe(4);
+      expect(dto.maximumArrangement).toBe(10);
+      expect(dto.offeringCategoryName).toBe('CatName');
+      expect(dto.offeringCategoryID).toBe(5);
+    });
   });
-
-  it('should open error dialog on addService error', fakeAsync(() => {
-    component.isEditMode = false;
-    component.firstFormGroup.patchValue({
-      name: 'ServiceName',
-      description: 'Desc',
-      price: 10,
-      categoryTypeId: 1,
-      categoryTypeName: 'Cat',
-      eventTypes: [1],
-    });
-    component.secondFormGroup.patchValue({
-      isVisible: true,
-      isAvailable: true,
-    });
-    offeringServiceSpy.addService.and.returnValue(
-      throwError(() => new Error('fail'))
-    );
-    spyOn(component, 'openErrorDialog');
-    component.saveService();
-    tick();
-    expect(component.openErrorDialog).toHaveBeenCalled();
-  }));
-
-  // --- createService ---
-
-  it('createService should build ServiceCreateDTO correctly', () => {
-    component.firstFormGroup.patchValue({
-      name: 'Test',
-      description: 'Desc',
-      price: 10,
-      specifics: 'Specs',
-      eventTypes: [1, 2],
-      categoryTypeId: 5,
-      categoryTypeName: 'CatName',
-    });
-    component.secondFormGroup.patchValue({
-      isVisible: true,
-      isAvailable: false,
-    });
-    component.selectedFiles = [new File([], 'file.png')];
-    component.discountFront = 5;
-    component.durationtFront = 10;
-    component.cancellationDeadlinfront = 2;
-    component.reservationDeadlineFront = 3;
-    component.reservationTypeService = ReservationType.AUTOMATIC;
-    component.loggedOwner = 42;
-    component.minArrangementFront = 4;
-    component.maxArrangementFront = 10;
-
-    const dto = component.createService();
-
-    expect(dto.name).toBe('Test');
-    expect(dto.images.length).toBe(1);
-    expect(dto.offeringCategoryID).toBe(5);
-    expect(dto.eventTypesIDs).toEqual([1, 2]);
-    expect(dto.minimumArrangement).toBe(4);
-    expect(dto.maximumArrangement).toBe(10);
-  });
-
-  it('createService should set offeringCategoryID to null if categoryTypeId is -1', () => {
-    component.firstFormGroup.patchValue({
-      categoryTypeId: -1,
-      categoryTypeName: 'NewCat',
-    });
-    const dto = component.createService();
-    expect(dto.offeringCategoryID).toBeNull();
-  });
-
 
   // --- backToHome ---
 
@@ -706,7 +862,6 @@ describe('ServiceFormComponent', () => {
     expect(component.saveButtonShow).toBeFalse();
     expect(component.cancelButtonShow).toBeTrue();
   });
-
 });
 
 export { ServiceFormComponent };
