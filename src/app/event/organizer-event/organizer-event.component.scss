@@ -1,0 +1,66 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "../../../theme/m3-theme.scss" as theme;
+
+.container {
+  border-color: mat.get-theme-color(theme.$light-theme, primary);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-left: 40%;
+  margin-right: 40%;
+
+  button {
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+    background-color: mat.get-theme-color(theme.$light-theme, primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:active {
+      background-color: mat.get-theme-color(theme.$light-theme, primary, 70);
+    }
+  }
+
+  p {
+    color: mat.get-theme-color(theme.$light-theme, primary);
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}
+.home-events-container {
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  border: 2px solid mat.get-theme-color(theme.$light-theme, primary);
+  border-radius: 5vh;
+  flex-wrap: wrap;
+
+  div {
+    height: 18rem;
+    width: 18rem;
+    margin: 2rem;
+  }
+}
+
+.header-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem;
+
+  button {
+    padding: 0.5rem 1rem;
+
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}

@@ -1,0 +1,102 @@
+<div class="dialog">
+  <div class="offeringInfo">
+    <h1>{{ service.name }}</h1>
+    <label>Price: {{ service.price }} $</label>
+    <label>Discount: {{ service.discount }}</label>
+    <label>Total price: {{ purchase.price }} $</label>
+    @if (service.duration) {
+    <label>Service duration: {{ service.duration }} hours</label>
+    }@else {
+    <label
+      >Service minimum arrangement:
+      {{ service.minimumArrangement }} hours</label
+    >
+    <label
+      >Service maximum arrangement:
+      {{ service.maximumArrangement }} hours</label
+    >
+    }
+  </div>
+  <div class="dateTime">
+    <h3>Choose date and time</h3>
+    <mat-grid-list cols="4" rowHeight="6:1">
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Start date</mat-label>
+          <input
+            matInput
+            [(ngModel)]="purchase!.startDate"
+            [matDatepicker]="datepickerStart"
+            [min]="event.startDate"
+            [max]="event.endDate"
+          />
+          <mat-datepicker #datepickerStart />
+          <mat-datepicker-toggle [for]="datepickerStart" matSuffix />
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Start time</mat-label>
+          <input
+            matInput
+            [(ngModel)]="purchase!.startTime"
+            (ngModelChange)="onStartTimeChange()"
+            [ngxTimepicker]="pickerStart"
+            placeholder="Select time"
+            [format]="24"
+            [min]="eventStartTime"
+          />
+          <ngx-material-timepicker #pickerStart></ngx-material-timepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>End date</mat-label>
+          <input
+            matInput
+            [(ngModel)]="purchase!.endDate"
+            [matDatepicker]="datepickerEnd"
+            [min]="event.startDate"
+            [max]="event.endDate"
+          />
+          <mat-datepicker #datepickerEnd />
+          <mat-datepicker-toggle [for]="datepickerEnd" matSuffix />
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>End time</mat-label>
+          <input
+            matInput
+            [(ngModel)]="purchase!.endTime"
+            (ngModelChange)="onEndTimeChange()"
+            [ngxTimepicker]="pickerEnd"
+            placeholder="Select time"
+            [format]="24"
+            [disabled]="!purchase.startDate || !purchase.startTime"
+            [min]="minEndTime"
+          />
+          <ngx-material-timepicker #pickerEnd></ngx-material-timepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+    @if(isAvailable){
+    <label class="isAvailable green">Service is available for booking.</label>
+    } @if (isAvailable == false) {
+    <label class="isAvailable red">Service is not available for booking.</label>
+    }
+    <button
+      name="bookServiceButton"
+      mat-flat-button
+      class="primary"
+      type="submit"
+      [disabled]="!isAvailable"
+      (click)="bookService()"
+    >
+      Book a service
+    </button>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+// not-found.component.scss
+@use '@angular/material' as mat;
+@use '../../../theme/m3-theme.scss' as theme;
+
+$primary: mat.get-theme-color(theme.$light-theme, primary);
+$accent: mat.get-theme-color(theme.$light-theme, tertiary);
+
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgba($primary, 0.05);
+  overflow: hidden;
+  position: relative;
+}
+
+.error-content {
+  text-align: center;
+  z-index: 2;
+  position: relative;
+  padding: 2rem;
+  border-radius: 16px;
+  background-color: white;
+  box-shadow: 0 10px 25px rgba($primary, 0.1);
+}
+
+.error-code {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 8rem;
+  font-weight: bold;
+  color: $primary;
+  margin-bottom: 1rem;
+
+  .zero-icon {
+    font-size: 8rem;
+    width: 120px;
+    height: 120px;
+    color: $accent;
+    margin: 0 1rem;
+  }
+}
+
+h1 {
+  color: $primary;
+  margin-bottom: 1rem;
+}
+
+p {
+  color: rgba($primary, 0.7);
+  margin-bottom: 2rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: none;
+  }
+}
+
+// Optional: Add some subtle background animation
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.not-found-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse at center, 
+    rgba($primary, 0.1) 0%, 
+    transparent 70%
+  );
+  animation: float 10s ease-in-out infinite;
+  z-index: 1;
+}

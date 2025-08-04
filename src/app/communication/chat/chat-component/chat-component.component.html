@@ -1,0 +1,51 @@
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <span class="chat-title">{{ receiverName }}`s chat</span>
+      <div class="chat-buttons">
+        <button
+          [disabled]="isBlocked"
+          (click)="blockUser()"
+          class="scroll-button"
+        >
+          <mat-icon>person_off</mat-icon>
+        </button>
+        <button (click)="scrollUp()" class="scroll-button">
+          <mat-icon>arrow_upward</mat-icon>
+        </button>
+        <button (click)="scrollDown()" class="scroll-button">
+          <mat-icon>arrow_downward</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="chat-messages" #chatMessages></div>
+    @if(isBlocked == false){
+    <div class="chat-input">
+      <input
+        type="text"
+        placeholder="Type a message..."
+        [(ngModel)]="message"
+      />
+      <button [disabled]="isBlocked" (click)="sendMessage()">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+    } @else {
+    <div class="chat-input">
+      <input
+        [disabled]="true"
+        type="text"
+        placeholder="You blocked this user."
+        [(ngModel)]="message"
+      />
+      <button [disabled]="true" (click)="sendMessage()">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+    }
+    <div *ngIf="isLoading" class="loading-overlay">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  </div>
+</body>

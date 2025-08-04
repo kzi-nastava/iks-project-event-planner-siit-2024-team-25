@@ -1,0 +1,28 @@
+.error-dialog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .error-icon {
+    font-size: 48px;
+    color: #f44336; /* Material red */
+    margin-bottom: 16px;
+  }
+  
+  .error-title {
+    font-size: 24px;
+    color: #f44336; /* Material red */
+    margin: 0;
+  }
+  
+  mat-dialog-content {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  mat-dialog-actions {
+    margin-top: 16px;
+  }
+  

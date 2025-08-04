@@ -1,0 +1,21 @@
+<div class="chat-header">
+    <span class="chat-title">Chats</span>
+    <div class="chat-buttons">
+        <button (click)="scrollUp()" class="scroll-button">
+            <mat-icon>arrow_upward</mat-icon>
+        </button>
+        <button (click)="scrollDown()" class="scroll-button">
+            <mat-icon>arrow_downward</mat-icon>
+        </button>
+    </div>
+</div>
+
+<div class="chat-list">
+    <ng-container *ngFor="let chat of chatList">
+        <app-chat-card [chat] = "chat" (chatSelected)="onChatSelected($event)"></app-chat-card>
+        <div *ngIf="isLoading" class="loading-overlay">
+            <mat-spinner diameter="50"></mat-spinner>
+        </div>
+    </ng-container>
+    
+</div>

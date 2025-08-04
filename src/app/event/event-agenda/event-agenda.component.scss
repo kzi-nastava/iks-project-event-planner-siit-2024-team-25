@@ -1,0 +1,120 @@
+@use '@angular/material' as mat;
+@use '../../../theme/m3-theme.scss' as theme;
+
+$primary: mat.get-theme-color(theme.$light-theme, primary);
+$timeline-line-color: rgba($primary, 0.3);
+$timeline-marker-size: 16px;
+
+.timeline-container {
+  position: relative;
+  padding-left: 2rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: $timeline-line-color;
+  }
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+
+  .timeline-marker {
+    position: absolute;
+    left: -2.5rem;
+    top: 1.5rem;
+    width: $timeline-marker-size;
+    height: $timeline-marker-size;
+    border-radius: 50%;
+    background: $primary;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px $timeline-line-color;
+  }
+
+  .timeline-card {
+    margin-left: 1rem;
+    border-radius: 8px;
+
+    mat-card-header {
+      padding: 1rem 1rem 0.75rem;
+      background: $primary;
+
+      mat-card-title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 0;
+        color: white;
+      }
+    }
+
+    mat-card-content {
+      padding: 1rem;
+
+      .time-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba($primary, 0.1);
+        color: $primary;
+        padding: 0.5rem 0.75rem;
+        border-radius: 100px;
+        margin-bottom: 1rem;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+
+        .date-badge {
+          margin-left: auto;
+          font-size: 0.9rem;
+          opacity: 0.8;
+        }
+      }
+
+      .description {
+        color: rgba(0, 0, 0, 0.7);
+        margin: 0.5rem 0;
+        line-height: 1.5;
+      }
+
+      .location {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: rgba(0, 0, 0, 0.6);
+        margin-top: 1rem;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+}
+
+.no-activities {
+  text-align: center;
+  padding: 2rem;
+  color: rgba(0, 0, 0, 0.6);
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}

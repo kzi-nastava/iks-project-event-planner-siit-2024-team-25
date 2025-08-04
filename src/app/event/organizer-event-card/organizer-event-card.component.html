@@ -1,0 +1,47 @@
+<div class="event-card" (click)="goToEvent()">
+  <div class="header">
+    <div class="title">{{ event.name }}</div>
+    <mat-icon
+      class="heart"
+      [ngClass]="{ liked: event.isFavorite }"
+      (click)="changeFavouriteEvent($event)"
+    >
+      {{ event.isFavorite ? "favorite" : "favorite_border" }}
+    </mat-icon>
+  </div>
+  <div class="info">
+    <div class="organizer">
+      <p>{{ event.organizerFirstName + " " + event.organizerLastName }}</p>
+    </div>
+    <div class="date">
+      <mat-icon>date_range</mat-icon>
+      <p>{{ formatDateTime(event.startDateTime) }}</p>
+    </div>
+  </div>
+
+  <div class="description">
+    <p>{{ event.description }}</p>
+  </div>
+  <div class="footer">
+    <div class="location">
+      <mat-icon>location_on</mat-icon>
+      <p>{{ formatLocation(event.country, event.city) }}</p>
+    </div>
+    <button mat-button (click)="openBudgetPlan($event)">
+      Budget plan
+      <mat-icon>money</mat-icon>
+    </button>
+  </div>
+  <div class="options">
+    <button mat-raised-button color="primary" (click)="purchase($event)">
+      Purchase
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openEmailDialog(event.id, $event)"
+    >
+      Invite guests
+    </button>
+  </div>
+</div>

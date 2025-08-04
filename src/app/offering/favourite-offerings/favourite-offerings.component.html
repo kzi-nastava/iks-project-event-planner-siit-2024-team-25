@@ -1,0 +1,10 @@
+<mat-tab-group class="homeDisplay" (selectedTabChange)="switchDisplay($event.tab.textLabel)">
+    <mat-tab label="PRODUCTS" ></mat-tab>
+    <mat-tab label="SERVICES"></mat-tab>
+</mat-tab-group>
+@if (currentContainer == "P") {
+    <app-favourite-product/>
+}
+@if (currentContainer == "S") {
+    <app-favourite-services/>
+}

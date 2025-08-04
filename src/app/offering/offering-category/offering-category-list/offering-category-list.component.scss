@@ -1,0 +1,41 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "../../../../theme/m3-theme.scss" as theme;
+.example-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    min-width: 300px;
+    margin: 3rem;
+    margin-top: 1rem;
+  }
+  
+  .mat-table {
+    overflow: auto;
+    max-height: 500px;
+  }
+  h3 {
+    color: mat.get-theme-color(theme.$light-theme, primary);
+    font-size: 3rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  h4{
+    color: mat.get-theme-color(theme.$light-theme, primary);
+    margin-left: 3rem;
+  }
+  .container {
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+    
+  }
+
+  .fab-button {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px;   
+    z-index: 1000;
+  }
+ 
+  

@@ -1,0 +1,35 @@
+<div class="notification-container" (scroll)="onScroll()">
+  <div class="header">
+    <h1>Notifications</h1>
+    <mat-slide-toggle
+      [(ngModel)]="notificationsEnabled"
+      (change)="toggleNotifications($event)"
+    >
+      {{ notificationsEnabledText }}
+    </mat-slide-toggle>
+  </div>
+
+  <div
+    *ngFor="let notification of notifications"
+    class="notification"
+    (click)="openNotification(notification)"
+  >
+    <div class="notification-header">
+      <strong>{{ notification.title }}</strong>
+    </div>
+    <p>{{ notification.message }}</p>
+    <p>{{ formatDate(notification.createdDate) }}</p>
+
+    <mat-icon
+      *ngIf="!notification.isViewed"
+      (click)="toggleViewed(notification, true, $event)"
+      >mark_email_unread</mat-icon
+    >
+    <mat-icon
+      *ngIf="notification.isViewed"
+      (click)="toggleViewed(notification, false, $event)"
+      >mark_email_read</mat-icon
+    >
+  </div>
+  <div *ngIf="isLoading" class="loading-spinner">Loading...</div>
+</div>

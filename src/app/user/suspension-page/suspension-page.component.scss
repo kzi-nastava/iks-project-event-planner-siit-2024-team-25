@@ -1,0 +1,24 @@
+@use "@angular/material" as mat;
+@use "../../../theme/m3-theme.scss" as theme;
+
+$primary: mat.get-theme-color(theme.$light-theme, primary);
+
+.suspension-container {
+  text-align: center;
+  padding: 50px;
+}
+
+h1 {
+  font-size: 36px;
+  color: red;
+}
+
+.countdown {
+  margin-top: 20px;
+}
+
+.timer {
+  font-size: 80px;
+  font-weight: bold;
+  color: $primary;
+}

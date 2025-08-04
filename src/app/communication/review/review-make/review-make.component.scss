@@ -1,0 +1,19 @@
+.full-width {
+    width: 100%;
+  }
+  
+  .rating {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+  }
+  
+  mat-icon {
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  mat-icon.selected {
+    color: gold;
+  }
+  

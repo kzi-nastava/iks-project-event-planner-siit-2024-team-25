@@ -1,0 +1,47 @@
+<main class="login-container">
+  <div class="login-image-section">
+    <img src="/banner_background.jpg" alt="Login Background" class="login-image">
+  </div>
+
+  <div class="login-form-section">
+    <div class="card login-card">
+      <div class="header">
+        <h1>Login</h1>
+
+        <p>Please log in to access your account...</p>
+      </div>
+
+      <div class="content">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="outline" class="primary">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" required>
+            <mat-error *ngIf="email?.invalid">
+              Please enter a valid email
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="primary">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
+            <button type="button" mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="password?.invalid">
+              Password is required
+            </mat-error>
+          </mat-form-field>
+
+          <div class="actions">
+            <button mat-flat-button class="primary" type="submit" [disabled]="form.invalid || waitingResponse">
+              Login
+            </button>
+
+            <a mat-button class="secondary" routerLink="/user/register">Register</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</main>

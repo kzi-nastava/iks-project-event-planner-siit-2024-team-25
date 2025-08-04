@@ -1,0 +1,108 @@
+<div *ngIf="event" class="agenda-container">
+  <!-- Left Sidebar - Add Activity Form -->
+  <aside class="agenda-sidebar">
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>Add Activity</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form (ngSubmit)="onSubmit()" [formGroup]="form" class="activity-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Activity Name</mat-label>
+            <input formControlName="name" matInput placeholder="Enter activity name">
+            <mat-error *ngIf="form.get('name')?.errors?.['required']">Name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea formControlName="description" matInput rows="3"></textarea>
+          </mat-form-field>
+
+          <div class="datetime-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input [matDatepicker]="startPicker" formControlName="startDate" matInput>
+              <mat-datepicker-toggle [for]="startPicker" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Start Time</mat-label>
+              <input formControlName="startTime" matInput type="time">
+            </mat-form-field>
+          </div>
+
+          <div class="datetime-group">
+            <mat-form-field appearance="outline">
+              <mat-label>End Date</mat-label>
+              <input [matDatepicker]="endPicker" formControlName="endDate" matInput>
+              <mat-datepicker-toggle [for]="endPicker" matSuffix></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>End Time</mat-label>
+              <input formControlName="endTime" matInput type="time">
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Location</mat-label>
+            <input formControlName="location" matInput>
+            <mat-icon matSuffix>location_on</mat-icon>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button (click)="form.reset()" class="primary" mat-button type="button">Clear</button>
+            <button [disabled]="form.invalid || waitingForResponse" class="primary" mat-raised-button type="submit">
+              Add Activity
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="finish-btn">
+      <button (click)="openBudgetPlan()" mat-flat-button class="primary">
+        Finish
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content - Timeline -->
+  <main class="agenda-main">
+    <header class="agenda-header">
+      <h1>{{ event.name }}</h1>
+    </header>
+
+    <div class="timeline-container">
+      <div *ngFor="let activity of activities" class="timeline-item">
+        <div class="timeline-marker"></div>
+
+        <mat-card class="timeline-card">
+          <mat-card-header>
+            <mat-card-title>{{ activity.name }}</mat-card-title>
+            <button (click)="onRemove(activity.id!)" class="remove-button" mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="time-badge">
+              <mat-icon>schedule</mat-icon>
+              <span>{{ activity.startTime | date:'shortTime' }} - {{ activity.endTime | date:'shortTime' }}</span>
+            </div>
+
+            <p *ngIf="activity.description" class="description">{{ activity.description }}</p>
+
+            <div *ngIf="activity.location" class="location">
+              <mat-icon>location_on</mat-icon>
+              <span>{{ activity.location }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </main>
+</div>

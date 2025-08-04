@@ -1,0 +1,25 @@
+@if (currentOfferings) {
+<div class="container">
+  <app-home-offering-filter (clicked)="filterOfferings($event)" />
+  <div class="pagination">
+    <button (click)="getPreviousPage()">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    @if (totalPages > 0) {
+      <p>{{ currentPage + 1 }}/{{ totalPages }}</p>
+    } @else {
+      <p>No results</p>
+      }
+    <button (click)="getNextPage()"><mat-icon>navigate_next</mat-icon></button>
+  </div>
+  <div class="all-offerings-container">
+    <div *ngFor="let offer of currentOfferings">
+      <app-home-offering-card
+        (clickedFav)="toggleFavouriteOfferings($event)"
+        [offering]="offer"
+      />
+    </div>
+  </div>
+</div>
+
+}

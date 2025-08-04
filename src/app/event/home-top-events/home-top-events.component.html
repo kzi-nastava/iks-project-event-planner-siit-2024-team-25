@@ -1,0 +1,12 @@
+@if (topEvents) {
+  <div class="container">
+    <h3>Top 5 events</h3>
+    <div class="top-events-container">
+      <div *ngFor="let event of topEvents">
+        <app-home-event-card (clicked)="toggleFavouriteEvent($event)" [event]="event"/>
+      </div>
+    </div>
+  </div>
+  
+}
+

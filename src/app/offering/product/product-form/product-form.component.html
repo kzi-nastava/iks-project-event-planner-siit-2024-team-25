@@ -1,0 +1,167 @@
+<!-- product-form.component.html -->
+<main class="product-creation-container">
+  <div *ngIf="!isLoading; else loadingTemplate" class="register-card">
+    <div class="header">
+      <h1>{{ pageTitle }}</h1>
+      <p>Create and manage your product details</p>
+    </div>
+
+    <div class="content">
+      <form (ngSubmit)="onSubmit()" [formGroup]="productForm">
+        <div class="form-grid">
+          <!-- Left Section -->
+          <div [formGroup]="basicInfo" class="left-section">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Product Name</mat-label>
+              <input formControlName="name" matInput required>
+              <mat-error *ngIf="basicInfo.get('name')?.errors?.['required']">
+                Name is required
+              </mat-error>
+              <mat-error *ngIf="basicInfo.get('name')?.errors?.['minlength']">
+                Name must be at least 3 characters
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Category</mat-label>
+              <input
+                type="text"
+                matInput
+                placeholder="Type category"
+                [matAutocomplete]="auto"
+                formControlName="categoryName"
+                (input)="onCategoryInput($event)"
+              >
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCategoryOptionSelected($event)">
+                <mat-option *ngFor="let category of categories" [value]="category.id">
+                  {{ category.name }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="basicInfo.get('categoryName')?.errors?.['required']">
+                Category name is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea formControlName="description" matInput required rows="4"></textarea>
+              <mat-hint align="end">
+                {{ basicInfo.get('description')?.value?.length || 0 }}/255
+              </mat-hint>
+              <mat-error *ngIf="basicInfo.get('description')?.errors?.['required']">
+                Description is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Event Types</mat-label>
+              <mat-select formControlName="eventTypes" multiple required>
+                <mat-option *ngFor="let type of eventTypes" [value]="type.id">
+                  {{ type.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error>At least one event type is required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Right Section -->
+          <div class="right-section">
+            <div [formGroup]="basicInfo" class="pricing-section">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Price</mat-label>
+                <input formControlName="price" matInput required type="number">
+                <span matPrefix>$&nbsp;</span>
+                <mat-error *ngIf="basicInfo.get('price')?.errors?.['required']">
+                  Price is required
+                </mat-error>
+                <mat-error *ngIf="basicInfo.get('price')?.errors?.['min']">
+                  Price must be greater than 0
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Discount (%)</mat-label>
+                <input formControlName="discount" matInput type="number">
+                <mat-error *ngIf="basicInfo.get('discount')?.errors?.['min']">
+                  Discount cannot be negative
+                </mat-error>
+                <mat-error *ngIf="basicInfo.get('discount')?.errors?.['max']">
+                  Discount cannot exceed 100%
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div [formGroup]="visibility" class="visibility-section">
+              <mat-card>
+                <mat-card-content>
+                  <h3>Visibility Settings</h3>
+                  <div class="toggle-controls">
+                    <mat-slide-toggle formControlName="visible">
+                      Product is visible to organizers
+                      <mat-icon matTooltip="Make your product visible in the marketplace">info</mat-icon>
+                    </mat-slide-toggle>
+
+                    <mat-slide-toggle formControlName="available">
+                      Product is available for purchase
+                      <mat-icon matTooltip="Enable/disable product purchases">info</mat-icon>
+                    </mat-slide-toggle>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+
+            <div class="images-section">
+              <mat-card>
+                <mat-card-content>
+                  <h3>Product Images</h3>
+
+                  <!-- Existing Images -->
+                  <div *ngIf="existingImages.length > 0" class="existing-images">
+                    <mat-card *ngFor="let imageUrl of existingImages" class="file-card">
+                      <mat-card-content>
+                        <div class="file-info">
+                          <img [src]="imageUrl" alt="Product image" class="thumbnail">
+                        </div>
+                        <button (click)="removeExistingImage(imageUrl)" color="warn" mat-icon-button>
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+
+                  <!-- New Images Upload -->
+                  <app-image-upload
+                    (imagesChanged)="onFileSelected($event)"
+                    [maxFileSize]="2000000"
+                    [multiple]="true"
+                  ></app-image-upload>
+
+                  <mat-error *ngIf="existingImages.length === 0 && selectedFiles.length === 0">
+                    At least one image is required
+                  </mat-error>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button
+            [disabled]="!canSubmit"
+            class="primary"
+            mat-flat-button
+            type="submit"
+          >
+            {{ isEditMode ? 'Update' : 'Create' }} Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+</main>

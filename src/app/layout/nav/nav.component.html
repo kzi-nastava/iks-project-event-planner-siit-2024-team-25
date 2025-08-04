@@ -1,0 +1,237 @@
+<mat-sidenav-container class="shell-container">
+  <mat-sidenav #drawer [class.expanded]="isExpanded" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)" class="sidenav">
+    <div class="sidenav-header">
+      <a class="logo-container" routerLink="/">
+        <img alt="Logo" class="logo" src="/logo_white.png" />
+      </a>
+    </div>
+
+    <nav class="nav-menu">
+      <a [routerLinkActiveOptions]="{ exact: true }" class="nav-item" matTooltip="Home" matTooltipPosition="after"
+        routerLink="/" routerLinkActive="active">
+        <div class="icon-container">
+          <mat-icon>home</mat-icon>
+        </div>
+        <span *ngIf="isExpanded || (isHandset$ | async)" class="nav-label">
+          Home
+        </span>
+      </a>
+
+      @if (!(loggedIn$ | async)) {
+      <a routerLink="/user/login" routerLinkActive="active" class="nav-item" matTooltip="Login"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>login</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Log in
+        </span>
+      </a>
+      <a routerLink="/user/register" routerLinkActive="active" class="nav-item" matTooltip="Sign up"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>person_add_alt_1</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Sign up</span>
+      </a>
+
+      } @else {
+      <a routerLink="/user/profile" routerLinkActive="active" class="nav-item" matTooltip="Profile"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>person</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Profile
+        </span>
+      </a>
+
+      <a routerLink="/chat" routerLinkActive="active" class="nav-item" matTooltip="My Chats" matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>chat</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          My Chats
+        </span>
+      </a>
+
+      @if (isOwner$ | async) {
+      <a routerLink="/products" routerLinkActive="active" class="nav-item" matTooltip="My Products"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>shopping_bag</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          My Products
+        </span>
+      </a>
+      <a routerLink="/service/services" routerLinkActive="active" class="nav-item" matTooltip="My Services"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>shopping_basket</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">Service</span>
+      </a>
+      <a routerLink="/offering/price-list" routerLinkActive="active" class="nav-item" matTooltip="My Price List"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>list</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          My price list
+        </span>
+      </a>
+      <a routerLink="/chat/review-list" routerLinkActive="active" class="nav-item" matTooltip="Review list"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>reviews</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Reviews
+        </span>
+      </a>
+      } @else if (isOrganizer$ | async) {
+      <a routerLink="/event/my-events" routerLinkActive="active" class="nav-item" matTooltip="My Events"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>event</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          My Events
+        </span>
+      </a>
+      <a routerLink="/chat/review-list" routerLinkActive="active" class="nav-item" matTooltip="Review list"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>reviews</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Reviews
+        </span>
+      </a>
+      } @else if (isAdmin$ | async) {
+      <a routerLink="/offering-category/offering-categories" routerLinkActive="active" class="nav-item"
+        matTooltip="Offering Categories" matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>category</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Offering categories
+        </span>
+      </a>
+      <a routerLink="/event/types" routerLinkActive="active" class="nav-item" matTooltip="Event Types"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>event_note</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Event Types
+        </span>
+      </a>
+      }
+
+      <span class="nav-item" matTooltip="Favorites" matTooltipPosition="after" [matMenuTriggerFor]="favoritesMenu">
+        <div class="icon-container">
+          <mat-icon>favorite</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Favorites
+        </span>
+      </span>
+      <mat-menu #favoritesMenu="matMenu" class="favorites-menu" [overlapTrigger]="false">
+        <app-favorites-menu></app-favorites-menu>
+      </mat-menu>
+
+      <a routerLink="/user/profile" [queryParams]="{ 'open-tab': 'calendar' }" class="nav-item" matTooltip="Calendar"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>calendar_month</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Calendar
+        </span>
+      </a>
+
+
+      @if (isAdmin$ | async) {
+      <a routerLink="/user/reports" routerLinkActive="active" class="nav-item" matTooltip="Reports"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>report</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Reports
+        </span>
+      </a>
+      <a routerLink="/user/blocks" routerLinkActive="active" class="nav-item" matTooltip="Blocks"
+        matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>block</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Blocks
+        </span>
+      </a>
+
+      <a routerLink="/chat/reviews" routerLinkActive="active" class="nav-item">
+
+        <div class="icon-container">
+          <mat-icon>reviews</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Reviews
+        </span>
+      </a>
+      }
+
+      <span class="nav-item" (click)="logOut()" matTooltip="Log out" matTooltipPosition="after">
+        <div class="icon-container">
+          <mat-icon>logout</mat-icon>
+        </div>
+        <span class="nav-label" *ngIf="isExpanded || (isHandset$ | async)">
+          Log out
+        </span>
+      </span>
+      }
+
+      <span (click)="toggleExpanded()" *ngIf="!(isHandset$ | async)" class="nav-item">
+        <div class="icon-container">
+          <mat-icon>{{
+            isExpanded ? "chevron_left" : "chevron_right"
+            }}</mat-icon>
+        </div>
+        <span *ngIf="isExpanded" class="nav-label">Collapse</span>
+      </span>
+    </nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content [class.content-expanded]="isExpanded && !(isHandset$ | async)">
+    <mat-toolbar style="z-index: 2000">
+      <button (click)="drawer.toggle()" *ngIf="isHandset$ | async" aria-label="Open menu" class="menu-button"
+        mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <a class="app-title" routerLink="/">Event Planner</a>
+      <span class="spacer"></span>
+      <div class="toolbar-actions">
+        <button [matMenuTriggerFor]="favoritesMenu" aria-label="Favorites" mat-icon-button matTooltip="Favorites"
+          matTooltipPosition="below">
+          <mat-icon>favorite</mat-icon>
+        </button>
+        <mat-menu #favoritesMenu="matMenu" [overlapTrigger]="false" class="favorites-menu">
+          <app-favorites-menu></app-favorites-menu>
+        </mat-menu>
+
+        <button (click)="openNotifications()" aria-label="Notifications" class="notification-btn" mat-icon-button
+          matTooltip="Notifications" matTooltipPosition="below">
+          <mat-icon>notifications</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <div class="content">
+      <ng-content />
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

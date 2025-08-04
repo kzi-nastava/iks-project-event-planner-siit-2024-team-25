@@ -1,0 +1,71 @@
+<main class="container">
+  <div class="card register-card" *ngIf="!isLoading; else loadingTemplate">
+    <div class="header">
+      <h1>{{ isEditMode ? 'Edit' : 'Create' }} Event Type</h1>
+      <p>{{ isEditMode ? 'Modify' : 'Define' }} event type for your platform</p>
+    </div>
+
+    <div class="content">
+      <form [formGroup]="eventTypeForm" (ngSubmit)="onSubmit()">
+        <div class="form-sections">
+          <div class="left-section">
+            <mat-form-field appearance="outline" class="primary">
+              <mat-label>Event Type Name</mat-label>
+              <input matInput formControlName="name" required [attr.disabled]="isEditMode" />
+              <mat-error *ngIf="eventTypeForm.get('name')?.invalid">
+                Event type name is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="primary">
+              <mat-label>Description</mat-label>
+              <textarea
+                matInput
+                formControlName="description"
+                rows="4"
+              ></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="vertical-divider"></div>
+
+          <div class="right-section">
+            <div class="offering-categories">
+              <h3>Available Categories</h3>
+              <div formArrayName="categories">
+                <mat-selection-list>
+                  <mat-list-option
+                    *ngFor="let category of offeringCategories"
+                    [selected]="isCategorySelected(category.id)"
+                    (click)="toggleCategory(category.id)"
+                  >
+                    {{ category.name }}
+                  </mat-list-option>
+                </mat-selection-list>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <mat-slide-toggle formControlName="isActive">
+          Event Type Active
+        </mat-slide-toggle>
+
+        <div class="actions">
+          <button
+            mat-flat-button
+            class="primary"
+            type="submit"
+            [disabled]="eventTypeForm.invalid || isLoading"
+          >
+            {{ isEditMode ? 'Update' : 'Save' }} Event Type
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <mat-spinner></mat-spinner>
+  </ng-template>
+</main>

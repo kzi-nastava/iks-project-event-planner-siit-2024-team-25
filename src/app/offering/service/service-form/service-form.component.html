@@ -1,0 +1,287 @@
+<h1 style="color: #1a1f4b; text-align-last: center; margin-top: 5rem;">{{titleForm}}</h1>
+<mat-horizontal-stepper #stepper (selectionChange)="onStepChange($event)">
+
+  <mat-step [stepControl]="firstFormGroup" style="margin: 30px;">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Step 1</ng-template>
+      <div class="form-container">
+        <div style="width: 33%;">
+          <mat-form-field color="primary" style="width: 100%;">
+            <input matInput placeholder="Name" name="service_name" formControlName="name">
+            <mat-error>
+              {{ name?.errors?.['required'] ? 'Name is required.' : '' }}
+              {{ name?.errors?.['minlength'] ? 'Name must be at least 4 characters long.' : '' }}
+            </mat-error>
+          </mat-form-field>
+
+
+        </div>
+        <div style="width: 33%;">
+          <mat-form-field style="width: 100%;">
+            <input matInput placeholder="Price" type="number" formControlName="price">
+            <span matPrefix style="margin-left: 1rem;">$&nbsp;</span>
+            <span matSuffix style="margin-right: 1rem;">.00</span>
+            <mat-error>
+              {{ price?.errors?.['required'] ? 'Price is required.' : '' }}
+              {{ price?.errors?.['min'] ? 'Price must be a positive number.' : '' }}
+            </mat-error>
+          </mat-form-field>
+
+
+        </div>
+        <div style="width: 33%;">
+          <mat-form-field style="width: 100%;">
+            <mat-select placeholder="Event types" formControlName="eventTypes" multiple
+              (selectionChange)="onSelectionChange()">
+              <mat-option *ngFor="let entry of eventTypeAll | keyvalue" [value]="entry.key">
+                {{entry.value}}
+              </mat-option>
+
+            </mat-select>
+            <mat-error>
+              {{eventTypes?.hasError('minArrayLength') ? 'At least one event type must be selected.' : ''}}
+
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+
+      </div>
+
+      <div class="form-container">
+        <div style="width: 50%;">
+          <mat-form-field style="width: 100%;">
+            <textarea matInput placeholder="Description" formControlName="description"></textarea>
+            <mat-error>
+              {{description?.errors?.['required'] ? 'description is required.':''}}
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+        <div style="width: 50%;">
+          <mat-form-field style="width: 100%;">
+            <textarea matInput placeholder="Specifics" formControlName="specifics"></textarea>
+          </mat-form-field>
+        </div>
+
+
+
+      </div>
+
+
+      <div class="example-form form-container">
+        <mat-form-field class="example-full-width" style="width: 40%;">
+          <input type="text" placeholder="Type category" matInput [matAutocomplete]="auto"
+            formControlName="categoryTypeName" (input)="onInputCategory($event)" [attr.disabled]="isDisabledCategory">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelectedCategory($event)">
+            <mat-option *ngFor="let option of offeringCategoryTypeAll | keyvalue" [value]="option.key">
+              {{option.value}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error>
+            {{offeringCategoryName?.errors?.['required'] ? 'Category name is required.':''}}
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+
+
+      <div [formGroup]="formGroupDiscount" class="form-container">
+        <div>
+          Discount: {{ discountFront }} %
+
+        </div>
+        <mat-slider [min]="0" [max]="100" [step]="1" thumbLabel (input)="setSliderDiscount($event)">
+          <input matSliderThumb formControlName="discountt">
+        </mat-slider>
+      </div>
+    </form>
+
+
+    <div class="button-container">
+      <button mat-fab color="primary" (click)="backToHome()" *ngIf="cancelButtonShow" class="fab-button">
+        <mat-icon>cancel</mat-icon>
+      </button>
+      <button mat-fab color="primary" (click)="onFirstStepDone()" class="fab-save-button">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup" style="margin: 30px; ">
+    <form [formGroup]="secondFormGroup" style="display: grid;place-items: center;">
+      <ng-template matStepLabel>Step 2</ng-template>
+
+
+      <div style="display: flex;
+        align-content: center;
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: center;
+        width: 100%;
+        margin: 2rem;
+        margin-top: 0rem;">
+
+        <div class="border-class" style="margin-right: 2rem;">
+          <div [formGroup]="formGroupCancellationDeadline" class="form-container">
+            <div>
+              Cancellation deadline: {{ cancellationDeadlinfront }} day(s)
+
+            </div>
+            <mat-slider [min]="0" [max]="100" [step]="1" thumbLabel (input)="setSliderCancellationDeadline($event)">
+              <input matSliderThumb formControlName="cancellationDeadline">
+            </mat-slider>
+          </div>
+
+          <div [formGroup]="formGroupReservationDeadline" class="form-container">
+            <div>
+              Reservation deadline: {{ reservationDeadlineFront }} day(s)
+
+            </div>
+            <mat-slider [min]="0" [max]="100" [step]="1" thumbLabel (input)="setSliderReservationDeadline($event)">
+              <input matSliderThumb formControlName="reservationDeadline">
+            </mat-slider>
+          </div>
+        </div>
+
+        <div class="border-class" style="margin-right: 2rem;">
+          <div class="form-container">
+            <p style="align-items: center;">Reservation type</p>
+          </div>
+          <mat-radio-group aria-label="Reservation type" class="form-container" [(ngModel)]="reservationTypeString"
+            [ngModelOptions]="{standalone: true}">
+            <mat-radio-button value="Manual">Manual</mat-radio-button>
+            <mat-radio-button value="Automatic">Automatic</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="border-class">
+          <mat-slide-toggle class="form-container" style="margin: 20px;" formControlName="isAvailable">Is available to
+            users</mat-slide-toggle>
+          <mat-slide-toggle class="form-container" formControlName="isVisible">Is
+            visible to organizer</mat-slide-toggle>
+
+        </div>
+      </div>
+
+      <div style="margin:2rem; margin-top: 0rem;">
+        <div class="border-class">
+          <div class="form-container" style="margin-top: 30px">
+            <p *ngIf="isDurationShow">Choose service duration</p>
+            <p *ngIf="!isDurationShow">Choose minimum and maximum service arrangement</p>
+
+          </div>
+          <p class="form-container">You are not able to set both min/max arrangement and service duration</p>
+          <div class="form-container">
+            <mat-slide-toggle [(ngModel)]="isDurationShow" [ngModelOptions]="{standalone: true}"></mat-slide-toggle>
+          </div>
+          <div class="form-container">
+
+            <div *ngIf="isDurationShow" [formGroup]="formGroupDuration" class="form-container">
+              <div>
+                Duration: {{ durationtFront }} h
+
+              </div>
+              <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel (input)="setSliderDuration($event)">
+                <input matSliderThumb formControlName="duration">
+              </mat-slider>
+            </div>
+
+            <div *ngIf="!isDurationShow" [formGroup]="formGroupMinArrangement" class="form-container">
+              <div>
+                Minimum arrangement: {{ minArrangementFront }} h
+
+              </div>
+              <mat-slider [min]="0" [max]="100" [step]="1" thumbLabel (input)="setSliderMinArrangement($event)" (change)="validatorArrangement()">
+                <input matSliderThumb formControlName="minArrangement">
+              </mat-slider>
+            </div>
+
+            <div *ngIf="!isDurationShow" [formGroup]="formGroupMaxArrangement" class="form-container">
+              <div>
+                Maximum arrangement: {{ maxArrangementFront }} h
+
+              </div>
+              <mat-slider [min]="1" [max]="100" [step]="1" thumbLabel (input)="setSliderMaxArrangement($event)" (change)="validatorArrangement()">
+                <input matSliderThumb formControlName="maxArrangement">
+              </mat-slider>
+            </div>
+            
+
+
+          </div>
+          <mat-error *ngIf="!arrangementValidator && !isDurationShow" style="justify-self: center;">
+            Maximum arrangement must be greater than minimum.
+          </mat-error>
+        </div>
+      </div>
+
+
+
+
+      <div class="button-container">
+        <button mat-fab matStepperPrevious color="primary" class="fab-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button mat-fab color="primary" class="fab-save-button" (click)="onSecondStepDone()">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+
+  <mat-step style="margin: 30px;">
+    <ng-template matStepLabel showSaveButton()>Step 3</ng-template>
+    
+
+    <div class="form-container">
+      <div class="images-section">
+        <mat-card>
+          <mat-card-content>
+            <h3>Service Images</h3>
+
+            <!-- Existing Images -->
+            <div *ngIf="existingImages.length > 0" class="existing-images">
+              <mat-card *ngFor="let imageUrl of existingImages" class="file-card">
+                <mat-card-content>
+                  <div class="file-info">
+                    <img [src]="imageUrl" alt="Service image" class="thumbnail">
+                  </div>
+                  <button (click)="removeExistingImage(imageUrl)" color="warn" mat-icon-button>
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-card-content>
+              </mat-card>
+            </div>
+
+            <!-- New Images Upload -->
+            <app-image-upload
+              (imagesChanged)="onFileSelected($event)"
+              [maxFileSize]="2000000"
+              [multiple]="true"
+            ></app-image-upload>
+
+            <mat-error *ngIf="existingImages.length === 0 && selectedFiles.length === 0">
+              At least one image is required
+            </mat-error>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>
+
+
+    <div class="button-container">
+      <button mat-fab matStepperPrevious color="primary" class="fab-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+      <button mat-fab color="primary" *ngIf="saveButtonShow" (click)="saveService()" class="fab-save-button" [disabled]="selectedFiles.length==0 && existingImages.length==0">
+        <mat-icon>save</mat-icon>
+      </button>
+    </div>
+  </mat-step>
+
+</mat-horizontal-stepper>

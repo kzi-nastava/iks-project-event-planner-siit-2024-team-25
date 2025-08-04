@@ -1,0 +1,76 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs';
+import { ErrorResponse } from '../../shared/model/error.response.model';
+import { LoginService } from '../service/login.service';
+import { AuthService } from '../../infrastructure/auth/service/auth.service';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss',
+})
+export class LoginComponent implements OnInit {
+  form!: FormGroup;
+  hidePassword = true;
+  waitingResponse = false;
+  redirectUrl!: string;
+
+  constructor(
+    private fb: FormBuilder,
+    private loginService: LoginService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    this.redirectUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
+    this.form = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
+  }
+
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
+  }
+
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
+  }
+
+  async onSubmit() {
+    if (this.form.valid) {
+      this.waitingResponse = true;
+      this.loginService
+        .login(this.email?.value, this.password?.value)
+        .pipe(finalize(() => (this.waitingResponse = false)))
+        .subscribe({
+          next: () => {
+            if (!this.authService.getToken()) {
+              this.router.navigate(['/user/suspension']);
+            } else {
+              this.toastr.success("You've successfully logged in!", 'Success');
+              this.router.navigateByUrl(this.redirectUrl).then((succeeded) => {
+                if (!succeeded) {
+                  this.router.navigateByUrl('/');
+                }
+              });
+            }
+          },
+          error: (err: ErrorResponse) => {
+            this.toastr.error(err.message, 'Oops!');
+          },
+        });
+    }
+  }
+}

@@ -1,0 +1,171 @@
+<main class="event-creation-container">
+  <div class="card register-card" *ngIf="!isLoading; else loadingTemplate">
+    <div class="header">
+      <h1>Create New Event</h1>
+      <p>Organize and share your upcoming event</p>
+    </div>
+
+    <div class="content">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <div class="left-section">
+            <!-- Event Name -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Event Name</mat-label>
+              <input matInput formControlName="name" required/>
+              <mat-error *ngIf="form.get('name')?.invalid">
+                Event name is required (min 3 characters)
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Event Type Dropdown -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Event Type</mat-label>
+              <mat-select formControlName="eventTypeId">
+                <mat-option [value]="null">All</mat-option>
+                <mat-option *ngFor="let eventType of eventTypes" [value]="eventType.id">
+                  {{ eventType.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Description -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea
+                matInput
+                formControlName="description"
+                rows="4"
+                placeholder="Tell us about your event"
+              ></textarea>
+              <mat-hint align="end">
+                {{ form.get('description')?.value?.length || 0 }}/255
+              </mat-hint>
+            </mat-form-field>
+
+            <!-- Privacy Type with Tooltip -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Privacy Type</mat-label>
+              <mat-select formControlName="privacyType">
+                <mat-option value="PRIVATE">
+                  Private
+                  <mat-icon
+                    matSuffix
+                    matTooltip="Private: You will be prompted to send event invitations and event will only be visible to those invited."
+                    matTooltipPosition="after"
+                  >
+                    info
+                  </mat-icon>
+                </mat-option>
+                <mat-option value="PUBLIC">
+                  Public
+                  <mat-icon
+                    matSuffix
+                    matTooltip="Public: Anyone can view the event."
+                    matTooltipPosition="after"
+                  >
+                    info
+                  </mat-icon>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="right-section">
+            <!-- Date and Time -->
+            <div class="date-time-section">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Start Date</mat-label>
+                <input [matDatepicker]="startDatePicker" formControlName="startDate" matInput required>
+                <mat-datepicker-toggle [for]="startDatePicker" matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #startDatePicker></mat-datepicker>
+                <mat-error *ngIf="form.get('startDate')?.hasError('notFutureDate')">
+                  Start date must be in the future.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>End Date</mat-label>
+                <input [matDatepicker]="endDatePicker" formControlName="endDate" matInput required>
+                <mat-datepicker-toggle [for]="endDatePicker" matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #endDatePicker></mat-datepicker>
+                <mat-error *ngIf="form.get('endDate')?.hasError('notFutureDate')">
+                  End date must be in the future.
+                </mat-error>
+              </mat-form-field>
+              <mat-error *ngIf="form.hasError('startDateAfterEndDate')">
+                End date must be after start date.
+              </mat-error>
+
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Start Time</mat-label>
+                <input formControlName="startTime" matInput required type="time">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>End Time</mat-label>
+                <input formControlName="endTime" matInput required type="time">
+              </mat-form-field>
+            </div>
+            <mat-error *ngIf="form.hasError('startTimeAfterOrEqualEndTime')">
+              End time must be after start time.
+            </mat-error>
+
+            <!-- Location -->
+            <div formGroupName="location" class="location">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Country</mat-label>
+                <input formControlName="country" matInput required/>
+                <mat-error *ngIf="form.get('location.country')?.invalid">
+                  Country is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>City</mat-label>
+                <input formControlName="city" matInput required/>
+                <mat-error *ngIf="form.get('location.city')?.invalid">
+                  City is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Address</mat-label>
+                <input formControlName="address" matInput required/>
+                <mat-error *ngIf="form.get('location.address')?.invalid">
+                  Address is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Max Participants -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Max Participants</mat-label>
+              <input formControlName="maxParticipants" matInput type="number"/>
+              <mat-error *ngIf="form.get('maxParticipants')?.invalid">
+                Must be at least 1
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button
+            [disabled]="form.invalid || isLoading"
+            class="primary"
+            mat-flat-button
+            type="submit"
+          >
+            Create Event
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+</main>

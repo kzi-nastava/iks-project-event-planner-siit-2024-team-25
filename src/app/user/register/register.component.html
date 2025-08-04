@@ -1,0 +1,216 @@
+<main class="register-container">
+  <div class="card register-card">
+    <div class="header">
+      <h1>Register</h1>
+      <p>Choose your role below and create an account to join our community!</p>
+    </div>
+
+    <div class="role-selector">
+      <mat-button-toggle-group
+        [(ngModel)]="selectedRole"
+        [hideSingleSelectionIndicator]="true"
+        name="roleSelector"
+        (change)="updateRoleSpecificValidators()"
+      >
+        <mat-button-toggle value="EVENT_ORGANIZER">
+          <mat-icon>event</mat-icon>
+          Event Organizer
+        </mat-button-toggle>
+        <mat-button-toggle value="OWNER">
+          <mat-icon>business</mat-icon>
+          Service Provider
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="content">
+      <form (ngSubmit)="onSubmit()" [formGroup]="form">
+        <div class="form-sections">
+          <div class="left-section">
+            <div>
+              <mat-form-field appearance="outline" class="primary">
+                <mat-label>Email</mat-label>
+                <input formControlName="email" matInput required type="email">
+                <mat-error *ngIf="form.get('email')?.invalid">
+                  Please enter a valid email
+                </mat-error>
+              </mat-form-field>
+
+
+              <mat-form-field appearance="outline" class="primary">
+                <mat-label>Password</mat-label>
+                <input
+                  [type]="hidePassword ? 'password' : 'text'"
+                  formControlName="password"
+                  matInput
+                  required>
+                <button
+                  (click)="togglePasswordVisibility('password')"
+                  mat-icon-button
+                  matSuffix
+                  type="button">
+                  <mat-icon>
+                    {{ hidePassword ? 'visibility_off' : 'visibility' }}
+                  </mat-icon>
+                </button>
+                <mat-error *ngIf="form.get('password')?.invalid">
+                  Password must contain at least 8 characters, one letter and one number.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="primary">
+                <mat-label>Confirm Password</mat-label>
+                <input
+                  [type]="hideConfirmPassword ? 'password' : 'text'"
+                  formControlName="confirmPassword"
+                  matInput
+                  required>
+                <button
+                  (click)="togglePasswordVisibility('confirmPassword')"
+                  mat-icon-button
+                  matSuffix
+                  type="button">
+                  <mat-icon>
+                    {{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}
+                  </mat-icon>
+                </button>
+                <mat-error *ngIf="form.hasError('confirmPasswordMismatch')">
+                  Passwords do not match
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="primary">
+                <mat-label>First Name</mat-label>
+                <input formControlName="firstName" matInput required>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="primary">
+                <mat-label>Last Name</mat-label>
+                <input formControlName="lastName" matInput required>
+              </mat-form-field>
+
+              <div class="file-upload">
+                <label>Profile Picture</label>
+                <app-image-upload
+                  (imagesChanged)="onProfilePictureSelected($event)"
+                  [maxFileSize]="2000000"
+                  [multiple]="false"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="vertical-divider"></div>
+
+          <div class="right-section">
+            <ng-container *ngIf="selectedRole === 'EVENT_ORGANIZER'">
+              <div formGroupName="eventOrganizerFields">
+                <mat-form-field appearance="outline" class="primary">
+                  <mat-label>Country</mat-label>
+                  <input formControlName="country" matInput>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="primary">
+                  <mat-label>City</mat-label>
+                  <input formControlName="city" matInput>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="primary">
+                  <mat-label>Address</mat-label>
+                  <input formControlName="address" matInput>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="primary">
+                  <mat-label>Phone Number</mat-label>
+                  <ngx-mat-input-tel
+                    #phone
+                    [enablePlaceholder]="true"
+                    [enableSearch]="true"
+                    [preferredCountries]="['rs']"
+                    autocomplete="tel"
+                    formControlName="phoneNumber"
+                    name="phoneNumber"
+                  />
+                  <mat-hint>e.g. {{ phone.selectedCountry.placeHolder }}</mat-hint>
+                  <mat-error *ngIf="form.get('phoneNumber')?.invalid">
+                    Please provide a valid phone number
+                  </mat-error>
+                </mat-form-field>
+
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="selectedRole === 'OWNER'">
+              <div formGroupName="ownerFields">
+                <mat-form-field appearance="outline" class="primary">
+                  <mat-label>Company Name</mat-label>
+                  <input formControlName="companyName" matInput>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="primary">
+                  <mat-label>Country</mat-label>
+                  <input formControlName="country" matInput>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="primary">
+                  <mat-label>City</mat-label>
+                  <input formControlName="city" matInput>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="primary">
+                  <mat-label>Company Address</mat-label>
+                  <input formControlName="address" matInput>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="primary">
+                  <mat-label>Contact Phone</mat-label>
+                  <ngx-mat-input-tel
+                    #phone
+                    [enablePlaceholder]="true"
+                    [enableSearch]="true"
+                    [preferredCountries]="['rs']"
+                    autocomplete="tel"
+                    formControlName="contactPhone"
+                    name="contactPhone"
+                  />
+                  <mat-hint>e.g. {{ phone.selectedCountry.placeHolder }}</mat-hint>
+                  <mat-error *ngIf="form.get('contactPhone')?.invalid">
+                    Please provide a valid phone number
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="primary">
+                  <mat-label>Description</mat-label>
+                  <textarea formControlName="description" matInput rows="4"></textarea>
+                </mat-form-field>
+
+                <div class="file-upload">
+                  <label>Pictures (optional)</label>
+                  <app-image-upload
+                    (imagesChanged)="onCompanyPicturesSelected($event)"
+                    [maxFileSize]="2000000"
+                    [multiple]="true"
+                  />
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button
+            [disabled]="form.invalid"
+            class="primary"
+            mat-flat-button
+            type="submit"
+          >
+            Register
+          </button>
+          <a class="secondary" mat-button routerLink="/user/login">
+            Already have an account? Login
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>

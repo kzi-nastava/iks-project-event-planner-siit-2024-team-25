@@ -1,0 +1,73 @@
+<mat-form-field class="example-search-bar" style="margin-top: 5rem;" appearance="outline">
+  <mat-label>Search service</mat-label>
+  <input matInput (input)="onSearch($event)" placeholder="Service name" [(ngModel)]="nameFilter">
+  <button mat-icon-button matSuffix (click)="searchAndFilter()">
+    <mat-icon>search</mat-icon>
+  </button>
+  <button mat-icon-button matSuffix *ngIf="!isFilter" (click)="clickFilter()">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+  <button mat-icon-button matSuffix *ngIf="isFilter" (click)="clickFilter(); cancelFilter()">
+    <mat-icon>cancel</mat-icon>
+  </button>
+
+
+</mat-form-field>
+
+  <div class="form-container" *ngIf="isFilter">
+    <form>
+        <mat-form-field appearance="fill">
+          <mat-select [(ngModel)]="selectedEventType" placeholder="Event type" (selectionChange)="onEventTypeSelected($event)">
+            <mat-option *ngFor="let entry of eventTypeAll | keyvalue" [value]="entry.key">
+              {{ entry.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+    </form>
+  
+    <form>
+      <mat-form-field>
+        <mat-select [(ngModel)]="selectedCategory" placeholder="Category type" (selectionChange)="onCategoryTypeSelected($event)">
+          <mat-option *ngFor="let entry of offeringCategoryTypeAll | keyvalue" [value]="entry.key">
+            {{ entry.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+    
+  </div>
+  <div class="form-container" *ngIf="isFilter">
+    <mat-form-field style="width: 35%;">
+      <input matInput placeholder="Price" type="number" [(ngModel)]="priceFIlter" >
+      <span matPrefix style="margin-left: 1.5rem;">$&nbsp;</span>
+      <span matSuffix style="margin-right:2rem">.00</span>
+    </mat-form-field>
+  </div>
+  <div class="form-container" *ngIf="isFilter">
+    <mat-slide-toggle style="width: 35%;" class="form-container" style="margin: 20px;" (change)="setAvailableFilter()" [(ngModel)]="availableFilter">Is available</mat-slide-toggle>
+
+  </div>
+  <div class="pagination">
+    <button (click)="getPreviousPage()">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    @if (totalPages > 0) {
+      <p>{{ currentPage + 1 }}/{{ totalPages }}</p>
+    } @else {
+      <p>No results</p>
+      }
+    <button (click)="getNextPage()"><mat-icon>navigate_next</mat-icon></button>
+  </div>
+<div class="service-container">
+  
+  <div class="service-card" *ngFor="let service of services">
+    <app-service-card [service]="service" (refresh)="getAll(0)"></app-service-card>
+  </div>
+</div>
+
+
+<button mat-fab color="primary" (click)="goToCreateService()" class="fab-button">
+  <mat-icon>add</mat-icon>
+</button>

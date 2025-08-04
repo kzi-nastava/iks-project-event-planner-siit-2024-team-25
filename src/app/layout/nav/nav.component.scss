@@ -1,0 +1,335 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "../../../theme/m3-theme.scss" as theme;
+
+$transition-duration: 0.3s;
+$sidenav-expanded-width: 260px;
+$sidenav-collapsed-width: 70px;
+$toolbar-height: 64px;
+
+.shell-container {
+  height: 100vh;
+
+  .mat-drawer {
+    border-radius: 0 !important;
+  }
+
+  .sidenav {
+    width: $sidenav-collapsed-width;
+    transition: width $transition-duration ease-in-out;
+    overflow: hidden;
+    background-color: white;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+
+    &.expanded {
+      width: $sidenav-expanded-width;
+    }
+
+    .sidenav-header {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      background-color: mat.get-theme-color(theme.$light-theme, primary);
+      color: mat.get-theme-color(theme.$light-theme, on-primary);
+      margin-bottom: 8px;
+
+      .logo {
+        height: 48px;
+        width: 48px;
+        object-fit: contain;
+        filter: brightness(0) invert(1);
+      }
+
+      .expand-toggle {
+        margin-left: auto;
+        width: 28px;
+        height: 28px;
+        border: none;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: mat.get-theme-color(theme.$light-theme, on-primary);
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px;
+      flex: 1;
+
+      .nav-item {
+        height: 44px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: mat.get-theme-color(theme.$light-theme, on-surface-variant);
+        border-radius: 12px;
+        padding: 0 12px;
+        position: relative;
+        transition: all 0.2s ease;
+
+        .icon-container {
+          position: relative;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          mat-icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+            transition: all 0.2s ease;
+          }
+
+          .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background-color: mat.get-theme-color(theme.$light-theme, error);
+            color: mat.get-theme-color(theme.$light-theme, on-error);
+            font-size: 10px;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            font-weight: 500;
+          }
+        }
+
+        .nav-label {
+          margin-left: 12px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          white-space: nowrap;
+          opacity: 1;
+          transition: opacity $transition-duration ease;
+        }
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+
+        &.active {
+          background-color: mat.get-theme-color(theme.$light-theme, primary);
+          color: mat.get-theme-color(theme.$light-theme, on-primary);
+
+          .icon-container {
+            mat-icon {
+              color: mat.get-theme-color(theme.$light-theme, on-primary);
+            }
+
+            .badge {
+              background-color: mat.get-theme-color(
+                theme.$light-theme,
+                on-primary
+              );
+              color: mat.get-theme-color(theme.$light-theme, primary);
+            }
+          }
+
+          &::before {
+            content: "";
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background-color: mat.get-theme-color(theme.$light-theme, primary);
+            border-radius: 0 4px 4px 0;
+          }
+        }
+      }
+
+      span {
+        cursor: pointer;
+      }
+    }
+
+    .user-profile {
+      margin-top: auto;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      min-height: 68px;
+      background-color: mat.get-theme-color(
+        theme.$light-theme,
+        surface-variant
+      );
+
+      .avatar {
+        position: relative;
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 12px;
+          object-fit: cover;
+        }
+
+        .status-dot {
+          position: absolute;
+          bottom: -2px;
+          right: -2px;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background-color: #22c55e;
+          border: 2px solid
+            mat.get-theme-color(theme.$light-theme, surface-variant);
+        }
+      }
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        .user-name {
+          font-size: 0.9rem;
+          font-weight: 500;
+          color: mat.get-theme-color(theme.$light-theme, on-surface);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .user-role {
+          font-size: 0.8rem;
+          color: mat.get-theme-color(theme.$light-theme, on-surface-variant);
+        }
+      }
+    }
+  }
+
+  mat-sidenav-content {
+    margin-left: $sidenav-collapsed-width !important;
+    transition: margin-left $transition-duration ease-in-out;
+
+    &.content-expanded {
+      margin-left: $sidenav-expanded-width !important;
+    }
+
+    mat-toolbar {
+      background-color: mat.get-theme-color(theme.$light-theme, primary);
+      color: mat.get-theme-color(theme.$light-theme, on-primary);
+      height: $toolbar-height;
+      position: fixed;
+      z-index: 20000;
+
+      .menu-button {
+        margin-right: 16px;
+        color: mat.get-theme-color(theme.$light-theme, on-primary);
+      }
+
+      .app-title {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: mat.get-theme-color(theme.$light-theme, on-primary);
+        text-decoration: none;
+        font-family: REM, sans-serif;
+      }
+
+      .toolbar-actions {
+        display: block;
+        align-items: center;
+        gap: 8px;
+
+        button {
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+          color: mat.get-theme-color(theme.$light-theme, on-primary);
+
+          mat-icon {
+            color: mat.get-theme-color(theme.$light-theme, on-primary);
+          }
+        }
+
+        .user-menu {
+          width: 40px;
+          height: 40px;
+          margin-left: 8px;
+          cursor: pointer;
+          border-radius: 10px;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+          overflow: hidden;
+          transition: border-color 0.2s ease;
+
+          &:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+          }
+
+          .user-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+
+    .content {
+      padding: 1px;
+      margin: 0 auto;
+      margin-top: $toolbar-height;
+    }
+  }
+
+  .spacer {
+    flex: 0.95 2 auto;
+  }
+}
+
+@media (max-width: 599px) {
+  .shell-container {
+    .sidenav {
+      width: $sidenav-expanded-width;
+    }
+
+    mat-sidenav-content {
+      margin-left: 0 !important;
+
+      &.content-expanded {
+        margin-left: 0 !important;
+      }
+
+      mat-toolbar {
+        padding: 0 16px;
+      }
+
+      .content {
+        padding: 16px;
+      }
+    }
+  }
+}

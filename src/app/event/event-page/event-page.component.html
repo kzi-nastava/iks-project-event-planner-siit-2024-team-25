@@ -1,0 +1,194 @@
+@if (event) {
+  <div class="event-page-container">
+    <mat-card class="event-header mat-elevation-z3">
+      <div class="header-content">
+        <div class="title-section">
+          <mat-card-title class="event-title">{{ event.name }}</mat-card-title>
+          <div class="event-subtitle">
+            <mat-card-subtitle *ngIf="!!event.eventType" class="event-type">
+              {{ event.eventType.name }}
+            </mat-card-subtitle>
+            <mat-chip [color]="event.privacyType === 'PRIVATE' ? 'warn' : 'primary'" class="privacy-chip">
+              <span class="wrapper">
+                <mat-icon class="privacy-icon">{{ event.privacyType === 'PRIVATE' ? 'lock' : 'public' }}</mat-icon>
+                <span>{{ event.privacyType | titlecase }}</span>
+              </span>
+            </mat-chip>
+          </div>
+        </div>
+        <button 
+          *ngIf="isLoggedIn$ | async"
+          mat-icon-button
+          color="warn"
+          class="favorite-button"
+          (click)="toggleFavorite()"
+          [matTooltip]="event.isFavorite ? 'Remove from favorites' : 'Add to favorites'"
+        >
+          @if (event.isFavorite) {
+            <mat-icon>favorite</mat-icon>
+          } @else {
+            <mat-icon>favorite_border</mat-icon>
+          }
+        </button>
+      </div>
+
+
+      
+
+      <mat-card-actions class="action-buttons" *ngIf="isLoggedIn$ | async">
+        @if((isAttending$ | async) && !(isOrganizer$ | async)) {
+          <a
+            mat-raised-button
+            class="primary"
+            [routerLink]="['/chat', event.organizer.id, event.organizer.name]"
+          >
+            <mat-icon>messages</mat-icon>
+            Chat with organizer
+          </a>
+        }
+
+
+        @if(event.privacyType == 'PUBLIC' && !(isAttending$ | async) && !(isOrganizer$ | async)) {
+          <button
+            mat-raised-button
+            class="primary"
+            (click)="joinEvent()"
+          >
+            <mat-icon>event</mat-icon>
+            Join Event!
+          </button>
+        }
+
+        @if(isOrganizer$ | async) {
+          <mat-card-actions class="action-buttons" *ngIf="isOrganizer$ | async">
+            <button mat-raised-button class="primary" [routerLink]="['/event', event.id, 'agenda']">
+              <mat-icon>edit</mat-icon>
+              Edit Agenda
+            </button>
+            <button mat-raised-button class="primary" (click)="openEmailDialog()" *ngIf="event.privacyType == 'PRIVATE'">
+              <mat-icon>person_add</mat-icon>
+              Invite People
+            </button>
+            <button mat-raised-button class="primary" (click)="openBudgetPlan()">
+              <mat-icon>account_balance_wallet</mat-icon>
+              Budget Plan
+            </button>
+            <button mat-raised-button class="primary" (click)="openPurchase()">
+              <mat-icon>shopping_cart</mat-icon>
+              Buy Products
+            </button>
+            <button mat-raised-button class="primary" (click)="openPurchaseList()">
+              <mat-icon>receipt</mat-icon>
+              View Purchases
+            </button>
+            <button mat-raised-button class="primary" (click)="openReviews()">
+              <mat-icon>reviews</mat-icon>
+              View Reviews
+            </button>
+          </mat-card-actions>
+        }
+
+        @if((isOrganizer$ | async) || (isAdmin$ | async)) {
+          <button mat-raised-button class="primary" [routerLink]="['/event', event.id, 'stats']">
+            <mat-icon>timeline</mat-icon>
+            View Stats
+          </button>
+          <button mat-raised-button class="primary" (click)="downloadReport()">
+            <mat-icon>download</mat-icon>
+            Save as PDF
+          </button>
+        }
+      </mat-card-actions>
+    </mat-card>
+
+    <div class="event-content">
+      <div class="event-main-info">
+        <mat-card class="event-details mat-elevation-z2">
+          <mat-card-content>
+            <div class="detail-item">
+              <mat-icon color="primary">event</mat-icon>
+              <div class="detail-text">
+                <span class="primary-text">{{ event.startDate | date }} - {{ event.endDate | date }}</span>
+                <span class="secondary-text">{{ event.startTime }} - {{ event.endTime }}</span>
+              </div>
+            </div>
+
+            <div class="detail-item">
+              <mat-icon color="primary">location_on</mat-icon>
+              <div class="detail-text">
+                <span class="primary-text">{{ event.location.address }}</span>
+                <span class="secondary-text">{{ event.location.city }}, {{ event.location.country }}</span>
+              </div>
+            </div>
+
+            <div class="detail-item" *ngIf="event.description">
+              <mat-icon color="primary">info</mat-icon>
+              <div class="detail-text">
+                <p class="description-text">{{ event.description }}</p>
+              </div>
+            </div>
+
+            <div class="detail-item">
+              <mat-icon color="primary">person</mat-icon>
+              <div class="detail-text">
+                <span class="primary-text">Organized by {{ event.organizer.name }}</span>
+                <span class="secondary-text"
+                      *ngIf="event.maxParticipants">Max participants: {{ event.maxParticipants }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="map-card mat-elevation-z2" *ngIf="!(isMobile$ | async)">
+          <mat-card-title class="map-title">Location</mat-card-title>
+          <mat-card-content>
+            <app-map [latitude]="event.location.latitude ?? 0"
+                     [longitude]="event.location.longitude ?? 0">
+            </app-map>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-accordion class="mobile-sections" *ngIf="isMobile$ | async">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon class="panel-icon">calendar_today</mat-icon>
+                Agenda
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-event-agenda [eventId$]="eventId$"/>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon class="panel-icon">place</mat-icon>
+                Location
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-map [latitude]="event.location.latitude ?? 0"
+                     [longitude]="event.location.longitude ?? 0">
+            </app-map>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+
+      <div class="event-sidebar" *ngIf="!(isMobile$ | async)">
+        <mat-card class="agenda-container mat-elevation-z2">
+          <mat-card-title class="agenda-title">
+            <mat-icon class="title-icon">calendar_today</mat-icon>
+            Agenda
+          </mat-card-title>
+          <mat-card-content>
+            <app-event-agenda [eventId$]="eventId$"/>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="loading-container">
+    <mat-spinner diameter="48"></mat-spinner>
+    <h2 class="loading-text">Loading event details...</h2>
+  </div>
+}

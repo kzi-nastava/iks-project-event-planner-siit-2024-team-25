@@ -1,0 +1,107 @@
+@if (service) {
+<div class="offering-container">
+  <div class="offering-header">
+    <h1 class="offering-name">{{ service.name }}</h1>
+    <div *ngIf="showBookServiceButton">
+      <button class="book-button" (click)="openBookServiceForm()">
+        Book a Service
+      </button>
+    </div>
+      <mat-icon class="heart" (click)="changeFavouriteOffering()">
+        {{ service.isFavorite ? "favorite" : "favorite_border" }}
+      </mat-icon>
+  </div>
+  <p class="offering-description">{{ service.description }}</p>
+
+  <div class="offering-content">
+    <!-- Slider for Images -->
+    <div class="image-slider">
+      <div
+        class="slider-wrapper"
+        [style.transform]="'translateX(-' + currentSlide * 100 + '%)'"
+      >
+        <div class="slider-item" *ngFor="let image of service.images">
+          <img [src]="image" alt="Offering Image" />
+        </div>
+      </div>
+      <button class="prev-btn" (click)="prevSlide()">‹</button>
+      <button class="next-btn" (click)="nextSlide()">›</button>
+    </div>
+
+    <!-- Details Grid -->
+    <div class="offering-details">
+      <div class="detail-item">
+        <strong>Price:</strong> ${{ service.price }}
+      </div>
+      <div class="detail-item">
+        <strong>Discount:</strong> {{ service.discount }}%
+      </div>
+      <div class="detail-item">
+        <strong>Offering category:</strong> {{ service.offeringCategory.name }}
+      </div>
+      <div class="detail-item">
+        <strong>Reservation Type:</strong> {{ service.reservationType }}
+      </div>
+      <div class="detail-item">
+        <strong>Reservation Deadline:</strong>
+        {{ service.reservationDeadline }} days
+      </div>
+      <div class="detail-item">
+        <strong>Cancellation Deadline:</strong>
+        {{ service.cancellationDeadline }} days
+      </div>
+      @if (durationShow) {
+      <div class="detail-item">
+        <strong>Duration:</strong> {{ service.duration }} hours
+      </div>
+      <div class="detatil-item"></div>
+      }@else {
+      <div class="detail-item">
+        <strong>Min Arrangement:</strong> {{ service.minimumArrangement }}
+      </div>
+      <div class="detail-item">
+        <strong>Max Arrangement:</strong> {{ service.maximumArrangement }}
+      </div>
+      }
+      
+    </div>
+  </div>
+
+  <div class="owner-details">
+    <h3>Owner</h3>
+    <div class="owner-info">
+      <p>{{ service.owner.name }}</p>
+      <div class="buttons">
+        <button
+          [routerLink]="['/chat', service.owner.id, service.owner.name]"
+          class="chat-button"
+          *ngIf="showChatButton"
+        >
+          Chat with Owner
+        </button>
+        <button class="view-button" (click)="viewOwnerCompany()" *ngIf="showOwnerCompanyButton">
+          View Owner Company
+        </button>
+        <div class="detail-item" *ngIf="showPurchaseListButton">
+          <button class="chat-button" (click)="openPurchaseList()"> View purchase list</button>
+        </div>
+        <div class="detail-item" *ngIf="showReviewsButton">
+          <button class="chat-button" (click)="openReviews()"> View reviews</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="offering-specifics">
+    <h3>Specifics</h3>
+    <p>{{ service.specifics }}</p>
+  </div>
+
+  <div class="event-types">
+    <h3>Event Types</h3>
+    <ul>
+      <li *ngFor="let eventType of service.eventTypes">{{ eventType.name }}</li>
+    </ul>
+  </div>
+</div>
+}

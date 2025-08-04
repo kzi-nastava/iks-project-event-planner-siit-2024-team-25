@@ -1,0 +1,104 @@
+<main class="register-container">
+  <div class="card register-card">
+    <div class="header">
+      <h1>Register</h1>
+    </div>
+
+    <div class="content">
+      <form (ngSubmit)="onSubmit()" [formGroup]="form">
+        <div class="form-sections">
+          <div class="left-section">
+            <div>
+              <mat-form-field appearance="outline" class="primary">
+                <mat-label>Email</mat-label>
+                <input formControlName="email" matInput required type="email" />
+                <mat-error *ngIf="form.get('email')?.invalid">
+                  Please enter a valid email
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="primary">
+                <mat-label>Password</mat-label>
+                <input
+                  [type]="hidePassword ? 'password' : 'text'"
+                  formControlName="password"
+                  matInput
+                  required
+                />
+                <button
+                  (click)="togglePasswordVisibility('password')"
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                >
+                  <mat-icon>
+                    {{ hidePassword ? "visibility_off" : "visibility" }}
+                  </mat-icon>
+                </button>
+                <mat-error *ngIf="form.get('password')?.invalid">
+                  Password must contain at least 8 characters, one letter and
+                  one number.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="primary">
+                <mat-label>Confirm Password</mat-label>
+                <input
+                  [type]="hideConfirmPassword ? 'password' : 'text'"
+                  formControlName="confirmPassword"
+                  matInput
+                  required
+                />
+                <button
+                  (click)="togglePasswordVisibility('confirmPassword')"
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                >
+                  <mat-icon>
+                    {{ hideConfirmPassword ? "visibility_off" : "visibility" }}
+                  </mat-icon>
+                </button>
+                <mat-error *ngIf="form.hasError('confirmPasswordMismatch')">
+                  Passwords do not match
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="primary">
+                <mat-label>First Name</mat-label>
+                <input formControlName="firstName" matInput required />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="primary">
+                <mat-label>Last Name</mat-label>
+                <input formControlName="lastName" matInput required />
+              </mat-form-field>
+
+              <div class="file-upload">
+                <label>Profile Picture</label>
+                <app-image-upload
+                  (imagesChanged)="onProfilePictureSelected($event)"
+                  [maxFileSize]="2000000"
+                  [multiple]="false"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="vertical-divider"></div>
+        </div>
+
+        <div class="actions">
+          <button
+            [disabled]="form.invalid"
+            class="primary"
+            mat-flat-button
+            type="submit"
+          >
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,54 @@
+
+<div class="container">
+    <h3>{{event?.name}}`s budget plan </h3>
+    <div class="price-display">{{overallBudget}}.00 $</div>
+      
+  </div>
+  <div class="example-container mat-elevation-z8">
+    <mat-table #table [dataSource]="budgetItems">
+  
+      <ng-container matColumnDef="offeringCategory">
+        <mat-header-cell *matHeaderCellDef> Offering category </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.offeringCategory.name}} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="budget">
+        <mat-header-cell *matHeaderCellDef> Budget </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.budget}} </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef > Edit </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="openEditDialog(element.id, element.budget)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef > Delete </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="onDelete(element.id, element.offeringCategory.name)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    
+  </div>
+  <div class="container">
+
+    <button style="align-items: center;" mat-button (click)="openCreateDialog()">Add new budget item</button>
+
+    <button mat-raised-button color="primary" (click)="finishBudgetPlan()">
+      Finish Budget Plan
+    </button>
+  </div>
+
+  <button mat-fab color="primary" class="fab-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>

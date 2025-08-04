@@ -1,0 +1,142 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="companyForm" class="company-info-form">
+  <mat-card>
+    <mat-card-header class="header">
+      <mat-card-title>Company Information</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="card-content">
+      <!-- Basic Company Info -->
+      <div class="form-section">
+        <h3>Basic Information</h3>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Company Name</mat-label>
+          <input formControlName="companyName" matInput placeholder="Company Name">
+          <mat-error *ngIf="companyForm.get('companyName')?.errors?.['required']">
+            Company name is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contact Phone</mat-label>
+          <input formControlName="contactPhone" matInput placeholder="Contact Phone">
+          <mat-icon matPrefix>phone</mat-icon>
+          <mat-error *ngIf="companyForm.get('contactPhone')?.errors?.['required']">
+            Contact phone is required
+          </mat-error>
+          <mat-error *ngIf="companyForm.get('contactPhone')?.errors?.['pattern']">
+            Please enter a valid phone number
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea
+            formControlName="description"
+            matInput
+            placeholder="Company Description"
+            rows="4"
+          ></textarea>
+          <mat-error *ngIf="companyForm.get('description')?.errors?.['required']">
+            Description is required
+          </mat-error>
+          <mat-error *ngIf="companyForm.get('description')?.errors?.['minlength']">
+            Description must be at least 20 characters
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Company Address -->
+      <div class="form-section" formGroupName="companyAddress">
+        <h3>Company Address</h3>
+
+        <div class="address-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+            <input formControlName="country" matInput placeholder="Country">
+            <mat-error *ngIf="companyForm.get('companyAddress.country')?.errors?.['required']">
+              Country is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+            <input formControlName="city" matInput placeholder="City">
+            <mat-error *ngIf="companyForm.get('companyAddress.city')?.errors?.['required']">
+              City is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Address</mat-label>
+            <input formControlName="address" matInput placeholder="Address">
+            <mat-error *ngIf="companyForm.get('companyAddress.address')?.errors?.['required']">
+              Address is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Company Pictures -->
+      <div class="form-section">
+        <h3>Company Pictures</h3>
+
+        <div class="pictures-grid">
+          <div *ngFor="let url of pictureUrls; let i = index" class="picture-preview">
+            <img [src]="url" alt="Company picture">
+            <button
+              (click)="removeImage(i)"
+              class="remove-button"
+              color="warn"
+              mat-mini-fab
+              type="button"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+
+          <div *ngIf="pictureUrls.length < 5" class="upload-box">
+            <input
+              #fileInput
+              (change)="onFileSelected($event)"
+              accept="image/*"
+              hidden
+              multiple
+              type="file"
+            />
+            <button
+              (click)="fileInput.click()"
+              class="primary"
+              mat-stroked-button
+              type="button"
+            >
+              <mat-icon>add_photo_alternate</mat-icon>
+              Add Pictures
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button
+        (click)="onReset()"
+        [disabled]="saving"
+        class="primary"
+        mat-button
+        type="button"
+      >
+        Reset
+      </button>
+      <button
+        [disabled]="companyForm.invalid || saving"
+        class="primary"
+        mat-raised-button
+        type="submit"
+      >
+        <mat-spinner *ngIf="saving" diameter="20"></mat-spinner>
+        <span *ngIf="!saving">Save Changes</span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
